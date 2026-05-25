@@ -34,20 +34,12 @@ const HomeHero = () => {
             </div>
             <div className="absolute inset-0 bg-black/30" />
             <div className="relative z-10 h-full flex items-end justify-center pb-20 md:pb-28">
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-                <Link
-                  to="/agende-sua-aula"
-                  className="bg-primary/80 backdrop-blur-sm text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary transition"
-                >
-                  AGENDE SUA AULA
-                </Link>
-                <Link
-                  to="/loja"
-                  className="border border-white text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-white hover:text-primary transition"
-                >
-                  VER PRODUTOS
-                </Link>
-              </div>
+              <Link
+                to="/agende-sua-aula"
+                className="bg-primary/80 backdrop-blur-sm text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary transition"
+              >
+                AGENDE SUA AULA
+              </Link>
             </div>
           </div>
 
@@ -65,7 +57,7 @@ const HomeHero = () => {
               <img
                 src="/images/home/bodyoga/logo-bodyoga.png"
                 alt="BODYOGA®"
-                className="h-20 md:h-32 w-auto mb-6 brightness-0 invert"
+                className="h-28 md:h-44 w-auto mb-2 brightness-0 invert"
               />
               <p className="text-white/80 text-lg md:text-xl font-light tracking-[0.15em] mb-10 max-w-2xl italic">
                 Corpo forte, mente tranquila.
