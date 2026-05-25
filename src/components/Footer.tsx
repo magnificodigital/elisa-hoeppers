@@ -7,7 +7,11 @@ const Footer = () => {
       <div className="container mx-auto px-6 max-w-[1280px]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div className="space-y-4">
-            <h3 className="font-display text-3xl">elisa hoeppers</h3>
+            <img 
+              src="https://ynvrijkuampxpsmshftm.supabase.co/storage/v1/object/public/prompt-images/uploads/1779727219616-326e2eb0-8de1-4b94-8da7-f13e446eac94.png" 
+              alt="Elisa Hoeppers Logo" 
+              className="h-12 w-auto brightness-0 invert"
+            />
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">
               Movimente seu corpo, cuide da sua mente.
             </p>
