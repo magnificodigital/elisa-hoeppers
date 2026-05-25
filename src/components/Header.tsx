@@ -34,20 +34,16 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
     { label: "LOGIN", href: "/painel" },
   ];
 
-  const solid = scrolled || isMobileMenuOpen;
-  const headerBg = solid ? "bg-cream shadow-sm" : "bg-transparent";
-  const textColor = solid ? "text-primary" : "text-cream";
-  const ctaBorder = solid 
-    ? "border-primary text-primary hover:bg-primary hover:text-white" 
-    : "border-cream text-cream hover:bg-cream hover:text-primary";
-  const logoFilter = solid 
-    ? "brightness(0) saturate(100%) invert(26%) sepia(15%) saturate(1145%) hue-rotate(52deg) brightness(96%) contrast(91%)" // Verde Escuro (#3B4F30)
-    : "brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(302%) hue-rotate(325deg) brightness(101%) contrast(93%)"; // Creme (#F5EBE2)
+  const headerBg = "bg-[#3B4F30] shadow-sm";
+  const textColor = "text-[#DBCCBF]";
+  const ctaBorder = "border-[#DBCCBF] text-[#DBCCBF] hover:bg-[#DBCCBF] hover:text-[#3B4F30]";
+  // Filter to convert black -> #DBCCBF
+  const logoFilter = "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)";
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
-      <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-20 ${textColor}`}>
-        <nav className="hidden lg:flex items-center space-x-12 flex-1">
+      <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-center h-20 md:h-24 gap-6 md:gap-10 ${textColor}`}>
+        <nav className="hidden lg:flex items-center space-x-8">
           {leftItems.map((i) => (
             <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
@@ -59,18 +55,18 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`hidden md:block h-8 md:h-10 w-auto transition-all duration-300`}
+            className={`hidden md:block h-14 md:h-16 w-auto transition-all duration-300`}
             style={{ filter: logoFilter }}
           />
           <img
             src={LOGO_ICON}
             alt="Elisa Hoeppers"
-            className={`md:hidden h-8 w-auto transition-all duration-300`}
+            className={`md:hidden h-10 w-auto transition-all duration-300`}
             style={{ filter: logoFilter }}
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center space-x-10 flex-1 justify-end">
+        <nav className="hidden lg:flex items-center space-x-8">
           {rightItems.map((i) => (
             <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
@@ -78,7 +74,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           ))}
           <Link
             to="/cadastro-de-alunos"
-            className={`border px-7 py-2.5 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
+            className={`border px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
           >
             INSCREVA-SE
           </Link>
