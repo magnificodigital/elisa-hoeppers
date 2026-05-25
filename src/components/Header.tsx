@@ -57,12 +57,12 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`hidden md:block h-10 md:h-14 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`hidden md:block h-10 md:h-14 w-auto transition-all duration-300`}
           />
           <img
             src={LOGO_ICON}
             alt="Elisa Hoeppers"
-            className={`md:hidden h-9 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`md:hidden h-9 w-auto transition-all duration-300`}
           />
         </Link>
 
