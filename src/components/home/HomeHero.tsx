@@ -57,7 +57,7 @@ const HomeHero = () => {
               <img
                 src="/images/home/bodyoga/logo-bodyoga.png"
                 alt="BODYOGA®"
-                className="h-28 md:h-44 w-auto mb-2 brightness-0 invert"
+                className="h-28 md:h-44 w-auto mb-0 brightness-0 invert"
               />
               <p className="text-white/80 text-lg md:text-xl font-light tracking-[0.15em] mb-10 max-w-2xl italic">
                 Corpo forte, mente tranquila.
