@@ -1,11 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const url = (import.meta.env.VITE_SUPABASE_URL as string) || "https://placeholder.supabase.co";
-const anon = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || "placeholder-anon-key";
-
-if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
-  console.warn("Supabase env vars não configuradas — conecte o Lovable Cloud");
-}
+const url = "https://rwxaeckgpypvjiglorto.supabase.co";
+const anon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3eGFlY2tncHlwdmppZ2xvcnRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDA3ODIsImV4cCI6MjA5NTMxNjc4Mn0.cInQFQ_PuQhKuSWjkqnz5H5oJf4ghDh11yBL1jfDAfk";
 
 export const supabase = createClient(url, anon, {
   auth: { persistSession: true, autoRefreshToken: true },
