@@ -18,7 +18,7 @@ const HomeHero = () => {
   }, [emblaApi]);
 
   return (
-    <section className="relative w-full h-[70vh] md:h-[80vh] min-h-[520px] overflow-hidden bg-black">
+    <section className="relative w-full h-[85vh] md:h-screen min-h-[600px] overflow-hidden bg-black">
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
           {/* Slide 1: Vídeo */}
