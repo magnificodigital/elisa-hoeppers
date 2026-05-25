@@ -15,22 +15,20 @@ const HomeBio = () => {
           </h2>
           <div className="space-y-4 text-[var(--text-muted)] text-sm md:text-base leading-relaxed">
             <p>
-              Sou professora de Hatha e Vinyasa Yoga há mais de 18 anos. Minha trajetória começou
-              com a busca pelo equilíbrio entre corpo, mente e espírito.
+              Sou professora de Hatha e Vinyasa Yoga e fundadora do BODYOGA. Há 18 anos,
+              iniciei minha jornada pessoal com o yoga, um caminho que me levou a descobrir
+              um profundo amor e respeito por essa prática milenar.
             </p>
             <p>
-              Em 2014, fiz uma viagem transformadora à Índia, onde vivi no Ashram da Amma e
-              aprofundei meus estudos das técnicas tradicionais do yoga, da meditação e da
-              aromaterapia.
+              Em 2014, tive a oportunidade de aprofundar meus estudos no Ashram da Amma,
+              na Índia, mergulhando nas técnicas e filosofias do yoga. Desde então, tenho
+              dedicado minha vida não apenas à minha prática, mas também à disseminação dos
+              ensinamentos do yoga.
             </p>
             <p>
-              Desde então, dedico minha vida a compartilhar o yoga como caminho de equilíbrio,
-              saúde e paz interior — guiando alunos para descobrirem a vibração de uma prática
-              ampla e profundamente transformadora.
-            </p>
-            <p>
-              Hoje, meu maior propósito é ajudar outras pessoas a encontrarem o bem-estar
-              através das práticas que mudaram a minha vida.
+              Minha missão é compartilhar os benefícios transformadores do yoga, ajudando
+              os outros a encontrar equilíbrio, saúde e paz interior. Estou aqui para
+              guiá-lo em sua jornada de yoga e bem-estar.
             </p>
           </div>
           <Link
