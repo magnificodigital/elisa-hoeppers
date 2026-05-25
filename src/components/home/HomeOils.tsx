@@ -2,13 +2,13 @@ import { Link } from "@tanstack/react-router";
 
 const HomeOils = () => {
   return (
-    <section className="py-20 md:py-28 bg-cream">
-      <div className="max-w-[1170px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 className="font-display text-3xl md:text-[2rem] text-primary-dark mb-6">
+    <section className="py-20 md:py-32 bg-cream">
+      <div className="max-w-[1170px] mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-16 md:gap-24">
+        <div className="flex-1 order-2 md:order-1">
+          <h2 className="font-display text-4xl md:text-[2.75rem] text-primary-dark mb-8 leading-tight">
             Óleos Essenciais
           </h2>
-          <div className="space-y-4 text-[var(--text-muted)] text-sm md:text-base leading-relaxed">
+          <div className="space-y-6 text-[#4A5568] text-[15px] md:text-base leading-relaxed font-light">
             <p>
               Que tal deixar seu ambiente com um aroma delicioso e ainda desfrutar dos
               benefícios dos óleos essenciais naturais?
@@ -38,16 +38,18 @@ const HomeOils = () => {
           </div>
           <Link
             to="/loja"
-            className="inline-block mt-8 bg-primary text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs hover:bg-primary-dark transition"
+            className="inline-block mt-12 bg-primary text-white px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition-all duration-300"
           >
             IR PARA SHOP
           </Link>
         </div>
-        <img
-          src="/images/home/oleos/oleos-elisa.jpeg"
-          alt="Elisa Hoeppers segurando o spray de óleos essenciais"
-          className="rounded-lg w-full aspect-[3/4] object-cover"
-        />
+        <div className="flex-1 order-1 md:order-2 w-full">
+          <img
+            src="/images/home/oleos/oleos-elisa.jpeg"
+            alt="Elisa Hoeppers segurando o spray de óleos essenciais"
+            className="rounded-lg w-full object-cover shadow-sm"
+          />
+        </div>
       </div>
     </section>
   );
