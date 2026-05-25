@@ -49,7 +49,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
       <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-20 ${textColor}`}>
         <nav className="hidden lg:flex items-center space-x-12 flex-1">
           {leftItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-[11px] tracking-[0.2em] uppercase hover:opacity-70 transition-opacity font-medium">
+            <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
           ))}
@@ -72,7 +72,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
 
         <nav className="hidden lg:flex items-center space-x-10 flex-1 justify-end">
           {rightItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-[11px] tracking-[0.2em] uppercase hover:opacity-70 transition-opacity font-medium">
+            <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
           ))}
