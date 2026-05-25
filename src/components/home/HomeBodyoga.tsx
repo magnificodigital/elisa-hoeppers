@@ -12,10 +12,13 @@ const HomeBodyoga = () => {
           />
         </div>
         
-        <div className="flex-1 text-center px-4">
-          <h2 className="font-display text-6xl md:text-[5rem] text-primary-dark mb-10 tracking-[0.05em]">
-            BODYOGA<span className="text-3xl align-super ml-1">®</span>
-          </h2>
+        <div className="flex-1 text-center px-4 flex flex-col items-center">
+          <img 
+            src="/images/home/bodyoga/logo-bodyoga.png" 
+            alt="BODYOGA®" 
+            className="h-20 md:h-28 w-auto mb-10"
+            style={{ filter: "brightness(0) saturate(100%) invert(24%) sepia(16%) saturate(1013%) hue-rotate(53deg) brightness(98%) contrast(85%)" }}
+          />
           <p className="text-primary-dark text-xs md:text-[13px] uppercase tracking-[0.25em] leading-[2.2] max-w-2xl mx-auto mb-12 font-medium">
             No BODYOGA os pezinhos transformam e elevam a prática de yoga a outro nível. Mais força, mais resistência, mais conexão. Tudo isso sem perder a essência do yoga: corpo e mente em equilíbrio.
           </p>
