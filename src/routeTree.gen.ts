@@ -20,6 +20,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
+import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 
 const SobreRoute = SobreRouteImport.update({
@@ -77,6 +78,11 @@ const LojaSlugRoute = LojaSlugRouteImport.update({
   path: '/loja/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CursosSlugRoute = CursosSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CursosRoute,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -88,11 +94,12 @@ export interface FileRoutesByFullPath {
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
-  '/cursos': typeof CursosRoute
+  '/cursos': typeof CursosRouteWithChildren
   '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/loja/': typeof LojaIndexRoute
@@ -102,11 +109,12 @@ export interface FileRoutesByTo {
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
-  '/cursos': typeof CursosRoute
+  '/cursos': typeof CursosRouteWithChildren
   '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
   '/blog': typeof BlogIndexRoute
   '/loja': typeof LojaIndexRoute
@@ -117,11 +125,12 @@ export interface FileRoutesById {
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
-  '/cursos': typeof CursosRoute
+  '/cursos': typeof CursosRouteWithChildren
   '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/loja/': typeof LojaIndexRoute
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
+    | '/cursos/$slug'
     | '/loja/$slug'
     | '/blog/'
     | '/loja/'
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
+    | '/cursos/$slug'
     | '/loja/$slug'
     | '/blog'
     | '/loja'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
+    | '/cursos/$slug'
     | '/loja/$slug'
     | '/blog/'
     | '/loja/'
@@ -176,7 +188,7 @@ export interface RootRouteChildren {
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
   BioRoute: typeof BioRoute
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
-  CursosRoute: typeof CursosRoute
+  CursosRoute: typeof CursosRouteWithChildren
   PainelRoute: typeof PainelRoute
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
@@ -265,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LojaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cursos/$slug': {
+      id: '/cursos/$slug'
+      path: '/$slug'
+      fullPath: '/cursos/$slug'
+      preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof CursosRoute
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -275,12 +294,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface CursosRouteChildren {
+  CursosSlugRoute: typeof CursosSlugRoute
+}
+
+const CursosRouteChildren: CursosRouteChildren = {
+  CursosSlugRoute: CursosSlugRoute,
+}
+
+const CursosRouteWithChildren =
+  CursosRoute._addFileChildren(CursosRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendeSuaAulaRoute: AgendeSuaAulaRoute,
   BioRoute: BioRoute,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
-  CursosRoute: CursosRoute,
+  CursosRoute: CursosRouteWithChildren,
   PainelRoute: PainelRoute,
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
@@ -292,3 +322,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
