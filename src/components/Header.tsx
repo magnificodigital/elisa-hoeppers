@@ -36,16 +36,18 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
 
   const solid = scrolled || isMobileMenuOpen;
   const headerBg = solid ? "bg-cream shadow-sm" : "bg-transparent";
-  const textColor = solid ? "text-primary-dark" : "text-white";
-  const ctaBorder = solid ? "border-primary text-primary hover:bg-primary hover:text-white" : "border-white text-white hover:bg-white hover:text-primary";
+  const textColor = solid ? "text-primary" : "text-cream";
+  const ctaBorder = solid 
+    ? "border-primary text-primary hover:bg-primary hover:text-white" 
+    : "border-cream text-cream hover:bg-cream hover:text-primary";
   const logoFilter = solid ? "" : "brightness-0 invert";
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
       <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-20 ${textColor}`}>
-        <nav className="hidden lg:flex items-center space-x-8 flex-1">
+        <nav className="hidden lg:flex items-center space-x-12 flex-1">
           {leftItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-xs tracking-widest uppercase hover:opacity-70 transition-opacity">
+            <Link key={i.href} to={i.href} className="text-[11px] tracking-[0.2em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
           ))}
@@ -55,7 +57,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`hidden md:block h-9 md:h-11 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`hidden md:block h-10 md:h-14 w-auto transition-[filter] duration-300 ${logoFilter}`}
           />
           <img
             src={LOGO_ICON}
@@ -64,15 +66,15 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-end">
+        <nav className="hidden lg:flex items-center space-x-10 flex-1 justify-end">
           {rightItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-xs tracking-widest uppercase hover:opacity-70 transition-opacity">
+            <Link key={i.href} to={i.href} className="text-[11px] tracking-[0.2em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
           ))}
           <Link
             to="/cadastro-de-alunos"
-            className={`border px-6 py-2 rounded-full text-[11px] tracking-widest uppercase transition-all ${ctaBorder}`}
+            className={`border px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase transition-all font-semibold ${ctaBorder}`}
           >
             INSCREVA-SE
           </Link>
