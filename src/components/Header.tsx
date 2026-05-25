@@ -40,7 +40,9 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
   const ctaBorder = solid 
     ? "border-primary text-primary hover:bg-primary hover:text-white" 
     : "border-cream text-cream hover:bg-cream hover:text-primary";
-  const logoFilter = solid ? "" : "brightness-0 invert";
+  const logoFilter = solid 
+    ? "brightness(0) saturate(100%) invert(26%) sepia(15%) saturate(1145%) hue-rotate(52deg) brightness(96%) contrast(91%)" // Verde Escuro (#3B4F30)
+    : "brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(302%) hue-rotate(325deg) brightness(101%) contrast(93%)"; // Creme (#F5EBE2)
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
@@ -57,12 +59,14 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`hidden md:block h-10 md:h-14 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`hidden md:block h-8 md:h-10 w-auto transition-all duration-300`}
+            style={{ filter: logoFilter }}
           />
           <img
             src={LOGO_ICON}
             alt="Elisa Hoeppers"
-            className={`md:hidden h-9 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`md:hidden h-8 w-auto transition-all duration-300`}
+            style={{ filter: logoFilter }}
           />
         </Link>
 
