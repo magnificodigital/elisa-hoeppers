@@ -10,30 +10,28 @@ const HomeOils = () => {
           </h2>
           <div className="space-y-4 text-[var(--text-muted)] text-sm md:text-base leading-relaxed">
             <p>
-              Que tal deixar seu ambiente com um aroma delicioso e ainda desfrutar
-              dos benefícios dos óleos essenciais naturais?
+              Que tal entrar em contato com o seu eu interior e ainda desfrutar dos benefícios
+              dos óleos essenciais naturais?
             </p>
             <p>
-              O spray elisa hoeppers, contém um blend de óleos essenciais que traz
-              equilíbrio, reduz a ansiedade e o estresse, proporciona ânimo, motivação
-              e alegria.
+              O spray Elisa Hoeppers é um blend de óleos sagrados com aromas terrosos e ancestrais,
+              criado para promover equilíbrio, ânimo e redução da ansiedade.
             </p>
             <p>
-              Uma sensação de paz no corpo e no espírito, estimula, amplia e harmoniza
-              o equilíbrio do campo vital. Acolhe, traz conforto e amorosidade. Ótima
-              opção para usar antes de dormir, na sua prática de yoga, meditação e
-              também no seu ambiente de trabalho.
+              Uma mistura especial com óleos essenciais que acalma, amplia e harmoniza o cuidado
+              do campo sutil. Acolhe os conflitos e ansiedades do dia a dia.
             </p>
             <p>
-              Estimula a concentração, acalma a mente e possui efeito tranquilizante.
+              Ótimo apoio para usar antes de dormir, na sua prática de yoga, meditação e
+              sempre que você desejar entrar em si.
             </p>
             <p>
-              Incorporar óleos essenciais em sua rotina diária pode ser a chave para
-              uma vida mais equilibrada e saudável.
+              Borrife no ambiente de trabalho para renovar a energia, ou sobre o travesseiro
+              antes de dormir para um descanso mais profundo.
             </p>
             <p>
-              Experimente o spray Elisa Hoeppers e transforme sua rotina em uma
-              experiência de bem-estar!
+              Descubra o spray Elisa Hoeppers e transforme sua rotina em um agradável momento
+              de bem-estar.
             </p>
           </div>
           <Link

@@ -14,7 +14,9 @@ const HomeBodyoga = () => {
             BODYOGA<span className="text-2xl align-super">®</span>
           </h2>
           <p className="text-primary-dark text-xs md:text-sm uppercase tracking-wider leading-relaxed max-w-xl mx-auto mb-8 font-medium">
-            No BODYOGA os pezinhos transformam e elevam a prática de yoga a outro nível. Mais força, mais resistência, mais conexão. Tudo isso sem perder a essência do yoga: corpo e mente em equilíbrio.
+            No Bodyoga os pezinhos transformam e elevam a prática de yoga a outro nível.
+            Mais força, mais resistência, mais conexão. Tudo isso sem perder a essência do yoga:
+            corpo e mente em equilíbrio.
           </p>
           <Link
             to="/cursos"
