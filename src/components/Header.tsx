@@ -6,7 +6,7 @@ interface HeaderProps {
   transparentOnTop?: boolean;
 }
 
-const LOGO_WORDMARK = "/images/logo/logo-wordmark.png";
+const LOGO_WORDMARK = "/images/logo/logo-wordmark-new.png";
 const LOGO_ICON = "/images/logo/logo-icon.png";
 
 const Header = ({ transparentOnTop = false }: HeaderProps) => {
@@ -36,16 +36,20 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
 
   const solid = scrolled || isMobileMenuOpen;
   const headerBg = solid ? "bg-cream shadow-sm" : "bg-transparent";
-  const textColor = solid ? "text-primary-dark" : "text-white";
-  const ctaBorder = solid ? "border-primary text-primary hover:bg-primary hover:text-white" : "border-white text-white hover:bg-white hover:text-primary";
-  const logoFilter = solid ? "" : "brightness-0 invert";
+  const textColor = solid ? "text-primary" : "text-cream";
+  const ctaBorder = solid 
+    ? "border-primary text-primary hover:bg-primary hover:text-white" 
+    : "border-cream text-cream hover:bg-cream hover:text-primary";
+  const logoFilter = solid 
+    ? "brightness(0) saturate(100%) invert(26%) sepia(15%) saturate(1145%) hue-rotate(52deg) brightness(96%) contrast(91%)" // Verde Escuro (#3B4F30)
+    : "brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(302%) hue-rotate(325deg) brightness(101%) contrast(93%)"; // Creme (#F5EBE2)
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
       <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-20 ${textColor}`}>
-        <nav className="hidden lg:flex items-center space-x-8 flex-1">
+        <nav className="hidden lg:flex items-center space-x-12 flex-1">
           {leftItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-xs tracking-widest uppercase hover:opacity-70 transition-opacity">
+            <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
           ))}
@@ -55,24 +59,26 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`hidden md:block h-9 md:h-11 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`hidden md:block h-8 md:h-10 w-auto transition-all duration-300`}
+            style={{ filter: logoFilter }}
           />
           <img
             src={LOGO_ICON}
             alt="Elisa Hoeppers"
-            className={`md:hidden h-9 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`md:hidden h-8 w-auto transition-all duration-300`}
+            style={{ filter: logoFilter }}
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-end">
+        <nav className="hidden lg:flex items-center space-x-10 flex-1 justify-end">
           {rightItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-xs tracking-widest uppercase hover:opacity-70 transition-opacity">
+            <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
           ))}
           <Link
             to="/cadastro-de-alunos"
-            className={`border px-6 py-2 rounded-full text-[11px] tracking-widest uppercase transition-all ${ctaBorder}`}
+            className={`border px-7 py-2.5 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
           >
             INSCREVA-SE
           </Link>
