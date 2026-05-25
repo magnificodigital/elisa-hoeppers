@@ -78,7 +78,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           ))}
           <Link
             to="/cadastro-de-alunos"
-            className={`border px-7 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase transition-all font-semibold ${ctaBorder}`}
+            className={`border px-7 py-2.5 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
           >
             INSCREVA-SE
           </Link>
