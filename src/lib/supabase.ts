@@ -1,10 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 
-const url = import.meta.env.VITE_SUPABASE_URL as string;
-const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const url = (import.meta.env.VITE_SUPABASE_URL as string) || "https://placeholder.supabase.co";
+const anon = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || "placeholder-anon-key";
 
-if (!url || !anon) {
-  console.warn("Supabase env vars não configuradas");
+if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+  console.warn("Supabase env vars não configuradas — conecte o Lovable Cloud");
 }
 
 export const supabase = createClient(url, anon, {
