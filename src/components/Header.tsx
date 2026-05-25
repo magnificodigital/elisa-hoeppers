@@ -28,8 +28,12 @@ const Header = () => {
         </nav>
 
         {/* Center logo */}
-        <Link to="/" className="font-display text-2xl md:text-3xl text-white whitespace-nowrap">
-          elisa hoeppers
+        <Link to="/" className="flex-shrink-0">
+          <img 
+            src="https://ynvrijkuampxpsmshftm.supabase.co/storage/v1/object/public/prompt-images/uploads/1779727219616-326e2eb0-8de1-4b94-8da7-f13e446eac94.png" 
+            alt="Elisa Hoeppers Logo" 
+            className="h-10 md:h-12 w-auto brightness-0 invert"
+          />
         </Link>
 
         {/* Right menu */}
