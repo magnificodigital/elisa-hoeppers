@@ -1,9 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Youtube, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Instagram, Youtube } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const Header = () => {
+interface HeaderProps {
+  transparentOnTop?: boolean;
+}
+
+const LOGO_URL =
+  "https://ynvrijkuampxpsmshftm.supabase.co/storage/v1/object/public/prompt-images/uploads/1779727219616-326e2eb0-8de1-4b94-8da7-f13e446eac94.png";
+
+const Header = ({ transparentOnTop = false }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!transparentOnTop) {
+      setScrolled(true);
+      return;
+    }
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [transparentOnTop]);
 
   const leftItems = [
     { label: "SOBRE", href: "/sobre" },
@@ -15,56 +34,62 @@ const Header = () => {
     { label: "LOGIN", href: "/painel" },
   ];
 
+  const solid = scrolled || isMobileMenuOpen;
+  const headerBg = solid ? "bg-cream shadow-sm" : "bg-transparent";
+  const textColor = solid ? "text-primary-dark" : "text-white";
+  const ctaBorder = solid ? "border-primary text-primary hover:bg-primary hover:text-white" : "border-white text-white hover:bg-white hover:text-primary";
+  const logoFilter = solid ? "" : "brightness-0 invert";
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-primary text-white">
-      <div className="container mx-auto px-6 max-w-[1280px] flex items-center justify-between h-16 md:h-20">
-        {/* Left menu */}
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
+      <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-20 ${textColor}`}>
         <nav className="hidden lg:flex items-center space-x-8 flex-1">
           {leftItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-sm tracking-widest hover:text-peach transition-colors">
+            <Link key={i.href} to={i.href} className="text-xs tracking-widest uppercase hover:opacity-70 transition-opacity">
               {i.label}
             </Link>
           ))}
         </nav>
 
-        {/* Center logo */}
         <Link to="/" className="flex-shrink-0">
-          <img 
-            src="https://ynvrijkuampxpsmshftm.supabase.co/storage/v1/object/public/prompt-images/uploads/1779727219616-326e2eb0-8de1-4b94-8da7-f13e446eac94.png" 
-            alt="Elisa Hoeppers Logo" 
-            className="h-10 md:h-12 w-auto brightness-0 invert"
+          <img
+            src={LOGO_URL}
+            alt="Elisa Hoeppers"
+            className={`h-9 md:h-11 w-auto transition-[filter] duration-300 ${logoFilter}`}
           />
         </Link>
 
-        {/* Right menu */}
         <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-end">
           {rightItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-sm tracking-widest hover:text-peach transition-colors">
+            <Link key={i.href} to={i.href} className="text-xs tracking-widest uppercase hover:opacity-70 transition-opacity">
               {i.label}
             </Link>
           ))}
           <Link
             to="/cadastro-de-alunos"
-            className="border border-white/60 px-4 py-2 rounded-full text-xs tracking-widest hover:bg-white hover:text-primary transition-all"
+            className={`border px-4 py-2 rounded-full text-[11px] tracking-widest uppercase transition-all ${ctaBorder}`}
           >
-            INSCREVA-SE
+            Inscreva-se
           </Link>
         </nav>
 
-        {/* Mobile button */}
-        <button className="lg:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <button
+          className={`lg:hidden ${textColor}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Menu"
+        >
           {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-primary border-t border-white/10">
-          <nav className="flex flex-col p-6 space-y-4">
+        <div className="lg:hidden bg-cream border-t border-border">
+          <nav className="flex flex-col p-6 space-y-4 text-primary-dark">
             {[...leftItems, ...rightItems].map((i) => (
               <Link
                 key={i.href}
                 to={i.href}
-                className="text-sm tracking-widest py-2 border-b border-white/10"
+                className="text-sm tracking-widest py-2 border-b border-border"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {i.label}
@@ -72,13 +97,13 @@ const Header = () => {
             ))}
             <Link
               to="/cadastro-de-alunos"
-              className="border border-white px-4 py-2 rounded-full text-xs tracking-widest text-center"
+              className="border border-primary text-primary px-4 py-2 rounded-full text-xs tracking-widest text-center uppercase"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              INSCREVA-SE
+              Inscreva-se
             </Link>
             <div className="flex justify-center space-x-6 pt-3">
-              <a href="https://instagram.com/elisa.hoeppers" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
+              <a href="https://instagram.com/elisahoepperscasas" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
               <a href="https://www.youtube.com/@ElisaHoeppers" target="_blank" rel="noreferrer"><Youtube size={20} /></a>
             </div>
           </nav>
