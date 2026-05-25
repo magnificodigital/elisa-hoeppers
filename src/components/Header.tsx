@@ -6,7 +6,7 @@ interface HeaderProps {
   transparentOnTop?: boolean;
 }
 
-const LOGO_WORDMARK = "/images/logo/logo-wordmark.png";
+const LOGO_WORDMARK = "/images/logo/logo-wordmark-new.png";
 const LOGO_ICON = "/images/logo/logo-icon.png";
 
 const Header = ({ transparentOnTop = false }: HeaderProps) => {
@@ -57,12 +57,12 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`hidden md:block h-10 md:h-14 w-auto transition-all duration-300`}
+            className={`hidden md:block h-10 md:h-14 w-auto transition-[filter] duration-300 ${logoFilter}`}
           />
           <img
             src={LOGO_ICON}
             alt="Elisa Hoeppers"
-            className={`md:hidden h-9 w-auto transition-all duration-300`}
+            className={`md:hidden h-9 w-auto transition-[filter] duration-300 ${logoFilter}`}
           />
         </Link>
 
