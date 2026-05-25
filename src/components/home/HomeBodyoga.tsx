@@ -14,7 +14,7 @@ const HomeBodyoga = () => {
         </div>
 
         {/* Conteúdo Central */}
-        <div className="flex-1 flex flex-col items-center text-center px-6 z-10 mx-auto max-w-2xl">
+        <div className="flex-1 flex flex-col items-center text-center px-8 md:px-12 z-10 mx-auto max-w-xl">
           <img
             src="/images/home/bodyoga/logo-bodyoga.png"
             alt="BODYOGA®"
