@@ -13,15 +13,15 @@ const HomeHero = () => {
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
           <Link
             to="/agende-sua-aula"
-            className="bg-primary/85 backdrop-blur-sm text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary transition"
+            className="bg-primary/80 backdrop-blur-sm text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary transition"
           >
-            Agende sua aula
+            AGENDE SUA AULA
           </Link>
           <Link
             to="/loja"
             className="border border-white text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-white hover:text-primary transition"
           >
-            Ver produtos
+            VER PRODUTOS
           </Link>
         </div>
       </div>

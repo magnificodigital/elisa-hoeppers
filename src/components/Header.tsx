@@ -72,9 +72,9 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           ))}
           <Link
             to="/cadastro-de-alunos"
-            className={`border px-4 py-2 rounded-full text-[11px] tracking-widest uppercase transition-all ${ctaBorder}`}
+            className={`border px-6 py-2 rounded-full text-[11px] tracking-widest uppercase transition-all ${ctaBorder}`}
           >
-            Inscreva-se
+            INSCREVA-SE
           </Link>
         </nav>
 
@@ -102,10 +102,10 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
             ))}
             <Link
               to="/cadastro-de-alunos"
-              className="border border-primary text-primary px-4 py-2 rounded-full text-xs tracking-widest text-center uppercase"
+              className="border border-primary text-primary px-6 py-2 rounded-full text-[11px] tracking-widest text-center uppercase"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Inscreva-se
+              INSCREVA-SE
             </Link>
             <div className="flex justify-center space-x-6 pt-3">
               <a href="https://instagram.com/elisahoepperscasas" target="_blank" rel="noreferrer"><Instagram size={20} /></a>

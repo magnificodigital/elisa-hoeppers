@@ -38,7 +38,7 @@ const HomeOils = () => {
             to="/loja"
             className="inline-block mt-8 bg-primary text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs hover:bg-primary-dark transition"
           >
-            Ir para Shop
+            IR PARA SHOP
           </Link>
         </div>
         <img

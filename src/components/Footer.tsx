@@ -16,20 +16,20 @@ const Footer = () => {
           </div>
 
           <div className="space-y-3 text-sm">
-            <h4 className="uppercase tracking-widest text-xs text-cream/60 mb-4">Navegação</h4>
+            <h4 className="uppercase tracking-widest text-[10px] text-cream/60 mb-4">Navegação</h4>
             <ul className="space-y-2">
-              <li><Link to="/sobre" className="hover:text-peach transition-colors">Sobre mim</Link></li>
-              <li><Link to="/agende-sua-aula" className="hover:text-peach transition-colors">Agende sua aula</Link></li>
-              <li><Link to="/cursos" className="hover:text-peach transition-colors">Aulas</Link></li>
+              <li><Link to="/sobre" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Sobre mim</Link></li>
+              <li><Link to="/agende-sua-aula" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Agende sua aula</Link></li>
+              <li><Link to="/cursos" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Aulas</Link></li>
             </ul>
           </div>
 
           <div className="space-y-3 text-sm">
-            <h4 className="uppercase tracking-widest text-xs text-cream/60 mb-4">Explorar</h4>
+            <h4 className="uppercase tracking-widest text-[10px] text-cream/60 mb-4">Explorar</h4>
             <ul className="space-y-2">
-              <li><Link to="/loja" className="hover:text-peach transition-colors">Shop</Link></li>
-              <li><Link to="/blog" className="hover:text-peach transition-colors">Dicas e Novidades</Link></li>
-              <li><a href="https://wa.me/5511994061178" className="hover:text-peach transition-colors">Fale conosco</a></li>
+              <li><Link to="/loja" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Shop</Link></li>
+              <li><Link to="/blog" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Dicas e Novidades</Link></li>
+              <li><a href="https://wa.me/5511994061178" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Fale conosco</a></li>
             </ul>
           </div>
 
