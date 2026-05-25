@@ -33,7 +33,7 @@ const HomeCourses = () => {
                   to="/cursos"
                   className="border border-primary text-primary px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition"
                 >
-                  Comece a estudar
+                  COMECE A ESTUDAR
                 </Link>
               </div>
             </div>

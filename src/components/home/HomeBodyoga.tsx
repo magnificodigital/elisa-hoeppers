@@ -22,7 +22,7 @@ const HomeBodyoga = () => {
             to="/cursos"
             className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs hover:bg-primary-dark transition"
           >
-            Saiba mais
+            SAIBA MAIS
           </Link>
         </div>
         <img
