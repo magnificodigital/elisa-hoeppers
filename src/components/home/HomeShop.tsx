@@ -9,7 +9,12 @@ const HomeShop = () => {
         <SectionTitle>Shop</SectionTitle>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 mt-12">
           {products.map((p) => (
-            <Link key={p.slug} to="/loja" className="group block">
+            <Link
+              key={p.slug}
+              to="/loja/$slug"
+              params={{ slug: p.slug }}
+              className="group block"
+            >
               <div className="relative aspect-square overflow-hidden rounded-lg bg-sand">
                 <img
                   src={p.image}
