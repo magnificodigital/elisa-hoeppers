@@ -6,7 +6,7 @@ interface HeaderProps {
   transparentOnTop?: boolean;
 }
 
-const LOGO_WORDMARK = "/images/logo/logo-wordmark-new.png";
+const LOGO_WORDMARK = "/images/logo/logo-wordmark.png";
 const LOGO_ICON = "/images/logo/logo-icon.png";
 
 const Header = ({ transparentOnTop = false }: HeaderProps) => {
@@ -34,11 +34,17 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
     { label: "LOGIN", href: "/painel" },
   ];
 
-  const headerBg = "bg-[#3B4F30] shadow-sm";
-  const textColor = "text-[#DBCCBF]";
-  const ctaBorder = "border-[#DBCCBF] text-[#DBCCBF] hover:bg-[#DBCCBF] hover:text-[#3B4F30]";
-  // Filter to convert black -> #DBCCBF
-  const logoFilter = "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)";
+  const isTransparent = transparentOnTop && !scrolled;
+  const headerBg = isTransparent
+    ? "bg-transparent"
+    : "bg-[#F5EBE2] shadow-sm";
+  const textColor = isTransparent
+    ? "text-white"
+    : "text-primary-dark";
+  const ctaBorder = isTransparent
+    ? "border-white text-white hover:bg-white hover:text-primary-dark"
+    : "border-primary text-primary hover:bg-primary hover:text-white";
+  const logoFilter = isTransparent ? "brightness(0) invert(1)" : "none";
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
