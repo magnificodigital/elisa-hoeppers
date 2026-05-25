@@ -31,24 +31,29 @@ function Index() {
     <Layout noTopPadding>
       {/* HERO */}
       <section className="relative w-full h-screen min-h-[600px] max-h-[800px] overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=1920&q=80"
-          alt="Elisa praticando yoga"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 w-full h-full">
+          <iframe
+            src="https://www.youtube.com/embed/h5ztu79aj4k?autoplay=1&mute=1&loop=1&playlist=h5ztu79aj4k&controls=0&showinfo=0&rel=0&modestbranding=1"
+            title="Elisa Hoeppers Video"
+            className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+        <div className="absolute inset-0 bg-black/30" />
         <div className="relative z-10 h-full flex items-center justify-center pt-16 md:pt-20">
           <div className="container mx-auto px-6 max-w-[1280px] text-center">
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-32 md:mt-48">
               <Link
                 to="/agende-sua-aula"
-                className="bg-primary text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary-dark transition"
+                className="bg-primary text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary-dark transition shadow-lg"
               >
                 Agende sua aula
               </Link>
               <Link
                 to="/loja"
-                className="bg-white/90 backdrop-blur text-primary px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-white transition"
+                className="bg-white/90 backdrop-blur text-primary px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-white transition shadow-lg"
               >
                 Ver produtos
               </Link>
