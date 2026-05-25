@@ -65,11 +65,11 @@ const HomeHero = () => {
               <img
                 src="/images/home/bodyoga/logo-bodyoga.png"
                 alt="BODYOGA®"
-                className="h-16 md:h-24 w-auto mb-8 brightness-0 invert"
+                className="h-20 md:h-32 w-auto mb-6 brightness-0 invert"
               />
-              <h2 className="text-white text-2xl md:text-4xl font-light tracking-[0.2em] mb-10 max-w-2xl">
-                MAIS FORÇA, MAIS RESISTÊNCIA, MAIS CONEXÃO.
-              </h2>
+              <p className="text-white/80 text-lg md:text-xl font-light tracking-[0.15em] mb-10 max-w-2xl italic">
+                Corpo forte, mente tranquila.
+              </p>
               <Link
                 to="/cursos"
                 className="bg-white text-primary-dark px-10 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary-dark hover:text-white transition"
