@@ -13,12 +13,8 @@ const HomeShop = () => {
               <div className="relative aspect-square overflow-hidden rounded-lg bg-sand">
                 <img
                   src={p.image}
-                  alt={p.name}
+                  alt={`Foto do produto ${p.name}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src =
-                      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80";
-                  }}
                 />
                 {!p.inStock && (
                   <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">

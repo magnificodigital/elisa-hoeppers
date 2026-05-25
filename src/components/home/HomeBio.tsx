@@ -5,12 +5,8 @@ const HomeBio = () => {
     <section className="py-20 md:py-28 bg-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <img
-          src="/images/home/elisa-bio.jpg"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src =
-              "https://images.unsplash.com/photo-1599447332411-fd6ca54a1d23?w=900&q=80";
-          }}
-          alt="Elisa Hoeppers"
+          src="/images/home/bio/elisa-perfil.png"
+          alt="Retrato de Elisa Hoeppers"
           className="rounded-lg w-full aspect-square object-cover order-2 md:order-1"
         />
         <div className="order-1 md:order-2">

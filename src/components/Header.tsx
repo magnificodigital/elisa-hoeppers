@@ -6,8 +6,8 @@ interface HeaderProps {
   transparentOnTop?: boolean;
 }
 
-const LOGO_URL =
-  "https://ynvrijkuampxpsmshftm.supabase.co/storage/v1/object/public/prompt-images/uploads/1779727219616-326e2eb0-8de1-4b94-8da7-f13e446eac94.png";
+const LOGO_WORDMARK = "/images/logo/logo-wordmark.png";
+const LOGO_ICON = "/images/logo/logo-icon.png";
 
 const Header = ({ transparentOnTop = false }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -53,9 +53,14 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
 
         <Link to="/" className="flex-shrink-0">
           <img
-            src={LOGO_URL}
+            src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
-            className={`h-9 md:h-11 w-auto transition-[filter] duration-300 ${logoFilter}`}
+            className={`hidden md:block h-9 md:h-11 w-auto transition-[filter] duration-300 ${logoFilter}`}
+          />
+          <img
+            src={LOGO_ICON}
+            alt="Elisa Hoeppers"
+            className={`md:hidden h-9 w-auto transition-[filter] duration-300 ${logoFilter}`}
           />
         </Link>
 
