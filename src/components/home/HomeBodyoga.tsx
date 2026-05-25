@@ -5,12 +5,8 @@ const HomeBodyoga = () => {
     <section className="py-20 md:py-28 bg-white">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-[1fr_2fr_1fr] gap-6 md:gap-10 items-center">
         <img
-          src="/images/home/bodyoga-1.jpg"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src =
-              "https://images.unsplash.com/photo-1518310383802-640c2de311b6?w=600&q=80";
-          }}
-          alt="Bodyoga prática"
+          src="/images/home/bodyoga/bodyoga-1.png"
+          alt="Mulher praticando Bodyoga com pesinho"
           className="rounded-lg object-cover aspect-square w-full"
         />
         <div className="text-center px-2 md:px-6">
@@ -30,12 +26,8 @@ const HomeBodyoga = () => {
           </Link>
         </div>
         <img
-          src="/images/home/bodyoga-2.jpg"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src =
-              "https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=600&q=80";
-          }}
-          alt="Pesinhos Bodyoga"
+          src="/images/home/bodyoga/bodyoga-2.png"
+          alt="Detalhe dos pesinhos Bodyoga"
           className="rounded-lg object-cover aspect-square w-full"
         />
       </div>

@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Youtube, MessageCircle } from "lucide-react";
 
-const LOGO_URL =
-  "https://ynvrijkuampxpsmshftm.supabase.co/storage/v1/object/public/prompt-images/uploads/1779727219616-326e2eb0-8de1-4b94-8da7-f13e446eac94.png";
+const LOGO_URL = "/images/logo/logo-wordmark.png";
 
 const Footer = () => {
   return (

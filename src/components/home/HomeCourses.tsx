@@ -15,12 +15,8 @@ const HomeCourses = () => {
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
                 <img
                   src={c.image}
-                  alt={c.title}
+                  alt={`Aula de ${c.label}`}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src =
-                      "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=800&q=80";
-                  }}
                 />
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                   <span className="font-display text-white text-3xl md:text-4xl tracking-wide">

@@ -42,12 +42,8 @@ const HomeOils = () => {
           </Link>
         </div>
         <img
-          src="/images/home/elisa-oleos.jpg"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src =
-              "https://images.unsplash.com/photo-1611073615452-4889ade07ef0?w=900&q=80";
-          }}
-          alt="Elisa com spray de óleos essenciais"
+          src="/images/home/oleos/oleos-elisa.jpeg"
+          alt="Elisa Hoeppers segurando o spray de óleos essenciais"
           className="rounded-lg w-full aspect-[3/4] object-cover"
         />
       </div>

@@ -1,15 +1,8 @@
 const igImages = [
-  "/images/home/ig-1.jpg",
-  "/images/home/ig-2.jpg",
-  "/images/home/ig-3.jpg",
-  "/images/home/ig-4.jpg",
-];
-
-const fallback = [
-  "https://images.unsplash.com/photo-1545389336-cf090694435e?w=600&q=80",
-  "https://images.unsplash.com/photo-1593810450967-f9c42742e326?w=600&q=80",
-  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80",
-  "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=600&q=80",
+  "/images/instagram/ig-01.jpg",
+  "/images/instagram/ig-02.jpg",
+  "/images/instagram/ig-03.jpg",
+  "/images/instagram/ig-04.jpg",
 ];
 
 const HomeInstagram = () => {
@@ -29,9 +22,11 @@ const HomeInstagram = () => {
           no Instagram
         </h3>
         <div className="flex items-center justify-center gap-4 mb-10">
-          <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
-            EH
-          </div>
+          <img
+            src="/images/home/instagram/round-2.png"
+            alt="Foto de perfil de Elisa Hoeppers"
+            className="w-14 h-14 rounded-full object-cover flex-shrink-0"
+          />
           <div className="max-w-md">
             <p className="text-primary-dark font-semibold text-sm">elisahoepperscasas</p>
             <p className="text-[var(--text-muted)] text-xs leading-relaxed">
@@ -51,10 +46,7 @@ const HomeInstagram = () => {
             >
               <img
                 src={src}
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = fallback[i];
-                }}
-                alt={`Instagram ${i + 1}`}
+                alt={`Publicação ${i + 1} do Instagram de Elisa Hoeppers`}
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
               />
             </a>

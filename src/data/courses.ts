@@ -8,24 +8,24 @@ export type Course = {
 
 export const courses: Course[] = [
   {
-    slug: "bodyoga",
+    slug: "bodyoga-ao-vivo",
     title: "Bodyoga – AO VIVO",
-    label: "BODYOGA",
+    label: "Bodyoga – AO VIVO",
     overlay: "BODYOGA",
-    image: "/images/home/course-bodyoga.jpg",
+    image: "/images/courses/bodyoga-ao-vivo.png",
   },
   {
     slug: "meditacao",
     title: "Meditação",
     label: "Meditação",
     overlay: "MEDITAÇÃO",
-    image: "/images/home/course-meditacao.jpg",
+    image: "/images/courses/meditacao.png",
   },
   {
     slug: "yoga",
     title: "YOGA",
     label: "YOGA",
     overlay: "YOGA",
-    image: "/images/home/course-yoga.jpg",
+    image: "/images/courses/yoga.png",
   },
 ];
