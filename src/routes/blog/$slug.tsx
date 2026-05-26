@@ -53,7 +53,7 @@ function BlogPost() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="max-w-[1170px] mx-auto px-4 md:px-6 text-center text-white">
             <Link
-              to="/blog/"
+              to="/blog"
               className="inline-block text-white/80 hover:text-white text-sm mb-4 transition-colors"
             >
               ← Dicas e Novidades
