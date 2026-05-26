@@ -31,6 +31,7 @@ function LessonPlayerPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [marked, setMarked] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login", search: { next: `/painel/aula/${lesson.id}` } });
