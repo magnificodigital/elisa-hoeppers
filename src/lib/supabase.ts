@@ -3,8 +3,15 @@ import { createClient } from "@supabase/supabase-js";
 const url = "https://rwxaeckgpypvjiglorto.supabase.co";
 const anon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3eGFlY2tncHlwdmppZ2xvcnRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDA3ODIsImV4cCI6MjA5NTMxNjc4Mn0.cInQFQ_PuQhKuSWjkqnz5H5oJf4ghDh11yBL1jfDAfk";
 
+const isBrowser = typeof window !== "undefined";
+
 export const supabase = createClient(url, anon, {
-  auth: { persistSession: true, autoRefreshToken: true },
+  auth: {
+    persistSession: isBrowser,
+    autoRefreshToken: isBrowser,
+    detectSessionInUrl: isBrowser,
+    storage: isBrowser ? window.localStorage : undefined,
+  },
 });
 
 export type Course = {
