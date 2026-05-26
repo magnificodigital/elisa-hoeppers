@@ -108,3 +108,22 @@
     font-family: var(--font-sans);
   }
 }
+
+@media print {
+  body {
+    background: white !important;
+  }
+  header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+  .certificate-paper {
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+}
