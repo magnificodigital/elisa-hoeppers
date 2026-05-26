@@ -1,64 +1,80 @@
-import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
-import { getLessonById, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
+import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
-import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
-  loader: async ({ params }) => {
-    const lesson = await getLessonById(params.lessonId);
-    if (!lesson) throw notFound();
-    const { data: course } = await supabase
-      .from("courses")
-      .select("id, slug, title")
-      .eq("id", lesson.course_id)
-      .maybeSingle();
-    if (!course) throw notFound();
-    return { lesson, course };
-  },
-  head: ({ loaderData }) => ({
-    meta: [{ title: `${loaderData?.lesson.title} — ${loaderData?.course.title}` }],
-  }),
+  head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
   component: LessonPlayerPage,
 });
 
 function LessonPlayerPage() {
-  const { lesson, course } = Route.useLoaderData();
+  const { lessonId } = Route.useParams();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [marked, setMarked] = useState(false);
   const [playing, setPlaying] = useState(false);
 
+  const { data: lessonData, isLoading: loadingLesson, error: lessonError } = useQuery({
+    queryKey: ["lesson-with-course", lessonId],
+    queryFn: () => getLessonWithCourse(lessonId),
+  });
+
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/login", search: { next: `/painel/aula/${lesson.id}` } });
-  }, [loading, user, lesson.id, navigate]);
+    if (!loading && !user) navigate({ to: "/login", search: { next: `/painel/aula/${lessonId}` } });
+  }, [loading, user, lessonId, navigate]);
+
+  const lesson = lessonData;
+  const course = lessonData?.course;
 
   const { data: enrolled, isLoading: checking } = useQuery({
-    queryKey: ["is-enrolled", user?.id, lesson.course_id],
-    queryFn: () => isEnrolledInCourse(lesson.course_id),
-    enabled: !!user,
+    queryKey: ["is-enrolled", user?.id, lesson?.course_id],
+    queryFn: () => isEnrolledInCourse(lesson!.course_id),
+    enabled: !!user && !!lesson,
   });
 
   const { data: allLessons } = useQuery({
-    queryKey: ["lessons-with-progress", lesson.course_id, user?.id],
-    queryFn: () => listLessonsWithProgress(lesson.course_id),
-    enabled: !!user && !!enrolled,
+    queryKey: ["lessons-with-progress", lesson?.course_id, user?.id],
+    queryFn: () => listLessonsWithProgress(lesson!.course_id),
+    enabled: !!user && !!enrolled && !!lesson,
   });
 
   const completeMutation = useMutation({
-    mutationFn: () => markLessonComplete(lesson.id),
+    mutationFn: () => markLessonComplete(lesson!.id),
     onSuccess: () => {
       setMarked(true);
-      qc.invalidateQueries({ queryKey: ["lessons-with-progress", lesson.course_id, user?.id] });
+      qc.invalidateQueries({ queryKey: ["lessons-with-progress", lesson?.course_id, user?.id] });
       qc.invalidateQueries({ queryKey: ["my-course-progress", user?.id] });
     },
   });
 
-  if (loading || !user || checking) {
+  if (loadingLesson || loading || (!user && !loading)) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-primary-dark">Carregando…</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (lessonError || !lesson || !course) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-primary-dark">Aula não encontrada.</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!user) return null;
+
+  if (checking) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
