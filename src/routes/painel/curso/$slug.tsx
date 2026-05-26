@@ -42,6 +42,18 @@ function PainelCourseArea() {
     enabled: !!user,
   });
 
+  const lessonsCompletedCount = lessons?.filter((l) => l.completed).length ?? 0;
+  const lessonsTotalCount = lessons?.length ?? 0;
+
+  const { data: certificate } = useQuery({
+    queryKey: ["my-certificate", user?.id, course.id],
+    queryFn: () => getMyCertificateForCourse(course.id),
+    enabled:
+      !!user &&
+      lessonsTotalCount > 0 &&
+      lessonsCompletedCount === lessonsTotalCount,
+  });
+
   if (loading || !user || checkingEnrollment) {
     return (
       <Layout>
@@ -69,16 +81,12 @@ function PainelCourseArea() {
     );
   }
 
-  const completedCount = lessons?.filter((l) => l.completed).length ?? 0;
-  const totalCount = lessons?.length ?? 0;
+  const completedCount = lessonsCompletedCount;
+  const totalCount = lessonsTotalCount;
   const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const nextLesson = lessons?.find((l) => !l.completed);
 
-  const { data: certificate } = useQuery({
-    queryKey: ["my-certificate", user?.id, course.id],
-    queryFn: () => getMyCertificateForCourse(course.id),
-    enabled: !!user && completedCount === totalCount && totalCount > 0,
-  });
+
 
 
 
