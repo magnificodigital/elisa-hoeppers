@@ -326,6 +326,8 @@ function CourseDetail() {
               )}
             </div>
           </div>
+
+          <CourseReviews courseId={course.id} isEnrolled={isEnrolled} />
         </div>
       </section>
     </Layout>
