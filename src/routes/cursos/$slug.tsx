@@ -1,7 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { getCourseBySlug, listLessonsByCourse } from "@/lib/courses";
+import { useAuth } from "@/hooks/useAuth";
+import { enrollInCourse, isEnrolledInCourse } from "@/lib/enrollments";
 
 export const Route = createFileRoute("/cursos/$slug")({
   loader: async ({ params }) => {
@@ -79,15 +81,63 @@ function CourseDetail() {
           </ol>
 
           <div className="mt-12 text-center">
-            <Link
-              to="/cadastro-de-alunos"
-              className="inline-block bg-primary text-white px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
-            >
-              MATRICULAR-SE
-            </Link>
+            <EnrollButton courseId={course.id} courseSlug={course.slug} />
           </div>
         </div>
       </section>
     </Layout>
+  );
+}
+
+function EnrollButton({ courseId, courseSlug }: { courseId: string; courseSlug: string }) {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  const { data: enrolled } = useQuery({
+    queryKey: ["is-enrolled", user?.id, courseId],
+    queryFn: () => isEnrolledInCourse(courseId),
+    enabled: !!user,
+  });
+  const mutation = useMutation({
+    mutationFn: () => enrollInCourse(courseId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["my-enrollments"] });
+      qc.invalidateQueries({ queryKey: ["is-enrolled", user?.id, courseId] });
+      navigate({ to: "/painel" });
+    },
+  });
+
+  if (loading) return null;
+
+  if (!user) {
+    return (
+      <button
+        onClick={() => navigate({ to: "/login", search: { next: `/cursos/${courseSlug}` } })}
+        className="inline-block bg-primary text-white px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+      >
+        MATRICULAR-SE
+      </button>
+    );
+  }
+
+  if (enrolled) {
+    return (
+      <button
+        onClick={() => navigate({ to: "/painel" })}
+        className="inline-block bg-primary-dark text-white px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:opacity-90 transition"
+      >
+        VOCÊ ESTÁ MATRICULADA — IR PARA O PAINEL
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => mutation.mutate()}
+      disabled={mutation.isPending}
+      className="inline-block bg-primary text-white px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+    >
+      {mutation.isPending ? "MATRICULANDO…" : "MATRICULAR-SE"}
+    </button>
   );
 }
