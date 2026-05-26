@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { listPublishedCourses } from "@/lib/courses";
+import { getRatingSummariesByIds } from "@/lib/reviews";
+import { StarRating } from "@/components/StarRating";
 
 export const Route = createFileRoute("/cursos/")({
   head: () => ({

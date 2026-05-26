@@ -3,12 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
   LayoutDashboard, User, GraduationCap, Bookmark, ClipboardList,
-  ShoppingBag, MessageCircleQuestion, Settings, LogOut, Star,
+  ShoppingBag, MessageCircleQuestion, Settings, LogOut,
   BookOpen, Activity, Award,
 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
+import { getRatingSummariesByIds } from "@/lib/reviews";
 
 export const Route = createFileRoute("/painel/")({
   head: () => ({ meta: [{ title: "Meu Painel — Elisa Hoeppers" }] }),
@@ -47,6 +49,13 @@ function PainelPage() {
     queryKey: ["my-course-progress", user?.id],
     queryFn: listMyCourseProgress,
     enabled: !!user,
+  });
+
+  const courseIds = (progress ?? []).map((c) => c.course_id);
+  const { data: ratings } = useQuery({
+    queryKey: ["ratings-by-ids", courseIds.sort().join(",")],
+    queryFn: () => getRatingSummariesByIds(courseIds),
+    enabled: courseIds.length > 0,
   });
 
   if (loading || !user) {
@@ -205,12 +214,19 @@ function PainelPage() {
                       )}
                       <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
                         <div>
-                          <div className="flex items-center gap-1 mb-2">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <Star key={i} size={14} className="text-yellow-400 fill-yellow-400" />
-                            ))}
-                            <span className="text-xs text-primary-dark/50 ml-1">0.00</span>
-                          </div>
+                          {(() => {
+                            const r = ratings?.[c.course_id];
+                            const avg = r?.avg_rating ?? 0;
+                            const cnt = r?.review_count ?? 0;
+                            return (
+                              <div className="flex items-center gap-1 mb-2">
+                                <StarRating value={avg} size={14} />
+                                <span className="text-xs text-primary-dark/50 ml-1">
+                                  {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
+                                </span>
+                              </div>
+                            );
+                          })()}
 
                           <h4 className="font-display text-lg text-primary-dark mb-1">
                             {c.course_title}
