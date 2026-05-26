@@ -23,8 +23,11 @@ import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
+import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
+import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
@@ -96,6 +99,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCursosIndexRoute = AdminCursosIndexRouteImport.update({
+  id: '/admin/cursos/',
+  path: '/admin/cursos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PainelCursoSlugRoute = PainelCursoSlugRouteImport.update({
   id: '/painel/curso/$slug',
   path: '/painel/curso/$slug',
@@ -104,6 +112,16 @@ const PainelCursoSlugRoute = PainelCursoSlugRouteImport.update({
 const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
   id: '/painel/aula/$lessonId',
   path: '/painel/aula/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCursosIdEditarRoute = AdminCursosIdEditarRouteImport.update({
+  id: '/admin/cursos/$id/editar',
+  path: '/admin/cursos/$id/editar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCursosIdAulasRoute = AdminCursosIdAulasRouteImport.update({
+  id: '/admin/cursos/$id/aulas',
+  path: '/admin/cursos/$id/aulas',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -124,6 +142,9 @@ export interface FileRoutesByFullPath {
   '/painel/': typeof PainelIndexRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
+  '/admin/cursos/': typeof AdminCursosIndexRoute
+  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRoute
+  '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -142,6 +163,9 @@ export interface FileRoutesByTo {
   '/painel': typeof PainelIndexRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
+  '/admin/cursos': typeof AdminCursosIndexRoute
+  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRoute
+  '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,6 +185,9 @@ export interface FileRoutesById {
   '/painel/': typeof PainelIndexRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
+  '/admin/cursos/': typeof AdminCursosIndexRoute
+  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRoute
+  '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,6 +208,9 @@ export interface FileRouteTypes {
     | '/painel/'
     | '/painel/aula/$lessonId'
     | '/painel/curso/$slug'
+    | '/admin/cursos/'
+    | '/admin/cursos/$id/aulas'
+    | '/admin/cursos/$id/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,6 +229,9 @@ export interface FileRouteTypes {
     | '/painel'
     | '/painel/aula/$lessonId'
     | '/painel/curso/$slug'
+    | '/admin/cursos'
+    | '/admin/cursos/$id/aulas'
+    | '/admin/cursos/$id/editar'
   id:
     | '__root__'
     | '/'
@@ -217,6 +250,9 @@ export interface FileRouteTypes {
     | '/painel/'
     | '/painel/aula/$lessonId'
     | '/painel/curso/$slug'
+    | '/admin/cursos/'
+    | '/admin/cursos/$id/aulas'
+    | '/admin/cursos/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -236,6 +272,9 @@ export interface RootRouteChildren {
   PainelIndexRoute: typeof PainelIndexRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   PainelCursoSlugRoute: typeof PainelCursoSlugRoute
+  AdminCursosIndexRoute: typeof AdminCursosIndexRoute
+  AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRoute
+  AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -338,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/cursos/': {
+      id: '/admin/cursos/'
+      path: '/admin/cursos'
+      fullPath: '/admin/cursos/'
+      preLoaderRoute: typeof AdminCursosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/painel/curso/$slug': {
       id: '/painel/curso/$slug'
       path: '/painel/curso/$slug'
@@ -350,6 +396,20 @@ declare module '@tanstack/react-router' {
       path: '/painel/aula/$lessonId'
       fullPath: '/painel/aula/$lessonId'
       preLoaderRoute: typeof PainelAulaLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/cursos/$id/editar': {
+      id: '/admin/cursos/$id/editar'
+      path: '/admin/cursos/$id/editar'
+      fullPath: '/admin/cursos/$id/editar'
+      preLoaderRoute: typeof AdminCursosIdEditarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/cursos/$id/aulas': {
+      id: '/admin/cursos/$id/aulas'
+      path: '/admin/cursos/$id/aulas'
+      fullPath: '/admin/cursos/$id/aulas'
+      preLoaderRoute: typeof AdminCursosIdAulasRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -372,6 +432,9 @@ const rootRouteChildren: RootRouteChildren = {
   PainelIndexRoute: PainelIndexRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   PainelCursoSlugRoute: PainelCursoSlugRoute,
+  AdminCursosIndexRoute: AdminCursosIndexRoute,
+  AdminCursosIdAulasRoute: AdminCursosIdAulasRoute,
+  AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
