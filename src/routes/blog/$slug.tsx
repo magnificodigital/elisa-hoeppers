@@ -75,7 +75,7 @@ function BlogPost() {
             {post.excerpt}
           </p>
           <div>
-            {post.body.map((b, i) => renderBlock(b, i))}
+            {post.body.map((b: PostBlock, i: number) => renderBlock(b, i))}
           </div>
         </div>
       </section>
