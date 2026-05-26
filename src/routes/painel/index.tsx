@@ -20,7 +20,7 @@ const navItems = [
   { id: "perfil", icon: User, label: "Meu perfil", enabled: false },
   { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
   { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: false },
-  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: false },
+  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
   { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: false },
   { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: false },
   { id: "config", icon: Settings, label: "Configurações", enabled: false },
