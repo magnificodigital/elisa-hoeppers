@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as PerfumistaRouteImport } from './routes/perfumista'
 import { Route as PainelRouteImport } from './routes/painel'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as CursosRouteImport } from './routes/cursos'
 import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-alunos'
 import { Route as BioRouteImport } from './routes/bio'
@@ -36,6 +37,11 @@ const PerfumistaRoute = PerfumistaRouteImport.update({
 const PainelRoute = PainelRouteImport.update({
   id: '/painel',
   path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CursosRoute = CursosRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/cursos': typeof CursosRouteWithChildren
+  '/login': typeof LoginRoute
   '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/cursos': typeof CursosRouteWithChildren
+  '/login': typeof LoginRoute
   '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/cursos': typeof CursosRouteWithChildren
+  '/login': typeof LoginRoute
   '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
     | '/bio'
     | '/cadastro-de-alunos'
     | '/cursos'
+    | '/login'
     | '/painel'
     | '/perfumista'
     | '/sobre'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/bio'
     | '/cadastro-de-alunos'
     | '/cursos'
+    | '/login'
     | '/painel'
     | '/perfumista'
     | '/sobre'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/bio'
     | '/cadastro-de-alunos'
     | '/cursos'
+    | '/login'
     | '/painel'
     | '/perfumista'
     | '/sobre'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   BioRoute: typeof BioRoute
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
   CursosRoute: typeof CursosRouteWithChildren
+  LoginRoute: typeof LoginRoute
   PainelRoute: typeof PainelRoute
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/painel'
       fullPath: '/painel'
       preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cursos': {
@@ -311,6 +331,7 @@ const rootRouteChildren: RootRouteChildren = {
   BioRoute: BioRoute,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
   CursosRoute: CursosRouteWithChildren,
+  LoginRoute: LoginRoute,
   PainelRoute: PainelRoute,
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
