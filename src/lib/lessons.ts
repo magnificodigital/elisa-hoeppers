@@ -15,6 +15,20 @@ export async function getLessonById(lessonId: string): Promise<LessonFull | null
   return data as LessonFull | null;
 }
 
+export type LessonWithCourse = LessonFull & {
+  course: { id: string; slug: string; title: string };
+};
+
+export async function getLessonWithCourse(lessonId: string): Promise<LessonWithCourse | null> {
+  const { data, error } = await supabase
+    .from("lessons")
+    .select("id, course_id, module_id, slug, title, description, duration_min, display_order, is_free_preview, youtube_id, content_md, course:courses(id, slug, title)")
+    .eq("id", lessonId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as LessonWithCourse | null;
+}
+
 export async function markLessonComplete(lessonId: string, watchedSeconds = 0): Promise<void> {
   const { error } = await supabase.rpc("mark_lesson_complete", {
     p_lesson_id: lessonId,
