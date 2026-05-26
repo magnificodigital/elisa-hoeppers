@@ -42,7 +42,7 @@ function LessonPlayerPage() {
   const { data: allLessons } = useQuery({
     queryKey: ["lessons-with-progress", lesson?.course_id, user?.id],
     queryFn: () => listLessonsWithProgress(lesson!.course_id),
-    enabled: !!user && !!enrolled && !!lesson,
+    enabled: !!lesson,
   });
 
   const completeMutation = useMutation({
@@ -75,16 +75,6 @@ function LessonPlayerPage() {
   }
 
   if (!user) return null;
-
-  if (checking) {
-    return (
-      <div className="min-h-screen flex flex-col bg-cream">
-        <div className="flex-grow flex items-center justify-center">
-          <p className="text-primary-dark">Carregando…</p>
-        </div>
-      </div>
-    );
-  }
 
   if (!enrolled && !lesson.is_free_preview) {
     return (
