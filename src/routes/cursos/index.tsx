@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { listPublishedCourses } from "@/lib/courses";
 
-export const Route = createFileRoute("/cursos")({
+export const Route = createFileRoute("/cursos/")({
   head: () => ({
     meta: [
       { title: "Aulas — Elisa Hoeppers" },
