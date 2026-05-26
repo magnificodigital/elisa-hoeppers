@@ -1,6 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import {
+  LayoutDashboard, User, GraduationCap, Bookmark, ClipboardList,
+  ShoppingBag, MessageCircleQuestion, Settings, LogOut, Star,
+  BookOpen, Activity, Award,
+} from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
@@ -9,6 +14,26 @@ export const Route = createFileRoute("/painel/")({
   head: () => ({ meta: [{ title: "Meu Painel — Elisa Hoeppers" }] }),
   component: PainelPage,
 });
+
+const navItems = [
+  { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
+  { id: "perfil", icon: User, label: "Meu perfil", enabled: false },
+  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
+  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: false },
+  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: false },
+  { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: false },
+  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: false },
+  { id: "config", icon: Settings, label: "Configurações", enabled: false },
+];
+
+function getInitials(name?: string | null, fallbackEmail?: string | null): string {
+  const source = name?.trim() || fallbackEmail?.trim() || "";
+  if (!source) return "?";
+  const parts = source.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return source.slice(0, 2).toUpperCase();
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 function PainelPage() {
   const { user, profile, loading, signOut } = useAuth();
@@ -35,81 +60,197 @@ function PainelPage() {
   }
 
   const greeting = profile?.full_name ?? user.email ?? "Aluna";
+  const initials = getInitials(profile?.full_name, user.email);
+
+  const enrolled = progress ?? [];
+  const totalEnrolled = enrolled.length;
+  const totalCompleted = enrolled.filter((c) => c.total_lessons > 0 && c.completed_lessons === c.total_lessons).length;
+  const totalActive = totalEnrolled - totalCompleted;
 
   return (
     <Layout>
-      <section className="py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between items-start mb-10">
-            <div>
-              <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Olá, {greeting}</h1>
-              <p className="text-primary-dark/70 mt-1">Bem-vinda ao seu painel.</p>
-            </div>
-            <button
-              onClick={() => signOut().then(() => navigate({ to: "/" }))}
-              className="text-xs uppercase tracking-widest text-primary-dark hover:opacity-70"
-            >
-              Sair
-            </button>
-          </div>
-
-          <h2 className="font-display text-2xl text-primary-dark mb-6">Meus cursos</h2>
-          {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
-
-          {!isLoading && (!progress || progress.length === 0) && (
-            <div className="bg-white rounded-lg p-8 text-center">
-              <p className="text-primary-dark mb-4">Você ainda não está matriculada em nenhum curso.</p>
-              <Link
-                to="/cursos"
-                className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
-              >
-                Explorar aulas
-              </Link>
-            </div>
-          )}
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(progress ?? []).map((c) => {
-              const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
-              return (
-                <Link
-                  key={c.course_id}
-                  to="/painel/curso/$slug"
-                  params={{ slug: c.course_slug }}
-                  className="block group bg-white rounded-lg overflow-hidden hover:shadow-lg transition"
-                >
-                  {c.cover_image && (
-                    <div className="relative aspect-[4/3] overflow-hidden bg-primary-dark">
-                      <img
-                        src={c.cover_image}
-                        alt={c.course_title}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <div className="mb-3">
-                      <h3 className="font-display text-lg text-primary-dark">{c.course_title}</h3>
-                      <p className="text-xs text-primary-dark/60 mt-1">
-                        {c.completed_lessons} de {c.total_lessons} aulas concluídas
-                      </p>
-                    </div>
-                    <div>
-                      <div className="h-1.5 bg-cream rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary transition-all"
-                          style={{ width: `${pct}%` }}
-                        />
+      <section className="py-10 md:py-16 bg-cream min-h-[70vh]">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Sidebar */}
+            <aside className="hidden md:block w-64 shrink-0">
+              <div className="bg-white rounded-xl p-4 shadow-sm sticky top-24">
+                <nav className="space-y-1">
+                  {navItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = item.active;
+                    const baseCls = "flex items-center gap-3 px-4 py-3 rounded-md text-sm transition-colors";
+                    const stateCls = isActive
+                      ? "bg-primary text-cream font-medium"
+                      : item.enabled
+                      ? "text-primary-dark hover:bg-cream/60"
+                      : "text-primary-dark/40 cursor-not-allowed";
+                    return (
+                      <div key={item.id} className={`${baseCls} ${stateCls}`}>
+                        <Icon size={18} />
+                        {item.enabled && !isActive ? (
+                          <Link to={`/painel/${item.id}`} className="flex-1">
+                            {item.label}
+                          </Link>
+                        ) : isActive ? (
+                          <span className="flex items-center gap-2 flex-1">
+                            {item.label}
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2 flex-1">
+                            {item.label}
+                            <span className="ml-auto text-[10px] uppercase tracking-wider bg-cream text-primary-dark/50 px-2 py-0.5 rounded-full">
+                              Em breve
+                            </span>
+                          </span>
+                        )}
                       </div>
-                      <p className="text-[11px] text-primary-dark/60 mt-2">{pct}% concluído</p>
-                    </div>
+                    );
+                  })}
+                  <div className="pt-2 mt-2 border-t border-cream">
+                    <button
+                      onClick={() => signOut().then(() => navigate({ to: "/" }))}
+                      className="flex items-center gap-3 px-4 py-3 rounded-md text-sm w-full text-left text-primary-dark hover:bg-cream/60 transition-colors"
+                    >
+                      <LogOut size={18} />
+                      Sair
+                    </button>
                   </div>
-                </Link>
-              );
-            })}
+                </nav>
+              </div>
+            </aside>
+
+            {/* Main content */}
+            <div className="flex-1 min-w-0">
+              {/* Header: avatar + saudação + sair */}
+              <div className="flex items-start justify-between mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-full overflow-hidden bg-primary flex items-center justify-center shrink-0">
+                    {profile?.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt={greeting}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-cream font-display text-lg font-semibold">
+                        {initials}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm text-primary-dark/60">Bem-vinda de volta</p>
+                    <h1 className="font-display text-2xl md:text-3xl text-primary-dark">
+                      Olá, {greeting}
+                    </h1>
+                  </div>
+                </div>
+                <button
+                  onClick={() => signOut().then(() => navigate({ to: "/" }))}
+                  className="text-xs uppercase tracking-widest text-primary-dark hover:opacity-70 self-start mt-2 hidden md:block"
+                >
+                  Sair
+                </button>
+              </div>
+
+              <h2 className="font-display text-xl text-primary-dark mb-4">Painel</h2>
+
+              {/* Stat cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                <StatCard icon={<BookOpen size={20} className="text-primary" />} value={totalEnrolled} label="Cursos matriculados" />
+                <StatCard icon={<Activity size={20} className="text-primary" />} value={totalActive} label="Cursos ativos" />
+                <StatCard icon={<Award size={20} className="text-primary" />} value={totalCompleted} label="Cursos completos" />
+              </div>
+
+              <h3 className="font-display text-lg text-primary-dark mb-4">Cursos em progresso</h3>
+
+              {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
+
+              {!isLoading && enrolled.length === 0 && (
+                <div className="bg-white rounded-lg p-8 text-center">
+                  <p className="text-primary-dark mb-4">Você ainda não está matriculada em nenhum curso.</p>
+                  <Link
+                    to="/cursos"
+                    className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+                  >
+                    Explorar aulas
+                  </Link>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                {enrolled.map((c) => {
+                  const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
+                  return (
+                    <Link
+                      key={c.course_id}
+                      to="/painel/curso/$slug"
+                      params={{ slug: c.course_slug }}
+                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
+                    >
+                      {c.cover_image && (
+                        <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
+                          <img
+                            src={c.cover_image}
+                            alt={c.course_title}
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center gap-1 mb-2">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star key={i} size={14} className="text-yellow-400 fill-yellow-400" />
+                            ))}
+                            <span className="text-xs text-primary-dark/50 ml-1">0.00</span>
+                          </div>
+
+                          <h4 className="font-display text-lg text-primary-dark mb-1">
+                            {c.course_title}
+                          </h4>
+
+                          <p className="text-sm text-primary-dark/60 mb-4">
+                            Aulas completas: {c.completed_lessons} de {c.total_lessons} aulas
+                          </p>
+                        </div>
+
+                        <div className="mt-auto">
+                          <div className="h-2 bg-cream rounded-full overflow-hidden mb-2">
+                            <div
+                              className="h-full bg-primary transition-all"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-primary-dark/50">
+                              {pct}% Completo
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </Layout>
+  );
+}
+
+function StatCard({ icon, value, label }: { icon: React.ReactNode; value: number; label: string }) {
+  return (
+    <div className="bg-white rounded-lg p-5 shadow-sm flex items-center gap-4">
+      <div className="w-11 h-11 rounded-full bg-cream flex items-center justify-center shrink-0">
+        {icon}
+      </div>
+      <div>
+        <div className="font-display text-2xl text-primary-dark">{value}</div>
+        <div className="text-xs text-primary-dark/60">{label}</div>
+      </div>
+    </div>
   );
 }
