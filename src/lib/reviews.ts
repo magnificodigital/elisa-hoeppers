@@ -1,0 +1,111 @@
+import { supabase } from "./supabase";
+
+export type CourseReview = {
+  id: string;
+  course_id: string;
+  user_id: string;
+  rating: number;
+  comment: string | null;
+  is_published: boolean;
+  created_at: string;
+};
+
+export type CourseReviewWithProfile = CourseReview & {
+  profile: { full_name: string | null; avatar_url: string | null } | null;
+};
+
+export type CourseRatingSummary = {
+  course_id: string;
+  course_slug: string;
+  avg_rating: number;
+  review_count: number;
+};
+
+export async function getRatingSummary(courseId: string): Promise<CourseRatingSummary | null> {
+  const { data, error } = await supabase
+    .from("course_rating_summary")
+    .select("*")
+    .eq("course_id", courseId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as CourseRatingSummary | null;
+}
+
+export async function getRatingSummariesByIds(
+  courseIds: string[],
+): Promise<Record<string, CourseRatingSummary>> {
+  if (courseIds.length === 0) return {};
+  const { data, error } = await supabase
+    .from("course_rating_summary")
+    .select("*")
+    .in("course_id", courseIds);
+  if (error) throw error;
+  const map: Record<string, CourseRatingSummary> = {};
+  (data ?? []).forEach((r) => {
+    const row = r as CourseRatingSummary;
+    map[row.course_id] = { ...row, avg_rating: Number(row.avg_rating) };
+  });
+  return map;
+}
+
+export async function listReviewsByCourse(
+  courseId: string,
+  limit = 20,
+): Promise<CourseReviewWithProfile[]> {
+  const { data, error } = await supabase
+    .from("course_reviews")
+    .select(
+      `id, course_id, user_id, rating, comment, is_published, created_at,
+       profile:profiles ( full_name, avatar_url )`,
+    )
+    .eq("course_id", courseId)
+    .eq("is_published", true)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []) as unknown as CourseReviewWithProfile[];
+}
+
+export async function getMyReview(courseId: string): Promise<CourseReview | null> {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) return null;
+  const { data, error } = await supabase
+    .from("course_reviews")
+    .select("id, course_id, user_id, rating, comment, is_published, created_at")
+    .eq("user_id", auth.user.id)
+    .eq("course_id", courseId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as CourseReview | null;
+}
+
+export async function upsertMyReview(input: {
+  course_id: string;
+  rating: number;
+  comment: string | null;
+}): Promise<void> {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error("Você precisa estar logado.");
+  const existing = await getMyReview(input.course_id);
+  if (existing) {
+    const { error } = await supabase
+      .from("course_reviews")
+      .update({ rating: input.rating, comment: input.comment })
+      .eq("id", existing.id);
+    if (error) throw error;
+  } else {
+    const { error } = await supabase.from("course_reviews").insert({
+      user_id: auth.user.id,
+      course_id: input.course_id,
+      rating: input.rating,
+      comment: input.comment,
+      is_published: true,
+    });
+    if (error) throw error;
+  }
+}
+
+export async function deleteMyReview(reviewId: string): Promise<void> {
+  const { error } = await supabase.from("course_reviews").delete().eq("id", reviewId);
+  if (error) throw error;
+}
