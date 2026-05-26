@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { listPublishedCourses } from "@/lib/courses";
+import { getRatingSummariesByIds } from "@/lib/reviews";
+import { StarRating } from "@/components/StarRating";
 
 export const Route = createFileRoute("/cursos/")({
   head: () => ({
@@ -17,6 +19,13 @@ function CursosListing() {
   const { data: courses, isLoading, error } = useQuery({
     queryKey: ["courses", "published"],
     queryFn: listPublishedCourses,
+  });
+
+  const courseIds = (courses ?? []).map((c) => c.id);
+  const { data: ratings } = useQuery({
+    queryKey: ["ratings-by-ids", courseIds.sort().join(",")],
+    queryFn: () => getRatingSummariesByIds(courseIds),
+    enabled: courseIds.length > 0,
   });
 
   return (
@@ -55,6 +64,18 @@ function CursosListing() {
                   </span>
                 </div>
                 <div className="mt-5 text-center">
+                  {(() => {
+                    const r = ratings?.[c.id];
+                    if (!r || r.review_count === 0) return null;
+                    return (
+                      <div className="flex items-center justify-center gap-1 mb-1">
+                        <StarRating value={r.avg_rating} size={14} />
+                        <span className="text-xs text-[var(--text-muted)] ml-1">
+                          {r.avg_rating.toFixed(1)} ({r.review_count})
+                        </span>
+                      </div>
+                    );
+                  })()}
                   <p className="text-primary-dark font-medium">{c.title}</p>
                   {c.subtitle && (
                     <p className="text-[var(--text-muted)] text-sm mt-1">{c.subtitle}</p>

@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress } from "@/lib/lessons";
 import { enrollInCourse, getMyEnrollment } from "@/lib/enrollments";
+import { CourseReviews } from "@/components/CourseReviews";
 
 export const Route = createFileRoute("/cursos/$slug")({
   loader: async ({ params }) => {
@@ -325,6 +326,8 @@ function CourseDetail() {
               )}
             </div>
           </div>
+
+          <CourseReviews courseId={course.id} isEnrolled={isEnrolled} />
         </div>
       </section>
     </Layout>
