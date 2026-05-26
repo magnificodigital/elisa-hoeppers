@@ -50,8 +50,9 @@ export async function listLessonsWithProgress(courseId: string): Promise<LessonW
     .order("display_order", { ascending: true });
   if (error) throw error;
 
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user || !lessons || lessons.length === 0) {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser || !lessons || lessons.length === 0) {
     return (lessons ?? []).map((l) => ({ ...l, completed: false, watched_seconds: 0 }));
   }
 
@@ -59,7 +60,7 @@ export async function listLessonsWithProgress(courseId: string): Promise<LessonW
   const { data: progress } = await supabase
     .from("lesson_progress")
     .select("lesson_id, completed, watched_seconds")
-    .eq("user_id", auth.user.id)
+    .eq("user_id", sessionUser.id)
     .in("lesson_id", ids);
 
   const byId = new Map(progress?.map((p) => [p.lesson_id, p]) ?? []);

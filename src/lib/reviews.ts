@@ -67,12 +67,13 @@ export async function listReviewsByCourse(
 }
 
 export async function getMyReview(courseId: string): Promise<CourseReview | null> {
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) return null;
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) return null;
   const { data, error } = await supabase
     .from("course_reviews")
     .select("id, course_id, user_id, rating, comment, is_published, created_at")
-    .eq("user_id", auth.user.id)
+    .eq("user_id", sessionUser.id)
     .eq("course_id", courseId)
     .maybeSingle();
   if (error) throw error;
@@ -84,8 +85,9 @@ export async function upsertMyReview(input: {
   rating: number;
   comment: string | null;
 }): Promise<void> {
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) throw new Error("Você precisa estar logado.");
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) throw new Error("Você precisa estar logado.");
   const existing = await getMyReview(input.course_id);
   if (existing) {
     const { error } = await supabase
@@ -95,7 +97,7 @@ export async function upsertMyReview(input: {
     if (error) throw error;
   } else {
     const { error } = await supabase.from("course_reviews").insert({
-      user_id: auth.user.id,
+      user_id: sessionUser.id,
       course_id: input.course_id,
       rating: input.rating,
       comment: input.comment,

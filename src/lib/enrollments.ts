@@ -10,21 +10,23 @@ export type Enrollment = {
 };
 
 export async function enrollInCourse(courseId: string): Promise<void> {
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) throw new Error("Você precisa estar logado para se matricular.");
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) throw new Error("Você precisa estar logado para se matricular.");
   const { error } = await supabase
     .from("enrollments")
-    .insert({ user_id: auth.user.id, course_id: courseId, status: "active" });
+    .insert({ user_id: sessionUser.id, course_id: courseId, status: "active" });
   if (error && error.code !== "23505") throw error;
 }
 
 export async function isEnrolledInCourse(courseId: string): Promise<boolean> {
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) return false;
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) return false;
   const { data } = await supabase
     .from("enrollments")
     .select("id")
-    .eq("user_id", auth.user.id)
+    .eq("user_id", sessionUser.id)
     .eq("course_id", courseId)
     .eq("status", "active")
     .maybeSingle();
@@ -76,12 +78,13 @@ export type MyEnrollment = {
 };
 
 export async function getMyEnrollment(courseId: string): Promise<MyEnrollment | null> {
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth?.user) return null;
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) return null;
   const { data, error } = await supabase
     .from("enrollments")
     .select("id, user_id, course_id, status, enrolled_at")
-    .eq("user_id", auth.user.id)
+    .eq("user_id", sessionUser.id)
     .eq("course_id", courseId)
     .maybeSingle();
   if (error) throw error;

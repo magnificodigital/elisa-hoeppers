@@ -27,8 +27,9 @@ export function CourseReviews({
   });
 
   const { data: reviews, isLoading } = useQuery({
-    queryKey: ["course-reviews", courseId],
+    queryKey: ["course-reviews", courseId, summary?.review_count],
     queryFn: () => listReviewsByCourse(courseId),
+    enabled: (summary?.review_count ?? 0) > 0,
   });
 
   const { data: myReview } = useQuery({
