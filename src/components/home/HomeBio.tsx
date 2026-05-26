@@ -27,7 +27,7 @@ const HomeBio = () => {
             </p>
             <p>
               Minha missão é compartilhar os benefícios transformadores do yoga,
-              ajjudando os outros a encontrar equilíbrio, saúde e paz interior. Estou
+              ajudando os outros a encontrar equilíbrio, saúde e paz interior. Estou
               aqui para guiá-lo em sua jornada de yoga e bem-estar.
             </p>
           </div>
