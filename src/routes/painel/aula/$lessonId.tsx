@@ -5,6 +5,7 @@ import { ChevronLeft, Menu, CheckCircle, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
+import { LessonQuiz } from "@/components/LessonQuiz";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
   head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
