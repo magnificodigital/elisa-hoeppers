@@ -5,6 +5,7 @@ import { ChevronLeft, Menu, CheckCircle, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
+import { LessonQuiz } from "@/components/LessonQuiz";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
   head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
@@ -306,6 +307,9 @@ function LessonPlayerPage() {
                 )}
               </section>
             )}
+
+            {/* Navegação anterior/próxima */}
+            <LessonQuiz lessonId={lesson.id} onPassed={() => completeMutation.mutate()} />
 
             {/* Navegação anterior/próxima */}
             <div className="flex items-center justify-center gap-3 mt-12 pb-8">
