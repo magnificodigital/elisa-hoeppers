@@ -89,9 +89,15 @@ function PainelPage() {
                       <div key={item.id} className={`${baseCls} ${stateCls}`}>
                         <Icon size={18} />
                         {item.enabled && !isActive ? (
-                          <Link to={`/painel/${item.id}`} className="flex-1">
-                            {item.label}
-                          </Link>
+                          item.id === "quizzes" ? (
+                            <Link to="/painel/tentativas" className="flex-1">
+                              {item.label}
+                            </Link>
+                          ) : (
+                            <Link to={`/painel/${item.id}`} className="flex-1">
+                              {item.label}
+                            </Link>
+                          )
                         ) : isActive ? (
                           <span className="flex items-center gap-2 flex-1">
                             {item.label}
