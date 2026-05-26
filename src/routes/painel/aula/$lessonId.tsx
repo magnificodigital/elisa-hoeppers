@@ -107,17 +107,43 @@ function LessonPlayerPage() {
 
           {lesson.youtube_id ? (
             <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-6">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${lesson.youtube_id}`}
-                title={lesson.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              {playing ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1`}
+                  title={lesson.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full border-0"
+                />
+              ) : (
+                <button
+                  onClick={() => setPlaying(true)}
+                  aria-label="Reproduzir aula"
+                  className="absolute inset-0 w-full h-full group cursor-pointer"
+                >
+                  <img
+                    src={`https://i.ytimg.com/vi/${lesson.youtube_id}/maxresdefault.jpg`}
+                    alt={lesson.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const img = e.currentTarget as HTMLImageElement;
+                      if (!img.src.includes("hqdefault")) img.src = `https://i.ytimg.com/vi/${lesson.youtube_id}/hqdefault.jpg`;
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition">
+                    <span className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                      <svg className="w-10 h-10 text-primary-dark ml-1" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </div>
+                </button>
+              )}
             </div>
           ) : (
             <div className="bg-white rounded-lg p-8 text-center mb-6">
-              <p className="text-primary-dark/70">Vídeo em breve.</p>
+              <p className="text-[var(--text-muted)]">Vídeo em breve.</p>
             </div>
           )}
 
