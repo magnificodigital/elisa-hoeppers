@@ -11,18 +11,20 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as PerfumistaRouteImport } from './routes/perfumista'
-import { Route as PainelRouteImport } from './routes/painel'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-alunos'
 import { Route as BioRouteImport } from './routes/bio'
 import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PainelIndexRouteImport } from './routes/painel/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug'
+import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
@@ -32,11 +34,6 @@ const SobreRoute = SobreRouteImport.update({
 const PerfumistaRoute = PerfumistaRouteImport.update({
   id: '/perfumista',
   path: '/perfumista',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PainelRoute = PainelRouteImport.update({
-  id: '/painel',
-  path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -62,6 +59,11 @@ const AgendeSuaAulaRoute = AgendeSuaAulaRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelIndexRoute = PainelIndexRouteImport.update({
+  id: '/painel/',
+  path: '/painel/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LojaIndexRoute = LojaIndexRouteImport.update({
@@ -94,6 +96,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PainelCursoSlugRoute = PainelCursoSlugRouteImport.update({
+  id: '/painel/curso/$slug',
+  path: '/painel/curso/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
+  id: '/painel/aula/$lessonId',
+  path: '/painel/aula/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,7 +113,6 @@ export interface FileRoutesByFullPath {
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/login': typeof LoginRoute
-  '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -110,6 +121,9 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
+  '/painel/': typeof PainelIndexRoute
+  '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
+  '/painel/curso/$slug': typeof PainelCursoSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,7 +131,6 @@ export interface FileRoutesByTo {
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/login': typeof LoginRoute
-  '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -126,6 +139,9 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
+  '/painel': typeof PainelIndexRoute
+  '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
+  '/painel/curso/$slug': typeof PainelCursoSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,7 +150,6 @@ export interface FileRoutesById {
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/login': typeof LoginRoute
-  '/painel': typeof PainelRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -143,6 +158,9 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
+  '/painel/': typeof PainelIndexRoute
+  '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
+  '/painel/curso/$slug': typeof PainelCursoSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,7 +170,6 @@ export interface FileRouteTypes {
     | '/bio'
     | '/cadastro-de-alunos'
     | '/login'
-    | '/painel'
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
@@ -161,6 +178,9 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/cursos/'
     | '/loja/'
+    | '/painel/'
+    | '/painel/aula/$lessonId'
+    | '/painel/curso/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -168,7 +188,6 @@ export interface FileRouteTypes {
     | '/bio'
     | '/cadastro-de-alunos'
     | '/login'
-    | '/painel'
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
@@ -177,6 +196,9 @@ export interface FileRouteTypes {
     | '/blog'
     | '/cursos'
     | '/loja'
+    | '/painel'
+    | '/painel/aula/$lessonId'
+    | '/painel/curso/$slug'
   id:
     | '__root__'
     | '/'
@@ -184,7 +206,6 @@ export interface FileRouteTypes {
     | '/bio'
     | '/cadastro-de-alunos'
     | '/login'
-    | '/painel'
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
@@ -193,6 +214,9 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/cursos/'
     | '/loja/'
+    | '/painel/'
+    | '/painel/aula/$lessonId'
+    | '/painel/curso/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -201,7 +225,6 @@ export interface RootRouteChildren {
   BioRoute: typeof BioRoute
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
   LoginRoute: typeof LoginRoute
-  PainelRoute: typeof PainelRoute
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -210,6 +233,9 @@ export interface RootRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
+  PainelIndexRoute: typeof PainelIndexRoute
+  PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
+  PainelCursoSlugRoute: typeof PainelCursoSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -226,13 +252,6 @@ declare module '@tanstack/react-router' {
       path: '/perfumista'
       fullPath: '/perfumista'
       preLoaderRoute: typeof PerfumistaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/painel': {
-      id: '/painel'
-      path: '/painel'
-      fullPath: '/painel'
-      preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -268,6 +287,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel/': {
+      id: '/painel/'
+      path: '/painel'
+      fullPath: '/painel/'
+      preLoaderRoute: typeof PainelIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loja/': {
@@ -312,6 +338,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/painel/curso/$slug': {
+      id: '/painel/curso/$slug'
+      path: '/painel/curso/$slug'
+      fullPath: '/painel/curso/$slug'
+      preLoaderRoute: typeof PainelCursoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel/aula/$lessonId': {
+      id: '/painel/aula/$lessonId'
+      path: '/painel/aula/$lessonId'
+      fullPath: '/painel/aula/$lessonId'
+      preLoaderRoute: typeof PainelAulaLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -321,7 +361,6 @@ const rootRouteChildren: RootRouteChildren = {
   BioRoute: BioRoute,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
   LoginRoute: LoginRoute,
-  PainelRoute: PainelRoute,
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
   BlogSlugRoute: BlogSlugRoute,
@@ -330,6 +369,9 @@ const rootRouteChildren: RootRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
   LojaIndexRoute: LojaIndexRoute,
+  PainelIndexRoute: PainelIndexRoute,
+  PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
+  PainelCursoSlugRoute: PainelCursoSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
