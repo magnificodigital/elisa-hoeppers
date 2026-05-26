@@ -21,8 +21,10 @@ import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as PainelTentativasRouteImport } from './routes/painel/tentativas'
+import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
+import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug'
@@ -91,6 +93,11 @@ const PainelTentativasRoute = PainelTentativasRouteImport.update({
   path: '/painel/tentativas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PainelCertificadosRoute = PainelCertificadosRouteImport.update({
+  id: '/painel/certificados',
+  path: '/painel/certificados',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LojaSlugRoute = LojaSlugRouteImport.update({
   id: '/loja/$slug',
   path: '/loja/$slug',
@@ -99,6 +106,11 @@ const LojaSlugRoute = LojaSlugRouteImport.update({
 const CursosSlugRoute = CursosSlugRouteImport.update({
   id: '/cursos/$slug',
   path: '/cursos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificadoCodeRoute = CertificadoCodeRouteImport.update({
+  id: '/certificado/$code',
+  path: '/certificado/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
@@ -147,8 +159,10 @@ export interface FileRoutesByFullPath {
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
@@ -170,8 +184,10 @@ export interface FileRoutesByTo {
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
   '/blog': typeof BlogIndexRoute
   '/cursos': typeof CursosIndexRoute
@@ -194,8 +210,10 @@ export interface FileRoutesById {
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
@@ -219,8 +237,10 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
+    | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/painel/certificados'
     | '/painel/tentativas'
     | '/blog/'
     | '/cursos/'
@@ -242,8 +262,10 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
+    | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/painel/certificados'
     | '/painel/tentativas'
     | '/blog'
     | '/cursos'
@@ -265,8 +287,10 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/blog/$slug'
+    | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/painel/certificados'
     | '/painel/tentativas'
     | '/blog/'
     | '/cursos/'
@@ -289,8 +313,10 @@ export interface RootRouteChildren {
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
   LojaSlugRoute: typeof LojaSlugRoute
+  PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelTentativasRoute: typeof PainelTentativasRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
@@ -389,6 +415,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelTentativasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/painel/certificados': {
+      id: '/painel/certificados'
+      path: '/painel/certificados'
+      fullPath: '/painel/certificados'
+      preLoaderRoute: typeof PainelCertificadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/loja/$slug': {
       id: '/loja/$slug'
       path: '/loja/$slug'
@@ -401,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/cursos/$slug'
       fullPath: '/cursos/$slug'
       preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificado/$code': {
+      id: '/certificado/$code'
+      path: '/certificado/$code'
+      fullPath: '/certificado/$code'
+      preLoaderRoute: typeof CertificadoCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
@@ -475,8 +515,10 @@ const rootRouteChildren: RootRouteChildren = {
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
   BlogSlugRoute: BlogSlugRoute,
+  CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
   LojaSlugRoute: LojaSlugRoute,
+  PainelCertificadosRoute: PainelCertificadosRoute,
   PainelTentativasRoute: PainelTentativasRoute,
   BlogIndexRoute: BlogIndexRoute,
   CursosIndexRoute: CursosIndexRoute,

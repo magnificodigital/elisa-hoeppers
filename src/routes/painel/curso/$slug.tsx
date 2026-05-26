@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { Award } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
+import { getMyCertificateForCourse } from "@/lib/certificates";
 
 export const Route = createFileRoute("/painel/curso/$slug")({
   loader: async ({ params }) => {
@@ -40,6 +42,18 @@ function PainelCourseArea() {
     enabled: !!user,
   });
 
+  const lessonsCompletedCount = lessons?.filter((l) => l.completed).length ?? 0;
+  const lessonsTotalCount = lessons?.length ?? 0;
+
+  const { data: certificate } = useQuery({
+    queryKey: ["my-certificate", user?.id, course.id],
+    queryFn: () => getMyCertificateForCourse(course.id),
+    enabled:
+      !!user &&
+      lessonsTotalCount > 0 &&
+      lessonsCompletedCount === lessonsTotalCount,
+  });
+
   if (loading || !user || checkingEnrollment) {
     return (
       <Layout>
@@ -67,10 +81,14 @@ function PainelCourseArea() {
     );
   }
 
-  const completedCount = lessons?.filter((l) => l.completed).length ?? 0;
-  const totalCount = lessons?.length ?? 0;
+  const completedCount = lessonsCompletedCount;
+  const totalCount = lessonsTotalCount;
   const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const nextLesson = lessons?.find((l) => !l.completed);
+
+
+
+
 
   return (
     <Layout>
@@ -103,6 +121,31 @@ function PainelCourseArea() {
               </Link>
             )}
           </div>
+
+          {certificate && (
+            <div className="bg-primary/10 border border-primary/30 rounded-lg p-5 my-8 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <Award className="text-white" size={22} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-display text-lg text-primary-dark">
+                  Parabéns! Você concluiu este curso 🎉
+                </p>
+                <p className="text-sm text-primary-dark/70">
+                  Seu certificado já está disponível.
+                </p>
+              </div>
+              <Link
+                to="/certificado/$code"
+                params={{ code: certificate.code }}
+                className="inline-block bg-primary text-white px-6 py-2.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition shrink-0"
+              >
+                Ver certificado
+              </Link>
+            </div>
+          )}
+
+
 
           <h2 className="font-display text-2xl text-primary-dark mb-4">Conteúdo do curso</h2>
           {loadingLessons && <p className="text-primary-dark/70">Carregando aulas…</p>}
