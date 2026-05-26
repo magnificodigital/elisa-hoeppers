@@ -29,21 +29,11 @@ function CourseDetail() {
 
   return (
     <Layout>
-      <section className="relative h-[50vh] min-h-[360px] overflow-hidden bg-primary-dark">
+      <section className="relative h-[40vh] min-h-[280px] overflow-hidden bg-primary-dark">
         {course.cover_image && (
           <img src={course.cover_image} alt={course.title} className="absolute inset-0 w-full h-full object-cover" />
         )}
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
-          <div>
-            <span className="font-display text-white/90 text-4xl md:text-6xl block mb-3 tracking-wide">
-              {course.overlay_label ?? course.title}
-            </span>
-            <p className="text-white/80 text-sm md:text-base max-w-xl mx-auto">
-              {course.subtitle}
-            </p>
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-black/30" />
       </section>
 
       <section className="py-16 md:py-20 bg-cream">
