@@ -66,3 +66,24 @@ export async function listMyCourseProgress(): Promise<CourseProgressRow[]> {
   if (error) throw error;
   return (data ?? []) as CourseProgressRow[];
 }
+
+export type MyEnrollment = {
+  id: string;
+  user_id: string;
+  course_id: string;
+  status: "active" | "cancelled" | "completed";
+  enrolled_at: string;
+};
+
+export async function getMyEnrollment(courseId: string): Promise<MyEnrollment | null> {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) return null;
+  const { data, error } = await supabase
+    .from("enrollments")
+    .select("id, user_id, course_id, status, enrolled_at")
+    .eq("user_id", auth.user.id)
+    .eq("course_id", courseId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as MyEnrollment | null;
+}
