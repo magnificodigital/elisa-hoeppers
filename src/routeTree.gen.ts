@@ -28,6 +28,7 @@ import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
+import { Route as AdminCursosIdAulasLessonIdQuizRouteImport } from './routes/admin/cursos/$id/aulas/$lessonId/quiz'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
@@ -124,6 +125,12 @@ const AdminCursosIdAulasRoute = AdminCursosIdAulasRouteImport.update({
   path: '/admin/cursos/$id/aulas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCursosIdAulasLessonIdQuizRoute =
+  AdminCursosIdAulasLessonIdQuizRouteImport.update({
+    id: '/$lessonId/quiz',
+    path: '/$lessonId/quiz',
+    getParentRoute: () => AdminCursosIdAulasRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -143,8 +150,9 @@ export interface FileRoutesByFullPath {
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
-  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRoute
+  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
+  '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -164,8 +172,9 @@ export interface FileRoutesByTo {
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
-  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRoute
+  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
+  '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -186,8 +195,9 @@ export interface FileRoutesById {
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
-  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRoute
+  '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
+  '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/admin/cursos/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
+    | '/admin/cursos/$id/aulas/$lessonId/quiz'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/admin/cursos'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
+    | '/admin/cursos/$id/aulas/$lessonId/quiz'
   id:
     | '__root__'
     | '/'
@@ -253,6 +265,7 @@ export interface FileRouteTypes {
     | '/admin/cursos/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
+    | '/admin/cursos/$id/aulas/$lessonId/quiz'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -273,7 +286,7 @@ export interface RootRouteChildren {
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   PainelCursoSlugRoute: typeof PainelCursoSlugRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
-  AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRoute
+  AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
   AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
 }
 
@@ -412,8 +425,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCursosIdAulasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/cursos/$id/aulas/$lessonId/quiz': {
+      id: '/admin/cursos/$id/aulas/$lessonId/quiz'
+      path: '/$lessonId/quiz'
+      fullPath: '/admin/cursos/$id/aulas/$lessonId/quiz'
+      preLoaderRoute: typeof AdminCursosIdAulasLessonIdQuizRouteImport
+      parentRoute: typeof AdminCursosIdAulasRoute
+    }
   }
 }
+
+interface AdminCursosIdAulasRouteChildren {
+  AdminCursosIdAulasLessonIdQuizRoute: typeof AdminCursosIdAulasLessonIdQuizRoute
+}
+
+const AdminCursosIdAulasRouteChildren: AdminCursosIdAulasRouteChildren = {
+  AdminCursosIdAulasLessonIdQuizRoute: AdminCursosIdAulasLessonIdQuizRoute,
+}
+
+const AdminCursosIdAulasRouteWithChildren =
+  AdminCursosIdAulasRoute._addFileChildren(AdminCursosIdAulasRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -433,7 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   PainelCursoSlugRoute: PainelCursoSlugRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
-  AdminCursosIdAulasRoute: AdminCursosIdAulasRoute,
+  AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
 }
 export const routeTree = rootRouteImport

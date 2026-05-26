@@ -96,6 +96,13 @@ function LessonRow({ lesson, onChanged }: { lesson: LessonAdmin; onChanged: () =
           </p>
         </div>
         {lesson.is_free_preview && <span className="text-[10px] uppercase tracking-widest text-primary-dark">Prévia</span>}
+        <Link
+          to="/admin/cursos/$id/aulas/$lessonId/quiz"
+          params={{ id: lesson.course_id, lessonId: lesson.id }}
+          className="text-xs uppercase tracking-widest text-primary hover:opacity-70"
+        >
+          Quiz
+        </Link>
         <button onClick={() => setEditing(true)} className="text-xs uppercase tracking-widest text-primary hover:opacity-70">Editar</button>
       </div>
     );
