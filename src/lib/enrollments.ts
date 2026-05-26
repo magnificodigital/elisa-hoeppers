@@ -45,3 +45,24 @@ export async function listMyEnrollments(): Promise<EnrollmentWithCourse[]> {
   if (error) throw error;
   return (data ?? []) as unknown as EnrollmentWithCourse[];
 }
+
+export type CourseProgressRow = {
+  course_id: string;
+  course_slug: string;
+  course_title: string;
+  cover_image: string | null;
+  overlay_label: string | null;
+  enrolled_at: string;
+  total_lessons: number;
+  completed_lessons: number;
+  next_lesson_id: string | null;
+};
+
+export async function listMyCourseProgress(): Promise<CourseProgressRow[]> {
+  const { data, error } = await supabase
+    .from("my_course_progress")
+    .select("*")
+    .order("enrolled_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as CourseProgressRow[];
+}

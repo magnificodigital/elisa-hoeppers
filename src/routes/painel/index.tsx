@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
-import { listMyEnrollments } from "@/lib/enrollments";
+import { listMyCourseProgress } from "@/lib/enrollments";
 
-export const Route = createFileRoute("/painel")({
+export const Route = createFileRoute("/painel/")({
   head: () => ({ meta: [{ title: "Meu Painel — Elisa Hoeppers" }] }),
   component: PainelPage,
 });
@@ -18,9 +18,9 @@ function PainelPage() {
     if (!loading && !user) navigate({ to: "/login", search: { next: "/painel" } });
   }, [loading, user, navigate]);
 
-  const { data: enrollments, isLoading } = useQuery({
-    queryKey: ["my-enrollments", user?.id],
-    queryFn: listMyEnrollments,
+  const { data: progress, isLoading } = useQuery({
+    queryKey: ["my-course-progress", user?.id],
+    queryFn: listMyCourseProgress,
     enabled: !!user,
   });
 
@@ -55,7 +55,8 @@ function PainelPage() {
 
           <h2 className="font-display text-2xl text-primary-dark mb-6">Meus cursos</h2>
           {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
-          {!isLoading && (!enrollments || enrollments.length === 0) && (
+
+          {!isLoading && (!progress || progress.length === 0) && (
             <div className="bg-white rounded-lg p-8 text-center">
               <p className="text-primary-dark mb-4">Você ainda não está matriculada em nenhum curso.</p>
               <Link
@@ -66,32 +67,46 @@ function PainelPage() {
               </Link>
             </div>
           )}
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(enrollments ?? []).map((e) => (
-              <Link
-                key={e.id}
-                to="/cursos/$slug"
-                params={{ slug: e.course.slug }}
-                className="block group"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-primary-dark">
-                  {e.course.cover_image && (
-                    <img
-                      src={e.course.cover_image}
-                      alt={e.course.title}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+            {(progress ?? []).map((c) => {
+              const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
+              return (
+                <Link
+                  key={c.course_id}
+                  to="/painel/curso/$slug"
+                  params={{ slug: c.course_slug }}
+                  className="block group bg-white rounded-lg overflow-hidden hover:shadow-lg transition"
+                >
+                  {c.cover_image && (
+                    <div className="relative aspect-[4/3] overflow-hidden bg-primary-dark">
+                      <img
+                        src={c.cover_image}
+                        alt={c.course_title}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
                   )}
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="absolute inset-0 flex items-center justify-center text-center px-4">
-                    <span className="font-display text-white text-2xl">
-                      {e.course.overlay_label ?? e.course.title}
-                    </span>
+                  <div className="p-5">
+                    <div className="mb-3">
+                      <h3 className="font-display text-lg text-primary-dark">{c.course_title}</h3>
+                      <p className="text-xs text-primary-dark/60 mt-1">
+                        {c.completed_lessons} de {c.total_lessons} aulas concluídas
+                      </p>
+                    </div>
+                    <div>
+                      <div className="h-1.5 bg-cream rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary transition-all"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <p className="text-[11px] text-primary-dark/60 mt-2">{pct}% concluído</p>
+                    </div>
                   </div>
-                </div>
-                <p className="mt-3 text-primary-dark">{e.course.title}</p>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
