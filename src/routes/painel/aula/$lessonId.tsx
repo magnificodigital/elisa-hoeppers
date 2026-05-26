@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import Layout from "@/components/Layout";
+import { ChevronLeft, Menu, CheckCircle, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
@@ -18,6 +18,7 @@ function LessonPlayerPage() {
   const qc = useQueryClient();
   const [marked, setMarked] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { data: lessonData, isLoading: loadingLesson, error: lessonError } = useQuery({
     queryKey: ["lesson-with-course", lessonId],
@@ -54,21 +55,21 @@ function LessonPlayerPage() {
 
   if (loadingLesson || loading || (!user && !loading)) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
+      <div className="min-h-screen flex flex-col bg-cream">
+        <div className="flex-grow flex items-center justify-center">
           <p className="text-primary-dark">Carregando…</p>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   if (lessonError || !lesson || !course) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
+      <div className="min-h-screen flex flex-col bg-cream">
+        <div className="flex-grow flex items-center justify-center">
           <p className="text-primary-dark">Aula não encontrada.</p>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -76,28 +77,30 @@ function LessonPlayerPage() {
 
   if (checking) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
+      <div className="min-h-screen flex flex-col bg-cream">
+        <div className="flex-grow flex items-center justify-center">
           <p className="text-primary-dark">Carregando…</p>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   if (!enrolled && !lesson.is_free_preview) {
     return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
-          <p className="text-primary-dark mb-4">Você precisa estar matriculada para acessar esta aula.</p>
-          <Link
-            to="/cursos/$slug"
-            params={{ slug: course.slug }}
-            className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
-          >
-            Matricular-se
-          </Link>
+      <div className="min-h-screen flex flex-col bg-cream">
+        <div className="flex-grow flex items-center justify-center px-4">
+          <div className="text-center">
+            <p className="text-primary-dark mb-4">Você precisa estar matriculada para acessar esta aula.</p>
+            <Link
+              to="/cursos/$slug"
+              params={{ slug: course.slug }}
+              className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+            >
+              Matricular-se
+            </Link>
+          </div>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -105,108 +108,243 @@ function LessonPlayerPage() {
   const currentIdx = sortedLessons.findIndex((l) => l.id === lesson.id);
   const prevLesson = currentIdx > 0 ? sortedLessons[currentIdx - 1] : null;
   const nextLesson = currentIdx >= 0 && currentIdx < sortedLessons.length - 1 ? sortedLessons[currentIdx + 1] : null;
+
+  const progressCompleted = sortedLessons.filter((l) => l.completed).length;
+  const progressTotal = sortedLessons.length;
+  const progressPct = progressTotal > 0 ? Math.round((progressCompleted / progressTotal) * 100) : 0;
   const isCompleted = marked || (sortedLessons.find((l) => l.id === lesson.id)?.completed ?? false);
 
   return (
-    <Layout>
-      <section className="py-12 bg-cream min-h-[70vh]">
-        <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen flex flex-col bg-cream">
+      {/* Header bar verde escuro */}
+      <header className="bg-[#3B4F30] text-cream flex items-center justify-between px-4 md:px-6 py-3 gap-3 shrink-0 z-20">
+        <div className="flex items-center gap-3 min-w-0">
           <Link
             to="/painel/curso/$slug"
             params={{ slug: course.slug }}
-            className="text-xs uppercase tracking-widest text-primary-dark/70 hover:opacity-70"
+            className="shrink-0 text-cream/90 hover:text-cream transition"
+            aria-label="Voltar ao curso"
           >
-            ← {course.title}
+            <ChevronLeft className="w-5 h-5" />
           </Link>
+          <span className="text-sm font-medium truncate max-w-[12rem] md:max-w-xs">
+            {course.title}
+          </span>
+        </div>
 
-          <h1 className="font-display text-2xl md:text-3xl text-primary-dark mt-3 mb-6">{lesson.title}</h1>
+        <div className="flex items-center gap-3 md:gap-5">
+          <button
+            onClick={() => setSidebarOpen((v) => !v)}
+            className="lg:hidden text-cream/90 hover:text-cream"
+            aria-label="Ver conteúdo do curso"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
 
-          {lesson.youtube_id ? (
-            <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-6">
-              {playing ? (
-                <iframe
-                  src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1`}
-                  title={lesson.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full border-0"
-                />
-              ) : (
-                <button
-                  onClick={() => setPlaying(true)}
-                  aria-label="Reproduzir aula"
-                  className="absolute inset-0 w-full h-full group cursor-pointer"
+          <div className="hidden md:flex items-center gap-2 text-sm text-cream/90">
+            <span className="text-cream/70">Seu Progresso:</span>
+            <span className="font-medium">
+              {progressCompleted} de {progressTotal}
+            </span>
+            <span className="text-cream/70">({progressPct}%)</span>
+          </div>
+
+          <button
+            onClick={() => completeMutation.mutate()}
+            disabled={isCompleted || completeMutation.isPending}
+            className={`inline-flex items-center gap-2 border px-4 md:px-5 py-2 rounded-full text-[11px] md:text-xs uppercase tracking-widest transition ${
+              isCompleted
+                ? "border-cream/40 text-cream/60 cursor-default"
+                : "border-cream text-cream hover:bg-cream hover:text-primary"
+            } disabled:opacity-80`}
+          >
+            <CheckCircle className="w-4 h-4" />
+            {isCompleted ? "Concluído" : completeMutation.isPending ? "Marcando..." : "Marcar como concluído"}
+          </button>
+
+          <Link
+            to="/painel/curso/$slug"
+            params={{ slug: course.slug }}
+            className="hidden lg:inline-flex text-cream/70 hover:text-cream transition"
+            aria-label="Fechar aula"
+          >
+            <X className="w-5 h-5" />
+          </Link>
+        </div>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar de aulas */}
+        <aside
+          className={`fixed lg:static inset-y-0 left-0 z-30 w-[280px] lg:w-[320px] bg-white border-r border-[#E5E0D8] transform transition-transform duration-300 ease-in-out lg:transform-none ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } flex flex-col`}
+          style={{ top: "48px", height: "calc(100% - 48px)" }}
+        >
+          <div className="px-5 py-4 border-b border-[#E5E0D8]">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xs uppercase tracking-widest text-[#5E6B5A] font-semibold">
+                Conteúdo do curso
+              </h3>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden text-primary-dark/60 hover:text-primary-dark"
+                aria-label="Fechar conteúdo"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="text-xs text-primary-dark/70">
+              <span className="font-medium text-primary-dark">{course.title}</span>
+            </div>
+            <div className="mt-2 text-[11px] text-[#5E6B5A]">
+              {progressCompleted}/{progressTotal} aulas
+            </div>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto">
+            {sortedLessons.map((l) => {
+              const isCurrent = l.id === lesson.id;
+              return (
+                <Link
+                  key={l.id}
+                  to="/painel/aula/$lessonId"
+                  params={{ lessonId: l.id }}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`flex items-start gap-3 px-5 py-3 text-sm transition border-l-[3px] ${
+                    isCurrent
+                      ? "bg-cream/60 border-primary text-primary-dark font-medium"
+                      : "border-transparent text-primary-dark/80 hover:bg-cream/30"
+                  }`}
                 >
-                  <img
-                    src={`https://i.ytimg.com/vi/${lesson.youtube_id}/maxresdefault.jpg`}
-                    alt={lesson.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const img = e.currentTarget as HTMLImageElement;
-                      if (!img.src.includes("hqdefault")) img.src = `https://i.ytimg.com/vi/${lesson.youtube_id}/hqdefault.jpg`;
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition">
-                    <span className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                      <svg className="w-10 h-10 text-primary-dark ml-1" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
+                  <span className="mt-0.5 shrink-0">
+                    {l.completed && (
+                      <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#7D9B6D] text-white">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                    )}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate leading-snug">
+                      {l.title}
+                    </p>
+                    {l.duration_min && (
+                      <p className="text-[11px] text-[#5E6B5A] mt-0.5">
+                        {l.duration_min} min
+                      </p>
+                    )}
                   </div>
-                </button>
-              )}
-            </div>
-          ) : (
-            <div className="bg-white rounded-lg p-8 text-center mb-6">
-              <p className="text-[var(--text-muted)]">Vídeo em breve.</p>
-            </div>
-          )}
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
 
-          {lesson.description && (
-            <p className="text-primary-dark text-base leading-relaxed mb-6">{lesson.description}</p>
-          )}
+        {/* Overlay mobile */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
 
-          {lesson.content_md && (
-            <div className="prose prose-stone max-w-none mb-8 text-primary-dark">
-              <pre className="whitespace-pre-wrap font-sans bg-white rounded-lg p-6">{lesson.content_md}</pre>
-            </div>
-          )}
+        {/* Área principal */}
+        <main className="flex-1 overflow-y-auto min-w-0">
+          <div className="max-w-4xl mx-auto px-4 md:px-8 py-6">
+            {lesson.youtube_id ? (
+              <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-8">
+                {playing ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1`}
+                    title={lesson.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full border-0"
+                  />
+                ) : (
+                  <button
+                    onClick={() => setPlaying(true)}
+                    aria-label="Reproduzir aula"
+                    className="absolute inset-0 w-full h-full group cursor-pointer"
+                  >
+                    <img
+                      src={`https://i.ytimg.com/vi/${lesson.youtube_id}/maxresdefault.jpg`}
+                      alt={lesson.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const img = e.currentTarget as HTMLImageElement;
+                        if (!img.src.includes("hqdefault")) img.src = `https://i.ytimg.com/vi/${lesson.youtube_id}/hqdefault.jpg`;
+                      }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition">
+                      <span className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                        <svg className="w-10 h-10 text-primary-dark ml-1" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg p-12 text-center mb-8">
+                <p className="text-[var(--text-muted)]">Vídeo em breve.</p>
+              </div>
+            )}
 
-          <div className="flex items-center justify-between mt-8 mb-6 gap-3 flex-wrap">
-            <div className="flex gap-2">
-              {prevLesson && (
+            <h1 className="font-display text-2xl md:text-3xl text-primary-dark mb-6">{lesson.title}</h1>
+
+            {(lesson.description || lesson.content_md) && (
+              <section className="mb-10">
+                <h2 className="text-base font-semibold text-primary-dark mb-3 uppercase tracking-wider text-xs">Sobre a Aula</h2>
+                {lesson.description && (
+                  <p className="text-primary-dark/90 text-base leading-relaxed mb-4">{lesson.description}</p>
+                )}
+                {lesson.content_md && (
+                  <pre className="whitespace-pre-wrap font-sans bg-white rounded-lg p-5 text-primary-dark/90 text-sm leading-relaxed">{lesson.content_md}</pre>
+                )}
+              </section>
+            )}
+
+            {/* Navegação anterior/próxima */}
+            <div className="flex items-center justify-center gap-3 mt-12 pb-8">
+              {prevLesson ? (
                 <Link
                   to="/painel/aula/$lessonId"
                   params={{ lessonId: prevLesson.id }}
-                  className="border border-primary text-primary px-5 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition"
+                  className="inline-flex items-center gap-2 border border-primary text-primary px-6 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition"
                 >
-                  ← Anterior
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  Anterior
                 </Link>
+              ) : (
+                <span className="inline-flex items-center gap-2 border border-border text-[var(--text-muted)] px-6 py-2.5 rounded-full text-xs uppercase tracking-widest cursor-not-allowed">
+                  Anterior
+                </span>
               )}
-              {nextLesson && (
+              {nextLesson ? (
                 <Link
                   to="/painel/aula/$lessonId"
                   params={{ lessonId: nextLesson.id }}
-                  className="border border-primary text-primary px-5 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
                 >
-                  Próxima →
+                  Próximo
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </Link>
+              ) : (
+                <span className="inline-flex items-center gap-2 border border-border text-[var(--text-muted)] px-6 py-2.5 rounded-full text-xs uppercase tracking-widest cursor-not-allowed">
+                  Próximo
+                </span>
               )}
             </div>
-
-            <button
-              onClick={() => completeMutation.mutate()}
-              disabled={isCompleted || completeMutation.isPending}
-              className={`px-6 py-2.5 rounded-full text-xs uppercase tracking-widest transition ${
-                isCompleted ? "bg-primary-dark text-white" : "bg-primary text-white hover:bg-primary-dark"
-              } disabled:opacity-80`}
-            >
-              {isCompleted ? "✓ Aula concluída" : completeMutation.isPending ? "Marcando..." : "Marcar como concluída"}
-            </button>
           </div>
-        </div>
-      </section>
-    </Layout>
+        </main>
+      </div>
+    </div>
   );
 }
