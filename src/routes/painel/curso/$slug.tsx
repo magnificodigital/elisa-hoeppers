@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { Award } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
+import { getMyCertificateForCourse } from "@/lib/certificates";
 
 export const Route = createFileRoute("/painel/curso/$slug")({
   loader: async ({ params }) => {

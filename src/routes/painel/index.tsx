@@ -23,6 +23,7 @@ const navItems = [
   { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
   { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: false },
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
+  { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
   { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: false },
   { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: false },
   { id: "config", icon: Settings, label: "Configurações", enabled: false },
@@ -100,6 +101,10 @@ function PainelPage() {
                         {item.enabled && !isActive ? (
                           item.id === "quizzes" ? (
                             <Link to="/painel/tentativas" className="flex-1">
+                              {item.label}
+                            </Link>
+                          ) : item.id === "certificados" ? (
+                            <Link to="/painel/certificados" className="flex-1">
                               {item.label}
                             </Link>
                           ) : (
