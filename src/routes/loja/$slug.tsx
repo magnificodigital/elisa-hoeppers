@@ -1,8 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, MessageCircle, Truck, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
-import { getProductBySlug, formatPriceBRL } from "@/lib/shop";
+import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
@@ -135,19 +136,13 @@ function ProductDetail() {
               )}
 
               {product.in_stock ? (
-                <a
-                  href={wppLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 inline-flex items-center justify-center gap-2 w-full md:w-auto bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-md transition"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Comprar pelo WhatsApp
-                </a>
+                <div className="mt-6">
+                  <AddToCartButton product={product} />
+                </div>
               ) : (
                 <button
                   disabled
-                  className="mt-6 inline-flex items-center justify-center w-full md:w-auto bg-muted text-[var(--text-muted)] px-8 py-3 rounded-md cursor-not-allowed"
+                  className="mt-6 block w-full text-center bg-sand text-[var(--text-muted)] py-4 rounded-full uppercase tracking-[0.2em] text-xs font-semibold cursor-not-allowed"
                 >
                   Fora de estoque
                 </button>
