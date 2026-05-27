@@ -48,7 +48,7 @@ const HomeOils = () => {
             src="/images/home/oleos/oleos-elisa.jpeg"
             alt="Elisa Hoeppers segurando o spray de óleos essenciais"
             className="rounded-lg w-full object-cover shadow-sm"
-          />
+           loading="lazy" decoding="async" />
         </div>
       </div>
     </section>

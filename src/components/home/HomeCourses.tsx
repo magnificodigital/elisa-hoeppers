@@ -17,7 +17,7 @@ const HomeCourses = () => {
                   src={c.image}
                   alt={`Aula de ${c.label}`}
                   className="w-full h-full object-cover"
-                />
+                 loading="lazy" decoding="async" />
                 <div className="absolute inset-0 bg-black/10" />
                 <span className="absolute top-3 left-3 bg-white/85 text-primary-dark text-[10px] uppercase tracking-wider px-2 py-1 rounded">
                   Todos os níveis

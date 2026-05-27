@@ -56,7 +56,7 @@ function CursosListing() {
                       src={c.cover_image}
                       alt={c.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                     loading="lazy" decoding="async" />
                   )}
                   <div className="absolute inset-0 bg-black/10" />
                   <span className="absolute top-3 left-3 bg-white/85 text-primary-dark text-[10px] uppercase tracking-wider px-2 py-1 rounded">

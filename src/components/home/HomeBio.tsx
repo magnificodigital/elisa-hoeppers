@@ -8,7 +8,7 @@ const HomeBio = () => {
           src="/images/home/bio/elisa-perfil.png"
           alt="Retrato de Elisa Hoeppers"
           className="rounded-lg w-full aspect-square object-cover order-2 md:order-1"
-        />
+         loading="lazy" decoding="async" />
         <div className="order-1 md:order-2">
           <h2 className="font-display text-3xl md:text-[2rem] text-primary-dark mb-6">
             Elisa Hoeppers
