@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { Save, Eye, EyeOff, CreditCard } from "lucide-react";
+import { Save, Eye, EyeOff, CreditCard, Mail } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { listSettings, updateSetting, type AppSetting } from "@/lib/settings";
@@ -46,6 +46,16 @@ function SettingsPage() {
               description="Configure o checkout online pra aceitar cartão, PIX e boleto. As chaves vêm do seu painel MP > Sua aplicação > Credenciais de produção."
               settings={byCategory.mercadopago}
               helpLink={{ href: "https://www.mercadopago.com.br/developers/panel", label: "Abrir painel Mercado Pago" }}
+            />
+          )}
+
+          {byCategory.newsletter && (
+            <SettingsSection
+              title="Newsletter"
+              icon={<Mail size={20} className="text-primary" />}
+              description="Captura email de visitantes pra envio de broadcasts. Crie uma audience no Resend e cole o ID aqui."
+              settings={byCategory.newsletter}
+              helpLink={{ href: "https://resend.com/audiences", label: "Abrir Audiences no Resend" }}
             />
           )}
         </div>

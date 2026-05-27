@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { GraduationCap, Calendar, ShoppingBag, Package, Settings } from "lucide-react";
+import { GraduationCap, Calendar, ShoppingBag, Package, Settings, Mail } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -18,6 +18,7 @@ const sections = [
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Chaves de integrações (Mercado Pago, etc)." },
+  { to: "/admin/inscritos", icon: Mail, title: "Inscritos", desc: "Lista da newsletter e exportação CSV." },
 ] as const;
 
 function AdminHome() {
