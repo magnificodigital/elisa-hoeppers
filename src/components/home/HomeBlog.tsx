@@ -21,7 +21,7 @@ const HomeBlog = () => {
                 src={p.image}
                 alt={p.title}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+               loading="lazy" decoding="async" />
               <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
               <div className="absolute inset-0 px-6 flex items-center justify-center text-center">
                 <h3 className="font-sans font-light text-white text-xl md:text-2xl leading-relaxed">

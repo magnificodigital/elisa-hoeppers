@@ -26,7 +26,7 @@ const HomeInstagram = () => {
             src="/images/home/instagram/round-2.png"
             alt="Foto de perfil de Elisa Hoeppers"
             className="w-14 h-14 rounded-full object-cover flex-shrink-0"
-          />
+           loading="lazy" decoding="async" />
           <div className="max-w-md">
             <p className="text-primary-dark font-semibold text-sm">elisahoepperscasas</p>
             <p className="text-[var(--text-muted)] text-xs leading-relaxed">
@@ -48,7 +48,7 @@ const HomeInstagram = () => {
                 src={src}
                 alt={`Publicação ${i + 1} do Instagram de Elisa Hoeppers`}
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-              />
+               loading="lazy" decoding="async" />
             </a>
           ))}
         </div>

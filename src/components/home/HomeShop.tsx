@@ -34,7 +34,7 @@ const HomeShop = () => {
                     src={firstImage(p)!}
                     alt={`Foto do produto ${p.name}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                   loading="lazy" decoding="async" />
                 )}
                 {!p.in_stock && (
                   <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">
