@@ -86,7 +86,11 @@ export async function bookAppointment(input: {
   if (error) throw error;
   const row = Array.isArray(data) ? data[0] : data;
   if (!row) throw new Error("Falha ao criar reserva.");
-  return row as BookingResult;
+  const result = row as BookingResult;
+  supabase.functions
+    .invoke("send-notification", { body: { type: "booking", record_id: result.appointment_id } })
+    .catch((e) => console.error("email failed:", e));
+  return result;
 }
 
 export async function getAppointmentByCode(code: string): Promise<Appointment | null> {
