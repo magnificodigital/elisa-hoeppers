@@ -174,6 +174,7 @@ export type Database = {
       }
       course_reviews: {
         Row: {
+          author_name: string | null
           comment: string | null
           course_id: string
           created_at: string
@@ -184,6 +185,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          author_name?: string | null
           comment?: string | null
           course_id: string
           created_at?: string
@@ -194,6 +196,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          author_name?: string | null
           comment?: string | null
           course_id?: string
           created_at?: string
