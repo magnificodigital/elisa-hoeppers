@@ -20,6 +20,7 @@ import { Route as PainelIndexRouteImport } from './routes/painel/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PainelTentativasRouteImport } from './routes/painel/tentativas'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
@@ -86,6 +87,11 @@ const CursosIndexRoute = CursosIndexRouteImport.update({
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PainelTentativasRoute = PainelTentativasRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
@@ -242,6 +251,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/admin/'
     | '/blog/'
     | '/cursos/'
     | '/loja/'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/admin'
     | '/blog'
     | '/cursos'
     | '/loja'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/admin/'
     | '/blog/'
     | '/cursos/'
     | '/loja/'
@@ -318,6 +330,7 @@ export interface RootRouteChildren {
   LojaSlugRoute: typeof LojaSlugRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelTentativasRoute: typeof PainelTentativasRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
@@ -406,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/painel/tentativas': {
@@ -520,6 +540,7 @@ const rootRouteChildren: RootRouteChildren = {
   LojaSlugRoute: LojaSlugRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelTentativasRoute: PainelTentativasRoute,
+  AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
   LojaIndexRoute: LojaIndexRoute,
