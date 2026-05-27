@@ -152,3 +152,17 @@ export async function updateOrderShipping(id: string, shippingCents: number, sub
   }).eq("id", id);
   if (error) throw error;
 }
+
+// =================== USER: MY ORDERS ===================
+export async function listMyOrders(): Promise<Order[]> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) return [];
+  const { data, error } = await supabase
+    .from("orders")
+    .select(ORDER_COLS)
+    .eq("user_id", sessionUser.id)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as Order[];
+}
