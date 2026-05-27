@@ -148,10 +148,7 @@ function CheckoutPage() {
           </h1>
 
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              place.mutate();
-            }}
+            onSubmit={(e) => e.preventDefault()}
             className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8"
           >
             <div className="space-y-6">
