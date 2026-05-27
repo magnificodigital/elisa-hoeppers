@@ -21,7 +21,7 @@ const navItems = [
   { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
   { id: "perfil", icon: User, label: "Meu perfil", enabled: false },
   { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
-  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: false },
+  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
   { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
   { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: true },
@@ -109,6 +109,10 @@ function PainelPage() {
                             </Link>
                           ) : item.id === "pedidos" ? (
                             <Link to="/painel/pedidos" className="flex-1">
+                              {item.label}
+                            </Link>
+                          ) : item.id === "wishlist" ? (
+                            <Link to="/painel/wishlist" className="flex-1">
                               {item.label}
                             </Link>
                           ) : (

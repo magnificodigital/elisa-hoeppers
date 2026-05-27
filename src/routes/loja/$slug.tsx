@@ -4,6 +4,7 @@ import { ChevronLeft, MessageCircle, Truck, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import { useCart } from "@/lib/cart";
+import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
@@ -157,6 +158,10 @@ function ProductDetail() {
                 <MessageCircle className="w-4 h-4" />
                 Tirar dúvida
               </a>
+
+              <div className="mt-4">
+                <WishlistButton itemType="product" itemId={product.id} />
+              </div>
 
               <div className="mt-8 space-y-2 text-sm text-[var(--text-muted)]">
                 <p className="flex items-center gap-2">
