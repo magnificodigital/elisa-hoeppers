@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as PerfumistaRouteImport } from './routes/perfumista'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-alunos'
 import { Route as BioRouteImport } from './routes/bio'
 import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
@@ -21,6 +23,7 @@ import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as PedidoCodeRouteImport } from './routes/pedido/$code'
 import { Route as PainelTentativasRouteImport } from './routes/painel/tentativas'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
@@ -48,6 +51,16 @@ const PerfumistaRoute = PerfumistaRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarrinhoRoute = CarrinhoRouteImport.update({
+  id: '/carrinho',
+  path: '/carrinho',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CadastroDeAlunosRoute = CadastroDeAlunosRouteImport.update({
@@ -93,6 +106,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PedidoCodeRoute = PedidoCodeRouteImport.update({
+  id: '/pedido/$code',
+  path: '/pedido/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PainelTentativasRoute = PainelTentativasRouteImport.update({
@@ -167,6 +185,8 @@ export interface FileRoutesByFullPath {
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
@@ -177,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
@@ -194,6 +215,8 @@ export interface FileRoutesByTo {
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
@@ -204,6 +227,7 @@ export interface FileRoutesByTo {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/pedido/$code': typeof PedidoCodeRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/cursos': typeof CursosIndexRoute
@@ -222,6 +246,8 @@ export interface FileRoutesById {
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
@@ -232,6 +258,7 @@ export interface FileRoutesById {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
@@ -251,6 +278,8 @@ export interface FileRouteTypes {
     | '/agende-sua-aula'
     | '/bio'
     | '/cadastro-de-alunos'
+    | '/carrinho'
+    | '/checkout'
     | '/login'
     | '/perfumista'
     | '/sobre'
@@ -261,6 +290,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/pedido/$code'
     | '/admin/'
     | '/blog/'
     | '/cursos/'
@@ -278,6 +308,8 @@ export interface FileRouteTypes {
     | '/agende-sua-aula'
     | '/bio'
     | '/cadastro-de-alunos'
+    | '/carrinho'
+    | '/checkout'
     | '/login'
     | '/perfumista'
     | '/sobre'
@@ -288,6 +320,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/pedido/$code'
     | '/admin'
     | '/blog'
     | '/cursos'
@@ -305,6 +338,8 @@ export interface FileRouteTypes {
     | '/agende-sua-aula'
     | '/bio'
     | '/cadastro-de-alunos'
+    | '/carrinho'
+    | '/checkout'
     | '/login'
     | '/perfumista'
     | '/sobre'
@@ -315,6 +350,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/pedido/$code'
     | '/admin/'
     | '/blog/'
     | '/cursos/'
@@ -333,6 +369,8 @@ export interface RootRouteChildren {
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
   BioRoute: typeof BioRoute
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
+  CarrinhoRoute: typeof CarrinhoRoute
+  CheckoutRoute: typeof CheckoutRoute
   LoginRoute: typeof LoginRoute
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
@@ -343,6 +381,7 @@ export interface RootRouteChildren {
   LojaSlugRoute: typeof LojaSlugRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelTentativasRoute: typeof PainelTentativasRoute
+  PedidoCodeRoute: typeof PedidoCodeRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
@@ -376,6 +415,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/carrinho': {
+      id: '/carrinho'
+      path: '/carrinho'
+      fullPath: '/carrinho'
+      preLoaderRoute: typeof CarrinhoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cadastro-de-alunos': {
@@ -439,6 +492,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pedido/$code': {
+      id: '/pedido/$code'
+      path: '/pedido/$code'
+      fullPath: '/pedido/$code'
+      preLoaderRoute: typeof PedidoCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/painel/tentativas': {
@@ -551,6 +611,8 @@ const rootRouteChildren: RootRouteChildren = {
   AgendeSuaAulaRoute: AgendeSuaAulaRoute,
   BioRoute: BioRoute,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
+  CarrinhoRoute: CarrinhoRoute,
+  CheckoutRoute: CheckoutRoute,
   LoginRoute: LoginRoute,
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
@@ -561,6 +623,7 @@ const rootRouteChildren: RootRouteChildren = {
   LojaSlugRoute: LojaSlugRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelTentativasRoute: PainelTentativasRoute,
+  PedidoCodeRoute: PedidoCodeRoute,
   AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
