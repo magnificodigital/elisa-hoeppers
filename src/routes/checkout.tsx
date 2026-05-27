@@ -247,9 +247,6 @@ function CheckoutPage() {
                 />
               </Section>
 
-              {place.error && (
-                <p className="text-red-700 text-sm">{(place.error as Error).message}</p>
-              )}
             </div>
 
             <aside className="bg-white rounded-lg p-6 self-start lg:sticky lg:top-6">
@@ -282,15 +279,31 @@ function CheckoutPage() {
                   </span>
                 </div>
               </div>
+              {mpEnabled && (
+                <button
+                  type="button"
+                  onClick={() => submitOrder("mercadopago")}
+                  disabled={submitting !== null}
+                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60 mb-2"
+                >
+                  {submitting === "mercadopago" ? "Indo pro pagamento…" : "Pagar agora com Mercado Pago"}
+                </button>
+              )}
               <button
-                type="submit"
-                disabled={place.isPending}
-                className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+                type="button"
+                onClick={() => submitOrder("whatsapp")}
+                disabled={submitting !== null}
+                className={`block w-full text-center ${mpEnabled ? "border border-primary text-primary hover:bg-primary hover:text-white" : "bg-primary text-white hover:bg-primary-dark"} py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold transition disabled:opacity-60`}
               >
-                {place.isPending ? "Enviando pedido…" : "Enviar pedido"}
+                {submitting === "whatsapp" ? "Enviando…" : (mpEnabled ? "Combinar por WhatsApp" : "Enviar pedido")}
               </button>
+              {submitError && (
+                <p className="text-red-700 text-sm mt-3">{submitError}</p>
+              )}
               <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                Elisa entra em contato em até 24h pelo WhatsApp para combinar pagamento e frete.
+                {mpEnabled
+                  ? "Pague online com cartão, PIX ou boleto, ou combine pagamento e frete diretamente com a Elisa via WhatsApp."
+                  : "Elisa entra em contato em até 24h pelo WhatsApp para combinar pagamento e frete."}
               </p>
             </aside>
           </form>
