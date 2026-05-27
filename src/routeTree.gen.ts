@@ -30,6 +30,7 @@ import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
@@ -145,6 +146,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPedidosRoute = AdminPedidosRouteImport.update({
+  id: '/admin/pedidos',
+  path: '/admin/pedidos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   id: '/admin/agendamentos',
   path: '/admin/agendamentos',
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -235,6 +242,7 @@ export interface FileRoutesByTo {
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -268,6 +276,7 @@ export interface FileRoutesById {
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -302,6 +311,7 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/admin/agendamentos'
+    | '/admin/pedidos'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -334,6 +344,7 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/admin/agendamentos'
+    | '/admin/pedidos'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '/perfumista'
     | '/sobre'
     | '/admin/agendamentos'
+    | '/admin/pedidos'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -399,6 +411,7 @@ export interface RootRouteChildren {
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
+  AdminPedidosRoute: typeof AdminPedidosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
@@ -569,6 +582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/pedidos': {
+      id: '/admin/pedidos'
+      path: '/admin/pedidos'
+      fullPath: '/admin/pedidos'
+      preLoaderRoute: typeof AdminPedidosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/agendamentos': {
       id: '/admin/agendamentos'
       path: '/admin/agendamentos'
@@ -657,6 +677,7 @@ const rootRouteChildren: RootRouteChildren = {
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
+  AdminPedidosRoute: AdminPedidosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
