@@ -20,12 +20,14 @@ import { Route as PainelIndexRouteImport } from './routes/painel/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PainelTentativasRouteImport } from './routes/painel/tentativas'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
@@ -88,6 +90,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PainelTentativasRoute = PainelTentativasRouteImport.update({
   id: '/painel/tentativas',
   path: '/painel/tentativas',
@@ -116,6 +123,11 @@ const CertificadoCodeRoute = CertificadoCodeRouteImport.update({
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
+  id: '/admin/agendamentos',
+  path: '/admin/agendamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCursosIndexRoute = AdminCursosIndexRouteImport.update({
@@ -158,12 +170,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
@@ -183,12 +197,14 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
@@ -209,12 +225,14 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/sobre': typeof SobreRoute
+  '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
@@ -236,12 +254,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/sobre'
+    | '/admin/agendamentos'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/admin/'
     | '/blog/'
     | '/cursos/'
     | '/loja/'
@@ -261,12 +281,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/sobre'
+    | '/admin/agendamentos'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/admin'
     | '/blog'
     | '/cursos'
     | '/loja'
@@ -286,12 +308,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/sobre'
+    | '/admin/agendamentos'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/tentativas'
+    | '/admin/'
     | '/blog/'
     | '/cursos/'
     | '/loja/'
@@ -312,12 +336,14 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PerfumistaRoute: typeof PerfumistaRoute
   SobreRoute: typeof SobreRoute
+  AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
   LojaSlugRoute: typeof LojaSlugRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelTentativasRoute: typeof PainelTentativasRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
@@ -408,6 +434,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/painel/tentativas': {
       id: '/painel/tentativas'
       path: '/painel/tentativas'
@@ -448,6 +481,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/agendamentos': {
+      id: '/admin/agendamentos'
+      path: '/admin/agendamentos'
+      fullPath: '/admin/agendamentos'
+      preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/cursos/': {
@@ -514,12 +554,14 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PerfumistaRoute: PerfumistaRoute,
   SobreRoute: SobreRoute,
+  AdminAgendamentosRoute: AdminAgendamentosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
   LojaSlugRoute: LojaSlugRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelTentativasRoute: PainelTentativasRoute,
+  AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
   LojaIndexRoute: LojaIndexRoute,

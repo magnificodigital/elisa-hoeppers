@@ -147,3 +147,28 @@ export function formatTime(d: Date): string {
 export function formatDate(d: Date): string {
   return d.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric", timeZone: TIMEZONE });
 }
+
+// =================== ADMIN ===================
+export type AppointmentWithService = Appointment & {
+  service: { slug: string; title: string; duration_min: number; price_cents: number; is_online: boolean; is_group: boolean };
+};
+
+export async function listAppointmentsForAdmin(filter?: { status?: Appointment["status"] }): Promise<AppointmentWithService[]> {
+  let q = supabase
+    .from("appointments")
+    .select(`
+      id, code, service_id, user_id, customer_name, customer_email, customer_phone,
+      starts_at, ends_at, status, notes, created_at,
+      service:services ( slug, title, duration_min, price_cents, is_online, is_group )
+    `)
+    .order("starts_at", { ascending: true });
+  if (filter?.status) q = q.eq("status", filter.status);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []) as unknown as AppointmentWithService[];
+}
+
+export async function updateAppointmentStatus(id: string, status: Appointment["status"]): Promise<void> {
+  const { error } = await supabase.from("appointments").update({ status }).eq("id", id);
+  if (error) throw error;
+}
