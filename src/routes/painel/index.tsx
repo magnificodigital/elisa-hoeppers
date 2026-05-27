@@ -142,6 +142,20 @@ function PainelPage() {
 
             {/* Main content */}
             <div className="flex-1 min-w-0">
+              {(profile?.role === "admin" || profile?.role === "instructor") && (
+                <div className="mb-6 bg-primary/10 border border-primary/20 rounded-lg px-4 py-3 flex items-center justify-between gap-3">
+                  <p className="text-sm text-primary-dark">
+                    Você tem acesso à área administrativa.
+                  </p>
+                  <Link
+                    to="/admin"
+                    className="text-xs uppercase tracking-widest bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition shrink-0"
+                  >
+                    Abrir admin
+                  </Link>
+                </div>
+              )}
+
               {/* Header: avatar + saudação + sair */}
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
