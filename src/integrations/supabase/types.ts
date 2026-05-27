@@ -481,6 +481,68 @@ export type Database = {
           },
         ]
       }
+      orders: {
+        Row: {
+          code: string
+          created_at: string
+          customer_address: Json | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id: string
+          items: Json
+          notes: string | null
+          shipping_cents: number
+          status: Database["public"]["Enums"]["order_status"]
+          subtotal_cents: number
+          total_cents: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          customer_address?: Json | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id?: string
+          items: Json
+          notes?: string | null
+          shipping_cents?: number
+          status?: Database["public"]["Enums"]["order_status"]
+          subtotal_cents: number
+          total_cents: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          customer_address?: Json | null
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          id?: string
+          items?: Json
+          notes?: string | null
+          shipping_cents?: number
+          status?: Database["public"]["Enums"]["order_status"]
+          subtotal_cents?: number
+          total_cents?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category: string | null
@@ -865,6 +927,20 @@ export type Database = {
       }
       gen_appointment_code: { Args: never; Returns: string }
       gen_certificate_code: { Args: never; Returns: string }
+      gen_order_code: { Args: never; Returns: string }
+      get_order_by_code: {
+        Args: { p_code: string }
+        Returns: {
+          code: string
+          created_at: string
+          customer_name: string
+          items: Json
+          shipping_cents: number
+          status: Database["public"]["Enums"]["order_status"]
+          subtotal_cents: number
+          total_cents: number
+        }[]
+      }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
       issue_certificate: {
         Args: { p_course_id: string }
@@ -880,6 +956,22 @@ export type Database = {
       mark_lesson_complete: {
         Args: { p_lesson_id: string; p_watched_seconds?: number }
         Returns: undefined
+      }
+      place_order: {
+        Args: {
+          p_customer_address?: Json
+          p_customer_email: string
+          p_customer_name: string
+          p_customer_phone: string
+          p_items: Json
+          p_notes?: string
+        }
+        Returns: {
+          code: string
+          order_id: string
+          subtotal_cents: number
+          total_cents: number
+        }[]
       }
       submit_quiz_attempt: {
         Args: { p_answers: Json; p_quiz_id: string }
@@ -897,6 +989,12 @@ export type Database = {
       appointment_status: "pending" | "confirmed" | "cancelled" | "completed"
       course_level: "iniciante" | "intermediario" | "avancado" | "todos"
       enrollment_status: "active" | "cancelled" | "completed"
+      order_status:
+        | "pending"
+        | "confirmed"
+        | "shipped"
+        | "cancelled"
+        | "completed"
       question_type: "multiple_choice" | "true_false"
       user_role: "student" | "instructor" | "admin"
     }
@@ -1029,6 +1127,13 @@ export const Constants = {
       appointment_status: ["pending", "confirmed", "cancelled", "completed"],
       course_level: ["iniciante", "intermediario", "avancado", "todos"],
       enrollment_status: ["active", "cancelled", "completed"],
+      order_status: [
+        "pending",
+        "confirmed",
+        "shipped",
+        "cancelled",
+        "completed",
+      ],
       question_type: ["multiple_choice", "true_false"],
       user_role: ["student", "instructor", "admin"],
     },
