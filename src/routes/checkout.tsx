@@ -70,8 +70,18 @@ function CheckoutPage() {
     }
   }, [user, profile]);
 
-  const place = useMutation({
-    mutationFn: async () => {
+  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [mpEnabled, setMpEnabled] = useState(false);
+
+  useEffect(() => {
+    getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
+  }, []);
+
+  async function submitOrder(method: "whatsapp" | "mercadopago") {
+    setSubmitError(null);
+    try {
+      setSubmitting(method);
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
@@ -93,16 +103,33 @@ function CheckoutPage() {
       });
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
-      return row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
-    },
-    onSuccess: (res) => {
-      supabase.functions
-        .invoke("send-notification", { body: { type: "order", record_id: res.order_id } })
-        .catch((e) => console.error("email failed:", e));
+      const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
+
+      supabase.functions.invoke("send-notification", {
+        body: { type: "order", record_id: orderResult.order_id },
+      }).catch((e) => console.error("email failed:", e));
+
+      if (method === "mercadopago") {
+        const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
+          body: { order_id: orderResult.order_id },
+        });
+        if (payErr) throw payErr;
+        const initPoint = (payData as { init_point?: string })?.init_point;
+        if (!initPoint) throw new Error("Falha ao criar pagamento");
+        clear();
+        window.location.href = initPoint;
+        return;
+      }
+
+      await supabase.from("orders").update({ payment_method: "whatsapp" }).eq("id", orderResult.order_id);
       clear();
-      navigate({ to: "/pedido/$code", params: { code: res.code } });
-    },
-  });
+      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+    } catch (err) {
+      setSubmitError((err as Error).message);
+    } finally {
+      setSubmitting(null);
+    }
+  }
 
   if (totalItems === 0) return null;
 
