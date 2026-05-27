@@ -24,6 +24,9 @@ type Order = {
 };
 
 export const Route = createFileRoute("/pedido/$code")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    status: typeof s.status === "string" ? s.status : undefined,
+  }),
   loader: async ({ params }) => {
     const { data, error } = await supabase.rpc("get_order_by_code", { p_code: params.code });
     if (error) throw error;
