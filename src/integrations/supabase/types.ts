@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          category: string
+          description: string | null
+          display_order: number
+          is_secret: boolean
+          key: string
+          label: string | null
+          updated_at: string
+          value: string | null
+        }
+        Insert: {
+          category?: string
+          description?: string | null
+          display_order?: number
+          is_secret?: boolean
+          key: string
+          label?: string | null
+          updated_at?: string
+          value?: string | null
+        }
+        Update: {
+          category?: string
+          description?: string | null
+          display_order?: number
+          is_secret?: boolean
+          key?: string
+          label?: string | null
+          updated_at?: string
+          value?: string | null
+        }
+        Relationships: []
+      }
       appointments: {
         Row: {
           code: string
@@ -492,6 +525,10 @@ export type Database = {
           id: string
           items: Json
           notes: string | null
+          paid_at: string | null
+          payment_id: string | null
+          payment_method: string | null
+          payment_preference_id: string | null
           shipping_cents: number
           status: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
@@ -509,6 +546,10 @@ export type Database = {
           id?: string
           items: Json
           notes?: string | null
+          paid_at?: string | null
+          payment_id?: string | null
+          payment_method?: string | null
+          payment_preference_id?: string | null
           shipping_cents?: number
           status?: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
@@ -526,6 +567,10 @@ export type Database = {
           id?: string
           items?: Json
           notes?: string | null
+          paid_at?: string | null
+          payment_id?: string | null
+          payment_method?: string | null
+          payment_preference_id?: string | null
           shipping_cents?: number
           status?: Database["public"]["Enums"]["order_status"]
           subtotal_cents?: number

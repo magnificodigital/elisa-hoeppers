@@ -24,6 +24,9 @@ type Order = {
 };
 
 export const Route = createFileRoute("/pedido/$code")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    status: typeof s.status === "string" ? s.status : undefined,
+  }),
   loader: async ({ params }) => {
     const { data, error } = await supabase.rpc("get_order_by_code", { p_code: params.code });
     if (error) throw error;
@@ -56,6 +59,16 @@ export const Route = createFileRoute("/pedido/$code")({
 
 function OrderPage() {
   const { order } = Route.useLoaderData();
+  const search = Route.useSearch();
+  const banner =
+    search.status === "success"
+      ? { cls: "bg-primary/10 text-primary-dark border-primary/30", text: "✅ Pagamento aprovado! A Elisa vai entrar em contato pra combinar o envio." }
+      : search.status === "pending"
+      ? { cls: "bg-peach/40 text-primary-dark border-peach", text: "⏳ Pagamento em processamento. PIX cai em minutos, boleto pode levar até 2 dias úteis." }
+      : search.status === "failure"
+      ? { cls: "bg-red-50 text-red-700 border-red-200", text: "❌ Pagamento não foi concluído. Tente novamente ou combine via WhatsApp." }
+      : null;
+
   const wppItems = order.items
     .map((i: OrderItem) => `• ${i.qty}× ${i.name} — ${formatPriceBRL(i.total_cents)}`)
     .join("%0A");
@@ -66,6 +79,11 @@ function OrderPage() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[720px] mx-auto px-4 md:px-6">
+          {banner && (
+            <div className={`mb-6 rounded-lg border px-4 py-3 text-sm ${banner.cls}`}>
+              {banner.text}
+            </div>
+          )}
           <div className="text-center mb-10">
             <div className="w-16 h-16 mx-auto bg-primary text-white rounded-full flex items-center justify-center mb-4">
               <Check className="w-8 h-8" />

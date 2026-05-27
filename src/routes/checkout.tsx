@@ -1,11 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/lib/cart";
 import { formatPriceBRL } from "@/lib/shop";
+import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/checkout")({
@@ -70,8 +70,18 @@ function CheckoutPage() {
     }
   }, [user, profile]);
 
-  const place = useMutation({
-    mutationFn: async () => {
+  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [mpEnabled, setMpEnabled] = useState(false);
+
+  useEffect(() => {
+    getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
+  }, []);
+
+  async function submitOrder(method: "whatsapp" | "mercadopago") {
+    setSubmitError(null);
+    try {
+      setSubmitting(method);
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
@@ -93,16 +103,33 @@ function CheckoutPage() {
       });
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
-      return row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
-    },
-    onSuccess: (res) => {
-      supabase.functions
-        .invoke("send-notification", { body: { type: "order", record_id: res.order_id } })
-        .catch((e) => console.error("email failed:", e));
+      const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
+
+      supabase.functions.invoke("send-notification", {
+        body: { type: "order", record_id: orderResult.order_id },
+      }).catch((e) => console.error("email failed:", e));
+
+      if (method === "mercadopago") {
+        const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
+          body: { order_id: orderResult.order_id },
+        });
+        if (payErr) throw payErr;
+        const initPoint = (payData as { init_point?: string })?.init_point;
+        if (!initPoint) throw new Error("Falha ao criar pagamento");
+        clear();
+        window.location.href = initPoint;
+        return;
+      }
+
+      await supabase.from("orders").update({ payment_method: "whatsapp" }).eq("id", orderResult.order_id);
       clear();
-      navigate({ to: "/pedido/$code", params: { code: res.code } });
-    },
-  });
+      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+    } catch (err) {
+      setSubmitError((err as Error).message);
+    } finally {
+      setSubmitting(null);
+    }
+  }
 
   if (totalItems === 0) return null;
 
@@ -121,10 +148,7 @@ function CheckoutPage() {
           </h1>
 
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              place.mutate();
-            }}
+            onSubmit={(e) => e.preventDefault()}
             className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8"
           >
             <div className="space-y-6">
@@ -223,9 +247,6 @@ function CheckoutPage() {
                 />
               </Section>
 
-              {place.error && (
-                <p className="text-red-700 text-sm">{(place.error as Error).message}</p>
-              )}
             </div>
 
             <aside className="bg-white rounded-lg p-6 self-start lg:sticky lg:top-6">
@@ -258,15 +279,31 @@ function CheckoutPage() {
                   </span>
                 </div>
               </div>
+              {mpEnabled && (
+                <button
+                  type="button"
+                  onClick={() => submitOrder("mercadopago")}
+                  disabled={submitting !== null}
+                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60 mb-2"
+                >
+                  {submitting === "mercadopago" ? "Indo pro pagamento…" : "Pagar agora com Mercado Pago"}
+                </button>
+              )}
               <button
-                type="submit"
-                disabled={place.isPending}
-                className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+                type="button"
+                onClick={() => submitOrder("whatsapp")}
+                disabled={submitting !== null}
+                className={`block w-full text-center ${mpEnabled ? "border border-primary text-primary hover:bg-primary hover:text-white" : "bg-primary text-white hover:bg-primary-dark"} py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold transition disabled:opacity-60`}
               >
-                {place.isPending ? "Enviando pedido…" : "Enviar pedido"}
+                {submitting === "whatsapp" ? "Enviando…" : (mpEnabled ? "Combinar por WhatsApp" : "Enviar pedido")}
               </button>
+              {submitError && (
+                <p className="text-red-700 text-sm mt-3">{submitError}</p>
+              )}
               <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                Elisa entra em contato em até 24h pelo WhatsApp para combinar pagamento e frete.
+                {mpEnabled
+                  ? "Pague online com cartão, PIX ou boleto, ou combine pagamento e frete diretamente com a Elisa via WhatsApp."
+                  : "Elisa entra em contato em até 24h pelo WhatsApp para combinar pagamento e frete."}
               </p>
             </aside>
           </form>
