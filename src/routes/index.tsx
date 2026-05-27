@@ -6,6 +6,7 @@ import HomeCourses from "@/components/home/HomeCourses";
 import HomeBodyoga from "@/components/home/HomeBodyoga";
 import HomeOils from "@/components/home/HomeOils";
 import HomeBio from "@/components/home/HomeBio";
+import HomeReviews from "@/components/home/HomeReviews";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
 
@@ -38,6 +39,7 @@ function Index() {
       <HomeBodyoga />
       <HomeOils />
       <HomeBio />
+      <HomeReviews />
       <HomeBlog />
       <HomeInstagram />
     </Layout>

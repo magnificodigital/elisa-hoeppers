@@ -8,6 +8,7 @@ export type CourseReview = {
   comment: string | null;
   is_published: boolean;
   created_at: string;
+  author_name: string | null;
 };
 
 export type CourseReviewWithProfile = CourseReview & {
@@ -55,7 +56,7 @@ export async function listReviewsByCourse(
   const { data, error } = await supabase
     .from("course_reviews")
     .select(
-      `id, course_id, user_id, rating, comment, is_published, created_at,
+      `id, course_id, user_id, rating, comment, is_published, created_at, author_name,
        profile:profiles ( full_name, avatar_url )`,
     )
     .eq("course_id", courseId)
@@ -72,7 +73,7 @@ export async function getMyReview(courseId: string): Promise<CourseReview | null
   if (!sessionUser) return null;
   const { data, error } = await supabase
     .from("course_reviews")
-    .select("id, course_id, user_id, rating, comment, is_published, created_at")
+    .select("id, course_id, user_id, rating, comment, is_published, created_at, author_name")
     .eq("user_id", sessionUser.id)
     .eq("course_id", courseId)
     .maybeSingle();
@@ -88,11 +89,20 @@ export async function upsertMyReview(input: {
   const { data: sessionData } = await supabase.auth.getSession();
   const sessionUser = sessionData?.session?.user;
   if (!sessionUser) throw new Error("Você precisa estar logado.");
+
+  // pega nome do profile pra snapshot
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", sessionUser.id)
+    .maybeSingle();
+  const authorName = profile?.full_name ?? null;
+
   const existing = await getMyReview(input.course_id);
   if (existing) {
     const { error } = await supabase
       .from("course_reviews")
-      .update({ rating: input.rating, comment: input.comment })
+      .update({ rating: input.rating, comment: input.comment, author_name: authorName })
       .eq("id", existing.id);
     if (error) throw error;
   } else {
@@ -102,6 +112,7 @@ export async function upsertMyReview(input: {
       rating: input.rating,
       comment: input.comment,
       is_published: true,
+      author_name: authorName,
     });
     if (error) throw error;
   }
@@ -110,4 +121,30 @@ export async function upsertMyReview(input: {
 export async function deleteMyReview(reviewId: string): Promise<void> {
   const { error } = await supabase.from("course_reviews").delete().eq("id", reviewId);
   if (error) throw error;
+}
+
+export type HomeReview = {
+  id: string;
+  rating: number;
+  comment: string | null;
+  author_name: string | null;
+  created_at: string;
+  course: { slug: string; title: string; overlay_label: string | null } | null;
+};
+
+export async function listTopReviewsForHome(limit = 3): Promise<HomeReview[]> {
+  const { data, error } = await supabase
+    .from("course_reviews")
+    .select(`
+      id, rating, comment, author_name, created_at,
+      course:courses ( slug, title, overlay_label )
+    `)
+    .eq("is_published", true)
+    .gte("rating", 4)
+    .not("comment", "is", null)
+    .order("rating", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []) as unknown as HomeReview[];
 }
