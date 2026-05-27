@@ -862,6 +862,69 @@ export type Database = {
         }
         Relationships: []
       }
+      wishlist_items: {
+        Row: {
+          added_at: string
+          course_id: string | null
+          id: string
+          item_type: Database["public"]["Enums"]["wishlist_item_type"]
+          product_id: string | null
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          course_id?: string | null
+          id?: string
+          item_type: Database["public"]["Enums"]["wishlist_item_type"]
+          product_id?: string | null
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          course_id?: string | null
+          id?: string
+          item_type?: Database["public"]["Enums"]["wishlist_item_type"]
+          product_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wishlist_items_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "course_rating_summary"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "wishlist_items_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishlist_items_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "my_course_progress"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "wishlist_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishlist_items_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       course_rating_summary: {
@@ -1042,6 +1105,7 @@ export type Database = {
         | "completed"
       question_type: "multiple_choice" | "true_false"
       user_role: "student" | "instructor" | "admin"
+      wishlist_item_type: "course" | "product"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1181,6 +1245,7 @@ export const Constants = {
       ],
       question_type: ["multiple_choice", "true_false"],
       user_role: ["student", "instructor", "admin"],
+      wishlist_item_type: ["course", "product"],
     },
   },
 } as const

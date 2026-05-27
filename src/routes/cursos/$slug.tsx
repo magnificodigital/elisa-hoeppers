@@ -1,13 +1,14 @@
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Bookmark, ChevronUp, ChevronDown, ShoppingCart, Video, Eye, Lock } from "lucide-react";
+import { ChevronUp, ChevronDown, ShoppingCart, Video, Eye, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress } from "@/lib/lessons";
 import { enrollInCourse, getMyEnrollment } from "@/lib/enrollments";
 import { CourseReviews } from "@/components/CourseReviews";
+import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/cursos/$slug")({
   loader: async ({ params }) => {
@@ -84,15 +85,7 @@ function CourseDetail() {
                 </p>
               )}
             </div>
-            <button
-              type="button"
-              disabled
-              title="Em breve"
-              className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] cursor-not-allowed"
-            >
-              <Bookmark className="w-4 h-4" />
-              Lista de desejos
-            </button>
+            <WishlistButton itemType="course" itemId={course.id} />
           </div>
 
           {/* Grid: cover esquerda + sidebar direita */}

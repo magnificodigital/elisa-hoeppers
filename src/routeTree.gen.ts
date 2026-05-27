@@ -24,6 +24,7 @@ import { Route as CursosIndexRouteImport } from './routes/cursos/index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PedidoCodeRouteImport } from './routes/pedido/$code'
+import { Route as PainelWishlistRouteImport } from './routes/painel/wishlist'
 import { Route as PainelTentativasRouteImport } from './routes/painel/tentativas'
 import { Route as PainelPedidosRouteImport } from './routes/painel/pedidos'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
@@ -116,6 +117,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const PedidoCodeRoute = PedidoCodeRouteImport.update({
   id: '/pedido/$code',
   path: '/pedido/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelWishlistRoute = PainelWishlistRouteImport.update({
+  id: '/painel/wishlist',
+  path: '/painel/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PainelTentativasRoute = PainelTentativasRouteImport.update({
@@ -230,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/painel/wishlist': typeof PainelWishlistRoute
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/painel/wishlist': typeof PainelWishlistRoute
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -301,6 +309,7 @@ export interface FileRoutesById {
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
   '/painel/tentativas': typeof PainelTentativasRoute
+  '/painel/wishlist': typeof PainelWishlistRoute
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -338,6 +347,7 @@ export interface FileRouteTypes {
     | '/painel/certificados'
     | '/painel/pedidos'
     | '/painel/tentativas'
+    | '/painel/wishlist'
     | '/pedido/$code'
     | '/admin/'
     | '/blog/'
@@ -373,6 +383,7 @@ export interface FileRouteTypes {
     | '/painel/certificados'
     | '/painel/pedidos'
     | '/painel/tentativas'
+    | '/painel/wishlist'
     | '/pedido/$code'
     | '/admin'
     | '/blog'
@@ -408,6 +419,7 @@ export interface FileRouteTypes {
     | '/painel/certificados'
     | '/painel/pedidos'
     | '/painel/tentativas'
+    | '/painel/wishlist'
     | '/pedido/$code'
     | '/admin/'
     | '/blog/'
@@ -444,6 +456,7 @@ export interface RootRouteChildren {
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelPedidosRoute: typeof PainelPedidosRoute
   PainelTentativasRoute: typeof PainelTentativasRoute
+  PainelWishlistRoute: typeof PainelWishlistRoute
   PedidoCodeRoute: typeof PedidoCodeRoute
   AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -564,6 +577,13 @@ declare module '@tanstack/react-router' {
       path: '/pedido/$code'
       fullPath: '/pedido/$code'
       preLoaderRoute: typeof PedidoCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel/wishlist': {
+      id: '/painel/wishlist'
+      path: '/painel/wishlist'
+      fullPath: '/painel/wishlist'
+      preLoaderRoute: typeof PainelWishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/painel/tentativas': {
@@ -726,6 +746,7 @@ const rootRouteChildren: RootRouteChildren = {
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelPedidosRoute: PainelPedidosRoute,
   PainelTentativasRoute: PainelTentativasRoute,
+  PainelWishlistRoute: PainelWishlistRoute,
   PedidoCodeRoute: PedidoCodeRoute,
   AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
