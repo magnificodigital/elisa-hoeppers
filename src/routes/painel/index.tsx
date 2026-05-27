@@ -24,7 +24,7 @@ const navItems = [
   { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: false },
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
   { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
-  { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: false },
+  { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: true },
   { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: false },
   { id: "config", icon: Settings, label: "Configurações", enabled: false },
 ];
@@ -105,6 +105,10 @@ function PainelPage() {
                             </Link>
                           ) : item.id === "certificados" ? (
                             <Link to="/painel/certificados" className="flex-1">
+                              {item.label}
+                            </Link>
+                          ) : item.id === "pedidos" ? (
+                            <Link to="/painel/pedidos" className="flex-1">
                               {item.label}
                             </Link>
                           ) : (
