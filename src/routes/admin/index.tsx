@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { GraduationCap, Calendar, ShoppingBag, Package } from "lucide-react";
+import { GraduationCap, Calendar, ShoppingBag, Package, Settings } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
