@@ -33,6 +33,7 @@ import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
+import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
@@ -164,6 +165,11 @@ const AdminPedidosRoute = AdminPedidosRouteImport.update({
   path: '/admin/pedidos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInscritosRoute = AdminInscritosRouteImport.update({
+  id: '/admin/inscritos',
+  path: '/admin/inscritos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
   id: '/admin/configuracoes',
   path: '/admin/configuracoes',
@@ -228,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -264,6 +271,7 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -301,6 +309,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -339,6 +348,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
+    | '/admin/inscritos'
     | '/admin/pedidos'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
+    | '/admin/inscritos'
     | '/admin/pedidos'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -411,6 +422,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
+    | '/admin/inscritos'
     | '/admin/pedidos'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -448,6 +460,7 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
+  AdminInscritosRoute: typeof AdminInscritosRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
@@ -642,6 +655,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPedidosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/inscritos': {
+      id: '/admin/inscritos'
+      path: '/admin/inscritos'
+      fullPath: '/admin/inscritos'
+      preLoaderRoute: typeof AdminInscritosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes': {
       id: '/admin/configuracoes'
       path: '/admin/configuracoes'
@@ -738,6 +758,7 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
+  AdminInscritosRoute: AdminInscritosRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
