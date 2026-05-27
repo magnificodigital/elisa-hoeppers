@@ -96,6 +96,9 @@ function CheckoutPage() {
       return row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
     },
     onSuccess: (res) => {
+      supabase.functions
+        .invoke("send-notification", { body: { type: "order", record_id: res.order_id } })
+        .catch((e) => console.error("email failed:", e));
       clear();
       navigate({ to: "/pedido/$code", params: { code: res.code } });
     },
