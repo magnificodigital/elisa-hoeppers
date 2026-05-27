@@ -31,9 +31,11 @@ import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
+import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
+import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
 import { Route as AdminCursosIdAulasLessonIdQuizRouteImport } from './routes/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -148,6 +150,11 @@ const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   path: '/admin/agendamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminProdutosIndexRoute = AdminProdutosIndexRouteImport.update({
+  id: '/admin/produtos/',
+  path: '/admin/produtos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminCursosIndexRoute = AdminCursosIndexRouteImport.update({
   id: '/admin/cursos/',
   path: '/admin/cursos/',
@@ -161,6 +168,11 @@ const PainelCursoSlugRoute = PainelCursoSlugRouteImport.update({
 const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
   id: '/painel/aula/$lessonId',
   path: '/painel/aula/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
+  id: '/admin/produtos/$id',
+  path: '/admin/produtos/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCursosIdEditarRoute = AdminCursosIdEditarRouteImport.update({
@@ -203,9 +215,11 @@ export interface FileRoutesByFullPath {
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
+  '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
+  '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -233,9 +247,11 @@ export interface FileRoutesByTo {
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
+  '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
+  '/admin/produtos': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -264,9 +280,11 @@ export interface FileRoutesById {
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
+  '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
+  '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -296,9 +314,11 @@ export interface FileRouteTypes {
     | '/cursos/'
     | '/loja/'
     | '/painel/'
+    | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/painel/curso/$slug'
     | '/admin/cursos/'
+    | '/admin/produtos/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -326,9 +346,11 @@ export interface FileRouteTypes {
     | '/cursos'
     | '/loja'
     | '/painel'
+    | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/painel/curso/$slug'
     | '/admin/cursos'
+    | '/admin/produtos'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -356,9 +378,11 @@ export interface FileRouteTypes {
     | '/cursos/'
     | '/loja/'
     | '/painel/'
+    | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/painel/curso/$slug'
     | '/admin/cursos/'
+    | '/admin/produtos/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -387,9 +411,11 @@ export interface RootRouteChildren {
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
+  AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   PainelCursoSlugRoute: typeof PainelCursoSlugRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
+  AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
   AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
 }
@@ -550,6 +576,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/produtos/': {
+      id: '/admin/produtos/'
+      path: '/admin/produtos'
+      fullPath: '/admin/produtos/'
+      preLoaderRoute: typeof AdminProdutosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/cursos/': {
       id: '/admin/cursos/'
       path: '/admin/cursos'
@@ -569,6 +602,13 @@ declare module '@tanstack/react-router' {
       path: '/painel/aula/$lessonId'
       fullPath: '/painel/aula/$lessonId'
       preLoaderRoute: typeof PainelAulaLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/produtos/$id': {
+      id: '/admin/produtos/$id'
+      path: '/admin/produtos/$id'
+      fullPath: '/admin/produtos/$id'
+      preLoaderRoute: typeof AdminProdutosIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/cursos/$id/editar': {
@@ -629,9 +669,11 @@ const rootRouteChildren: RootRouteChildren = {
   CursosIndexRoute: CursosIndexRoute,
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
+  AdminProdutosIdRoute: AdminProdutosIdRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   PainelCursoSlugRoute: PainelCursoSlugRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
+  AdminProdutosIndexRoute: AdminProdutosIndexRoute,
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
 }
