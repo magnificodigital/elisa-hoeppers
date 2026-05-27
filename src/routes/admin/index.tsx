@@ -17,6 +17,7 @@ const sections = [
   { to: "/admin/agendamentos", icon: Calendar, title: "Agendamentos", desc: "Confirme reservas de aulas." },
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
+  { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Chaves de integrações (Mercado Pago, etc)." },
 ] as const;
 
 function AdminHome() {
