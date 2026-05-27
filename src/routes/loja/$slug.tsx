@@ -184,3 +184,68 @@ function ProductDetail() {
     </Layout>
   );
 }
+
+function AddToCartButton({ product }: { product: Product }) {
+  const { addItem } = useCart();
+  const navigate = useNavigate();
+  const [added, setAdded] = useState(false);
+  const [qty, setQty] = useState(1);
+
+  function handleAdd(goToCart: boolean) {
+    addItem({
+      product_id: product.id,
+      slug: product.slug,
+      name: product.name,
+      image: firstImage(product),
+      unit_price_cents: product.price_cents,
+      qty,
+    });
+    if (goToCart) {
+      navigate({ to: "/carrinho" });
+    } else {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs uppercase tracking-widest text-primary-dark">
+          Quantidade
+        </span>
+        <div className="inline-flex items-center border border-border rounded-full overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setQty(Math.max(1, qty - 1))}
+            className="w-9 h-9 hover:bg-cream/50 text-primary-dark"
+          >
+            −
+          </button>
+          <span className="w-10 text-center text-sm text-primary-dark">{qty}</span>
+          <button
+            type="button"
+            onClick={() => setQty(qty + 1)}
+            className="w-9 h-9 hover:bg-cream/50 text-primary-dark"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={() => handleAdd(false)}
+        className="block w-full text-center border-2 border-primary text-primary py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary hover:text-white transition"
+      >
+        {added ? "✓ Adicionado ao carrinho" : "Adicionar ao carrinho"}
+      </button>
+      <button
+        type="button"
+        onClick={() => handleAdd(true)}
+        className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+      >
+        Comprar agora
+      </button>
+    </div>
+  );
+}

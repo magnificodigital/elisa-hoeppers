@@ -57,7 +57,7 @@ export const Route = createFileRoute("/pedido/$code")({
 function OrderPage() {
   const { order } = Route.useLoaderData();
   const wppItems = order.items
-    .map((i) => `• ${i.qty}× ${i.name} — ${formatPriceBRL(i.total_cents)}`)
+    .map((i: OrderItem) => `• ${i.qty}× ${i.name} — ${formatPriceBRL(i.total_cents)}`)
     .join("%0A");
   const wppMsg = `Oi Elisa! Acabei de fazer o pedido %23${order.code}.%0A%0A${wppItems}%0A%0ATotal: ${formatPriceBRL(order.total_cents)}%0A%0AMe avisa como combinamos frete e pagamento, por favor!`;
   const wppLink = `https://wa.me/5547999999999?text=${wppMsg}`;
@@ -86,7 +86,7 @@ function OrderPage() {
           <div className="bg-white rounded-lg p-6 mb-6">
             <h2 className="font-display text-xl text-primary-dark mb-4">Itens</h2>
             <ul className="space-y-3">
-              {order.items.map((it) => (
+              {order.items.map((it: OrderItem) => (
                 <li
                   key={it.product_id}
                   className="flex justify-between gap-3 pb-3 border-b border-border last:border-0 last:pb-0"
