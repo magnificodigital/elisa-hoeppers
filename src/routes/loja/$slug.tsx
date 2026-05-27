@@ -1,8 +1,9 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, MessageCircle, Truck, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
-import { getProductBySlug, formatPriceBRL } from "@/lib/shop";
+import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
@@ -135,19 +136,13 @@ function ProductDetail() {
               )}
 
               {product.in_stock ? (
-                <a
-                  href={wppLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 inline-flex items-center justify-center gap-2 w-full md:w-auto bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-md transition"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Comprar pelo WhatsApp
-                </a>
+                <div className="mt-6">
+                  <AddToCartButton product={product} />
+                </div>
               ) : (
                 <button
                   disabled
-                  className="mt-6 inline-flex items-center justify-center w-full md:w-auto bg-muted text-[var(--text-muted)] px-8 py-3 rounded-md cursor-not-allowed"
+                  className="mt-6 block w-full text-center bg-sand text-[var(--text-muted)] py-4 rounded-full uppercase tracking-[0.2em] text-xs font-semibold cursor-not-allowed"
                 >
                   Fora de estoque
                 </button>
@@ -187,5 +182,70 @@ function ProductDetail() {
         </div>
       </section>
     </Layout>
+  );
+}
+
+function AddToCartButton({ product }: { product: Product }) {
+  const { addItem } = useCart();
+  const navigate = useNavigate();
+  const [added, setAdded] = useState(false);
+  const [qty, setQty] = useState(1);
+
+  function handleAdd(goToCart: boolean) {
+    addItem({
+      product_id: product.id,
+      slug: product.slug,
+      name: product.name,
+      image: firstImage(product),
+      unit_price_cents: product.price_cents,
+      qty,
+    });
+    if (goToCart) {
+      navigate({ to: "/carrinho" });
+    } else {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs uppercase tracking-widest text-primary-dark">
+          Quantidade
+        </span>
+        <div className="inline-flex items-center border border-border rounded-full overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setQty(Math.max(1, qty - 1))}
+            className="w-9 h-9 hover:bg-cream/50 text-primary-dark"
+          >
+            −
+          </button>
+          <span className="w-10 text-center text-sm text-primary-dark">{qty}</span>
+          <button
+            type="button"
+            onClick={() => setQty(qty + 1)}
+            className="w-9 h-9 hover:bg-cream/50 text-primary-dark"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={() => handleAdd(false)}
+        className="block w-full text-center border-2 border-primary text-primary py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary hover:text-white transition"
+      >
+        {added ? "✓ Adicionado ao carrinho" : "Adicionar ao carrinho"}
+      </button>
+      <button
+        type="button"
+        onClick={() => handleAdd(true)}
+        className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+      >
+        Comprar agora
+      </button>
+    </div>
   );
 }

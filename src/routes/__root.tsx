@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { FloatingCart } from "@/components/FloatingCart";
 
 import appCss from "../styles.css?url";
 
@@ -118,6 +119,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Outlet />
+        <FloatingCart />
       </AuthProvider>
     </QueryClientProvider>
   );
