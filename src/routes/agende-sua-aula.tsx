@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import {
   listServices, listTakenSlots, bookAppointment, generateSlotsForDate,
+  listAvailabilityRules, listAvailabilityBlocks,
   formatCurrencyBRL, formatTime, formatDate,
   type Service,
 } from "@/lib/appointments";
@@ -33,6 +34,16 @@ function BookingPage() {
   const { data: taken } = useQuery({
     queryKey: ["taken-slots"],
     queryFn: listTakenSlots,
+  });
+
+  const { data: rules } = useQuery({
+    queryKey: ["availability-rules"],
+    queryFn: listAvailabilityRules,
+  });
+
+  const { data: blocks } = useQuery({
+    queryKey: ["availability-blocks"],
+    queryFn: listAvailabilityBlocks,
   });
 
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -64,8 +75,8 @@ function BookingPage() {
 
   const slots = useMemo(() => {
     if (!selectedService) return [];
-    return generateSlotsForDate(selectedDate, selectedService.duration_min, taken ?? []);
-  }, [selectedService, selectedDate, taken]);
+    return generateSlotsForDate(selectedDate, selectedService.duration_min, taken ?? [], rules, blocks);
+  }, [selectedService, selectedDate, taken, rules, blocks]);
 
   const bookMutation = useMutation({
     mutationFn: () =>

@@ -34,6 +34,7 @@ import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
+import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
@@ -170,6 +171,11 @@ const AdminInscritosRoute = AdminInscritosRouteImport.update({
   path: '/admin/inscritos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminDisponibilidadeRoute = AdminDisponibilidadeRouteImport.update({
+  id: '/admin/disponibilidade',
+  path: '/admin/disponibilidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
   id: '/admin/configuracoes',
   path: '/admin/configuracoes',
@@ -234,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -309,6 +317,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
+    | '/admin/disponibilidade'
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/blog/$slug'
@@ -385,6 +395,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
+    | '/admin/disponibilidade'
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/blog/$slug'
@@ -422,6 +433,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
+    | '/admin/disponibilidade'
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/blog/$slug'
@@ -460,6 +472,7 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
+  AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -662,6 +675,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInscritosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/disponibilidade': {
+      id: '/admin/disponibilidade'
+      path: '/admin/disponibilidade'
+      fullPath: '/admin/disponibilidade'
+      preLoaderRoute: typeof AdminDisponibilidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes': {
       id: '/admin/configuracoes'
       path: '/admin/configuracoes'
@@ -758,6 +778,7 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
+  AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
   AdminInscritosRoute: AdminInscritosRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   BlogSlugRoute: BlogSlugRoute,

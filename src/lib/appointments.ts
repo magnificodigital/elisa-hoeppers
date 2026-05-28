@@ -108,35 +108,70 @@ export type Slot = { startsAt: Date; endsAt: Date; available: boolean };
 
 const TIMEZONE = "America/Sao_Paulo";
 
-function getAvailabilityForDate(d: Date): { startHour: number; endHour: number } | null {
-  const day = d.getDay();
-  if (day === 0) return null;
-  if (day === 6) return { startHour: 8, endHour: 12 };
-  return { startHour: 8, endHour: 18 };
+function parseHM(s: string | null): { h: number; m: number } | null {
+  if (!s) return null;
+  const [h, m] = s.split(":").map(Number);
+  if (isNaN(h) || isNaN(m)) return null;
+  return { h, m };
 }
 
-export function generateSlotsForDate(date: Date, durationMin: number, taken: TakenSlot[]): Slot[] {
-  const avail = getAvailabilityForDate(date);
-  if (!avail) return [];
+export function generateSlotsForDate(
+  date: Date,
+  durationMin: number,
+  taken: TakenSlot[],
+  rules?: AvailabilityRule[] | null,
+  blocks?: AvailabilityBlock[] | null,
+): Slot[] {
+  const defaultRule = (day: number): { start: { h: number; m: number }; end: { h: number; m: number } } | null => {
+    if (day === 0) return null;
+    if (day === 6) return { start: { h: 8, m: 0 }, end: { h: 12, m: 0 } };
+    return { start: { h: 8, m: 0 }, end: { h: 18, m: 0 } };
+  };
+
+  const day = date.getDay();
+  let window: { start: { h: number; m: number }; end: { h: number; m: number } } | null = null;
+
+  if (rules && rules.length > 0) {
+    const r = rules.find((x) => x.day_of_week === day);
+    if (r && r.is_active) {
+      const s = parseHM(r.start_time);
+      const e = parseHM(r.end_time);
+      if (s && e) window = { start: s, end: e };
+    }
+  } else {
+    window = defaultRule(day);
+  }
+
+  if (!window) return [];
+
   const slots: Slot[] = [];
   const base = new Date(date);
   base.setHours(0, 0, 0, 0);
 
   const takenRanges = taken.map((t) => ({ start: new Date(t.starts_at), end: new Date(t.ends_at) }));
+  const blockRanges = (blocks ?? []).map((b) => ({ start: new Date(b.starts_at), end: new Date(b.ends_at) }));
 
-  for (let h = avail.startHour; h < avail.endHour; h++) {
-    for (let m = 0; m < 60; m += 30) {
-      const startsAt = new Date(base);
-      startsAt.setHours(h, m, 0, 0);
-      const endsAt = new Date(startsAt.getTime() + durationMin * 60_000);
+  let h = window.start.h;
+  let m = window.start.m;
+  while (true) {
+    const startsAt = new Date(base);
+    startsAt.setHours(h, m, 0, 0);
+    const endsAt = new Date(startsAt.getTime() + durationMin * 60_000);
 
-      if (startsAt < new Date()) continue;
-      if (endsAt.getHours() > avail.endHour || (endsAt.getHours() === avail.endHour && endsAt.getMinutes() > 0)) continue;
+    const endLimit = new Date(base);
+    endLimit.setHours(window.end.h, window.end.m, 0, 0);
+    if (endsAt > endLimit) break;
 
-      const collision = takenRanges.some((r) => startsAt < r.end && endsAt > r.start);
-      slots.push({ startsAt, endsAt, available: !collision });
+    if (startsAt >= new Date()) {
+      const collisionTaken = takenRanges.some((r) => startsAt < r.end && endsAt > r.start);
+      const inBlock = blockRanges.some((r) => startsAt < r.end && endsAt > r.start);
+      slots.push({ startsAt, endsAt, available: !collisionTaken && !inBlock });
     }
+
+    m += 30;
+    if (m >= 60) { h += 1; m = 0; }
   }
+
   return slots;
 }
 
@@ -174,5 +209,54 @@ export async function listAppointmentsForAdmin(filter?: { status?: Appointment["
 
 export async function updateAppointmentStatus(id: string, status: Appointment["status"]): Promise<void> {
   const { error } = await supabase.from("appointments").update({ status }).eq("id", id);
+  if (error) throw error;
+}
+
+// =================== AVAILABILITY ===================
+export type AvailabilityRule = {
+  day_of_week: number;
+  is_active: boolean;
+  start_time: string | null;
+  end_time: string | null;
+};
+
+export type AvailabilityBlock = {
+  id: string;
+  starts_at: string;
+  ends_at: string;
+  reason: string | null;
+};
+
+export async function listAvailabilityRules(): Promise<AvailabilityRule[]> {
+  const { data, error } = await supabase
+    .from("availability_rules")
+    .select("*")
+    .order("day_of_week", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as AvailabilityRule[];
+}
+
+export async function updateAvailabilityRule(dayOfWeek: number, patch: Partial<AvailabilityRule>): Promise<void> {
+  const { error } = await supabase.from("availability_rules").update(patch).eq("day_of_week", dayOfWeek);
+  if (error) throw error;
+}
+
+export async function listAvailabilityBlocks(): Promise<AvailabilityBlock[]> {
+  const { data, error } = await supabase
+    .from("availability_blocks")
+    .select("*")
+    .gte("ends_at", new Date().toISOString())
+    .order("starts_at", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as AvailabilityBlock[];
+}
+
+export async function createAvailabilityBlock(input: { starts_at: string; ends_at: string; reason?: string }): Promise<void> {
+  const { error } = await supabase.from("availability_blocks").insert(input);
+  if (error) throw error;
+}
+
+export async function deleteAvailabilityBlock(id: string): Promise<void> {
+  const { error } = await supabase.from("availability_blocks").delete().eq("id", id);
   if (error) throw error;
 }

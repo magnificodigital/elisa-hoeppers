@@ -29,6 +29,7 @@ export const Route = createFileRoute("/admin/")({
 const sections = [
   { to: "/admin/cursos", icon: GraduationCap, title: "Cursos", desc: "Edite cursos, aulas e quizzes." },
   { to: "/admin/agendamentos", icon: Calendar, title: "Agendamentos", desc: "Confirme reservas de aulas." },
+  { to: "/admin/disponibilidade", icon: Calendar, title: "Disponibilidade", desc: "Horários da semana e bloqueios." },
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
   { to: "/admin/inscritos", icon: Mail, title: "Inscritos", desc: "Lista da newsletter e exportação." },
