@@ -115,6 +115,10 @@ function PainelPage() {
                             <Link to="/painel/wishlist" className="flex-1">
                               {item.label}
                             </Link>
+                          ) : item.id === "qa" ? (
+                            <Link to="/painel/perguntas" className="flex-1">
+                              {item.label}
+                            </Link>
                           ) : (
                             <Link to={`/painel/${item.id}`} className="flex-1">
                               {item.label}
