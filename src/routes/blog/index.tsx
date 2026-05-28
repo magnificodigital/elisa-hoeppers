@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
-import { posts } from "@/data/posts";
+import { listPublishedPosts } from "@/lib/blog";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -13,6 +14,11 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogListing() {
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ["blog-posts"],
+    queryFn: listPublishedPosts,
+  });
+
   return (
     <Layout>
       <section className="py-20 md:py-28 bg-cream">
@@ -24,25 +30,31 @@ function BlogListing() {
             </p>
           </div>
 
+          {isLoading && <p className="text-center text-primary/60">Carregando posts…</p>}
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-12">
-            {posts.map((p, i) => (
+            {(posts ?? []).map((p, i) => (
               <Link
                 key={p.slug}
                 to="/blog/$slug"
                 params={{ slug: p.slug }}
                 className={`group relative aspect-[3/4] overflow-hidden block ${i === 0 ? "md:col-span-2 md:aspect-auto" : "md:col-span-1"}`}
               >
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {p.cover_image && (
+                  <img
+                    src={p.cover_image}
+                    alt={p.title}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                )}
                 <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
                 <div className="absolute inset-0 px-6 flex items-center justify-center text-center">
                   <div>
-                    <span className="block text-white/80 text-sm mb-2">
-                      {new Date(p.date).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
-                    </span>
+                    {p.published_at && (
+                      <span className="block text-white/80 text-sm mb-2">
+                        {new Date(p.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
+                      </span>
+                    )}
                     <h3 className="font-sans font-light text-white text-xl md:text-2xl leading-relaxed">
                       {p.title}
                     </h3>
