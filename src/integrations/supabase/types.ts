@@ -403,6 +403,51 @@ export type Database = {
           },
         ]
       }
+      lesson_answers: {
+        Row: {
+          author_name: string | null
+          author_role: Database["public"]["Enums"]["user_role"] | null
+          body: string
+          created_at: string
+          id: string
+          question_id: string
+          user_id: string | null
+        }
+        Insert: {
+          author_name?: string | null
+          author_role?: Database["public"]["Enums"]["user_role"] | null
+          body: string
+          created_at?: string
+          id?: string
+          question_id: string
+          user_id?: string | null
+        }
+        Update: {
+          author_name?: string | null
+          author_role?: Database["public"]["Enums"]["user_role"] | null
+          body?: string
+          created_at?: string
+          id?: string
+          question_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "lesson_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lesson_answers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lesson_progress: {
         Row: {
           completed: boolean
@@ -435,6 +480,54 @@ export type Database = {
           },
           {
             foreignKeyName: "lesson_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lesson_questions: {
+        Row: {
+          author_name: string | null
+          body: string
+          created_at: string
+          id: string
+          is_resolved: boolean
+          lesson_id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          author_name?: string | null
+          body: string
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          lesson_id: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          author_name?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          lesson_id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_questions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lesson_questions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -1174,6 +1267,7 @@ export type Database = {
         }[]
       }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
+      is_enrolled_in_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
       issue_certificate: {
         Args: { p_course_id: string }
         Returns: {

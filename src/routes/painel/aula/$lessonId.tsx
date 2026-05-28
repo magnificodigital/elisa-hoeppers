@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
 import { isEnrolledInCourse } from "@/lib/enrollments";
 import { LessonQuiz } from "@/components/LessonQuiz";
+import { LessonQA } from "@/components/LessonQA";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
   head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
@@ -300,6 +301,8 @@ function LessonPlayerPage() {
 
             {/* Navegação anterior/próxima */}
             <LessonQuiz lessonId={lesson.id} onPassed={() => completeMutation.mutate()} />
+
+            <LessonQA lessonId={lesson.id} />
 
             {/* Navegação anterior/próxima */}
             <div className="flex items-center justify-center gap-3 mt-12 pb-8">
