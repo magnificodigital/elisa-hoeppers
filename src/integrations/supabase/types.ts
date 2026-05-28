@@ -110,6 +110,54 @@ export type Database = {
           },
         ]
       }
+      availability_blocks: {
+        Row: {
+          created_at: string
+          ends_at: string
+          id: string
+          reason: string | null
+          starts_at: string
+        }
+        Insert: {
+          created_at?: string
+          ends_at: string
+          id?: string
+          reason?: string | null
+          starts_at: string
+        }
+        Update: {
+          created_at?: string
+          ends_at?: string
+          id?: string
+          reason?: string | null
+          starts_at?: string
+        }
+        Relationships: []
+      }
+      availability_rules: {
+        Row: {
+          day_of_week: number
+          end_time: string | null
+          is_active: boolean
+          start_time: string | null
+          updated_at: string
+        }
+        Insert: {
+          day_of_week: number
+          end_time?: string | null
+          is_active?: boolean
+          start_time?: string | null
+          updated_at?: string
+        }
+        Update: {
+          day_of_week?: number
+          end_time?: string | null
+          is_active?: boolean
+          start_time?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       certificates: {
         Row: {
           code: string
