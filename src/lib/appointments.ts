@@ -211,3 +211,52 @@ export async function updateAppointmentStatus(id: string, status: Appointment["s
   const { error } = await supabase.from("appointments").update({ status }).eq("id", id);
   if (error) throw error;
 }
+
+// =================== AVAILABILITY ===================
+export type AvailabilityRule = {
+  day_of_week: number;
+  is_active: boolean;
+  start_time: string | null;
+  end_time: string | null;
+};
+
+export type AvailabilityBlock = {
+  id: string;
+  starts_at: string;
+  ends_at: string;
+  reason: string | null;
+};
+
+export async function listAvailabilityRules(): Promise<AvailabilityRule[]> {
+  const { data, error } = await supabase
+    .from("availability_rules")
+    .select("*")
+    .order("day_of_week", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as AvailabilityRule[];
+}
+
+export async function updateAvailabilityRule(dayOfWeek: number, patch: Partial<AvailabilityRule>): Promise<void> {
+  const { error } = await supabase.from("availability_rules").update(patch).eq("day_of_week", dayOfWeek);
+  if (error) throw error;
+}
+
+export async function listAvailabilityBlocks(): Promise<AvailabilityBlock[]> {
+  const { data, error } = await supabase
+    .from("availability_blocks")
+    .select("*")
+    .gte("ends_at", new Date().toISOString())
+    .order("starts_at", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as AvailabilityBlock[];
+}
+
+export async function createAvailabilityBlock(input: { starts_at: string; ends_at: string; reason?: string }): Promise<void> {
+  const { error } = await supabase.from("availability_blocks").insert(input);
+  if (error) throw error;
+}
+
+export async function deleteAvailabilityBlock(id: string): Promise<void> {
+  const { error } = await supabase.from("availability_blocks").delete().eq("id", id);
+  if (error) throw error;
+}
