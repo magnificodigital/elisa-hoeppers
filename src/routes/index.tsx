@@ -40,7 +40,6 @@ function Index() {
       <HomeBodyoga />
       <HomeOils />
       <HomeBio />
-      <HomeReviews />
       <HomeBlog />
       <HomeNewsletter />
       <HomeInstagram />

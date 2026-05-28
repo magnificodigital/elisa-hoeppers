@@ -33,7 +33,7 @@ const HomeHero = () => {
               />
             </div>
             <div className="absolute inset-0 bg-black/30" />
-            <div className="relative z-10 h-full flex items-end justify-center pb-20 md:pb-28">
+            <div className="relative z-10 h-full flex items-center justify-center">
               <Link
                 to="/agende-sua-aula"
                 className="bg-primary/80 backdrop-blur-sm text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary transition"
