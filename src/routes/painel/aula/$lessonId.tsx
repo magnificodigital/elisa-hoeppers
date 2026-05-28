@@ -302,6 +302,8 @@ function LessonPlayerPage() {
             {/* Navegação anterior/próxima */}
             <LessonQuiz lessonId={lesson.id} onPassed={() => completeMutation.mutate()} />
 
+            <LessonQA lessonId={lesson.id} />
+
             {/* Navegação anterior/próxima */}
             <div className="flex items-center justify-center gap-3 mt-12 pb-8">
               {prevLesson ? (
