@@ -7,6 +7,7 @@ import {
   Package,
   Settings,
   Mail,
+  FileText,
   TrendingUp,
   DollarSign,
   Users,
@@ -33,6 +34,7 @@ const sections = [
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
   { to: "/admin/inscritos", icon: Mail, title: "Inscritos", desc: "Lista da newsletter e exportação." },
+  { to: "/admin/blog", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
 ] as const;
 
