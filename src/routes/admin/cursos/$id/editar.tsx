@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { ImageUploader } from "@/components/ImageUploader";
 import { getCourseForAdmin, updateCourse, type CourseUpdate } from "@/lib/admin";
 
 export const Route = createFileRoute("/admin/cursos/$id/editar")({
@@ -89,9 +90,13 @@ function CourseEditPage() {
             <Field label="Descrição">
               <textarea value={form.description ?? ""} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={5} className={inputCls} />
             </Field>
-            <Field label="Imagem de capa (URL ou /images/courses/...)">
-              <input value={form.cover_image ?? ""} onChange={(e) => setForm({ ...form, cover_image: e.target.value })} className={inputCls} />
-              {form.cover_image && <img src={form.cover_image} alt="" className="mt-3 w-48 aspect-[4/3] object-cover rounded" />}
+            <Field label="Imagem de capa">
+              <ImageUploader
+                value={form.cover_image ?? null}
+                onChange={(url) => setForm({ ...form, cover_image: url ?? "" })}
+                folder="courses"
+                aspectRatio="4/3"
+              />
             </Field>
             <Field label="Texto grande do card (overlay)">
               <input value={form.overlay_label ?? ""} onChange={(e) => setForm({ ...form, overlay_label: e.target.value })} className={inputCls} placeholder="Ex.: YOGA, BODYOGA" />

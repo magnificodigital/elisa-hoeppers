@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ChevronLeft, Trash2, Plus } from "lucide-react";
+import { ChevronLeft, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, type ProductImage } from "@/lib/shop";
 
 export const Route = createFileRoute("/admin/produtos/$id")({
@@ -42,7 +43,6 @@ function ProductEditPage() {
     gallery: [] as ProductImage[],
   });
   const [saved, setSaved] = useState(false);
-  const [newImageUrl, setNewImageUrl] = useState("");
 
   useEffect(() => {
     if (product) {
@@ -95,15 +95,8 @@ function ProductEditPage() {
     },
   });
 
-  function addImage() {
-    if (!newImageUrl.trim()) return;
-    setForm({ ...form, gallery: [...form.gallery, { url: newImageUrl.trim(), alt: form.name }] });
-    setNewImageUrl("");
-  }
 
-  function removeImage(i: number) {
-    setForm({ ...form, gallery: form.gallery.filter((_, idx) => idx !== i) });
-  }
+
 
   if (isLoading) {
     return (
@@ -187,38 +180,35 @@ function ProductEditPage() {
 
             <div>
               <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Imagens</label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+              <div className="flex flex-wrap gap-4">
                 {form.gallery.map((img, i) => (
-                  <div key={i} className="relative aspect-square rounded-md overflow-hidden bg-sand border border-border">
-                    <img src={img.url} alt={img.alt ?? ""} className="w-full h-full object-cover" />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(i)}
-                      className="absolute top-1 right-1 w-6 h-6 rounded-full bg-white/90 text-red-700 hover:bg-white flex items-center justify-center"
-                      aria-label="Remover imagem"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
-                  </div>
+                  <ImageUploader
+                    key={i}
+                    value={img.url}
+                    folder="products"
+                    onChange={(url) => {
+                      if (url) {
+                        const next = [...form.gallery];
+                        next[i] = { url, alt: form.name };
+                        setForm({ ...form, gallery: next });
+                      } else {
+                        setForm({ ...form, gallery: form.gallery.filter((_, idx) => idx !== i) });
+                      }
+                    }}
+                  />
                 ))}
-              </div>
-              <div className="flex gap-2">
-                <input
-                  value={newImageUrl}
-                  onChange={(e) => setNewImageUrl(e.target.value)}
-                  placeholder="URL da imagem (ex.: /images/products/foto.png)"
-                  className={inputCls + " flex-1"}
+                <ImageUploader
+                  value={null}
+                  folder="products"
+                  label="Adicionar"
+                  onChange={(url) => {
+                    if (url) setForm({ ...form, gallery: [...form.gallery, { url, alt: form.name }] });
+                  }}
                 />
-                <button
-                  type="button"
-                  onClick={addImage}
-                  className="bg-primary text-white px-4 py-2 rounded-md text-xs uppercase tracking-widest hover:bg-primary-dark transition inline-flex items-center gap-1"
-                >
-                  <Plus className="w-3.5 h-3.5" /> Adicionar
-                </button>
               </div>
-              <p className="text-[10px] text-[var(--text-muted)] mt-1">Cole o caminho da imagem (ex.: /images/products/algo.png) ou URL completa.</p>
+              <p className="text-[10px] text-[var(--text-muted)] mt-2">Clique ou arraste imagens (máx 8MB cada). Para remover, clique no X da imagem.</p>
             </div>
+
 
             {save.error && <p className="text-red-700 text-sm">{(save.error as Error).message}</p>}
 
