@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ChevronLeft, Trash2, Plus } from "lucide-react";
+import { ChevronLeft, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, type ProductImage } from "@/lib/shop";
 
 export const Route = createFileRoute("/admin/produtos/$id")({
@@ -42,7 +43,6 @@ function ProductEditPage() {
     gallery: [] as ProductImage[],
   });
   const [saved, setSaved] = useState(false);
-  const [newImageUrl, setNewImageUrl] = useState("");
 
   useEffect(() => {
     if (product) {
@@ -95,15 +95,8 @@ function ProductEditPage() {
     },
   });
 
-  function addImage() {
-    if (!newImageUrl.trim()) return;
-    setForm({ ...form, gallery: [...form.gallery, { url: newImageUrl.trim(), alt: form.name }] });
-    setNewImageUrl("");
-  }
 
-  function removeImage(i: number) {
-    setForm({ ...form, gallery: form.gallery.filter((_, idx) => idx !== i) });
-  }
+
 
   if (isLoading) {
     return (
