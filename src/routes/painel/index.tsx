@@ -25,7 +25,7 @@ const navItems = [
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
   { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
   { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: true },
-  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: false },
+  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: true },
   { id: "config", icon: Settings, label: "Configurações", enabled: false },
 ];
 
