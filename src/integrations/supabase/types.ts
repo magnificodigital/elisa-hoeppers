@@ -1046,6 +1046,7 @@ export type Database = {
       }
     }
     Functions: {
+      admin_dashboard_stats: { Args: never; Returns: Json }
       book_appointment: {
         Args: {
           p_customer_email: string
