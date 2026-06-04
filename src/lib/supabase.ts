@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const url = "https://rwxaeckgpypvjiglorto.supabase.co";
-const anon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3eGFlY2tncHlwdmppZ2xvcnRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDA3ODIsImV4cCI6MjA5NTMxNjc4Mn0.cInQFQ_PuQhKuSWjkqnz5H5oJf4ghDh11yBL1jfDAfk";
+const url = "https://rjksutoohsvwqnqlemjv.supabase.co";
+const anon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqa3N1dG9vaHN2d3FucWxlbWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1ODE1NTMsImV4cCI6MjA5NjE1NzU1M30.UDScUF2qJSPbdOjOvSrLWhJLFpb-M9vDD963MkRkL9o";
 
 const isBrowser = typeof window !== "undefined";
 
