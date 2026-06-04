@@ -1,0 +1,16 @@
+ALTER FUNCTION public.handle_new_user() SET search_path = public;
+ALTER FUNCTION public.is_enrolled(uuid) SET search_path = public;
+ALTER FUNCTION public.is_enrolled_in_lesson(uuid) SET search_path = public;
+ALTER FUNCTION public.issue_certificate(uuid) SET search_path = public;
+ALTER FUNCTION public.mark_lesson_complete(uuid, integer) SET search_path = public;
+ALTER FUNCTION public.place_order(jsonb, text, text, text, jsonb, text) SET search_path = public;
+ALTER FUNCTION public.submit_quiz_attempt(uuid, jsonb) SET search_path = public;
+ALTER FUNCTION public.touch_app_settings() SET search_path = public;
+ALTER FUNCTION public.touch_updated_at() SET search_path = public;
+ALTER FUNCTION public.admin_dashboard_stats() SET search_path = public;
+ALTER FUNCTION public.book_appointment(uuid, timestamptz, text, text, text, text) SET search_path = public;
+ALTER FUNCTION public.current_user_role() SET search_path = public;
+ALTER FUNCTION public.gen_appointment_code() SET search_path = public;
+ALTER FUNCTION public.gen_certificate_code() SET search_path = public;
+ALTER FUNCTION public.gen_order_code() SET search_path = public;
+ALTER FUNCTION public.get_order_by_code(text) SET search_path = public;
