@@ -13,9 +13,11 @@ import {
   Users,
   Bell,
   AlertCircle,
+  Star,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { AdminSearchBar } from "@/components/AdminSearchBar";
 import { getDashboardStats } from "@/lib/analytics";
 
 export const Route = createFileRoute("/admin/")({
@@ -33,6 +35,7 @@ const sections = [
   { to: "/admin/disponibilidade", icon: Calendar, title: "Disponibilidade", desc: "Horários da semana e bloqueios." },
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
+  { to: "/admin/avaliacoes", icon: Star, title: "Avaliações", desc: "Modere reviews de cursos e produtos." },
   { to: "/admin/inscritos", icon: Mail, title: "Inscritos", desc: "Lista da newsletter e exportação." },
   { to: "/admin/blog", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
@@ -55,7 +58,11 @@ function AdminHome() {
       <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Admin</h1>
-          <p className="text-primary-dark/70 mb-8">Visão geral do site nos últimos 30 dias.</p>
+          <p className="text-primary-dark/70 mb-6">Visão geral do site nos últimos 30 dias.</p>
+
+          <div className="mb-8">
+            <AdminSearchBar />
+          </div>
 
           {pendingCount > 0 && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8">
