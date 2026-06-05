@@ -186,7 +186,7 @@ function LessonPlayerPage() {
         <div className="flex items-center gap-3 md:gap-5">
           <button
             onClick={() => setSidebarOpen((v) => !v)}
-            className="lg:hidden inline-flex items-center gap-1.5 text-cream/90 hover:text-cream border border-cream/30 rounded-full px-3 py-1.5"
+            className="md:hidden inline-flex items-center gap-1.5 text-cream/90 hover:text-cream border border-cream/30 rounded-full px-3 py-1.5"
             aria-label="Ver conteúdo do curso"
           >
             <Menu className="w-5 h-5" />
@@ -216,7 +216,7 @@ function LessonPlayerPage() {
 
           <Link
             to="/painel"
-            className="hidden lg:inline-flex text-cream/70 hover:text-cream transition"
+            className="hidden md:inline-flex text-cream/70 hover:text-cream transition"
             aria-label="Fechar aula"
           >
             <X className="w-5 h-5" />
@@ -224,14 +224,14 @@ function LessonPlayerPage() {
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden md:w-full md:max-w-7xl md:mx-auto md:px-4 md:gap-8">
         {/* Sidebar de aulas */}
         <aside
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:sticky top-12 left-0 z-30 w-[280px] lg:w-[336px] h-[calc(100vh-3rem)] lg:h-auto lg:self-start lg:max-h-[calc(100vh-3rem)] bg-cream p-3 lg:pt-6 lg:pb-6 lg:pl-6 lg:pr-2 transition-transform duration-300 ease-in-out lg:transition-none flex flex-col`}
+          } md:translate-x-0 fixed md:sticky top-12 md:top-0 left-0 z-30 w-[280px] md:w-64 h-[calc(100vh-3rem)] md:h-auto md:self-start bg-cream p-3 md:py-6 md:px-0 transition-transform duration-300 ease-in-out md:transition-none flex flex-col`}
         >
-         <div className="bg-white rounded-xl shadow-sm flex flex-col h-full lg:max-h-[calc(100vh-4.5rem)] overflow-hidden">
+         <div className="bg-white rounded-xl shadow-sm flex flex-col h-full md:h-auto md:max-h-[calc(100vh-6rem)] overflow-hidden">
           <div className="px-5 py-4 border-b border-cream">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs uppercase tracking-widest text-[#5E6B5A] font-semibold">
@@ -239,7 +239,7 @@ function LessonPlayerPage() {
               </h3>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="lg:hidden text-primary-dark/60 hover:text-primary-dark"
+                className="md:hidden text-primary-dark/60 hover:text-primary-dark"
                 aria-label="Fechar conteúdo"
               >
                 <X className="w-4 h-4" />
@@ -335,14 +335,14 @@ function LessonPlayerPage() {
         {/* Overlay mobile */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+            className="fixed inset-0 bg-black/40 z-20 md:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
 
         {/* Área principal */}
         <main className="flex-1 overflow-y-auto min-w-0">
-          <div className="max-w-4xl mx-auto px-4 md:px-8 py-6">
+          <div className="max-w-4xl mx-auto px-4 md:px-0 py-6">
             {lesson.youtube_id ? (
               <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-8">
                 {playing ? (
