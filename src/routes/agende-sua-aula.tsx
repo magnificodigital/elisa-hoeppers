@@ -90,6 +90,10 @@ function BookingPage() {
         notes: form.notes || undefined,
       }),
     onSuccess: (result) => {
+      track("appointment_created", {
+        service_id: selectedService!.id,
+        is_online: !!selectedService!.is_online,
+      });
       setConfirmCode(result.code);
       setStep("done");
     },
