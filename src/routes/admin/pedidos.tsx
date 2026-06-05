@@ -207,6 +207,19 @@ function OrderCard({ order: o }: { order: Order }) {
               </button>
             </div>
           </div>
+
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-1">Código de rastreio (Correios)</p>
+            <div className="flex gap-2">
+              <input value={trackingInput} onChange={(e) => setTrackingInput(e.target.value)} placeholder="Ex: BR123456789BR"
+                className="flex-1 border border-border rounded-md px-3 py-1.5 bg-white text-primary-dark text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
+              <button onClick={() => updateTracking.mutate()} disabled={updateTracking.isPending}
+                className="bg-primary text-white px-4 py-1.5 rounded-md text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
+                {updateTracking.isPending ? "..." : "Salvar"}
+              </button>
+            </div>
+            <p className="text-[10px] text-[var(--text-muted)] mt-1">Defina antes de marcar como "Enviado" — vai no email da cliente.</p>
+          </div>
         </div>
       )}
 
