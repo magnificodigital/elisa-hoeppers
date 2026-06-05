@@ -172,10 +172,9 @@ function LessonPlayerPage() {
       <header className="bg-[#3B4F30] text-cream flex items-center justify-between px-4 md:px-6 py-3 gap-3 shrink-0 z-20">
         <div className="flex items-center gap-3 min-w-0">
           <Link
-            to="/painel/curso/$slug"
-            params={{ slug: course.slug }}
+            to="/painel"
             className="shrink-0 text-cream/90 hover:text-cream transition"
-            aria-label="Voltar ao curso"
+            aria-label="Voltar ao painel"
           >
             <ChevronLeft className="w-5 h-5" />
           </Link>
