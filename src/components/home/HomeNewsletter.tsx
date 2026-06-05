@@ -27,6 +27,7 @@ const HomeNewsletter = () => {
         body: { email, full_name: name, source: "home" },
       });
       if (error) throw error;
+      track("newsletter_subscribed", { source: "home" });
       setDone(true);
     } catch (err) {
       setError((err as Error).message ?? "Erro ao inscrever");
