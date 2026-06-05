@@ -286,7 +286,7 @@ function LessonPlayerPage() {
             )}
           </div>
 
-          <nav className="flex-1 overflow-y-auto">
+          <nav className="flex-1 overflow-y-auto p-3 space-y-1">
             {sortedLessons.map((l, i) => {
               const isCurrent = l.id === lesson.id;
               return (
@@ -295,19 +295,24 @@ function LessonPlayerPage() {
                   to="/painel/aula/$lessonId"
                   params={{ lessonId: l.id }}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-start gap-3 px-5 py-3 text-sm transition border-l-[3px] ${
+                  className={`flex items-start gap-3 px-4 py-3 rounded-md text-sm transition-colors ${
                     isCurrent
-                      ? "bg-cream/60 border-primary text-primary-dark font-medium"
-                      : "border-transparent text-primary-dark/80 hover:bg-cream/30"
+                      ? "bg-primary text-cream font-medium"
+                      : "text-primary-dark hover:bg-cream/60"
                   }`}
                 >
                   <span
                     className={`mt-0.5 shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-medium ${
-                      l.completed ? "bg-primary text-white" : "bg-cream text-primary-dark"
+                      isCurrent
+                        ? "bg-cream/20 text-cream"
+                        : l.completed
+                        ? "bg-primary text-white"
+                        : "bg-cream text-primary-dark"
                     }`}
                   >
                     {l.completed ? "✓" : String(i + 1).padStart(2, "0")}
                   </span>
+
                   <div className="min-w-0">
                     <p className="truncate leading-snug">
                       {l.title}
