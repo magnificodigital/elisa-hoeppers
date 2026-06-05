@@ -310,48 +310,70 @@ function LessonPlayerPage() {
             )}
           </div>
 
-          <nav className="flex-1 overflow-y-auto p-3 space-y-1">
-            {sortedLessons.map((l, i) => {
-              const isCurrent = l.id === lesson.id;
+          <nav className="flex-1 overflow-y-auto py-2">
+            {groups.map((g) => {
+              const moduleKey = g.module?.id ?? "__none__";
+              const isOpen = openModuleIds.has(moduleKey);
+              const groupTotal = g.lessons.length;
+              const groupCompleted = g.lessons.filter((l) => l.completed).length;
               return (
-                <Link
-                  key={l.id}
-                  to="/painel/aula/$lessonId"
-                  params={{ lessonId: l.id }}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-start gap-3 px-4 py-3 rounded-md text-sm transition-colors ${
-                    isCurrent
-                      ? "bg-primary text-cream font-medium"
-                      : "text-primary-dark hover:bg-cream/60"
-                  }`}
-                >
-                  <span
-                    className={`mt-0.5 shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-medium ${
-                      isCurrent
-                        ? "bg-cream/20 text-cream"
-                        : l.completed
-                        ? "bg-primary text-white"
-                        : "bg-cream text-primary-dark"
-                    }`}
+                <div key={moduleKey} className="border-b border-cream last:border-b-0">
+                  <button
+                    onClick={() => toggleModule(moduleKey)}
+                    className="w-full flex items-center justify-between gap-2 px-5 py-3 text-left hover:bg-cream/40 transition"
                   >
-                    {l.completed ? "✓" : String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  <div className="min-w-0">
-                    <p className="truncate leading-snug">
-                      {l.title}
-                    </p>
-                    {l.duration_min && (
-                      <p className={`text-[11px] mt-0.5 ${isCurrent ? "text-cream/70" : "text-[#5E6B5A]"}`}>
-                        {l.duration_min} min
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase tracking-widest text-[#5E6B5A] font-semibold">
+                        {g.module ? `Módulo ${String(g.module.display_order).padStart(2, "0")}` : "Outras aulas"}
                       </p>
-                    )}
-
-                  </div>
-                </Link>
+                      {g.module?.title && (
+                        <p className="text-sm text-primary-dark truncate leading-snug">{g.module.title}</p>
+                      )}
+                    </div>
+                    <span className="flex items-center gap-2 shrink-0 text-[11px] text-[#5E6B5A]">
+                      {groupCompleted}/{groupTotal}
+                      {isOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="pb-2">
+                      {g.lessons.map((l, i) => {
+                        const isCurrent = l.id === lesson.id;
+                        return (
+                          <Link
+                            key={l.id}
+                            to="/painel/aula/$lessonId"
+                            params={{ lessonId: l.id }}
+                            onClick={() => setSidebarOpen(false)}
+                            className={`flex items-start gap-3 px-5 py-2.5 text-sm transition border-l-[3px] ${
+                              isCurrent
+                                ? "bg-cream/60 border-primary text-primary-dark font-medium"
+                                : "border-transparent text-primary-dark/80 hover:bg-cream/30"
+                            }`}
+                          >
+                            <span
+                              className={`mt-0.5 shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-medium ${
+                                l.completed ? "bg-primary text-white" : "bg-cream text-primary-dark"
+                              }`}
+                            >
+                              {l.completed ? "✓" : String(i + 1).padStart(2, "0")}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate leading-snug">{l.title}</p>
+                              {l.duration_min && (
+                                <p className="text-[11px] mt-0.5 text-[#5E6B5A]">{l.duration_min} min</p>
+                              )}
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </nav>
+
          </div>
         </aside>
 
