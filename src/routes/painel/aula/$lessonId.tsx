@@ -175,10 +175,11 @@ function LessonPlayerPage() {
         <div className="flex items-center gap-3 md:gap-5">
           <button
             onClick={() => setSidebarOpen((v) => !v)}
-            className="lg:hidden text-cream/90 hover:text-cream"
+            className="lg:hidden inline-flex items-center gap-1.5 text-cream/90 hover:text-cream border border-cream/30 rounded-full px-3 py-1.5"
             aria-label="Ver conteúdo do curso"
           >
             <Menu className="w-5 h-5" />
+            <span className="text-[10px] uppercase tracking-widest">Conteúdo</span>
           </button>
 
           <div className="hidden md:flex items-center gap-2 text-sm text-cream/90">
