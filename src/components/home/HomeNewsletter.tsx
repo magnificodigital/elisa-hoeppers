@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Mail, Check } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { getSetting } from "@/lib/settings";
+import { track } from "@/lib/analytics";
 
 const HomeNewsletter = () => {
   const [enabled, setEnabled] = useState(false);
