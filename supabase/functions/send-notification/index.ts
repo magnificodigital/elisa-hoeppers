@@ -216,6 +216,83 @@ async function handleCourseCompleted(certificateId: string) {
   await sendEmail(ELISA_EMAIL, `✓ Aluna concluiu curso: ${cert.student_name} · ${cert.course_title}`, elisaHtml).catch((e) => console.error("elisa course email failed:", e));
 }
 
+async function handleOrderCancelled(orderId: string) {
+  const { data: order, error } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("id", orderId)
+    .maybeSingle();
+  if (error || !order) throw new Error("order not found");
+
+  const itemsHtml = (order.items as any[])
+    .map((it) => `<div class="item"><p style="margin:0;font-weight:600;">${it.qty}× ${it.name}</p></div>`)
+    .join("");
+
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>Pedido cancelado pela cliente</h1>
+      <p><span class="label">Cliente</span><br/>${order.customer_name}<br/>${order.customer_email}</p>
+      <p><span class="label">Código</span> <span class="code">#${order.code}</span></p>
+      <p><span class="label">Valor</span> ${formatBRL(order.total_cents)}</p>
+      <h2>Itens</h2>
+      ${itemsHtml}
+      <a class="btn" href="${SITE_URL}/admin/pedidos">Abrir admin</a>
+    </div>
+  `);
+  await sendEmail(ELISA_EMAIL, `✗ Pedido cancelado: #${order.code} · ${order.customer_name}`, elisaHtml)
+    .catch((e) => console.error("cancel elisa email failed:", e));
+}
+
+async function handleOrderShipped(orderId: string) {
+  const { data: order, error } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("id", orderId)
+    .maybeSingle();
+  if (error || !order) throw new Error("order not found");
+
+  const firstName = order.customer_name.split(" ")[0];
+  const trackingBlock = order.tracking_code
+    ? `<p><span class="label">Código de rastreio</span><br/><span class="code">${order.tracking_code}</span></p>
+       <a class="btn" href="https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}">Rastrear nos Correios</a>`
+    : `<p class="muted">A Elisa vai te mandar o código de rastreio em breve por WhatsApp.</p>`;
+
+  const customerHtml = wrap(`
+    <div class="card">
+      <h1>Seu pedido foi enviado! 📦</h1>
+      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> acabou de sair pra entrega.</p>
+      ${trackingBlock}
+      <p class="muted">Qualquer dúvida, é só responder este email ou chamar no WhatsApp.</p>
+    </div>
+  `);
+  await sendEmail(order.customer_email, `Seu pedido #${order.code} foi enviado 📦`, customerHtml)
+    .catch((e) => console.error("shipped customer email failed:", e));
+}
+
+async function handleOrderCompleted(orderId: string) {
+  const { data: order, error } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("id", orderId)
+    .maybeSingle();
+  if (error || !order) throw new Error("order not found");
+
+  const firstName = order.customer_name.split(" ")[0];
+
+  const customerHtml = wrap(`
+    <div class="card">
+      <h1>Pedido concluído 🌿</h1>
+      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> foi finalizado. Espero que você ame os produtos!</p>
+      <p>Se puder, deixa uma avaliação na página do produto — me ajuda muito a continuar selecionando coisas boas pra você.</p>
+      <a class="btn" href="${SITE_URL}/loja">Voltar pra loja</a>
+      <p class="muted">Com carinho,<br/>Elisa</p>
+    </div>
+  `);
+  await sendEmail(order.customer_email, `Pedido #${order.code} concluído · obrigada 🌿`, customerHtml)
+    .catch((e) => console.error("completed customer email failed:", e));
+}
+
+
 
 
 serve(async (req) => {
