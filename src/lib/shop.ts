@@ -123,11 +123,12 @@ export type Order = {
   total_cents: number;
   status: "pending" | "confirmed" | "shipped" | "cancelled" | "completed";
   notes: string | null;
+  tracking_code: string | null;
   created_at: string;
 };
 
 const ORDER_COLS =
-  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, created_at";
+  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, created_at";
 
 export async function listAllOrdersForAdmin(filter?: { status?: Order["status"] }): Promise<Order[]> {
   let q = supabase
@@ -165,4 +166,25 @@ export async function listMyOrders(): Promise<Order[]> {
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as Order[];
+}
+
+export async function cancelMyOrder(orderId: string): Promise<void> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) throw new Error("Você precisa estar logada.");
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: "cancelled" })
+    .eq("id", orderId)
+    .eq("user_id", sessionUser.id)
+    .eq("status", "pending");
+  if (error) throw error;
+}
+
+export async function updateOrderTracking(id: string, trackingCode: string | null): Promise<void> {
+  const { error } = await supabase
+    .from("orders")
+    .update({ tracking_code: trackingCode })
+    .eq("id", id);
+  if (error) throw error;
 }
