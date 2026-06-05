@@ -72,7 +72,7 @@ function ProductDetail() {
   const wppMessage = encodeURIComponent(
     `Oi Elisa! Tenho interesse no ${product.name} (${formatPriceBRL(product.price_cents)}). Como faço pra comprar?`
   );
-  const wppLink = `https://wa.me/5547999999999?text=${wppMessage}`;
+  const wppLink = `https://wa.me/5511994061178?text=${wppMessage}`;
 
   return (
     <Layout>

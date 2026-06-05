@@ -78,7 +78,7 @@ function OrderPage() {
     .map((i: OrderItem) => `• ${i.qty}× ${i.name} — ${formatPriceBRL(i.total_cents)}`)
     .join("%0A");
   const wppMsg = `Oi Elisa! Acabei de fazer o pedido %23${order.code}.%0A%0A${wppItems}%0A%0ATotal: ${formatPriceBRL(order.total_cents)}%0A%0AMe avisa como combinamos frete e pagamento, por favor!`;
-  const wppLink = `https://wa.me/5547999999999?text=${wppMsg}`;
+  const wppLink = `https://wa.me/5511994061178?text=${wppMsg}`;
 
   const { user } = useAuth();
   const qc = useQueryClient();
