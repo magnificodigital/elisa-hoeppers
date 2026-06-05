@@ -40,6 +40,7 @@ import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
+import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAvaliacoesRouteImport } from './routes/admin/avaliacoes'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
@@ -207,6 +208,11 @@ const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
   path: '/admin/configuracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
+  id: '/admin/broadcast',
+  path: '/admin/broadcast',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAvaliacoesRoute = AdminAvaliacoesRouteImport.update({
   id: '/admin/avaliacoes',
   path: '/admin/avaliacoes',
@@ -279,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/avaliacoes': typeof AdminAvaliacoesRoute
+  '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
@@ -323,6 +330,7 @@ export interface FileRoutesByTo {
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/avaliacoes': typeof AdminAvaliacoesRoute
+  '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
@@ -368,6 +376,7 @@ export interface FileRoutesById {
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/avaliacoes': typeof AdminAvaliacoesRoute
+  '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
@@ -414,6 +423,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/avaliacoes'
+    | '/admin/broadcast'
     | '/admin/configuracoes'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
@@ -458,6 +468,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/avaliacoes'
+    | '/admin/broadcast'
     | '/admin/configuracoes'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
@@ -502,6 +513,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/avaliacoes'
+    | '/admin/broadcast'
     | '/admin/configuracoes'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
@@ -547,6 +559,7 @@ export interface RootRouteChildren {
   TermosRoute: typeof TermosRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminAvaliacoesRoute: typeof AdminAvaliacoesRoute
+  AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
@@ -795,6 +808,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/broadcast': {
+      id: '/admin/broadcast'
+      path: '/admin/broadcast'
+      fullPath: '/admin/broadcast'
+      preLoaderRoute: typeof AdminBroadcastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/avaliacoes': {
       id: '/admin/avaliacoes'
       path: '/admin/avaliacoes'
@@ -901,6 +921,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermosRoute: TermosRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminAvaliacoesRoute: AdminAvaliacoesRoute,
+  AdminBroadcastRoute: AdminBroadcastRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
   AdminInscritosRoute: AdminInscritosRoute,
