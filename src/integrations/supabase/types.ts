@@ -1326,11 +1326,14 @@ export type Database = {
           code: string
           created_at: string
           customer_name: string
+          id: string
           items: Json
           shipping_cents: number
           status: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
           total_cents: number
+          tracking_code: string
+          user_id: string
         }[]
       }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
