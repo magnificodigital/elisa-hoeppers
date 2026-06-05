@@ -217,10 +217,9 @@ function LessonPlayerPage() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar de aulas */}
         <aside
-          className={`fixed lg:static inset-y-0 left-0 z-30 w-[280px] lg:w-[320px] bg-white border-r border-[#E5E0D8] transform transition-transform duration-300 ease-in-out lg:transform-none ${
+          className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } flex flex-col`}
-          style={{ top: "48px", height: "calc(100% - 48px)" }}
+          } lg:translate-x-0 fixed lg:sticky top-12 left-0 z-30 w-[280px] lg:w-[320px] h-[calc(100vh-3rem)] bg-white border-r border-[#E5E0D8] overflow-y-auto transition-transform duration-300 ease-in-out lg:transition-none flex flex-col`}
         >
           <div className="px-5 py-4 border-b border-[#E5E0D8]">
             <div className="flex items-center justify-between mb-2">
