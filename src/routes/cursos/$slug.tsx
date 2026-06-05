@@ -256,79 +256,100 @@ function CourseDetail() {
             <h2 className="font-display text-2xl text-primary-dark mb-4">
               Conteúdo do curso
             </h2>
-            <div className="bg-white rounded-xl border border-border overflow-hidden">
-              <button
-                onClick={() => setModuleOpen((v) => !v)}
-                className="w-full flex items-center justify-between px-5 py-4 hover:bg-cream/40 transition"
-              >
-                <span className="font-medium text-primary-dark">
-                  {course.overlay_label ?? course.title}
-                </span>
-                <span className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
-                  <span>
-                    {completed}/{total}
-                  </span>
-                  {moduleOpen ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </span>
-              </button>
-              {moduleOpen && (
-                <ul className="divide-y divide-border border-t border-border">
-                  {sortedLessons.map((l) => {
-                    const accessible = isEnrolled || l.is_free_preview;
-                    const content = (
-                      <div className="flex items-center gap-3 px-5 py-3">
-                        <Video className="w-4 h-4 text-primary shrink-0" />
-                        <span className="flex-1 text-sm text-primary-dark">
-                          {l.title}
+            <div className="space-y-3">
+              {groups.map((g) => {
+                const moduleKey = g.module?.id ?? "__none__";
+                const isOpen = openModuleIds.has(moduleKey) || groups.length === 1;
+                const groupTotal = g.lessons.length;
+                const groupCompleted = g.lessons.filter((l) => l.completed).length;
+                return (
+                  <div key={moduleKey} className="bg-white rounded-xl border border-border overflow-hidden">
+                    <button
+                      onClick={() => toggleModule(moduleKey)}
+                      className="w-full flex items-center justify-between px-5 py-4 hover:bg-cream/40 transition"
+                    >
+                      <span className="flex items-center gap-3 text-left">
+                        <span className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-mono">
+                          {g.module ? `M${String(g.module.display_order).padStart(2, "0")}` : "—"}
                         </span>
-                        {l.is_free_preview && !isEnrolled && (
-                          <span className="text-[10px] uppercase bg-peach text-primary-dark px-2 py-0.5 rounded">
-                            Prévia
-                          </span>
-                        )}
-                        {l.duration_min && (
-                          <span className="text-xs text-[var(--text-muted)]">
-                            {l.duration_min} min
-                          </span>
-                        )}
-                        {accessible ? (
-                          <Eye className="w-4 h-4 text-primary" />
+                        <span className="font-medium text-primary-dark">
+                          {g.module?.title ?? "Outras aulas"}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
+                        <span>
+                          {groupCompleted}/{groupTotal}
+                        </span>
+                        {isOpen ? (
+                          <ChevronUp className="w-4 h-4" />
                         ) : (
-                          <Lock className="w-4 h-4 text-[var(--text-muted)]" />
+                          <ChevronDown className="w-4 h-4" />
                         )}
-                      </div>
-                    );
-                    return (
-                      <li key={l.id}>
-                        {accessible ? (
-                          <Link
-                            to="/painel/aula/$lessonId"
-                            params={{ lessonId: l.id }}
-                            className="block hover:bg-cream/40 transition"
-                          >
-                            {content}
-                          </Link>
-                        ) : (
-                          <div className="opacity-70 cursor-not-allowed">
-                            {content}
-                          </div>
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <ul className="divide-y divide-border border-t border-border">
+                        {g.lessons.map((l) => {
+                          const accessible = isEnrolled || l.is_free_preview;
+                          const content = (
+                            <div className="flex items-center gap-3 px-5 py-3">
+                              <Video className="w-4 h-4 text-primary shrink-0" />
+                              <span className="flex-1 text-sm text-primary-dark">
+                                {l.title}
+                              </span>
+                              {l.is_free_preview && !isEnrolled && (
+                                <span className="text-[10px] uppercase bg-peach text-primary-dark px-2 py-0.5 rounded">
+                                  Prévia
+                                </span>
+                              )}
+                              {l.duration_min && (
+                                <span className="text-xs text-[var(--text-muted)]">
+                                  {l.duration_min} min
+                                </span>
+                              )}
+                              {accessible ? (
+                                <Eye className="w-4 h-4 text-primary" />
+                              ) : (
+                                <Lock className="w-4 h-4 text-[var(--text-muted)]" />
+                              )}
+                            </div>
+                          );
+                          return (
+                            <li key={l.id}>
+                              {accessible ? (
+                                <Link
+                                  to="/painel/aula/$lessonId"
+                                  params={{ lessonId: l.id }}
+                                  className="block hover:bg-cream/40 transition"
+                                >
+                                  {content}
+                                </Link>
+                              ) : (
+                                <div className="opacity-70 cursor-not-allowed">
+                                  {content}
+                                </div>
+                              )}
+                            </li>
+                          );
+                        })}
+                        {g.lessons.length === 0 && (
+                          <li className="px-5 py-4 text-sm text-[var(--text-muted)] italic">
+                            Aulas em breve.
+                          </li>
                         )}
-                      </li>
-                    );
-                  })}
-                  {sortedLessons.length === 0 && (
-                    <li className="px-5 py-4 text-sm text-[var(--text-muted)] italic">
-                      Aulas em breve.
-                    </li>
-                  )}
-                </ul>
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+              {groups.length === 0 && (
+                <div className="bg-white rounded-xl border border-border px-5 py-4 text-sm text-[var(--text-muted)] italic">
+                  Aulas em breve.
+                </div>
               )}
             </div>
           </div>
+
 
           <CourseReviews courseId={course.id} isEnrolled={isEnrolled} />
         </div>
