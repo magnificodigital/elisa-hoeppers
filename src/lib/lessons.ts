@@ -40,12 +40,16 @@ export async function markLessonComplete(lessonId: string, watchedSeconds = 0): 
 export type LessonWithProgress = Lesson & {
   completed: boolean;
   watched_seconds: number;
+  module: { id: string; title: string; display_order: number } | null;
 };
 
 export async function listLessonsWithProgress(courseId: string): Promise<LessonWithProgress[]> {
   const { data: lessons, error } = await supabase
     .from("lessons")
-    .select("id, course_id, module_id, slug, title, description, duration_min, display_order, is_free_preview")
+    .select(`
+      id, course_id, module_id, slug, title, description, duration_min, display_order, is_free_preview,
+      module:modules ( id, title, display_order )
+    `)
     .eq("course_id", courseId)
     .order("display_order", { ascending: true });
   if (error) throw error;
@@ -53,10 +57,10 @@ export async function listLessonsWithProgress(courseId: string): Promise<LessonW
   const { data: sessionData } = await supabase.auth.getSession();
   const sessionUser = sessionData?.session?.user;
   if (!sessionUser || !lessons || lessons.length === 0) {
-    return (lessons ?? []).map((l) => ({ ...l, completed: false, watched_seconds: 0 }));
+    return (lessons ?? []).map((l: any) => ({ ...l, completed: false, watched_seconds: 0 }));
   }
 
-  const ids = lessons.map((l) => l.id);
+  const ids = lessons.map((l: any) => l.id);
   const { data: progress } = await supabase
     .from("lesson_progress")
     .select("lesson_id, completed, watched_seconds")
@@ -64,11 +68,42 @@ export async function listLessonsWithProgress(courseId: string): Promise<LessonW
     .in("lesson_id", ids);
 
   const byId = new Map(progress?.map((p) => [p.lesson_id, p]) ?? []);
-  return lessons.map((l) => {
+  return (lessons as any[]).map((l) => {
     const p = byId.get(l.id);
     return { ...l, completed: !!p?.completed, watched_seconds: p?.watched_seconds ?? 0 };
   });
 }
+
+export type LessonGroup = {
+  module: { id: string; title: string; display_order: number } | null;
+  lessons: LessonWithProgress[];
+};
+
+export function groupLessonsByModule(lessons: LessonWithProgress[]): LessonGroup[] {
+  const map = new Map<string, LessonGroup>();
+  const unmoduled: LessonGroup = { module: null, lessons: [] };
+
+  for (const l of lessons) {
+    const m = (l as any).module ?? null;
+    if (!m) {
+      unmoduled.lessons.push(l);
+      continue;
+    }
+    const key = m.id;
+    if (!map.has(key)) map.set(key, { module: m, lessons: [] });
+    map.get(key)!.lessons.push(l);
+  }
+
+  const groups = Array.from(map.values()).sort(
+    (a, b) => (a.module?.display_order ?? 0) - (b.module?.display_order ?? 0)
+  );
+  groups.forEach((g) => g.lessons.sort((a, b) => a.display_order - b.display_order));
+  unmoduled.lessons.sort((a, b) => a.display_order - b.display_order);
+
+  if (unmoduled.lessons.length > 0) groups.push(unmoduled);
+  return groups;
+}
+
 
 export async function isCourseJustCompleted(courseId: string): Promise<{ completed: boolean; certificateId: string | null }> {
   const { data: sessionData } = await supabase.auth.getSession();
