@@ -229,9 +229,10 @@ function LessonPlayerPage() {
         <aside
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 fixed lg:sticky top-12 left-0 z-30 w-[280px] lg:w-[320px] h-[calc(100vh-3rem)] bg-white border-r border-[#E5E0D8] overflow-y-auto transition-transform duration-300 ease-in-out lg:transition-none flex flex-col`}
+          } lg:translate-x-0 fixed lg:sticky top-12 left-0 z-30 w-[280px] lg:w-[336px] h-[calc(100vh-3rem)] bg-cream p-3 lg:p-4 transition-transform duration-300 ease-in-out lg:transition-none flex flex-col`}
         >
-          <div className="px-5 py-4 border-b border-[#E5E0D8]">
+         <div className="bg-white rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
+          <div className="px-5 py-4 border-b border-cream">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs uppercase tracking-widest text-[#5E6B5A] font-semibold">
                 Conteúdo do curso
