@@ -297,7 +297,24 @@ function PainelPage() {
                           </div>
                         </div>
                       </div>
+                    </>
+                  );
+                  return nextId ? (
+                    <Link
+                      key={c.course_id}
+                      to="/painel/aula/$lessonId"
+                      params={{ lessonId: nextId }}
+                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
+                    >
+                      {cardInner}
                     </Link>
+                  ) : (
+                    <div
+                      key={c.course_id}
+                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden group"
+                    >
+                      {cardInner}
+                    </div>
                   );
                 })}
               </div>
