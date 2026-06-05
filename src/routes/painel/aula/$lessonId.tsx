@@ -187,6 +187,7 @@ function LessonPlayerPage() {
   const progressTotal = sortedLessons.length;
   const progressPct = progressTotal > 0 ? Math.round((progressCompleted / progressTotal) * 100) : 0;
   const isCompleted = marked || (sortedLessons.find((l) => l.id === lesson.id)?.completed ?? false);
+  const groups = groupLessonsByModule(sortedLessons);
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
