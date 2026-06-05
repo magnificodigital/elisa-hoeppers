@@ -23,6 +23,16 @@ function LessonPlayerPage() {
   const [marked, setMarked] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openModuleIds, setOpenModuleIds] = useState<Set<string>>(new Set());
+
+  function toggleModule(moduleId: string) {
+    setOpenModuleIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(moduleId)) next.delete(moduleId);
+      else next.add(moduleId);
+      return next;
+    });
+  }
 
   const { data: lessonData, isLoading: loadingLesson, error: lessonError } = useQuery({
     queryKey: ["lesson-with-course", lessonId],
