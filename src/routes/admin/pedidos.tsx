@@ -90,12 +90,27 @@ function OrderCard({ order: o }: { order: Order }) {
   const qc = useQueryClient();
   const [expanded, setExpanded] = useState(false);
   const [shippingInput, setShippingInput] = useState((o.shipping_cents / 100).toFixed(2).replace(".", ","));
+  const [trackingInput, setTrackingInput] = useState(o.tracking_code ?? "");
+
+  const updateTracking = useMutation({
+    mutationFn: () => updateOrderTracking(o.id, trackingInput.trim() || null),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
+  });
 
   const updateStatus = useMutation({
     mutationFn: (status: Order["status"]) => updateOrderStatus(o.id, status),
-    onSuccess: () => {
+    onSuccess: (_data, status) => {
       qc.invalidateQueries({ queryKey: ["admin-orders"] });
       qc.invalidateQueries({ queryKey: ["admin-orders-pending-count"] });
+      if (status === "shipped") {
+        supabase.functions
+          .invoke("send-notification", { body: { type: "order_shipped", record_id: o.id } })
+          .catch((e) => console.error("shipped email failed:", e));
+      } else if (status === "completed") {
+        supabase.functions
+          .invoke("send-notification", { body: { type: "order_completed", record_id: o.id } })
+          .catch((e) => console.error("completed email failed:", e));
+      }
     },
   });
 
@@ -106,6 +121,7 @@ function OrderCard({ order: o }: { order: Order }) {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
   });
+
 
   const cleanPhone = o.customer_phone.replace(/\D/g, "");
   const wppNumber = cleanPhone.length >= 10 ? (cleanPhone.startsWith("55") ? cleanPhone : `55${cleanPhone}`) : null;
