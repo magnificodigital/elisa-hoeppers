@@ -135,6 +135,15 @@ function ProductDetail() {
                 {product.name}
               </h1>
 
+              {(ratingSummary?.review_count ?? 0) > 0 && (
+                <div className="flex items-center gap-2 mt-2">
+                  <StarRating value={Number(ratingSummary!.avg_rating)} size={16} />
+                  <span className="text-sm text-[var(--text-muted)]">
+                    {Number(ratingSummary!.avg_rating).toFixed(1)} ({ratingSummary!.review_count})
+                  </span>
+                </div>
+              )}
+
               <div className="flex items-baseline gap-3 mt-4">
                 {product.compare_at_price_cents &&
                   product.compare_at_price_cents > product.price_cents && (
