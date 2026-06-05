@@ -329,6 +329,7 @@ function LessonPlayerPage() {
               );
             })}
           </nav>
+         </div>
         </aside>
 
         {/* Overlay mobile */}
