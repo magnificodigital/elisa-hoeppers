@@ -5,7 +5,7 @@ import { ChevronUp, ChevronDown, ShoppingCart, Video, Eye, Lock } from "lucide-r
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
-import { listLessonsWithProgress } from "@/lib/lessons";
+import { listLessonsWithProgress, groupLessonsByModule } from "@/lib/lessons";
 import { enrollInCourse, getMyEnrollment } from "@/lib/enrollments";
 import { CourseReviews } from "@/components/CourseReviews";
 import { WishlistButton } from "@/components/WishlistButton";
@@ -36,7 +36,16 @@ function CourseDetail() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [moduleOpen, setModuleOpen] = useState(true);
+  const [openModuleIds, setOpenModuleIds] = useState<Set<string>>(new Set());
+
+  function toggleModule(moduleId: string) {
+    setOpenModuleIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(moduleId)) next.delete(moduleId);
+      else next.add(moduleId);
+      return next;
+    });
+  }
 
   const { data: enrollment } = useQuery({
     queryKey: ["my-enrollment", user?.id, course.id],
