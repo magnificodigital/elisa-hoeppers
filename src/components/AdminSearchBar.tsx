@@ -111,14 +111,14 @@ export function AdminSearchBar() {
           {(data?.courses.length ?? 0) > 0 && (
             <ResultGroup icon={<GraduationCap size={14} />} title="Cursos">
               {data!.courses.map((c) => (
-                <Link
+                <a
                   key={c.id}
-                  to={`/cursos/${c.slug}`}
+                  href={`/cursos/${c.slug}`}
                   onClick={() => setOpen(false)}
                   className="block px-4 py-2 hover:bg-cream/50 transition"
                 >
                   <p className="text-sm text-primary-dark">{c.title}</p>
-                </Link>
+                </a>
               ))}
             </ResultGroup>
           )}
@@ -126,15 +126,15 @@ export function AdminSearchBar() {
           {(data?.lessons.length ?? 0) > 0 && (
             <ResultGroup icon={<BookOpen size={14} />} title="Aulas">
               {data!.lessons.map((l) => (
-                <Link
+                <a
                   key={l.id}
-                  to={`/cursos/${l.course_slug}`}
+                  href={`/cursos/${l.course_slug}`}
                   onClick={() => setOpen(false)}
                   className="block px-4 py-2 hover:bg-cream/50 transition"
                 >
                   <p className="text-sm text-primary-dark">{l.title}</p>
                   <p className="text-xs text-primary-dark/50">em {l.course_title}</p>
-                </Link>
+                </a>
               ))}
             </ResultGroup>
           )}
@@ -142,14 +142,14 @@ export function AdminSearchBar() {
           {(data?.products.length ?? 0) > 0 && (
             <ResultGroup icon={<ShoppingBag size={14} />} title="Produtos">
               {data!.products.map((p) => (
-                <Link
+                <a
                   key={p.id}
-                  to={`/loja/${p.slug}`}
+                  href={`/loja/${p.slug}`}
                   onClick={() => setOpen(false)}
                   className="block px-4 py-2 hover:bg-cream/50 transition"
                 >
                   <p className="text-sm text-primary-dark">{p.name}</p>
-                </Link>
+                </a>
               ))}
             </ResultGroup>
           )}
