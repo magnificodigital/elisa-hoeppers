@@ -48,6 +48,17 @@ function LessonPlayerPage() {
     enabled: !!lesson,
   });
 
+  const lessonsCompletedCount = (allLessons ?? []).filter((l) => l.completed).length;
+  const lessonsTotalCount = (allLessons ?? []).length;
+
+  const { data: certificate } = useQuery({
+    queryKey: ["my-certificate", user?.id, lesson?.course_id],
+    queryFn: () => getMyCertificateForCourse(lesson!.course_id),
+    enabled: !!user && !!lesson && lessonsTotalCount > 0 && lessonsCompletedCount === lessonsTotalCount,
+  });
+
+
+
   const completeMutation = useMutation({
     mutationFn: () => markLessonComplete(lesson!.id),
     onSuccess: async () => {
