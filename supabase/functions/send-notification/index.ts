@@ -190,6 +190,7 @@ serve(async (req) => {
     }
     if (type === "booking") await handleBooking(record_id);
     else if (type === "order") await handleOrder(record_id);
+    else if (type === "course_completed") await handleCourseCompleted(record_id);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,
