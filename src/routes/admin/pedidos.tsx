@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
-import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, formatPriceBRL, type Order } from "@/lib/shop";
+import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/pedidos")({
   head: () => ({ meta: [{ title: "Admin — Pedidos" }] }),
