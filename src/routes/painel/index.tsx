@@ -10,6 +10,7 @@ import Layout from "@/components/Layout";
 import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
+import { listLessonsWithProgress } from "@/lib/lessons";
 import { getRatingSummariesByIds } from "@/lib/reviews";
 
 export const Route = createFileRoute("/painel/")({
