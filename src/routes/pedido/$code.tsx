@@ -1,8 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Check, MessageCircle } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
-import { formatPriceBRL } from "@/lib/shop";
+import { formatPriceBRL, cancelMyOrder } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
 
 type OrderItem = {
   product_id: string;
@@ -13,6 +15,8 @@ type OrderItem = {
   total_cents: number;
 };
 type Order = {
+  id: string;
+  user_id: string | null;
   code: string;
   customer_name: string;
   items: OrderItem[];
@@ -20,6 +24,7 @@ type Order = {
   shipping_cents: number;
   total_cents: number;
   status: string;
+  tracking_code: string | null;
   created_at: string;
 };
 
@@ -74,6 +79,25 @@ function OrderPage() {
     .join("%0A");
   const wppMsg = `Oi Elisa! Acabei de fazer o pedido %23${order.code}.%0A%0A${wppItems}%0A%0ATotal: ${formatPriceBRL(order.total_cents)}%0A%0AMe avisa como combinamos frete e pagamento, por favor!`;
   const wppLink = `https://wa.me/5547999999999?text=${wppMsg}`;
+
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const isOwner = !!user && !!order.user_id && user.id === order.user_id;
+
+  const cancel = useMutation({
+    mutationFn: () => cancelMyOrder(order.id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["my-orders"] });
+      supabase.functions
+        .invoke("send-notification", {
+          body: { type: "order_cancelled", record_id: order.id },
+        })
+        .catch((e) => console.error("cancel email failed:", e));
+      window.location.reload();
+    },
+  });
+
+
 
   return (
     <Layout>
@@ -146,6 +170,35 @@ function OrderPage() {
           >
             <MessageCircle className="w-4 h-4" /> Falar com a Elisa no WhatsApp
           </a>
+
+          {isOwner && order.status === "pending" && (
+            <button
+              onClick={() => {
+                if (confirm("Cancelar este pedido?")) cancel.mutate();
+              }}
+              disabled={cancel.isPending}
+              className="block mx-auto mt-3 text-xs uppercase tracking-widest text-red-700 hover:opacity-70 transition disabled:opacity-50"
+            >
+              {cancel.isPending ? "Cancelando..." : "Cancelar pedido"}
+            </button>
+          )}
+
+          {order.tracking_code && (order.status === "shipped" || order.status === "completed") && (
+            <div className="mt-6 bg-white rounded-lg p-5 text-center">
+              <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-1">
+                Código de rastreio
+              </p>
+              <p className="font-mono text-lg text-primary-dark mb-2">{order.tracking_code}</p>
+              <a
+                href={`https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-primary hover:underline"
+              >
+                Acompanhar nos Correios →
+              </a>
+            </div>
+          )}
           <Link
             to="/loja"
             className="block text-center mt-4 text-sm text-primary-dark hover:text-primary"

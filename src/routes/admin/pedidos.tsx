@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
-import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, formatPriceBRL, type Order } from "@/lib/shop";
+import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/pedidos")({
   head: () => ({ meta: [{ title: "Admin — Pedidos" }] }),
@@ -89,12 +90,27 @@ function OrderCard({ order: o }: { order: Order }) {
   const qc = useQueryClient();
   const [expanded, setExpanded] = useState(false);
   const [shippingInput, setShippingInput] = useState((o.shipping_cents / 100).toFixed(2).replace(".", ","));
+  const [trackingInput, setTrackingInput] = useState(o.tracking_code ?? "");
+
+  const updateTracking = useMutation({
+    mutationFn: () => updateOrderTracking(o.id, trackingInput.trim() || null),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
+  });
 
   const updateStatus = useMutation({
     mutationFn: (status: Order["status"]) => updateOrderStatus(o.id, status),
-    onSuccess: () => {
+    onSuccess: (_data, status) => {
       qc.invalidateQueries({ queryKey: ["admin-orders"] });
       qc.invalidateQueries({ queryKey: ["admin-orders-pending-count"] });
+      if (status === "shipped") {
+        supabase.functions
+          .invoke("send-notification", { body: { type: "order_shipped", record_id: o.id } })
+          .catch((e) => console.error("shipped email failed:", e));
+      } else if (status === "completed") {
+        supabase.functions
+          .invoke("send-notification", { body: { type: "order_completed", record_id: o.id } })
+          .catch((e) => console.error("completed email failed:", e));
+      }
     },
   });
 
@@ -105,6 +121,7 @@ function OrderCard({ order: o }: { order: Order }) {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
   });
+
 
   const cleanPhone = o.customer_phone.replace(/\D/g, "");
   const wppNumber = cleanPhone.length >= 10 ? (cleanPhone.startsWith("55") ? cleanPhone : `55${cleanPhone}`) : null;
@@ -189,6 +206,19 @@ function OrderCard({ order: o }: { order: Order }) {
                 {updateShipping.isPending ? "..." : "Aplicar"}
               </button>
             </div>
+          </div>
+
+          <div>
+            <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-1">Código de rastreio (Correios)</p>
+            <div className="flex gap-2">
+              <input value={trackingInput} onChange={(e) => setTrackingInput(e.target.value)} placeholder="Ex: BR123456789BR"
+                className="flex-1 border border-border rounded-md px-3 py-1.5 bg-white text-primary-dark text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
+              <button onClick={() => updateTracking.mutate()} disabled={updateTracking.isPending}
+                className="bg-primary text-white px-4 py-1.5 rounded-md text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
+                {updateTracking.isPending ? "..." : "Salvar"}
+              </button>
+            </div>
+            <p className="text-[10px] text-[var(--text-muted)] mt-1">Defina antes de marcar como "Enviado" — vai no email da cliente.</p>
           </div>
         </div>
       )}
