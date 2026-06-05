@@ -1,9 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ChevronLeft, Menu, CheckCircle, X, Award } from "lucide-react";
+import { ChevronLeft, Menu, CheckCircle, X, Award, ChevronUp, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress, isCourseJustCompleted } from "@/lib/lessons";
+import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress, isCourseJustCompleted, groupLessonsByModule } from "@/lib/lessons";
 import { getMyCertificateForCourse } from "@/lib/certificates";
 import { supabase } from "@/lib/supabase";
 import { isEnrolledInCourse } from "@/lib/enrollments";
