@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import type { Course } from "./supabase";
+import { track } from "./analytics";
 
 export type Enrollment = {
   id: string;
