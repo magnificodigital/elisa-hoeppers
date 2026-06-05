@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Menu, CheckCircle, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress } from "@/lib/lessons";
+import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress, isCourseJustCompleted } from "@/lib/lessons";
+import { supabase } from "@/lib/supabase";
 import { isEnrolledInCourse } from "@/lib/enrollments";
 import { LessonQuiz } from "@/components/LessonQuiz";
 import { LessonQA } from "@/components/LessonQA";
@@ -48,12 +49,59 @@ function LessonPlayerPage() {
 
   const completeMutation = useMutation({
     mutationFn: () => markLessonComplete(lesson!.id),
-    onSuccess: () => {
+    onSuccess: async () => {
       setMarked(true);
       qc.invalidateQueries({ queryKey: ["lessons-with-progress", lesson?.course_id, user?.id] });
       qc.invalidateQueries({ queryKey: ["my-course-progress", user?.id] });
+      qc.invalidateQueries({ queryKey: ["my-certificates", user?.id] });
+
+      if (lesson?.course_id) {
+        try {
+          const result = await isCourseJustCompleted(lesson.course_id);
+          if (result.completed && result.certificateId) {
+            supabase.functions.invoke("send-notification", {
+              body: { type: "course_completed", record_id: result.certificateId },
+            }).catch((e) => console.error("course email failed:", e));
+          }
+        } catch (e) {
+          console.error("check course completion:", e);
+        }
+      }
     },
   });
+
+  // YouTube Player API — auto-marca aula como concluída quando vídeo termina
+  useEffect(() => {
+    if (!playing || !lesson?.youtube_id) return;
+
+    const w = window as any;
+    if (!w.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+    }
+
+    function attachPlayer() {
+      if (!w.YT?.Player) return;
+      new w.YT.Player("lesson-yt-player", {
+        events: {
+          onStateChange: (e: any) => {
+            if (e.data === 0 && !isCompleted) {
+              completeMutation.mutate();
+            }
+          },
+        },
+      });
+    }
+
+    if (w.YT?.Player) {
+      setTimeout(attachPlayer, 100);
+    } else {
+      w.onYouTubeIframeAPIReady = attachPlayer;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing, lesson?.youtube_id]);
+
 
   if (loadingLesson || loading || (!user && !loading)) {
     return (
@@ -127,10 +175,11 @@ function LessonPlayerPage() {
         <div className="flex items-center gap-3 md:gap-5">
           <button
             onClick={() => setSidebarOpen((v) => !v)}
-            className="lg:hidden text-cream/90 hover:text-cream"
+            className="lg:hidden inline-flex items-center gap-1.5 text-cream/90 hover:text-cream border border-cream/30 rounded-full px-3 py-1.5"
             aria-label="Ver conteúdo do curso"
           >
             <Menu className="w-5 h-5" />
+            <span className="text-[10px] uppercase tracking-widest">Conteúdo</span>
           </button>
 
           <div className="hidden md:flex items-center gap-2 text-sm text-cream/90">
@@ -247,7 +296,8 @@ function LessonPlayerPage() {
               <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-8">
                 {playing ? (
                   <iframe
-                    src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1`}
+                    id="lesson-yt-player"
+                    src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1&origin=${typeof window !== "undefined" ? window.location.origin : ""}`}
                     title={lesson.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

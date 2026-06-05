@@ -177,6 +177,47 @@ async function handleOrder(recordId: string) {
   ]);
 }
 
+async function handleCourseCompleted(certificateId: string) {
+  const { data: cert, error } = await supabase
+    .from("certificates")
+    .select("*")
+    .eq("id", certificateId)
+    .maybeSingle();
+  if (error || !cert) throw new Error("certificate not found");
+
+  const { data: authUser } = await supabase.auth.admin.getUserById(cert.user_id);
+  const studentEmail = authUser?.user?.email;
+
+  const certUrl = `${SITE_URL}/certificado/${cert.code}`;
+
+  if (studentEmail) {
+    const studentHtml = wrap(`
+      <div class="card">
+        <h1>Parabéns! 🌿</h1>
+        <p>Você concluiu o curso</p>
+        <h2>${cert.course_title}</h2>
+        <p>Seu certificado já está disponível com código <span class="code">#${cert.code}</span></p>
+        <a class="btn" href="${certUrl}">Ver meu certificado</a>
+        <p class="muted">Link público pra compartilhar nas redes:<br/>${certUrl}</p>
+      </div>
+    `);
+    await sendEmail(studentEmail, `🎉 Você concluiu ${cert.course_title}!`, studentHtml).catch((e) => console.error("student email failed:", e));
+  }
+
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>Aluna concluiu o curso</h1>
+      <p><span class="label">Aluna</span><br/>${cert.student_name}</p>
+      <p><span class="label">Curso</span><br/>${cert.course_title}</p>
+      <p><span class="label">Certificado</span> <span class="code">#${cert.code}</span></p>
+      <a class="btn" href="${SITE_URL}/certificado/${cert.code}">Ver certificado</a>
+    </div>
+  `);
+  await sendEmail(ELISA_EMAIL, `✓ Aluna concluiu curso: ${cert.student_name} · ${cert.course_title}`, elisaHtml).catch((e) => console.error("elisa course email failed:", e));
+}
+
+
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -190,6 +231,7 @@ serve(async (req) => {
     }
     if (type === "booking") await handleBooking(record_id);
     else if (type === "order") await handleOrder(record_id);
+    else if (type === "course_completed") await handleCourseCompleted(record_id);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,
