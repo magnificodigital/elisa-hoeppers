@@ -167,3 +167,24 @@ export async function listMyOrders(): Promise<Order[]> {
   if (error) throw error;
   return (data ?? []) as Order[];
 }
+
+export async function cancelMyOrder(orderId: string): Promise<void> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) throw new Error("Você precisa estar logada.");
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: "cancelled" })
+    .eq("id", orderId)
+    .eq("user_id", sessionUser.id)
+    .eq("status", "pending");
+  if (error) throw error;
+}
+
+export async function updateOrderTracking(id: string, trackingCode: string | null): Promise<void> {
+  const { error } = await supabase
+    .from("orders")
+    .update({ tracking_code: trackingCode })
+    .eq("id", id);
+  if (error) throw error;
+}
