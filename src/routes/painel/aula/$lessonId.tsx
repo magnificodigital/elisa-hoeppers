@@ -318,10 +318,11 @@ function LessonPlayerPage() {
                       {l.title}
                     </p>
                     {l.duration_min && (
-                      <p className="text-[11px] text-[#5E6B5A] mt-0.5">
+                      <p className={`text-[11px] mt-0.5 ${isCurrent ? "text-cream/70" : "text-[#5E6B5A]"}`}>
                         {l.duration_min} min
                       </p>
                     )}
+
                   </div>
                 </Link>
               );
