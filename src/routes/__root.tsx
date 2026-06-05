@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { FloatingCart } from "@/components/FloatingCart";
+import { CookieBanner } from "@/components/CookieBanner";
 
 import appCss from "../styles.css?url";
 
@@ -120,6 +121,7 @@ function RootComponent() {
       <AuthProvider>
         <Outlet />
         <FloatingCart />
+        <CookieBanner />
       </AuthProvider>
     </QueryClientProvider>
   );

@@ -9,7 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PerfumistaRouteImport } from './routes/perfumista'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -49,9 +52,24 @@ import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
 import { Route as AdminCursosIdAulasLessonIdQuizRouteImport } from './routes/admin/cursos/$id/aulas/$lessonId/quiz'
 
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfumistaRoute = PerfumistaRouteImport.update({
@@ -255,7 +273,10 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -296,7 +317,10 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -338,7 +362,10 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -381,7 +408,10 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/login'
     | '/perfumista'
+    | '/privacidade'
+    | '/sitemap.xml'
     | '/sobre'
+    | '/termos'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
     | '/admin/disponibilidade'
@@ -422,7 +452,10 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/login'
     | '/perfumista'
+    | '/privacidade'
+    | '/sitemap.xml'
     | '/sobre'
+    | '/termos'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
     | '/admin/disponibilidade'
@@ -463,7 +496,10 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/login'
     | '/perfumista'
+    | '/privacidade'
+    | '/sitemap.xml'
     | '/sobre'
+    | '/termos'
     | '/admin/agendamentos'
     | '/admin/configuracoes'
     | '/admin/disponibilidade'
@@ -505,7 +541,10 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   LoginRoute: typeof LoginRoute
   PerfumistaRoute: typeof PerfumistaRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  TermosRoute: typeof TermosRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
@@ -539,11 +578,32 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfumista': {
@@ -835,7 +895,10 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   LoginRoute: LoginRoute,
   PerfumistaRoute: PerfumistaRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  TermosRoute: TermosRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
