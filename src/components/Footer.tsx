@@ -49,6 +49,11 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 border-t border-cream/10 text-center text-xs text-cream/60">
+          <p className="mb-2">
+            <Link to="/privacidade" className="hover:text-peach transition-colors">Privacidade</Link>
+            {" · "}
+            <Link to="/termos" className="hover:text-peach transition-colors">Termos de Uso</Link>
+          </p>
           <p>
             © {new Date().getFullYear()} · Feito com muito ♥ por{" "}
             <a href="https://magnificodigital.com" target="_blank" rel="noreferrer" className="hover:text-peach underline">
