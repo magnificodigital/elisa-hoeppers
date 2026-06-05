@@ -10,6 +10,7 @@ import Layout from "@/components/Layout";
 import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
+import { listLessonsWithProgress } from "@/lib/lessons";
 import { getRatingSummariesByIds } from "@/lib/reviews";
 
 export const Route = createFileRoute("/painel/")({
@@ -58,6 +59,24 @@ function PainelPage() {
     queryFn: () => getRatingSummariesByIds(courseIds),
     enabled: courseIds.length > 0,
   });
+
+  const { data: nextLessonByCourse } = useQuery({
+    queryKey: ["next-lesson-by-course", user?.id, courseIds.sort().join(",")],
+    queryFn: async () => {
+      const map: Record<string, string | null> = {};
+      await Promise.all(
+        courseIds.map(async (id) => {
+          const lessons = await listLessonsWithProgress(id);
+          const next = lessons.find((l) => !l.completed) ?? lessons[0];
+          map[id] = next?.id ?? null;
+        })
+      );
+      return map;
+    },
+    enabled: !!user && courseIds.length > 0,
+  });
+
+
 
   if (loading || !user) {
     return (
@@ -227,13 +246,9 @@ function PainelPage() {
               <div className="space-y-4">
                 {enrolled.map((c) => {
                   const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
-                  return (
-                    <Link
-                      key={c.course_id}
-                      to="/painel/curso/$slug"
-                      params={{ slug: c.course_slug }}
-                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
-                    >
+                  const nextId = nextLessonByCourse?.[c.course_id];
+                  const cardInner = (
+                    <>
                       {c.cover_image && (
                         <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
                           <img
@@ -282,7 +297,24 @@ function PainelPage() {
                           </div>
                         </div>
                       </div>
+                    </>
+                  );
+                  return nextId ? (
+                    <Link
+                      key={c.course_id}
+                      to="/painel/aula/$lessonId"
+                      params={{ lessonId: nextId }}
+                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
+                    >
+                      {cardInner}
                     </Link>
+                  ) : (
+                    <div
+                      key={c.course_id}
+                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden group"
+                    >
+                      {cardInner}
+                    </div>
                   );
                 })}
               </div>
