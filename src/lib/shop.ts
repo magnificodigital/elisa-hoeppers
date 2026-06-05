@@ -123,11 +123,12 @@ export type Order = {
   total_cents: number;
   status: "pending" | "confirmed" | "shipped" | "cancelled" | "completed";
   notes: string | null;
+  tracking_code: string | null;
   created_at: string;
 };
 
 const ORDER_COLS =
-  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, created_at";
+  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, created_at";
 
 export async function listAllOrdersForAdmin(filter?: { status?: Order["status"] }): Promise<Order[]> {
   let q = supabase
