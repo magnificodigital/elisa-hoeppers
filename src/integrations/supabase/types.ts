@@ -158,6 +158,51 @@ export type Database = {
         }
         Relationships: []
       }
+      broadcasts: {
+        Row: {
+          body_html: string
+          created_at: string
+          created_by: string | null
+          failed_count: number | null
+          id: string
+          segment_id: string | null
+          segment_label: string | null
+          segment_type: string
+          sent_at: string | null
+          sent_count: number | null
+          status: string
+          subject: string
+        }
+        Insert: {
+          body_html: string
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number | null
+          id?: string
+          segment_id?: string | null
+          segment_label?: string | null
+          segment_type: string
+          sent_at?: string | null
+          sent_count?: number | null
+          status?: string
+          subject: string
+        }
+        Update: {
+          body_html?: string
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number | null
+          id?: string
+          segment_id?: string | null
+          segment_label?: string | null
+          segment_type?: string
+          sent_at?: string | null
+          sent_count?: number | null
+          status?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       certificates: {
         Row: {
           code: string
@@ -1312,6 +1357,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_count_broadcast_recipients: {
+        Args: { p_segment_id?: string; p_segment_type: string }
+        Returns: number
+      }
       admin_dashboard_stats: { Args: never; Returns: Json }
       admin_global_search: { Args: { p_query: string }; Returns: Json }
       book_appointment: {
