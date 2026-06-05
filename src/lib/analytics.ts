@@ -22,3 +22,32 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   if (error) throw error;
   return data as unknown as DashboardStats;
 }
+
+declare global {
+  interface Window {
+    plausible?: (
+      event: string,
+      options?: { props?: Record<string, string | number | boolean> },
+    ) => void;
+  }
+}
+
+type EventName =
+  | "course_enrolled"
+  | "order_created"
+  | "appointment_created"
+  | "newsletter_subscribed"
+  | "lesson_completed"
+  | "course_completed";
+
+export function track(
+  event: EventName,
+  props?: Record<string, string | number | boolean>,
+): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.plausible?.(event, props ? { props } : undefined);
+  } catch (e) {
+    console.warn("analytics: track failed", e);
+  }
+}

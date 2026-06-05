@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import type { Course } from "./supabase";
+import { track } from "./analytics";
 
 export type Enrollment = {
   id: string;
@@ -17,6 +18,7 @@ export async function enrollInCourse(courseId: string): Promise<void> {
     .from("enrollments")
     .insert({ user_id: sessionUser.id, course_id: courseId, status: "active" });
   if (error && error.code !== "23505") throw error;
+  track("course_enrolled", { course_id: courseId });
 }
 
 export async function isEnrolledInCourse(courseId: string): Promise<boolean> {

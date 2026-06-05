@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase";
 import { isEnrolledInCourse } from "@/lib/enrollments";
 import { LessonQuiz } from "@/components/LessonQuiz";
 import { LessonQA } from "@/components/LessonQA";
+import { track } from "@/lib/analytics";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
   head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
@@ -85,6 +86,7 @@ function LessonPlayerPage() {
     mutationFn: () => markLessonComplete(lesson!.id),
     onSuccess: async () => {
       setMarked(true);
+      track("lesson_completed", { lesson_id: lesson!.id, course_id: lesson!.course_id });
       qc.invalidateQueries({ queryKey: ["lessons-with-progress", lesson?.course_id, user?.id] });
       qc.invalidateQueries({ queryKey: ["my-course-progress", user?.id] });
       qc.invalidateQueries({ queryKey: ["my-certificates", user?.id] });
@@ -93,6 +95,7 @@ function LessonPlayerPage() {
         try {
           const result = await isCourseJustCompleted(lesson.course_id);
           if (result.completed && result.certificateId) {
+            track("course_completed", { course_id: lesson.course_id });
             supabase.functions.invoke("send-notification", {
               body: { type: "course_completed", record_id: result.certificateId },
             }).catch((e) => console.error("course email failed:", e));

@@ -7,6 +7,7 @@ import { useCart } from "@/lib/cart";
 import { formatPriceBRL } from "@/lib/shop";
 import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
+import { track } from "@/lib/analytics";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
@@ -104,6 +105,12 @@ function CheckoutPage() {
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
       const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
+
+      track("order_created", {
+        order_code: orderResult.code,
+        total_brl: Number((orderResult.total_cents / 100).toFixed(2)),
+        items: items.length,
+      });
 
       supabase.functions.invoke("send-notification", {
         body: { type: "order", record_id: orderResult.order_id },
