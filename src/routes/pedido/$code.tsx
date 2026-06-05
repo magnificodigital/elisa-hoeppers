@@ -80,6 +80,25 @@ function OrderPage() {
   const wppMsg = `Oi Elisa! Acabei de fazer o pedido %23${order.code}.%0A%0A${wppItems}%0A%0ATotal: ${formatPriceBRL(order.total_cents)}%0A%0AMe avisa como combinamos frete e pagamento, por favor!`;
   const wppLink = `https://wa.me/5547999999999?text=${wppMsg}`;
 
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const isOwner = !!user && !!order.user_id && user.id === order.user_id;
+
+  const cancel = useMutation({
+    mutationFn: () => cancelMyOrder(order.id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["my-orders"] });
+      supabase.functions
+        .invoke("send-notification", {
+          body: { type: "order_cancelled", record_id: order.id },
+        })
+        .catch((e) => console.error("cancel email failed:", e));
+      window.location.reload();
+    },
+  });
+
+
+
   return (
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
