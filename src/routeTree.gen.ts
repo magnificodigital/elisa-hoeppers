@@ -44,7 +44,6 @@ import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendament
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
-import { Route as PainelCursoSlugRouteImport } from './routes/painel/curso/$slug'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
@@ -227,11 +226,6 @@ const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   path: '/admin/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PainelCursoSlugRoute = PainelCursoSlugRouteImport.update({
-  id: '/painel/curso/$slug',
-  path: '/painel/curso/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
   id: '/painel/aula/$lessonId',
   path: '/painel/aula/$lessonId',
@@ -300,7 +294,6 @@ export interface FileRoutesByFullPath {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
-  '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
@@ -344,7 +337,6 @@ export interface FileRoutesByTo {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
-  '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
   '/admin/produtos': typeof AdminProdutosIndexRoute
@@ -389,7 +381,6 @@ export interface FileRoutesById {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
-  '/painel/curso/$slug': typeof PainelCursoSlugRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
@@ -435,7 +426,6 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
-    | '/painel/curso/$slug'
     | '/admin/blog/'
     | '/admin/cursos/'
     | '/admin/produtos/'
@@ -479,7 +469,6 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
-    | '/painel/curso/$slug'
     | '/admin/blog'
     | '/admin/cursos'
     | '/admin/produtos'
@@ -523,7 +512,6 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
-    | '/painel/curso/$slug'
     | '/admin/blog/'
     | '/admin/cursos/'
     | '/admin/produtos/'
@@ -568,7 +556,6 @@ export interface RootRouteChildren {
   AdminBlogIdRoute: typeof AdminBlogIdRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
-  PainelCursoSlugRoute: typeof PainelCursoSlugRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
   AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
@@ -823,13 +810,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/painel/curso/$slug': {
-      id: '/painel/curso/$slug'
-      path: '/painel/curso/$slug'
-      fullPath: '/painel/curso/$slug'
-      preLoaderRoute: typeof PainelCursoSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/painel/aula/$lessonId': {
       id: '/painel/aula/$lessonId'
       path: '/painel/aula/$lessonId'
@@ -922,7 +902,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminBlogIdRoute: AdminBlogIdRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
-  PainelCursoSlugRoute: PainelCursoSlugRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
   AdminProdutosIndexRoute: AdminProdutosIndexRoute,
@@ -932,3 +911,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
