@@ -1,0 +1,212 @@
+// @ts-ignore - Deno
+import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+// @ts-ignore
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
+// @ts-ignore
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+// @ts-ignore
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+
+const FROM = "Elisa Hoeppers <agendamento@sendmail.elisahoeppers.com.br>";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+const baseStyles = `
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #F5EBE2; color: #334C31; margin: 0; padding: 0; }
+  .container { max-width: 560px; margin: 0 auto; padding: 24px; }
+  .card { background: white; border-radius: 12px; padding: 32px; margin-top: 16px; }
+  h1, h2, h3 { font-family: Georgia, serif; color: #3B4F30; }
+  p { line-height: 1.6; margin: 8px 0; }
+  a { color: #3B4F30; }
+  .btn { display: inline-block; background: #3B4F30; color: white !important; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px; margin-top: 16px; }
+  .muted { color: #7A7A7A; font-size: 13px; }
+`;
+
+function wrap(body: string, unsubLink?: string): string {
+  return `<!DOCTYPE html>
+<html>
+  <head><meta charset="utf-8" /><style>${baseStyles}</style></head>
+  <body>
+    <div class="container">
+      <div class="card">
+        ${body}
+      </div>
+      <p class="muted" style="text-align:center;margin-top:16px;">
+        ${unsubLink ? `Quer parar de receber? <a href="${unsubLink}">Descadastrar</a><br/>` : ""}
+        <a href="https://elisahoeppers.com.br">elisahoeppers.com.br</a>
+      </p>
+    </div>
+  </body>
+</html>`;
+}
+
+type Recipient = { email: string; name: string | null };
+
+async function resolveRecipients(segmentType: string, segmentId: string | null): Promise<Recipient[]> {
+  const emails = new Map<string, string | null>();
+
+  if (segmentType === "newsletter") {
+    const { data } = await supabase
+      .from("newsletter_subscribers")
+      .select("email, full_name")
+      .is("unsubscribed_at", null);
+    (data ?? []).forEach((r: any) => emails.set(r.email.toLowerCase(), r.full_name ?? null));
+
+  } else if (segmentType === "course_enrolled" && segmentId) {
+    const { data: rows } = await supabase
+      .from("enrollments")
+      .select("user_id")
+      .eq("course_id", segmentId)
+      .eq("status", "active");
+    const ids = [...new Set((rows ?? []).map((r: any) => r.user_id))];
+    for (const uid of ids) {
+      const { data: u } = await supabase.auth.admin.getUserById(uid as string);
+      const e = u?.user?.email;
+      if (e) {
+        const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", uid).maybeSingle();
+        emails.set(e.toLowerCase(), prof?.full_name ?? null);
+      }
+    }
+
+  } else if (segmentType === "product_buyers" && segmentId) {
+    const { data: orders } = await supabase
+      .from("orders")
+      .select("customer_email, customer_name, items")
+      .in("status", ["completed", "shipped"]);
+    (orders ?? []).forEach((o: any) => {
+      const has = Array.isArray(o.items) && o.items.some((it: any) => it.product_id === segmentId);
+      if (has && o.customer_email) emails.set(o.customer_email.toLowerCase(), o.customer_name ?? null);
+    });
+
+  } else if (segmentType === "all_customers") {
+    const { data: orders } = await supabase
+      .from("orders")
+      .select("customer_email, customer_name")
+      .in("status", ["completed", "shipped"]);
+    (orders ?? []).forEach((o: any) => {
+      if (o.customer_email) emails.set(o.customer_email.toLowerCase(), o.customer_name ?? null);
+    });
+
+  } else if (segmentType === "all_students") {
+    const { data: rows } = await supabase
+      .from("enrollments")
+      .select("user_id")
+      .eq("status", "active");
+    const ids = [...new Set((rows ?? []).map((r: any) => r.user_id))];
+    for (const uid of ids) {
+      const { data: u } = await supabase.auth.admin.getUserById(uid as string);
+      const e = u?.user?.email;
+      if (e) {
+        const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", uid).maybeSingle();
+        emails.set(e.toLowerCase(), prof?.full_name ?? null);
+      }
+    }
+  }
+
+  return Array.from(emails.entries()).map(([email, name]) => ({ email, name }));
+}
+
+async function sendOne(to: string, subject: string, html: string): Promise<boolean> {
+  if (!RESEND_API_KEY) return false;
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ from: FROM, to: [to], subject, html }),
+  });
+  if (!res.ok) {
+    console.error("Resend error", res.status, await res.text());
+    return false;
+  }
+  return true;
+}
+
+async function sendInBatches(
+  recipients: Recipient[],
+  subject: string,
+  bodyHtml: string
+): Promise<{ sent: number; failed: number }> {
+  let sent = 0;
+  let failed = 0;
+  const CHUNK = 8;
+  for (let i = 0; i < recipients.length; i += CHUNK) {
+    const slice = recipients.slice(i, i + CHUNK);
+    const results = await Promise.all(slice.map((r) => {
+      const personalized = bodyHtml.replace(/\{\{first_name\}\}/g, (r.name ?? "").split(" ")[0] || "");
+      const html = wrap(personalized);
+      return sendOne(r.email, subject, html);
+    }));
+    sent += results.filter(Boolean).length;
+    failed += results.filter((ok) => !ok).length;
+    await new Promise((res) => setTimeout(res, 300));
+  }
+  return { sent, failed };
+}
+
+serve(async (req: Request) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  try {
+    const { broadcast_id, test_email } = await req.json();
+    if (!broadcast_id) {
+      return new Response(JSON.stringify({ error: "broadcast_id required" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { data: b, error } = await supabase
+      .from("broadcasts")
+      .select("*")
+      .eq("id", broadcast_id)
+      .maybeSingle();
+    if (error || !b) throw new Error("broadcast not found");
+
+    // ===== MODO TESTE: manda só pra um endereço =====
+    if (test_email) {
+      const html = wrap(b.body_html.replace(/\{\{first_name\}\}/g, "Teste"));
+      const ok = await sendOne(test_email, `[TESTE] ${b.subject}`, html);
+      return new Response(JSON.stringify({ ok, test: true }), {
+        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ===== ENVIO REAL =====
+    await supabase.from("broadcasts").update({ status: "sending" }).eq("id", broadcast_id);
+
+    const recipients = await resolveRecipients(b.segment_type, b.segment_id);
+    if (recipients.length === 0) {
+      await supabase.from("broadcasts").update({ status: "sent", sent_at: new Date().toISOString(), sent_count: 0 }).eq("id", broadcast_id);
+      return new Response(JSON.stringify({ ok: true, sent: 0 }), {
+        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { sent, failed } = await sendInBatches(recipients, b.subject, b.body_html);
+
+    await supabase.from("broadcasts").update({
+      status: failed > 0 && sent === 0 ? "failed" : "sent",
+      sent_at: new Date().toISOString(),
+      sent_count: sent,
+      failed_count: failed,
+    }).eq("id", broadcast_id);
+
+    return new Response(JSON.stringify({ ok: true, sent, failed }), {
+      status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  } catch (err) {
+    console.error(err);
+    return new Response(JSON.stringify({ error: (err as Error).message }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+});
