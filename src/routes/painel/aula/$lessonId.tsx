@@ -1,9 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { ChevronLeft, Menu, CheckCircle, X, Award } from "lucide-react";
+import { ChevronLeft, Menu, CheckCircle, X, Award, ChevronUp, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress, isCourseJustCompleted } from "@/lib/lessons";
+import { getLessonWithCourse, markLessonComplete, listLessonsWithProgress, isCourseJustCompleted, groupLessonsByModule } from "@/lib/lessons";
 import { getMyCertificateForCourse } from "@/lib/certificates";
 import { supabase } from "@/lib/supabase";
 import { isEnrolledInCourse } from "@/lib/enrollments";
@@ -23,6 +23,16 @@ function LessonPlayerPage() {
   const [marked, setMarked] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openModuleIds, setOpenModuleIds] = useState<Set<string>>(new Set());
+
+  function toggleModule(moduleId: string) {
+    setOpenModuleIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(moduleId)) next.delete(moduleId);
+      else next.add(moduleId);
+      return next;
+    });
+  }
 
   const { data: lessonData, isLoading: loadingLesson, error: lessonError } = useQuery({
     queryKey: ["lesson-with-course", lessonId],
@@ -47,6 +57,18 @@ function LessonPlayerPage() {
     queryFn: () => listLessonsWithProgress(lesson!.course_id),
     enabled: !!lesson,
   });
+
+  const moduleOfCurrent = (allLessons?.find((l) => l.id === lessonId) as any)?.module?.id ?? "__none__";
+  useEffect(() => {
+    setOpenModuleIds((prev) => {
+      if (prev.has(moduleOfCurrent)) return prev;
+      const next = new Set(prev);
+      next.add(moduleOfCurrent);
+      return next;
+    });
+  }, [moduleOfCurrent]);
+
+
 
   const lessonsCompletedCount = (allLessons ?? []).filter((l) => l.completed).length;
   const lessonsTotalCount = (allLessons ?? []).length;
@@ -165,6 +187,7 @@ function LessonPlayerPage() {
   const progressTotal = sortedLessons.length;
   const progressPct = progressTotal > 0 ? Math.round((progressCompleted / progressTotal) * 100) : 0;
   const isCompleted = marked || (sortedLessons.find((l) => l.id === lesson.id)?.completed ?? false);
+  const groups = groupLessonsByModule(sortedLessons);
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
@@ -287,48 +310,70 @@ function LessonPlayerPage() {
             )}
           </div>
 
-          <nav className="flex-1 overflow-y-auto p-3 space-y-1">
-            {sortedLessons.map((l, i) => {
-              const isCurrent = l.id === lesson.id;
+          <nav className="flex-1 overflow-y-auto py-2">
+            {groups.map((g) => {
+              const moduleKey = g.module?.id ?? "__none__";
+              const isOpen = openModuleIds.has(moduleKey);
+              const groupTotal = g.lessons.length;
+              const groupCompleted = g.lessons.filter((l) => l.completed).length;
               return (
-                <Link
-                  key={l.id}
-                  to="/painel/aula/$lessonId"
-                  params={{ lessonId: l.id }}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-start gap-3 px-4 py-3 rounded-md text-sm transition-colors ${
-                    isCurrent
-                      ? "bg-primary text-cream font-medium"
-                      : "text-primary-dark hover:bg-cream/60"
-                  }`}
-                >
-                  <span
-                    className={`mt-0.5 shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-medium ${
-                      isCurrent
-                        ? "bg-cream/20 text-cream"
-                        : l.completed
-                        ? "bg-primary text-white"
-                        : "bg-cream text-primary-dark"
-                    }`}
+                <div key={moduleKey} className="border-b border-cream last:border-b-0">
+                  <button
+                    onClick={() => toggleModule(moduleKey)}
+                    className="w-full flex items-center justify-between gap-2 px-5 py-3 text-left hover:bg-cream/40 transition"
                   >
-                    {l.completed ? "✓" : String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  <div className="min-w-0">
-                    <p className="truncate leading-snug">
-                      {l.title}
-                    </p>
-                    {l.duration_min && (
-                      <p className={`text-[11px] mt-0.5 ${isCurrent ? "text-cream/70" : "text-[#5E6B5A]"}`}>
-                        {l.duration_min} min
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase tracking-widest text-[#5E6B5A] font-semibold">
+                        {g.module ? `Módulo ${String(g.module.display_order).padStart(2, "0")}` : "Outras aulas"}
                       </p>
-                    )}
-
-                  </div>
-                </Link>
+                      {g.module?.title && (
+                        <p className="text-sm text-primary-dark truncate leading-snug">{g.module.title}</p>
+                      )}
+                    </div>
+                    <span className="flex items-center gap-2 shrink-0 text-[11px] text-[#5E6B5A]">
+                      {groupCompleted}/{groupTotal}
+                      {isOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="pb-2">
+                      {g.lessons.map((l, i) => {
+                        const isCurrent = l.id === lesson.id;
+                        return (
+                          <Link
+                            key={l.id}
+                            to="/painel/aula/$lessonId"
+                            params={{ lessonId: l.id }}
+                            onClick={() => setSidebarOpen(false)}
+                            className={`flex items-start gap-3 px-5 py-2.5 text-sm transition border-l-[3px] ${
+                              isCurrent
+                                ? "bg-cream/60 border-primary text-primary-dark font-medium"
+                                : "border-transparent text-primary-dark/80 hover:bg-cream/30"
+                            }`}
+                          >
+                            <span
+                              className={`mt-0.5 shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-medium ${
+                                l.completed ? "bg-primary text-white" : "bg-cream text-primary-dark"
+                              }`}
+                            >
+                              {l.completed ? "✓" : String(i + 1).padStart(2, "0")}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate leading-snug">{l.title}</p>
+                              {l.duration_min && (
+                                <p className="text-[11px] mt-0.5 text-[#5E6B5A]">{l.duration_min} min</p>
+                              )}
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </nav>
+
          </div>
         </aside>
 

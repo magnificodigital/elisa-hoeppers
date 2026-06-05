@@ -31,6 +31,7 @@ export async function updateCourse(id: string, patch: CourseUpdate): Promise<voi
 export type LessonAdmin = {
   id: string;
   course_id: string;
+  module_id: string | null;
   slug: string;
   title: string;
   description: string | null;
@@ -44,7 +45,7 @@ export type LessonAdmin = {
 export async function listLessonsForAdmin(courseId: string): Promise<LessonAdmin[]> {
   const { data, error } = await supabase
     .from("lessons")
-    .select("id, course_id, slug, title, description, youtube_id, content_md, duration_min, display_order, is_free_preview")
+    .select("id, course_id, module_id, slug, title, description, youtube_id, content_md, duration_min, display_order, is_free_preview")
     .eq("course_id", courseId)
     .order("display_order", { ascending: true });
   if (error) throw error;
