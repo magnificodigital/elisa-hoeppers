@@ -170,6 +170,35 @@ function OrderPage() {
           >
             <MessageCircle className="w-4 h-4" /> Falar com a Elisa no WhatsApp
           </a>
+
+          {isOwner && order.status === "pending" && (
+            <button
+              onClick={() => {
+                if (confirm("Cancelar este pedido?")) cancel.mutate();
+              }}
+              disabled={cancel.isPending}
+              className="block mx-auto mt-3 text-xs uppercase tracking-widest text-red-700 hover:opacity-70 transition disabled:opacity-50"
+            >
+              {cancel.isPending ? "Cancelando..." : "Cancelar pedido"}
+            </button>
+          )}
+
+          {order.tracking_code && (order.status === "shipped" || order.status === "completed") && (
+            <div className="mt-6 bg-white rounded-lg p-5 text-center">
+              <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-1">
+                Código de rastreio
+              </p>
+              <p className="font-mono text-lg text-primary-dark mb-2">{order.tracking_code}</p>
+              <a
+                href={`https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-primary hover:underline"
+              >
+                Acompanhar nos Correios →
+              </a>
+            </div>
+          )}
           <Link
             to="/loja"
             className="block text-center mt-4 text-sm text-primary-dark hover:text-primary"
