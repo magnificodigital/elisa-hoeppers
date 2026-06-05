@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /painel/
+Disallow: /login
+Disallow: /cadastro-de-alunos
+Disallow: /checkout
+Disallow: /carrinho
+
+Sitemap: https://elisahoeppers.com.br/sitemap.xml
