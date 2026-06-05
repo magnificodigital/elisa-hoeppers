@@ -1,8 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Check, MessageCircle } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
-import { formatPriceBRL } from "@/lib/shop";
+import { formatPriceBRL, cancelMyOrder } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
 
 type OrderItem = {
   product_id: string;
@@ -13,6 +15,8 @@ type OrderItem = {
   total_cents: number;
 };
 type Order = {
+  id: string;
+  user_id: string | null;
   code: string;
   customer_name: string;
   items: OrderItem[];
@@ -20,6 +24,7 @@ type Order = {
   shipping_cents: number;
   total_cents: number;
   status: string;
+  tracking_code: string | null;
   created_at: string;
 };
 
