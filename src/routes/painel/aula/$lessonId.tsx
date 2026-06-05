@@ -215,8 +215,7 @@ function LessonPlayerPage() {
           </button>
 
           <Link
-            to="/painel/curso/$slug"
-            params={{ slug: course.slug }}
+            to="/painel"
             className="hidden lg:inline-flex text-cream/70 hover:text-cream transition"
             aria-label="Fechar aula"
           >
