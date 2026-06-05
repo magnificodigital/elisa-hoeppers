@@ -13,9 +13,11 @@ import {
   Users,
   Bell,
   AlertCircle,
+  Star,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { AdminSearchBar } from "@/components/AdminSearchBar";
 import { getDashboardStats } from "@/lib/analytics";
 
 export const Route = createFileRoute("/admin/")({
