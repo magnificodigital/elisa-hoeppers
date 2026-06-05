@@ -74,6 +74,7 @@ function CourseDetail() {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
   const isEnrolled = enrollment?.status === "active";
   const nextLesson = sortedLessons.find((l) => !l.completed) ?? sortedLessons[0];
+  const groups = groupLessonsByModule(sortedLessons);
 
   return (
     <Layout>
