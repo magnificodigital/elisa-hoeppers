@@ -10,6 +10,7 @@ import {
   formatCurrencyBRL, formatTime, formatDate,
   type Service,
 } from "@/lib/appointments";
+import { track } from "@/lib/analytics";
 
 export const Route = createFileRoute("/agende-sua-aula")({
   head: () => ({
