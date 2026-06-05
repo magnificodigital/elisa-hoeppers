@@ -60,6 +60,24 @@ function PainelPage() {
     enabled: courseIds.length > 0,
   });
 
+  const { data: nextLessonByCourse } = useQuery({
+    queryKey: ["next-lesson-by-course", user?.id, courseIds.sort().join(",")],
+    queryFn: async () => {
+      const map: Record<string, string | null> = {};
+      await Promise.all(
+        courseIds.map(async (id) => {
+          const lessons = await listLessonsWithProgress(id);
+          const next = lessons.find((l) => !l.completed) ?? lessons[0];
+          map[id] = next?.id ?? null;
+        })
+      );
+      return map;
+    },
+    enabled: !!user && courseIds.length > 0,
+  });
+
+
+
   if (loading || !user) {
     return (
       <Layout>
