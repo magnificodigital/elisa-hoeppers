@@ -57,6 +57,18 @@ export const Route = createFileRoute("/loja/$slug")({
 function ProductDetail() {
   const { product } = Route.useLoaderData();
   const [activeImage, setActiveImage] = useState(0);
+  const { user } = useAuth();
+
+  const { data: ratingSummary } = useQuery({
+    queryKey: ["product-rating-summary", product.id],
+    queryFn: () => getProductRatingSummary(product.id),
+  });
+
+  const { data: canReview } = useQuery({
+    queryKey: ["can-review-product", user?.id, product.id],
+    queryFn: () => hasPurchasedProduct(product.id),
+    enabled: !!user,
+  });
   const wppMessage = encodeURIComponent(
     `Oi Elisa! Tenho interesse no ${product.name} (${formatPriceBRL(product.price_cents)}). Como faço pra comprar?`
   );
