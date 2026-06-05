@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Package, ChevronRight, ShoppingBag } from "lucide-react";
+import { Package, ChevronRight, ShoppingBag, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
-import { listMyOrders, formatPriceBRL, type Order } from "@/lib/shop";
+import { listMyOrders, formatPriceBRL, cancelMyOrder, type Order } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/painel/pedidos")({
   head: () => ({ meta: [{ title: "Meus pedidos — Elisa Hoeppers" }] }),
