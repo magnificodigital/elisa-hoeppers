@@ -1,0 +1,1 @@
+alter view public.product_rating_summary set (security_invoker = on);
