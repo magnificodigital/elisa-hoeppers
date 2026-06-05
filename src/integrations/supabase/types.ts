@@ -707,6 +707,7 @@ export type Database = {
           status: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
           total_cents: number
+          tracking_code: string | null
           updated_at: string
           user_id: string | null
         }
@@ -728,6 +729,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
           total_cents: number
+          tracking_code?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -749,6 +751,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["order_status"]
           subtotal_cents?: number
           total_cents?: number
+          tracking_code?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -803,6 +806,54 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      product_reviews: {
+        Row: {
+          author_name: string | null
+          comment: string | null
+          created_at: string
+          id: string
+          is_published: boolean
+          product_id: string
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          author_name?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          product_id: string
+          rating: number
+          user_id: string
+        }
+        Update: {
+          author_name?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          product_id?: string
+          rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product_rating_summary"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "product_reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
@@ -1129,6 +1180,13 @@ export type Database = {
             foreignKeyName: "wishlist_items_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "product_rating_summary"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "wishlist_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
@@ -1163,6 +1221,15 @@ export type Database = {
           next_lesson_id: string | null
           overlay_label: string | null
           total_lessons: number | null
+        }
+        Relationships: []
+      }
+      product_rating_summary: {
+        Row: {
+          avg_rating: number | null
+          product_id: string | null
+          product_slug: string | null
+          review_count: number | null
         }
         Relationships: []
       }
