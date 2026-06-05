@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase";
 import { isEnrolledInCourse } from "@/lib/enrollments";
 import { LessonQuiz } from "@/components/LessonQuiz";
 import { LessonQA } from "@/components/LessonQA";
+import { track } from "@/lib/analytics";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
   head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
