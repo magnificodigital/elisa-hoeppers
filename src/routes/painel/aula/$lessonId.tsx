@@ -295,7 +295,8 @@ function LessonPlayerPage() {
               <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-8">
                 {playing ? (
                   <iframe
-                    src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1`}
+                    id="lesson-yt-player"
+                    src={`https://www.youtube.com/embed/${lesson.youtube_id}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1&origin=${typeof window !== "undefined" ? window.location.origin : ""}`}
                     title={lesson.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
