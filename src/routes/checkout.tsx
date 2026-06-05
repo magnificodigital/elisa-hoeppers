@@ -7,6 +7,7 @@ import { useCart } from "@/lib/cart";
 import { formatPriceBRL } from "@/lib/shop";
 import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
+import { track } from "@/lib/analytics";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
