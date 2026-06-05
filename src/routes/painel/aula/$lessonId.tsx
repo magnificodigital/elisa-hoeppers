@@ -58,6 +58,18 @@ function LessonPlayerPage() {
     enabled: !!lesson,
   });
 
+  const moduleOfCurrent = (allLessons?.find((l) => l.id === lessonId) as any)?.module?.id ?? "__none__";
+  useEffect(() => {
+    setOpenModuleIds((prev) => {
+      if (prev.has(moduleOfCurrent)) return prev;
+      const next = new Set(prev);
+      next.add(moduleOfCurrent);
+      return next;
+    });
+  }, [moduleOfCurrent]);
+
+
+
   const lessonsCompletedCount = (allLessons ?? []).filter((l) => l.completed).length;
   const lessonsTotalCount = (allLessons ?? []).length;
 
