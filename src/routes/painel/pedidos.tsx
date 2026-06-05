@@ -76,34 +76,70 @@ function MyOrdersPage() {
 }
 
 function OrderRow({ order: o }: { order: Order }) {
+  const qc = useQueryClient();
   const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
+
+  const cancel = useMutation({
+    mutationFn: () => cancelMyOrder(o.id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["my-orders"] });
+      supabase.functions
+        .invoke("send-notification", {
+          body: { type: "order_cancelled", record_id: o.id },
+        })
+        .catch((e) => console.error("cancel email failed:", e));
+    },
+  });
+
   return (
-    <Link
-      to="/pedido/$code"
-      params={{ code: o.code }}
-      className="block bg-white rounded-lg p-5 hover:shadow-md transition group"
-    >
-      <div className="flex items-center gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 flex-wrap mb-1">
-            <span className="font-mono font-semibold text-primary-dark">#{o.code}</span>
-            <StatusPill status={o.status} />
-            <span className="text-xs text-primary-dark/50">
-              {new Date(o.created_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" })}
-            </span>
+    <div className="bg-white rounded-lg p-5 hover:shadow-md transition">
+      <Link
+        to="/pedido/$code"
+        params={{ code: o.code }}
+        className="block group"
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 flex-wrap mb-1">
+              <span className="font-mono font-semibold text-primary-dark">#{o.code}</span>
+              <StatusPill status={o.status} />
+              <span className="text-xs text-primary-dark/50">
+                {new Date(o.created_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" })}
+              </span>
+            </div>
+            <p className="text-sm text-primary-dark/70 truncate">
+              {o.items.length === 1
+                ? `${o.items[0].qty}× ${o.items[0].name}`
+                : `${o.items.length} produtos · ${totalQty} ${totalQty === 1 ? "item" : "itens"}`}
+            </p>
+            {o.tracking_code && (o.status === "shipped" || o.status === "completed") && (
+              <p className="text-xs text-primary-dark/60 mt-1 font-mono">
+                Rastreio: {o.tracking_code}
+              </p>
+            )}
           </div>
-          <p className="text-sm text-primary-dark/70 truncate">
-            {o.items.length === 1
-              ? `${o.items[0].qty}× ${o.items[0].name}`
-              : `${o.items.length} produtos · ${totalQty} ${totalQty === 1 ? "item" : "itens"}`}
-          </p>
+          <div className="text-right shrink-0">
+            <p className="font-display text-lg text-primary-dark">{formatPriceBRL(o.total_cents)}</p>
+          </div>
+          <ChevronRight className="text-primary-dark/30 group-hover:text-primary transition shrink-0" size={20} />
         </div>
-        <div className="text-right shrink-0">
-          <p className="font-display text-lg text-primary-dark">{formatPriceBRL(o.total_cents)}</p>
+      </Link>
+
+      {o.status === "pending" && (
+        <div className="mt-3 pt-3 border-t border-border">
+          <button
+            onClick={() => {
+              if (confirm("Cancelar este pedido? Você ainda pode refazer depois.")) cancel.mutate();
+            }}
+            disabled={cancel.isPending}
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-red-700 hover:opacity-70 transition disabled:opacity-50"
+          >
+            <X className="w-3.5 h-3.5" />
+            {cancel.isPending ? "Cancelando..." : "Cancelar pedido"}
+          </button>
         </div>
-        <ChevronRight className="text-primary-dark/30 group-hover:text-primary transition shrink-0" size={20} />
-      </div>
-    </Link>
+      )}
+    </div>
   );
 }
 
