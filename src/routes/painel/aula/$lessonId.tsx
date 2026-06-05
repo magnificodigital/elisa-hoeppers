@@ -49,12 +49,59 @@ function LessonPlayerPage() {
 
   const completeMutation = useMutation({
     mutationFn: () => markLessonComplete(lesson!.id),
-    onSuccess: () => {
+    onSuccess: async () => {
       setMarked(true);
       qc.invalidateQueries({ queryKey: ["lessons-with-progress", lesson?.course_id, user?.id] });
       qc.invalidateQueries({ queryKey: ["my-course-progress", user?.id] });
+      qc.invalidateQueries({ queryKey: ["my-certificates", user?.id] });
+
+      if (lesson?.course_id) {
+        try {
+          const result = await isCourseJustCompleted(lesson.course_id);
+          if (result.completed && result.certificateId) {
+            supabase.functions.invoke("send-notification", {
+              body: { type: "course_completed", record_id: result.certificateId },
+            }).catch((e) => console.error("course email failed:", e));
+          }
+        } catch (e) {
+          console.error("check course completion:", e);
+        }
+      }
     },
   });
+
+  // YouTube Player API — auto-marca aula como concluída quando vídeo termina
+  useEffect(() => {
+    if (!playing || !lesson?.youtube_id) return;
+
+    const w = window as any;
+    if (!w.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+    }
+
+    function attachPlayer() {
+      if (!w.YT?.Player) return;
+      new w.YT.Player("lesson-yt-player", {
+        events: {
+          onStateChange: (e: any) => {
+            if (e.data === 0 && !isCompleted) {
+              completeMutation.mutate();
+            }
+          },
+        },
+      });
+    }
+
+    if (w.YT?.Player) {
+      setTimeout(attachPlayer, 100);
+    } else {
+      w.onYouTubeIframeAPIReady = attachPlayer;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing, lesson?.youtube_id]);
+
 
   if (loadingLesson || loading || (!user && !loading)) {
     return (
