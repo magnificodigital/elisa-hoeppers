@@ -119,9 +119,9 @@ function ReviewRow({ review: r }: { review: AdminReview }) {
             <span className="text-[11px] uppercase tracking-widest text-primary-dark/50">
               {r.kind === "course" ? "Curso" : "Produto"}
             </span>
-            <Link to={targetHref} className="font-display text-lg text-primary-dark hover:text-primary transition">
+            <a href={targetHref} className="font-display text-lg text-primary-dark hover:text-primary transition">
               {r.target_title}
-            </Link>
+            </a>
             {!r.is_published && (
               <span className="text-[10px] uppercase tracking-widest bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
                 Despublicada
