@@ -84,3 +84,70 @@ export function extractYouTubeId(input: string): string {
   }
   return trimmed;
 }
+
+// ============== MODERAÇÃO DE REVIEWS ==============
+export type AdminReview = {
+  id: string;
+  kind: "course" | "product";
+  target_id: string;
+  target_title: string;
+  target_slug: string;
+  user_id: string;
+  rating: number;
+  comment: string | null;
+  author_name: string | null;
+  is_published: boolean;
+  created_at: string;
+};
+
+export async function listAllReviewsForAdmin(filter?: {
+  kind?: "course" | "product";
+  onlyHidden?: boolean;
+}): Promise<AdminReview[]> {
+  let q = (supabase as any)
+    .from("admin_all_reviews")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (filter?.kind) q = q.eq("kind", filter.kind);
+  if (filter?.onlyHidden) q = q.eq("is_published", false);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []) as AdminReview[];
+}
+
+export async function setReviewPublished(
+  kind: "course" | "product",
+  reviewId: string,
+  isPublished: boolean,
+): Promise<void> {
+  const table = kind === "course" ? "course_reviews" : "product_reviews";
+  const { error } = await supabase.from(table).update({ is_published: isPublished }).eq("id", reviewId);
+  if (error) throw error;
+}
+
+export async function deleteReviewAsAdmin(
+  kind: "course" | "product",
+  reviewId: string,
+): Promise<void> {
+  const table = kind === "course" ? "course_reviews" : "product_reviews";
+  const { error } = await supabase.from(table).delete().eq("id", reviewId);
+  if (error) throw error;
+}
+
+// ============== BUSCA GLOBAL ==============
+export type GlobalSearchResult = {
+  students: { id: string; full_name: string | null; email: string }[];
+  courses: { id: string; title: string; slug: string }[];
+  lessons: { id: string; title: string; course_id: string; course_title: string; course_slug: string }[];
+  products: { id: string; name: string; slug: string }[];
+  orders: { id: string; code: string; customer_name: string; total_cents: number; status: string }[];
+  appointments: { id: string; code: string; customer_name: string; service_title: string; starts_at: string; status: string }[];
+};
+
+export async function adminGlobalSearch(query: string): Promise<GlobalSearchResult> {
+  const { data, error } = await (supabase as any).rpc("admin_global_search", { p_query: query });
+  if (error) throw error;
+  return (data ?? {
+    students: [], courses: [], lessons: [], products: [], orders: [], appointments: [],
+  }) as GlobalSearchResult;
+}
