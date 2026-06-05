@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { findLegacyRedirect } from "./lib/legacy-redirects";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -68,6 +69,16 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    // 0) Intercepta URLs legadas do WP antes do TanStack handler
+    const url = new URL(request.url);
+    const legacy = findLegacyRedirect(url);
+    if (legacy) {
+      if (legacy.status === 410) {
+        return new Response("Gone", { status: 410, headers: { "content-type": "text/plain" } });
+      }
+      return Response.redirect(new URL(legacy.destination, url.origin).toString(), 301);
+    }
+
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
