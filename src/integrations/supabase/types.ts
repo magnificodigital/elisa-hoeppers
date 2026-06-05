@@ -1201,6 +1201,22 @@ export type Database = {
       }
     }
     Views: {
+      admin_all_reviews: {
+        Row: {
+          author_name: string | null
+          comment: string | null
+          created_at: string | null
+          id: string | null
+          is_published: boolean | null
+          kind: string | null
+          rating: number | null
+          target_id: string | null
+          target_slug: string | null
+          target_title: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
       course_rating_summary: {
         Row: {
           avg_rating: number | null
@@ -1297,6 +1313,7 @@ export type Database = {
     }
     Functions: {
       admin_dashboard_stats: { Args: never; Returns: Json }
+      admin_global_search: { Args: { p_query: string }; Returns: Json }
       book_appointment: {
         Args: {
           p_customer_email: string
@@ -1336,6 +1353,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      is_admin: { Args: never; Returns: boolean }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
       is_enrolled_in_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
       issue_certificate: {
