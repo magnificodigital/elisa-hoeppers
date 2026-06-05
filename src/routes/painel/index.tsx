@@ -246,13 +246,9 @@ function PainelPage() {
               <div className="space-y-4">
                 {enrolled.map((c) => {
                   const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
-                  return (
-                    <Link
-                      key={c.course_id}
-                      to="/painel/curso/$slug"
-                      params={{ slug: c.course_slug }}
-                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
-                    >
+                  const nextId = nextLessonByCourse?.[c.course_id];
+                  const cardInner = (
+                    <>
                       {c.cover_image && (
                         <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
                           <img
