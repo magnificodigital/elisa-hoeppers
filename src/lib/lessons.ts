@@ -69,3 +69,34 @@ export async function listLessonsWithProgress(courseId: string): Promise<LessonW
     return { ...l, completed: !!p?.completed, watched_seconds: p?.watched_seconds ?? 0 };
   });
 }
+
+export async function isCourseJustCompleted(courseId: string): Promise<{ completed: boolean; certificateId: string | null }> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const sessionUser = sessionData?.session?.user;
+  if (!sessionUser) return { completed: false, certificateId: null };
+
+  const { data: lessons } = await supabase
+    .from("lessons")
+    .select("id")
+    .eq("course_id", courseId);
+  const total = lessons?.length ?? 0;
+  if (total === 0) return { completed: false, certificateId: null };
+
+  const { count } = await supabase
+    .from("lesson_progress")
+    .select("lesson_id", { count: "exact", head: true })
+    .eq("user_id", sessionUser.id)
+    .eq("completed", true)
+    .in("lesson_id", (lessons ?? []).map((l) => l.id));
+
+  if ((count ?? 0) < total) return { completed: false, certificateId: null };
+
+  const { data: cert } = await supabase
+    .from("certificates")
+    .select("id")
+    .eq("user_id", sessionUser.id)
+    .eq("course_id", courseId)
+    .maybeSingle();
+
+  return { completed: true, certificateId: cert?.id ?? null };
+}
