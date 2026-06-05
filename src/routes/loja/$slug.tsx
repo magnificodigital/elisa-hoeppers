@@ -210,6 +210,8 @@ function ProductDetail() {
               )}
             </div>
           </div>
+
+          <ProductReviews productId={product.id} canReview={!!canReview} />
         </div>
       </section>
     </Layout>
