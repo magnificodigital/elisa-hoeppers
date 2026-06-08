@@ -178,6 +178,12 @@ function CheckoutPage() {
             }
           : null,
         p_notes: form.notes || null,
+        p_shipping_service_id: selectedShipping?.id ?? null,
+        p_shipping_service_label: selectedShipping
+          ? `${selectedShipping.company} ${selectedShipping.name}`
+          : null,
+        p_shipping_cents: shippingCents,
+        p_destination_cep: form.cep.replace(/\D/g, "") || null,
       });
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
