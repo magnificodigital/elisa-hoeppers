@@ -76,8 +76,8 @@ serve(async (req) => {
       };
     });
 
-    // Apenas os serviços liberados na integração (IDs configurados no admin).
-    const servicesRaw = (await getSetting("me_services")) ?? "";
+    // Apenas as transportadoras permitidas (IDs configurados no admin). Vazio = todas.
+    const servicesRaw = (await getSetting("me_allowed_services")) ?? "";
     const allowedServices = servicesRaw
       .split(/[,\s]+/)
       .map((s) => s.trim())
