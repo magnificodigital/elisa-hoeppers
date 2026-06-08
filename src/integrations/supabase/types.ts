@@ -743,12 +743,18 @@ export type Database = {
           customer_phone: string
           id: string
           items: Json
+          me_label_url: string | null
+          me_order_id: string | null
+          me_status: string | null
           notes: string | null
           paid_at: string | null
           payment_id: string | null
           payment_method: string | null
           payment_preference_id: string | null
           shipping_cents: number
+          shipping_destination_cep: string | null
+          shipping_service_id: string | null
+          shipping_service_label: string | null
           status: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
           total_cents: number
@@ -765,12 +771,18 @@ export type Database = {
           customer_phone: string
           id?: string
           items: Json
+          me_label_url?: string | null
+          me_order_id?: string | null
+          me_status?: string | null
           notes?: string | null
           paid_at?: string | null
           payment_id?: string | null
           payment_method?: string | null
           payment_preference_id?: string | null
           shipping_cents?: number
+          shipping_destination_cep?: string | null
+          shipping_service_id?: string | null
+          shipping_service_label?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           subtotal_cents: number
           total_cents: number
@@ -787,12 +799,18 @@ export type Database = {
           customer_phone?: string
           id?: string
           items?: Json
+          me_label_url?: string | null
+          me_order_id?: string | null
+          me_status?: string | null
           notes?: string | null
           paid_at?: string | null
           payment_id?: string | null
           payment_method?: string | null
           payment_preference_id?: string | null
           shipping_cents?: number
+          shipping_destination_cep?: string | null
+          shipping_service_id?: string | null
+          shipping_service_label?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           subtotal_cents?: number
           total_cents?: number
@@ -1435,8 +1453,12 @@ export type Database = {
           p_customer_email: string
           p_customer_name: string
           p_customer_phone: string
+          p_destination_cep?: string
           p_items: Json
           p_notes?: string
+          p_shipping_cents?: number
+          p_shipping_service_id?: string
+          p_shipping_service_label?: string
         }
         Returns: {
           code: string
