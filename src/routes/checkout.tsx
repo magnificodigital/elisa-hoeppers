@@ -74,10 +74,35 @@ function CheckoutPage() {
   const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
+  const [cepLoading, setCepLoading] = useState(false);
 
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
   }, []);
+
+  async function lookupCep(rawCep: string) {
+    const cep = rawCep.replace(/\D/g, "");
+    if (cep.length !== 8) return;
+    try {
+      setCepLoading(true);
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+      if (data.erro) return;
+      setForm((f) => ({
+        ...f,
+        street: data.logradouro || f.street,
+        district: data.bairro || f.district,
+        cityState:
+          data.localidade && data.uf ? `${data.localidade}/${data.uf}` : f.cityState,
+        complement: data.complemento || f.complement,
+      }));
+    } catch {
+      // silenciosamente ignora falha de consulta de CEP
+    } finally {
+      setCepLoading(false);
+    }
+  }
+
 
   async function submitOrder(method: "whatsapp" | "mercadopago") {
     setSubmitError(null);
@@ -195,10 +220,15 @@ function CheckoutPage() {
                   Pode deixar em branco e combinar frete por WhatsApp.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-3">
-                  <Field label="CEP">
+                  <Field label={cepLoading ? "CEP (buscando…)" : "CEP"}>
                     <input
                       value={form.cep}
-                      onChange={(e) => setForm({ ...form, cep: e.target.value })}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setForm({ ...form, cep: v });
+                        if (v.replace(/\D/g, "").length === 8) lookupCep(v);
+                      }}
+                      onBlur={(e) => lookupCep(e.target.value)}
                       placeholder="00000-000"
                       className={inputCls}
                     />
