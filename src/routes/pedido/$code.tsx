@@ -83,6 +83,8 @@ function OrderPage() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const isOwner = !!user && !!order.user_id && user.id === order.user_id;
+  const isGuestOrder = !order.user_id && !user;
+
 
   const cancel = useMutation({
     mutationFn: () => cancelMyOrder(order.id),
