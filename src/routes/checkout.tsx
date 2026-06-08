@@ -220,10 +220,15 @@ function CheckoutPage() {
                   Pode deixar em branco e combinar frete por WhatsApp.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-3">
-                  <Field label="CEP">
+                  <Field label={cepLoading ? "CEP (buscando…)" : "CEP"}>
                     <input
                       value={form.cep}
-                      onChange={(e) => setForm({ ...form, cep: e.target.value })}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setForm({ ...form, cep: v });
+                        if (v.replace(/\D/g, "").length === 8) lookupCep(v);
+                      }}
+                      onBlur={(e) => lookupCep(e.target.value)}
                       placeholder="00000-000"
                       className={inputCls}
                     />
