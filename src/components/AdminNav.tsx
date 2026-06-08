@@ -14,14 +14,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 
-type NavItem = {
-  to: string;
-  label: string;
-  icon: typeof LayoutDashboard;
-  exact?: boolean;
-};
-
-const NAV_ITEMS: NavItem[] = [
+const NAV_ITEMS = [
   { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
