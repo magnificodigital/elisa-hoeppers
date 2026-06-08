@@ -27,6 +27,27 @@ export async function updateCourse(id: string, patch: CourseUpdate): Promise<voi
   if (error) throw error;
 }
 
+export async function createCourse(input: { title: string; slug: string }): Promise<Course> {
+  const { data, error } = await supabase
+    .from("courses")
+    .insert({ title: input.title.trim(), slug: input.slug.trim() })
+    .select("id, slug, title, subtitle, description, cover_image, overlay_label, level, duration_total_min, price_cents, is_published, display_order")
+    .single();
+  if (error) throw error;
+  return data as Course;
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 // ============== LESSONS ==============
 export type LessonAdmin = {
   id: string;
