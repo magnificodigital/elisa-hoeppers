@@ -182,6 +182,16 @@ function CheckoutPage() {
         setAccountError("Já existe uma conta com esse email. Faça login antes de continuar.");
         return false;
       }
+      // Erros de envio de email (rate limit, SMTP) não devem impedir a compra.
+      // Seguimos o pedido como visitante; a conta poderá ser criada depois.
+      if (
+        msg.includes("rate limit") ||
+        msg.includes("email") ||
+        msg.includes("smtp") ||
+        msg.includes("sending")
+      ) {
+        return true;
+      }
       setAccountError(error.message);
       return false;
     }
