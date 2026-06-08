@@ -157,7 +157,7 @@ function CheckoutPage() {
       clear();
       navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
     } catch (err) {
-      setSubmitError((err as Error).message);
+      setSubmitError(friendlyError((err as Error).message));
     } finally {
       setSubmitting(null);
     }
