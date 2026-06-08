@@ -74,10 +74,35 @@ function CheckoutPage() {
   const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
+  const [cepLoading, setCepLoading] = useState(false);
 
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
   }, []);
+
+  async function lookupCep(rawCep: string) {
+    const cep = rawCep.replace(/\D/g, "");
+    if (cep.length !== 8) return;
+    try {
+      setCepLoading(true);
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await res.json();
+      if (data.erro) return;
+      setForm((f) => ({
+        ...f,
+        street: data.logradouro || f.street,
+        district: data.bairro || f.district,
+        cityState:
+          data.localidade && data.uf ? `${data.localidade}/${data.uf}` : f.cityState,
+        complement: data.complemento || f.complement,
+      }));
+    } catch {
+      // silenciosamente ignora falha de consulta de CEP
+    } finally {
+      setCepLoading(false);
+    }
+  }
+
 
   async function submitOrder(method: "whatsapp" | "mercadopago") {
     setSubmitError(null);
