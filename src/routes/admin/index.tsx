@@ -44,6 +44,7 @@ const sections = [
   { to: "/admin/blog", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
   { to: "/admin/diagnostico-pagamentos", icon: Stethoscope, title: "Diagnóstico Pagamentos", desc: "Auto-check da integração Mercado Pago." },
+  { to: "/admin/diagnostico-envio", icon: Truck, title: "Diagnóstico Envio", desc: "Auto-check do Melhor Envio." },
 ] as const;
 
 function formatBRL(cents: number): string {
