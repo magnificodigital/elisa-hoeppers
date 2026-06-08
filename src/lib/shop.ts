@@ -128,11 +128,17 @@ export type Order = {
   status: "pending" | "confirmed" | "shipped" | "cancelled" | "completed";
   notes: string | null;
   tracking_code: string | null;
+  shipping_service_id: string | null;
+  shipping_service_label: string | null;
+  shipping_destination_cep: string | null;
+  me_order_id: string | null;
+  me_label_url: string | null;
+  me_status: string | null;
   created_at: string;
 };
 
 const ORDER_COLS =
-  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, created_at";
+  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, shipping_service_id, shipping_service_label, shipping_destination_cep, me_order_id, me_label_url, me_status, created_at";
 
 export async function listAllOrdersForAdmin(filter?: { status?: Order["status"] }): Promise<Order[]> {
   let q = supabase
@@ -191,4 +197,26 @@ export async function updateOrderTracking(id: string, trackingCode: string | nul
     .update({ tracking_code: trackingCode })
     .eq("id", id);
   if (error) throw error;
+}
+
+// =================== SHIPPING (Melhor Envio) ===================
+export type ShippingOption = {
+  id: string;
+  name: string; // "PAC", "SEDEX", "JadLog Package", etc
+  company: string; // "Correios", "JadLog", etc
+  price_cents: number;
+  delivery_days: number;
+  error: string | null;
+};
+
+export async function calculateShipping(input: {
+  cep_destino: string;
+  items: { product_id: string; qty: number }[];
+}): Promise<ShippingOption[]> {
+  const { data, error } = await supabase.functions.invoke("me-calculate-shipping", {
+    body: input,
+  });
+  if (error) throw error;
+  if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+  return ((data as { options?: ShippingOption[] })?.options ?? []) as ShippingOption[];
 }

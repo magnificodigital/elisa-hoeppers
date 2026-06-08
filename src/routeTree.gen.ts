@@ -41,6 +41,7 @@ import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
+import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAvaliacoesRouteImport } from './routes/admin/avaliacoes'
@@ -216,6 +217,11 @@ const AdminDiagnosticoPagamentosRoute =
     path: '/admin/diagnostico-pagamentos',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminDiagnosticoEnvioRoute = AdminDiagnosticoEnvioRouteImport.update({
+  id: '/admin/diagnostico-envio',
+  path: '/admin/diagnostico-envio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
   id: '/admin/configuracoes',
   path: '/admin/configuracoes',
@@ -301,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/admin/avaliacoes': typeof AdminAvaliacoesRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
@@ -348,6 +355,7 @@ export interface FileRoutesByTo {
   '/admin/avaliacoes': typeof AdminAvaliacoesRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
@@ -396,6 +404,7 @@ export interface FileRoutesById {
   '/admin/avaliacoes': typeof AdminAvaliacoesRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
@@ -445,6 +454,7 @@ export interface FileRouteTypes {
     | '/admin/avaliacoes'
     | '/admin/broadcast'
     | '/admin/configuracoes'
+    | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
@@ -492,6 +502,7 @@ export interface FileRouteTypes {
     | '/admin/avaliacoes'
     | '/admin/broadcast'
     | '/admin/configuracoes'
+    | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
@@ -539,6 +550,7 @@ export interface FileRouteTypes {
     | '/admin/avaliacoes'
     | '/admin/broadcast'
     | '/admin/configuracoes'
+    | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
@@ -587,6 +599,7 @@ export interface RootRouteChildren {
   AdminAvaliacoesRoute: typeof AdminAvaliacoesRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
+  AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
@@ -842,6 +855,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDiagnosticoPagamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/diagnostico-envio': {
+      id: '/admin/diagnostico-envio'
+      path: '/admin/diagnostico-envio'
+      fullPath: '/admin/diagnostico-envio'
+      preLoaderRoute: typeof AdminDiagnosticoEnvioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes': {
       id: '/admin/configuracoes'
       path: '/admin/configuracoes'
@@ -965,6 +985,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAvaliacoesRoute: AdminAvaliacoesRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
+  AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
   AdminInscritosRoute: AdminInscritosRoute,

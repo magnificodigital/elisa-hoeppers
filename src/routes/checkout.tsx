@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Truck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/lib/cart";
-import { formatPriceBRL } from "@/lib/shop";
+import { formatPriceBRL, calculateShipping, type ShippingOption } from "@/lib/shop";
 import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
@@ -88,9 +88,49 @@ function CheckoutPage() {
   const [mpEnabled, setMpEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
 
+  const [meEnabled, setMeEnabled] = useState(false);
+  const [shippingOpts, setShippingOpts] = useState<ShippingOption[]>([]);
+  const [shippingLoading, setShippingLoading] = useState(false);
+  const [shippingError, setShippingError] = useState<string | null>(null);
+  const [selectedShipping, setSelectedShipping] = useState<ShippingOption | null>(null);
+
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
+    getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
   }, []);
+
+  useEffect(() => {
+    setSelectedShipping(null);
+    setShippingOpts([]);
+    setShippingError(null);
+    const cleanCep = form.cep.replace(/\D/g, "");
+    if (!meEnabled || cleanCep.length !== 8 || items.length === 0) return;
+
+    let cancelled = false;
+    setShippingLoading(true);
+    calculateShipping({
+      cep_destino: cleanCep,
+      items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
+    })
+      .then((opts) => {
+        if (cancelled) return;
+        setShippingOpts(opts);
+        if (opts.length > 0) setSelectedShipping(opts[0]);
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setShippingError(e.message);
+      })
+      .finally(() => {
+        if (!cancelled) setShippingLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.cep, meEnabled, items]);
+
+  const shippingCents = selectedShipping?.price_cents ?? 0;
+  const totalCents = subtotalCents + shippingCents;
 
   async function lookupCep(rawCep: string) {
     const cep = rawCep.replace(/\D/g, "");
@@ -138,6 +178,12 @@ function CheckoutPage() {
             }
           : null,
         p_notes: form.notes || null,
+        p_shipping_service_id: selectedShipping?.id ?? null,
+        p_shipping_service_label: selectedShipping
+          ? `${selectedShipping.company} ${selectedShipping.name}`
+          : null,
+        p_shipping_cents: shippingCents,
+        p_destination_cep: form.cep.replace(/\D/g, "") || null,
       });
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
@@ -317,14 +363,71 @@ function CheckoutPage() {
                   <span className="text-[var(--text-muted)] text-sm">Subtotal</span>
                   <span className="text-primary-dark">{formatPriceBRL(subtotalCents)}</span>
                 </div>
-                <div className="flex justify-between mb-1 text-xs text-[var(--text-muted)]">
-                  <span>Frete</span>
-                  <span className="italic">Combinado por WhatsApp</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t border-border">
+
+                {meEnabled ? (
+                  <div className="mt-3 mb-1">
+                    <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-primary-dark mb-2">
+                      <Truck className="w-3.5 h-3.5" /> Frete
+                    </div>
+                    {form.cep.replace(/\D/g, "").length !== 8 && (
+                      <p className="text-xs text-[var(--text-muted)]">Preencha o CEP pra ver as opções.</p>
+                    )}
+                    {shippingLoading && (
+                      <p className="text-xs text-[var(--text-muted)]">Calculando…</p>
+                    )}
+                    {shippingError && (
+                      <p className="text-xs text-red-700">{shippingError}</p>
+                    )}
+                    {!shippingLoading && shippingOpts.length > 0 && (
+                      <div className="space-y-2">
+                        {shippingOpts.map((opt) => (
+                          <label
+                            key={opt.id}
+                            className={`flex items-start gap-2 rounded-md border p-2.5 cursor-pointer transition ${
+                              selectedShipping?.id === opt.id
+                                ? "border-primary bg-primary/5"
+                                : "border-border hover:border-primary"
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="shipping"
+                              checked={selectedShipping?.id === opt.id}
+                              onChange={() => setSelectedShipping(opt)}
+                              className="mt-0.5"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm text-primary-dark truncate">
+                                {opt.company} {opt.name}
+                              </p>
+                              <p className="text-[11px] text-[var(--text-muted)]">
+                                {opt.delivery_days} dia{opt.delivery_days === 1 ? "" : "s"} úteis
+                              </p>
+                            </div>
+                            <span className="text-sm text-primary-dark font-medium flex-shrink-0">
+                              {formatPriceBRL(opt.price_cents)}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                    {!shippingLoading && !shippingError && shippingOpts.length === 0 && form.cep.replace(/\D/g, "").length === 8 && (
+                      <p className="text-xs text-[var(--text-muted)]">
+                        Nenhuma opção disponível pra esse CEP. Combine via WhatsApp.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex justify-between mb-1 text-xs text-[var(--text-muted)]">
+                    <span>Frete</span>
+                    <span className="italic">Combinado por WhatsApp</span>
+                  </div>
+                )}
+
+                <div className="flex justify-between pt-2 mt-3 border-t border-border">
                   <span className="font-display text-lg text-primary-dark">Total</span>
                   <span className="font-display text-2xl text-primary-dark">
-                    {formatPriceBRL(subtotalCents)}
+                    {formatPriceBRL(totalCents)}
                   </span>
                 </div>
               </div>
@@ -332,7 +435,7 @@ function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => submitOrder("mercadopago")}
-                  disabled={submitting !== null}
+                  disabled={submitting !== null || (meEnabled && !selectedShipping && shippingOpts.length > 0)}
                   className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60 mb-2"
                 >
                   {submitting === "mercadopago" ? "Indo pro pagamento…" : "Pagar agora com Mercado Pago"}
