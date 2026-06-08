@@ -29,9 +29,11 @@ function saveCart(items: CartItem[]) {
 
 export function useCart() {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setItems(loadCart());
+    setLoaded(true);
     const handler = () => setItems(loadCart());
     window.addEventListener("elisa-cart-change", handler);
     window.addEventListener("storage", handler);
