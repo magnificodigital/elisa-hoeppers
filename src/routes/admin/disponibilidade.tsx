@@ -110,11 +110,11 @@ function RuleRow({ rule }: { rule: AvailabilityRule }) {
         <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${active ? "translate-x-6" : "translate-x-1"}`} />
       </button>
       {active ? (
-        <div className="flex items-center gap-2 text-sm text-primary-dark flex-1">
-          <Clock size={14} className="text-[var(--text-muted)]" />
-          <input type="time" value={start} onChange={(e) => setStart(e.target.value)} className="border border-border rounded-md px-2 py-1 text-sm bg-white text-primary-dark" />
-          <span className="text-[var(--text-muted)]">até</span>
-          <input type="time" value={end} onChange={(e) => setEnd(e.target.value)} className="border border-border rounded-md px-2 py-1 text-sm bg-white text-primary-dark" />
+        <div className="flex items-center gap-2 text-sm text-primary-dark flex-1 min-w-0 basis-full sm:basis-auto">
+          <Clock size={14} className="text-[var(--text-muted)] flex-shrink-0" />
+          <input type="time" value={start} onChange={(e) => setStart(e.target.value)} className="border border-border rounded-md px-2 py-1 text-sm bg-white text-primary-dark min-w-0 flex-1" />
+          <span className="text-[var(--text-muted)] flex-shrink-0">até</span>
+          <input type="time" value={end} onChange={(e) => setEnd(e.target.value)} className="border border-border rounded-md px-2 py-1 text-sm bg-white text-primary-dark min-w-0 flex-1" />
         </div>
       ) : (
         <span className="text-sm text-[var(--text-muted)] italic flex-1">Fechado</span>
