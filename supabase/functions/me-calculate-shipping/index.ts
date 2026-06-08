@@ -76,11 +76,22 @@ serve(async (req) => {
       };
     });
 
-    const payload = {
+    // Apenas os serviços liberados na integração (IDs configurados no admin).
+    const servicesRaw = (await getSetting("me_services")) ?? "";
+    const allowedServices = servicesRaw
+      .split(/[,\s]+/)
+      .map((s) => s.trim())
+      .filter((s) => /^\d+$/.test(s));
+    const allowedSet = new Set(allowedServices);
+
+    const payload: Record<string, unknown> = {
       from: { postal_code: cleanCepOrigem },
       to: { postal_code: cleanCepDestino },
       products: meProducts,
     };
+    if (allowedServices.length > 0) {
+      payload.services = allowedServices.join(",");
+    }
 
     const res = await fetch(`${meBase(env)}/me/shipment/calculate`, {
       method: "POST",
@@ -101,6 +112,7 @@ serve(async (req) => {
 
     const options = (data as any[])
       .filter((o: any) => !o.error && o.price)
+      .filter((o: any) => allowedSet.size === 0 || allowedSet.has(String(o.id)))
       .map((o: any) => ({
         id: String(o.id),
         name: o.name,
