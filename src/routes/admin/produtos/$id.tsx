@@ -41,6 +41,10 @@ function ProductEditPage() {
     category: "",
     display_order: 0,
     gallery: [] as ProductImage[],
+    weight_g: "" as string | number,
+    length_cm: "" as string | number,
+    width_cm: "" as string | number,
+    height_cm: "" as string | number,
   });
   const [saved, setSaved] = useState(false);
 
@@ -59,6 +63,10 @@ function ProductEditPage() {
         category: product.category ?? "",
         display_order: product.display_order,
         gallery: product.gallery,
+        weight_g: product.weight_g ?? "",
+        length_cm: product.length_cm ?? "",
+        width_cm: product.width_cm ?? "",
+        height_cm: product.height_cm ?? "",
       });
     }
   }, [product]);
@@ -77,6 +85,10 @@ function ProductEditPage() {
       category: form.category || null,
       display_order: form.display_order,
       gallery: form.gallery,
+      weight_g: form.weight_g === "" ? null : Number(form.weight_g),
+      length_cm: form.length_cm === "" ? null : Number(form.length_cm),
+      width_cm: form.width_cm === "" ? null : Number(form.width_cm),
+      height_cm: form.height_cm === "" ? null : Number(form.height_cm),
     }),
     onSuccess: () => {
       setSaved(true);
