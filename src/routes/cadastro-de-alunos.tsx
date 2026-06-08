@@ -4,6 +4,9 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/cadastro-de-alunos")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    email: typeof s.email === "string" ? s.email : undefined,
+  }),
   head: () => ({ meta: [{ title: "Cadastro de alunos — Elisa Hoeppers" }] }),
   component: SignupPage,
 });
@@ -11,8 +14,10 @@ export const Route = createFileRoute("/cadastro-de-alunos")({
 function SignupPage() {
   const navigate = useNavigate();
   const { signUp, signIn } = useAuth();
+  const search = Route.useSearch();
   const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(search.email ?? "");
+
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
