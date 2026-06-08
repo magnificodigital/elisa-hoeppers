@@ -29,9 +29,11 @@ function saveCart(items: CartItem[]) {
 
 export function useCart() {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setItems(loadCart());
+    setLoaded(true);
     const handler = () => setItems(loadCart());
     window.addEventListener("elisa-cart-change", handler);
     window.addEventListener("storage", handler);
@@ -75,5 +77,5 @@ export function useCart() {
   const subtotalCents = items.reduce((acc, i) => acc + i.unit_price_cents * i.qty, 0);
   const totalItems = items.reduce((acc, i) => acc + i.qty, 0);
 
-  return { items, addItem, updateQty, removeItem, clear, subtotalCents, totalItems };
+  return { items, addItem, updateQty, removeItem, clear, subtotalCents, totalItems, loaded };
 }
