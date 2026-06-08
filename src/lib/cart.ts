@@ -77,5 +77,5 @@ export function useCart() {
   const subtotalCents = items.reduce((acc, i) => acc + i.unit_price_cents * i.qty, 0);
   const totalItems = items.reduce((acc, i) => acc + i.qty, 0);
 
-  return { items, addItem, updateQty, removeItem, clear, subtotalCents, totalItems };
+  return { items, addItem, updateQty, removeItem, clear, subtotalCents, totalItems, loaded };
 }
