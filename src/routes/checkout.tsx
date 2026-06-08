@@ -38,7 +38,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 function CheckoutPage() {
-  const { items, subtotalCents, totalItems, clear } = useCart();
+  const { items, subtotalCents, totalItems, clear, loaded } = useCart();
   const { user, profile } = useAuth();
   const navigate = useNavigate();
 
@@ -56,10 +56,10 @@ function CheckoutPage() {
   });
 
   useEffect(() => {
-    if (totalItems === 0) {
+    if (loaded && totalItems === 0) {
       navigate({ to: "/carrinho" });
     }
-  }, [totalItems, navigate]);
+  }, [loaded, totalItems, navigate]);
 
   useEffect(() => {
     if (user) {
