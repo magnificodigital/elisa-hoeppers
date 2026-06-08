@@ -435,7 +435,7 @@ function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => submitOrder("mercadopago")}
-                  disabled={submitting !== null}
+                  disabled={submitting !== null || (meEnabled && !selectedShipping && shippingOpts.length > 0)}
                   className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60 mb-2"
                 >
                   {submitting === "mercadopago" ? "Indo pro pagamento…" : "Pagar agora com Mercado Pago"}
