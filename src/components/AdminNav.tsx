@@ -33,7 +33,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/admin/broadcast", label: "Broadcast", icon: Send },
   { to: "/admin/blog", label: "Blog", icon: FileText },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
-] as const;
+];
 
 export function AdminNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
