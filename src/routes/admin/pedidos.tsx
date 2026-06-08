@@ -277,6 +277,30 @@ function OrderCard({ order: o }: { order: Order }) {
             Reabrir
           </button>
         )}
+
+        {o.status === "confirmed" && !o.me_order_id && o.shipping_service_id && (
+          <button
+            onClick={() => {
+              if (confirm(`Comprar etiqueta? Vai debitar ${formatPriceBRL(o.shipping_cents)} do saldo Melhor Envio.`)) buyLabel.mutate();
+            }}
+            disabled={buyLabel.isPending}
+            className="inline-flex items-center gap-1.5 bg-primary-dark text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
+          >
+            <Truck className="w-3.5 h-3.5" />
+            {buyLabel.isPending ? "Comprando..." : "Comprar etiqueta ME"}
+          </button>
+        )}
+
+        {o.me_label_url && (
+          <a href={o.me_label_url} target="_blank" rel="noreferrer"
+            className="inline-flex items-center gap-1.5 border border-primary text-primary px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition">
+            <FileText className="w-3.5 h-3.5" /> Baixar etiqueta
+          </a>
+        )}
+
+        {buyLabel.error && (
+          <p className="w-full text-red-700 text-xs mt-1">{(buyLabel.error as Error).message}</p>
+        )}
       </div>
     </div>
   );
