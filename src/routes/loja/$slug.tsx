@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, MessageCircle, Truck, ShieldCheck } from "lucide-react";
+import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import { useCart } from "@/lib/cart";
