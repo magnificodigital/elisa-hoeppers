@@ -44,6 +44,17 @@ serve(async (req) => {
       currency_id: "BRL",
     }));
 
+    if (order.shipping_cents && order.shipping_cents > 0) {
+      mpItems.push({
+        id: "shipping",
+        title: `Frete · ${order.shipping_service_label ?? "Envio"}`,
+        quantity: 1,
+        unit_price: order.shipping_cents / 100,
+        currency_id: "BRL",
+      });
+    }
+
+
     const preferencePayload = {
       items: mpItems,
       payer: { name: order.customer_name, email: order.customer_email },
