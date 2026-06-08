@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, MessageCircle, Truck, ShieldCheck } from "lucide-react";
+import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import { useCart } from "@/lib/cart";
@@ -190,9 +190,6 @@ function ProductDetail() {
               </div>
 
               <div className="mt-8 space-y-2 text-sm text-[var(--text-muted)]">
-                <p className="flex items-center gap-2">
-                  <Truck className="w-4 h-4" /> Frete combinado por WhatsApp
-                </p>
                 <p className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4" /> Pagamento via PIX ou cartão
                 </p>
