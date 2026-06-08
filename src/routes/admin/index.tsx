@@ -15,6 +15,7 @@ import {
   AlertCircle,
   Star,
   Send,
+  Stethoscope,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
