@@ -161,10 +161,45 @@ function CheckoutPage() {
   }
 
 
+  async function maybeCreateAccount(): Promise<boolean> {
+    if (user) return true; // já logado
+    if (!createAccount) return true; // optou por não criar
+
+    if (password.length < 6) {
+      setAccountError("A senha precisa ter no mínimo 6 caracteres.");
+      return false;
+    }
+
+    const { error } = await supabase.auth.signUp({
+      email: form.email,
+      password,
+      options: { data: { full_name: form.name } },
+    });
+
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes("already registered") || msg.includes("already exists")) {
+        setAccountError("Já existe uma conta com esse email. Faça login antes de continuar.");
+        return false;
+      }
+      setAccountError(error.message);
+      return false;
+    }
+
+    await supabase.auth.signInWithPassword({ email: form.email, password });
+    return true;
+  }
+
   async function submitOrder(method: "whatsapp" | "mercadopago") {
     setSubmitError(null);
+    setAccountError(null);
+
+    const accountOk = await maybeCreateAccount();
+    if (!accountOk) return;
+
     try {
       setSubmitting(method);
+
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
