@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Truck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/lib/cart";
-import { formatPriceBRL } from "@/lib/shop";
+import { formatPriceBRL, calculateShipping, type ShippingOption } from "@/lib/shop";
 import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
