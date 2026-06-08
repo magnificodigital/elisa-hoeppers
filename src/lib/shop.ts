@@ -198,3 +198,25 @@ export async function updateOrderTracking(id: string, trackingCode: string | nul
     .eq("id", id);
   if (error) throw error;
 }
+
+// =================== SHIPPING (Melhor Envio) ===================
+export type ShippingOption = {
+  id: string;
+  name: string; // "PAC", "SEDEX", "JadLog Package", etc
+  company: string; // "Correios", "JadLog", etc
+  price_cents: number;
+  delivery_days: number;
+  error: string | null;
+};
+
+export async function calculateShipping(input: {
+  cep_destino: string;
+  items: { product_id: string; qty: number }[];
+}): Promise<ShippingOption[]> {
+  const { data, error } = await supabase.functions.invoke("me-calculate-shipping", {
+    body: input,
+  });
+  if (error) throw error;
+  if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+  return ((data as { options?: ShippingOption[] })?.options ?? []) as ShippingOption[];
+}
