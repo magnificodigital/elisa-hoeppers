@@ -212,8 +212,9 @@ function OrderPage() {
               </p>
               <Link
                 to="/cadastro-de-alunos"
-                search={{ email: order.customer_name ? undefined : undefined }}
+                search={{ email: undefined }}
                 className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+
               >
                 Criar conta agora
               </Link>
