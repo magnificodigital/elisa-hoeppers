@@ -88,9 +88,49 @@ function CheckoutPage() {
   const [mpEnabled, setMpEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
 
+  const [meEnabled, setMeEnabled] = useState(false);
+  const [shippingOpts, setShippingOpts] = useState<ShippingOption[]>([]);
+  const [shippingLoading, setShippingLoading] = useState(false);
+  const [shippingError, setShippingError] = useState<string | null>(null);
+  const [selectedShipping, setSelectedShipping] = useState<ShippingOption | null>(null);
+
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
+    getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
   }, []);
+
+  useEffect(() => {
+    setSelectedShipping(null);
+    setShippingOpts([]);
+    setShippingError(null);
+    const cleanCep = form.cep.replace(/\D/g, "");
+    if (!meEnabled || cleanCep.length !== 8 || items.length === 0) return;
+
+    let cancelled = false;
+    setShippingLoading(true);
+    calculateShipping({
+      cep_destino: cleanCep,
+      items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
+    })
+      .then((opts) => {
+        if (cancelled) return;
+        setShippingOpts(opts);
+        if (opts.length > 0) setSelectedShipping(opts[0]);
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setShippingError(e.message);
+      })
+      .finally(() => {
+        if (!cancelled) setShippingLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.cep, meEnabled, items]);
+
+  const shippingCents = selectedShipping?.price_cents ?? 0;
+  const totalCents = subtotalCents + shippingCents;
 
   async function lookupCep(rawCep: string) {
     const cep = rawCep.replace(/\D/g, "");
