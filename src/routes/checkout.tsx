@@ -310,7 +310,7 @@ function CheckoutPage() {
               <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
                 {mpEnabled
                   ? "Pague online com cartão, PIX ou boleto, ou combine pagamento e frete diretamente com a Elisa via WhatsApp."
-                  : "Elisa entra em contato em até 24h pelo WhatsApp para combinar pagamento e frete."}
+                  : "Elisa entra em contato em até 24h pelo WhatsApp para tirar qualquer duvida."}
               </p>
             </aside>
           </form>
