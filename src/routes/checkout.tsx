@@ -363,14 +363,71 @@ function CheckoutPage() {
                   <span className="text-[var(--text-muted)] text-sm">Subtotal</span>
                   <span className="text-primary-dark">{formatPriceBRL(subtotalCents)}</span>
                 </div>
-                <div className="flex justify-between mb-1 text-xs text-[var(--text-muted)]">
-                  <span>Frete</span>
-                  <span className="italic">Combinado por WhatsApp</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t border-border">
+
+                {meEnabled ? (
+                  <div className="mt-3 mb-1">
+                    <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-primary-dark mb-2">
+                      <Truck className="w-3.5 h-3.5" /> Frete
+                    </div>
+                    {form.cep.replace(/\D/g, "").length !== 8 && (
+                      <p className="text-xs text-[var(--text-muted)]">Preencha o CEP pra ver as opções.</p>
+                    )}
+                    {shippingLoading && (
+                      <p className="text-xs text-[var(--text-muted)]">Calculando…</p>
+                    )}
+                    {shippingError && (
+                      <p className="text-xs text-red-700">{shippingError}</p>
+                    )}
+                    {!shippingLoading && shippingOpts.length > 0 && (
+                      <div className="space-y-2">
+                        {shippingOpts.map((opt) => (
+                          <label
+                            key={opt.id}
+                            className={`flex items-start gap-2 rounded-md border p-2.5 cursor-pointer transition ${
+                              selectedShipping?.id === opt.id
+                                ? "border-primary bg-primary/5"
+                                : "border-border hover:border-primary"
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="shipping"
+                              checked={selectedShipping?.id === opt.id}
+                              onChange={() => setSelectedShipping(opt)}
+                              className="mt-0.5"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm text-primary-dark truncate">
+                                {opt.company} {opt.name}
+                              </p>
+                              <p className="text-[11px] text-[var(--text-muted)]">
+                                {opt.delivery_days} dia{opt.delivery_days === 1 ? "" : "s"} úteis
+                              </p>
+                            </div>
+                            <span className="text-sm text-primary-dark font-medium flex-shrink-0">
+                              {formatPriceBRL(opt.price_cents)}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                    {!shippingLoading && !shippingError && shippingOpts.length === 0 && form.cep.replace(/\D/g, "").length === 8 && (
+                      <p className="text-xs text-[var(--text-muted)]">
+                        Nenhuma opção disponível pra esse CEP. Combine via WhatsApp.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex justify-between mb-1 text-xs text-[var(--text-muted)]">
+                    <span>Frete</span>
+                    <span className="italic">Combinado por WhatsApp</span>
+                  </div>
+                )}
+
+                <div className="flex justify-between pt-2 mt-3 border-t border-border">
                   <span className="font-display text-lg text-primary-dark">Total</span>
                   <span className="font-display text-2xl text-primary-dark">
-                    {formatPriceBRL(subtotalCents)}
+                    {formatPriceBRL(totalCents)}
                   </span>
                 </div>
               </div>
