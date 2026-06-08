@@ -1429,6 +1429,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_public_setting: { Args: { p_key: string }; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
       is_enrolled_in_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
