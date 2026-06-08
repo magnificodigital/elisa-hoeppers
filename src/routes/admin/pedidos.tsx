@@ -122,6 +122,21 @@ function OrderCard({ order: o }: { order: Order }) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
   });
 
+  const buyLabel = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("me-buy-label", { body: { order_id: o.id } });
+      if (error) throw error;
+      if ((data as { error?: string }).error) throw new Error((data as { error: string }).error);
+      return data as { ok: boolean; me_order_id: string; label_url: string; tracking_code: string };
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+      qc.invalidateQueries({ queryKey: ["admin-orders-pending-count"] });
+    },
+  });
+
+
+
 
   const cleanPhone = o.customer_phone.replace(/\D/g, "");
   const wppNumber = cleanPhone.length >= 10 ? (cleanPhone.startsWith("55") ? cleanPhone : `55${cleanPhone}`) : null;
