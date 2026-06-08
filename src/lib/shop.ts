@@ -16,10 +16,14 @@ export type Product = {
   gallery: ProductImage[];
   category: string | null;
   display_order: number;
+  weight_g: number | null;
+  length_cm: number | null;
+  width_cm: number | null;
+  height_cm: number | null;
 };
 
 const COLS =
-  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order";
+  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm";
 
 export async function listProducts(filter?: {
   onlyInStock?: boolean;

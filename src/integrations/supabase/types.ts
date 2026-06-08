@@ -908,16 +908,19 @@ export type Database = {
           description: string | null
           display_order: number
           gallery: Json
+          height_cm: number | null
           id: string
           in_stock: boolean
           is_active: boolean
           is_featured: boolean
+          length_cm: number | null
           name: string
           price_cents: number
           short_description: string | null
           slug: string
           updated_at: string
           weight_g: number | null
+          width_cm: number | null
         }
         Insert: {
           category?: string | null
@@ -926,16 +929,19 @@ export type Database = {
           description?: string | null
           display_order?: number
           gallery?: Json
+          height_cm?: number | null
           id?: string
           in_stock?: boolean
           is_active?: boolean
           is_featured?: boolean
+          length_cm?: number | null
           name: string
           price_cents: number
           short_description?: string | null
           slug: string
           updated_at?: string
           weight_g?: number | null
+          width_cm?: number | null
         }
         Update: {
           category?: string | null
@@ -944,16 +950,19 @@ export type Database = {
           description?: string | null
           display_order?: number
           gallery?: Json
+          height_cm?: number | null
           id?: string
           in_stock?: boolean
           is_active?: boolean
           is_featured?: boolean
+          length_cm?: number | null
           name?: string
           price_cents?: number
           short_description?: string | null
           slug?: string
           updated_at?: string
           weight_g?: number | null
+          width_cm?: number | null
         }
         Relationships: []
       }

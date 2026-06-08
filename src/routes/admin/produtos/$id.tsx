@@ -41,6 +41,10 @@ function ProductEditPage() {
     category: "",
     display_order: 0,
     gallery: [] as ProductImage[],
+    weight_g: "" as string | number,
+    length_cm: "" as string | number,
+    width_cm: "" as string | number,
+    height_cm: "" as string | number,
   });
   const [saved, setSaved] = useState(false);
 
@@ -59,6 +63,10 @@ function ProductEditPage() {
         category: product.category ?? "",
         display_order: product.display_order,
         gallery: product.gallery,
+        weight_g: product.weight_g ?? "",
+        length_cm: product.length_cm ?? "",
+        width_cm: product.width_cm ?? "",
+        height_cm: product.height_cm ?? "",
       });
     }
   }, [product]);
@@ -77,6 +85,10 @@ function ProductEditPage() {
       category: form.category || null,
       display_order: form.display_order,
       gallery: form.gallery,
+      weight_g: form.weight_g === "" ? null : Number(form.weight_g),
+      length_cm: form.length_cm === "" ? null : Number(form.length_cm),
+      width_cm: form.width_cm === "" ? null : Number(form.width_cm),
+      height_cm: form.height_cm === "" ? null : Number(form.height_cm),
     }),
     onSuccess: () => {
       setSaved(true);
@@ -207,6 +219,59 @@ function ProductEditPage() {
                 />
               </div>
               <p className="text-[10px] text-[var(--text-muted)] mt-2">Clique ou arraste imagens (máx 8MB cada). Para remover, clique no X da imagem.</p>
+            </div>
+
+            <div className="border-t border-border pt-5">
+              <h2 className="font-display text-lg text-primary-dark mb-1">Envio (Melhor Envio)</h2>
+              <p className="text-xs text-primary-dark/60 mb-4">
+                Necessário pro cálculo automático de frete. Se ficar vazio, usa o valor padrão de Configurações.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <Field label="Peso (g)">
+                  <input
+                    type="number"
+                    step="1"
+                    min="0"
+                    value={form.weight_g}
+                    onChange={(e) => setForm({ ...form, weight_g: e.target.value === "" ? "" : parseInt(e.target.value) || 0 })}
+                    placeholder="ex: 350"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Comprimento (cm)">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={form.length_cm}
+                    onChange={(e) => setForm({ ...form, length_cm: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 20"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Largura (cm)">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={form.width_cm}
+                    onChange={(e) => setForm({ ...form, width_cm: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 15"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Altura (cm)">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={form.height_cm}
+                    onChange={(e) => setForm({ ...form, height_cm: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 10"
+                    className={inputCls}
+                  />
+                </Field>
+              </div>
             </div>
 
 
