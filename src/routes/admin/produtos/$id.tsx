@@ -221,6 +221,59 @@ function ProductEditPage() {
               <p className="text-[10px] text-[var(--text-muted)] mt-2">Clique ou arraste imagens (máx 8MB cada). Para remover, clique no X da imagem.</p>
             </div>
 
+            <div className="border-t border-border pt-5">
+              <h2 className="font-display text-lg text-primary-dark mb-1">Envio (Melhor Envio)</h2>
+              <p className="text-xs text-primary-dark/60 mb-4">
+                Necessário pro cálculo automático de frete. Se ficar vazio, usa o valor padrão de Configurações.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <Field label="Peso (g)">
+                  <input
+                    type="number"
+                    step="1"
+                    min="0"
+                    value={form.weight_g}
+                    onChange={(e) => setForm({ ...form, weight_g: e.target.value === "" ? "" : parseInt(e.target.value) || 0 })}
+                    placeholder="ex: 350"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Comprimento (cm)">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={form.length_cm}
+                    onChange={(e) => setForm({ ...form, length_cm: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 20"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Largura (cm)">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={form.width_cm}
+                    onChange={(e) => setForm({ ...form, width_cm: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 15"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Altura (cm)">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={form.height_cm}
+                    onChange={(e) => setForm({ ...form, height_cm: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 10"
+                    className={inputCls}
+                  />
+                </Field>
+              </div>
+            </div>
+
 
             {save.error && <p className="text-red-700 text-sm">{(save.error as Error).message}</p>}
 
