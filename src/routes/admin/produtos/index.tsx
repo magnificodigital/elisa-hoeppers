@@ -37,6 +37,10 @@ function AdminProductsList() {
         gallery: [],
         category: null,
         display_order: order,
+        weight_g: null,
+        length_cm: null,
+        width_cm: null,
+        height_cm: null,
       });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-products"] }),
