@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: [
       {
         defer: true,
-        ["data-domain"]: "elisahoeppers.com.br",
+        ["data-domain"]: "hoepppers.lovable.app,elisahoeppers.com.br",
         src: "https://plausible.io/js/script.tagged-events.js",
       },
       {
