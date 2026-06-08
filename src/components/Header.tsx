@@ -79,13 +79,19 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
               {i.label}
             </Link>
           ))}
-          <Link
-            to="/cadastro-de-alunos"
-            className={`border px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
-          >
-            INSCREVA-SE
+          <Link to={accountItem.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
+            {accountItem.label}
           </Link>
+          {!user && (
+            <Link
+              to="/cadastro-de-alunos"
+              className={`border px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
+            >
+              INSCREVA-SE
+            </Link>
+          )}
         </nav>
+
 
         <button
           className={`lg:hidden ${textColor}`}
