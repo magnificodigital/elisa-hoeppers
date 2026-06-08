@@ -138,7 +138,7 @@ function CheckoutPage() {
     }
   }
 
-  if (totalItems === 0) return null;
+  if (loaded && totalItems === 0) return null;
 
   return (
     <Layout>
