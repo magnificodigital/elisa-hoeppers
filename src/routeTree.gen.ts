@@ -18,6 +18,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-alunos'
+import { Route as BodyogaRouteImport } from './routes/bodyoga'
 import { Route as BioRouteImport } from './routes/bio'
 import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
 import { Route as IndexRouteImport } from './routes/index'
@@ -96,6 +97,11 @@ const CarrinhoRoute = CarrinhoRouteImport.update({
 const CadastroDeAlunosRoute = CadastroDeAlunosRouteImport.update({
   id: '/cadastro-de-alunos',
   path: '/cadastro-de-alunos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BodyogaRoute = BodyogaRouteImport.update({
+  id: '/bodyoga',
+  path: '/bodyoga',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BioRoute = BioRouteImport.update({
@@ -274,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
+  '/bodyoga': typeof BodyogaRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
@@ -319,6 +326,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
+  '/bodyoga': typeof BodyogaRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
@@ -365,6 +373,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
+  '/bodyoga': typeof BodyogaRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
@@ -412,6 +421,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agende-sua-aula'
     | '/bio'
+    | '/bodyoga'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
@@ -457,6 +467,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agende-sua-aula'
     | '/bio'
+    | '/bodyoga'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
@@ -502,6 +513,7 @@ export interface FileRouteTypes {
     | '/'
     | '/agende-sua-aula'
     | '/bio'
+    | '/bodyoga'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
@@ -548,6 +560,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
   BioRoute: typeof BioRoute
+  BodyogaRoute: typeof BodyogaRoute
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
@@ -652,6 +665,13 @@ declare module '@tanstack/react-router' {
       path: '/cadastro-de-alunos'
       fullPath: '/cadastro-de-alunos'
       preLoaderRoute: typeof CadastroDeAlunosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bodyoga': {
+      id: '/bodyoga'
+      path: '/bodyoga'
+      fullPath: '/bodyoga'
+      preLoaderRoute: typeof BodyogaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bio': {
@@ -910,6 +930,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendeSuaAulaRoute: AgendeSuaAulaRoute,
   BioRoute: BioRoute,
+  BodyogaRoute: BodyogaRoute,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
@@ -953,13 +974,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
