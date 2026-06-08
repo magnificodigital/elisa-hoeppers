@@ -128,11 +128,17 @@ export type Order = {
   status: "pending" | "confirmed" | "shipped" | "cancelled" | "completed";
   notes: string | null;
   tracking_code: string | null;
+  shipping_service_id: string | null;
+  shipping_service_label: string | null;
+  shipping_destination_cep: string | null;
+  me_order_id: string | null;
+  me_label_url: string | null;
+  me_status: string | null;
   created_at: string;
 };
 
 const ORDER_COLS =
-  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, created_at";
+  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, shipping_service_id, shipping_service_label, shipping_destination_cep, me_order_id, me_label_url, me_status, created_at";
 
 export async function listAllOrdersForAdmin(filter?: { status?: Order["status"] }): Promise<Order[]> {
   let q = supabase
