@@ -13,6 +13,7 @@ const LOGO_ICON = "/images/logo/logo-icon.png";
 const Header = ({ transparentOnTop = false }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!transparentOnTop) {
@@ -26,14 +27,19 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
   }, [transparentOnTop]);
 
   const leftItems = [
-    { label: "SOBRE", href: "/sobre" },
-    { label: "AULAS", href: "/cursos" },
-    { label: "SHOP", href: "/loja" },
+    { label: "SOBRE", href: "/sobre" as const },
+    { label: "BODYOGA", href: "/bodyoga" as const },
+    { label: "SHOP", href: "/loja" as const },
   ];
   const rightItems = [
-    { label: "DICAS", href: "/blog" },
-    { label: "LOGIN", href: "/painel" },
+    { label: "AULAS", href: "/cursos" as const },
+    { label: "DICAS", href: "/blog" as const },
   ];
+  // Logged-out users see LOGIN; logged-in users see PAINEL (and no INSCREVA-SE)
+  const accountItem = user
+    ? { label: "PAINEL", href: "/painel" as const }
+    : { label: "LOGIN", href: "/login" as const };
+
 
   const headerBg = "bg-[#3B4F30] shadow-sm";
   const textColor = "text-[#DBCCBF]";
