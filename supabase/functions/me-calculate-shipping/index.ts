@@ -112,6 +112,7 @@ serve(async (req) => {
 
     const options = (data as any[])
       .filter((o: any) => !o.error && o.price)
+      .filter((o: any) => allowedSet.size === 0 || allowedSet.has(String(o.id)))
       .map((o: any) => ({
         id: String(o.id),
         name: o.name,
