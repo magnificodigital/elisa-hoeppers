@@ -311,7 +311,61 @@ function CheckoutPage() {
                     />
                   </Field>
                 </div>
+
+                {!user && (
+                  <div className="pt-3 mt-1 border-t border-border">
+                    <label className="flex items-start gap-2.5 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={createAccount}
+                        onChange={(e) => setCreateAccount(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      <div>
+                        <span className="block text-sm text-primary-dark font-medium">
+                          Quero criar uma conta com esse email
+                        </span>
+                        <span className="block text-xs text-[var(--text-muted)] mt-0.5">
+                          Permite acompanhar pedidos em "Meu painel" e comprar mais rápido na próxima vez.
+                        </span>
+                      </div>
+                    </label>
+
+                    {createAccount && (
+                      <div className="mt-3">
+                        <Field label="Senha">
+                          <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            className={inputCls}
+                          />
+                        </Field>
+                      </div>
+                    )}
+
+                    {accountError && (
+                      <p className="text-red-700 text-sm mt-2">
+                        {accountError}
+                        {accountError.includes("login") && (
+                          <>
+                            {" "}
+                            <Link
+                              to="/login"
+                              search={{ next: "/checkout" }}
+                              className="underline font-medium"
+                            >
+                              Ir pro login
+                            </Link>
+                          </>
+                        )}
+                      </p>
+                    )}
+                  </div>
+                )}
               </Section>
+
 
               <Section title="Endereço de entrega">
                 <p className="text-xs text-[var(--text-muted)] -mt-2 mb-2">
