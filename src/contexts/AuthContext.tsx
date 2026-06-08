@@ -52,8 +52,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (sess?.user) {
         await fetchProfile(sess.user.id);
         if (event === "SIGNED_IN") {
-          supabase.rpc("claim_guest_orders").catch((e) => console.error("claim orders:", e));
+          const { error } = await supabase.rpc("claim_guest_orders");
+          if (error) console.error("claim orders:", error);
         }
+
       } else setProfile(null);
     });
 
