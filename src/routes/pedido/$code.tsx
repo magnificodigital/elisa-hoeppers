@@ -153,15 +153,27 @@ function OrderPage() {
                 </li>
               ))}
             </ul>
-            <div className="flex justify-between pt-4 mt-4 border-t border-border">
-              <span className="font-display text-lg text-primary-dark">Total</span>
-              <span className="font-display text-2xl text-primary-dark">
-                {formatPriceBRL(order.total_cents)}
-              </span>
+            <div className="pt-4 mt-4 border-t border-border space-y-1.5">
+              <div className="flex justify-between text-sm text-[var(--text-muted)]">
+                <span>Subtotal</span>
+                <span>{formatPriceBRL(order.subtotal_cents)}</span>
+              </div>
+              <div className="flex justify-between text-sm text-[var(--text-muted)]">
+                <span>Frete</span>
+                <span>
+                  {order.shipping_cents > 0
+                    ? formatPriceBRL(order.shipping_cents)
+                    : "a combinar por WhatsApp"}
+                </span>
+              </div>
+              <div className="flex justify-between pt-2 mt-1 border-t border-border">
+                <span className="font-display text-lg text-primary-dark">Total</span>
+                <span className="font-display text-2xl text-primary-dark">
+                  {formatPriceBRL(order.total_cents)}
+                </span>
+              </div>
             </div>
-            <p className="text-xs text-[var(--text-muted)] mt-3 italic">
-              Frete combinado por WhatsApp
-            </p>
+
           </div>
 
           <a
