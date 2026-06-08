@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Calendar, Phone, Mail, MessageCircle, Check, X, Clock, Video, MapPin } from "lucide-react";
+import { Calendar, Phone, Mail, MessageCircle, Check, X, Clock, Video, MapPin, Plus } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
   listAppointmentsForAdmin,
   updateAppointmentStatus,
+  createAppointmentManual,
+  listAllServices,
   formatCurrencyBRL,
   formatTime,
   formatDate,
@@ -21,6 +23,7 @@ export const Route = createFileRoute("/admin/agendamentos")({
     </AdminGuard>
   ),
 });
+
 
 const FILTERS = [
   { id: "pending", label: "Pendentes" },
