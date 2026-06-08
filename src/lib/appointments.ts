@@ -212,6 +212,55 @@ export async function updateAppointmentStatus(id: string, status: Appointment["s
   if (error) throw error;
 }
 
+function genCode(): string {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let c = "";
+  for (let i = 0; i < 6; i++) c += alphabet[Math.floor(Math.random() * alphabet.length)];
+  return c;
+}
+
+export async function createAppointmentManual(input: {
+  service_id: string;
+  starts_at: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string;
+  notes?: string;
+  status?: Appointment["status"];
+}): Promise<void> {
+  const service = await getServiceById(input.service_id);
+  if (!service) throw new Error("Serviço não encontrado.");
+  const start = new Date(input.starts_at);
+  const end = new Date(start.getTime() + service.duration_min * 60_000);
+  const { error } = await supabase.from("appointments").insert({
+    code: genCode(),
+    service_id: input.service_id,
+    customer_name: input.customer_name.trim(),
+    customer_email: input.customer_email.trim(),
+    customer_phone: input.customer_phone?.trim() || null,
+    starts_at: start.toISOString(),
+    ends_at: end.toISOString(),
+    notes: input.notes?.trim() || null,
+    status: input.status ?? "confirmed",
+  });
+  if (error) throw error;
+}
+
+async function getServiceById(id: string): Promise<Service | null> {
+  const { data, error } = await supabase.from("services").select("*").eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data as Service | null;
+}
+
+export async function listAllServices(): Promise<Service[]> {
+  const { data, error } = await supabase
+    .from("services")
+    .select("*")
+    .order("display_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Service[];
+}
+
 // =================== AVAILABILITY ===================
 export type AvailabilityRule = {
   day_of_week: number;
