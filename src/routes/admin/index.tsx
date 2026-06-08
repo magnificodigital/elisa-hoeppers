@@ -15,6 +15,7 @@ import {
   AlertCircle,
   Star,
   Send,
+  Stethoscope,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
@@ -41,6 +42,7 @@ const sections = [
   { to: "/admin/broadcast", icon: Send, title: "Broadcast", desc: "Envie email pra newsletter ou alunas." },
   { to: "/admin/blog", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
+  { to: "/admin/diagnostico-pagamentos", icon: Stethoscope, title: "Diagnóstico Pagamentos", desc: "Auto-check da integração Mercado Pago." },
 ] as const;
 
 function formatBRL(cents: number): string {
