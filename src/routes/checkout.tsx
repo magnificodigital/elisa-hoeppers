@@ -94,6 +94,11 @@ function CheckoutPage() {
   const [shippingError, setShippingError] = useState<string | null>(null);
   const [selectedShipping, setSelectedShipping] = useState<ShippingOption | null>(null);
 
+  const [createAccount, setCreateAccount] = useState(true);
+  const [password, setPassword] = useState("");
+  const [accountError, setAccountError] = useState<string | null>(null);
+
+
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
