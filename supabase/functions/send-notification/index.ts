@@ -152,18 +152,25 @@ async function handleOrder(recordId: string) {
        <p class="muted" style="margin-top:16px;">Quer acompanhar futuras compras num lugar só?
        <a href="${SITE_URL}/cadastro-de-alunos">Crie sua conta aqui</a> (leva 30 segundos).</p>`;
 
+  const shippingLine =
+    order.shipping_cents > 0
+      ? `<div class="total-row" style="font-weight:400;"><span>Frete${order.shipping_service_label ? ` · ${order.shipping_service_label}` : ""}</span><span>${formatBRL(order.shipping_cents)}</span></div>`
+      : `<p class="muted">Frete a combinar por WhatsApp</p>`;
+
   const customerHtml = wrap(`
     <div class="card">
       <h1>Pedido recebido!</h1>
-      <p>Olá ${firstName}, seu pedido foi registrado. A Elisa entra em contato em até 24h pra combinar o pagamento e o frete.</p>
+      <p>Olá ${firstName}, seu pedido foi registrado. A Elisa entra em contato em até 24h pra combinar o pagamento${order.shipping_cents > 0 ? "" : " e o frete"}.</p>
       <h2>Seu pedido</h2>
       ${itemsHtml}
+      <div class="total-row" style="font-weight:400;"><span>Subtotal</span><span>${formatBRL(order.subtotal_cents)}</span></div>
+      ${shippingLine}
       <div class="total-row"><span>Total</span><span>${formatBRL(order.total_cents)}</span></div>
-      <p class="muted">Frete combinado por WhatsApp</p>
       <p><span class="label">Código</span> <span class="code">#${order.code}</span></p>
       ${accountCta}
     </div>
   `);
+
 
 
   const elisaHtml = wrap(`
