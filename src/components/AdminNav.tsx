@@ -48,7 +48,7 @@ export function AdminNav() {
           <span className="h-5 w-px bg-[#DBCCBF]/20 shrink-0" />
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
-            const active = isActive(item.to, item.exact);
+            const active = isActive(item.to, "exact" in item ? item.exact : false);
             return (
               <Link
                 key={item.to}
