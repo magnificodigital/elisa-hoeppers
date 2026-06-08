@@ -37,6 +37,18 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
+function friendlyError(msg: string): string {
+  const m = (msg || "").toLowerCase();
+  if (m.includes("name required")) return "Por favor, informe seu nome completo.";
+  if (m.includes("email required")) return "Por favor, informe um e-mail válido.";
+  if (m.includes("phone required")) return "Por favor, informe seu WhatsApp.";
+  if (m.includes("cart empty") || m.includes("no valid items"))
+    return "Seu carrinho está vazio.";
+  if (m.includes("out of stock")) return "Um dos produtos está sem estoque.";
+  if (m.includes("not available")) return "Um dos produtos não está mais disponível.";
+  return "Não foi possível concluir o pedido. Tente novamente ou fale com a Elisa pelo WhatsApp.";
+}
+
 function CheckoutPage() {
   const { items, subtotalCents, totalItems, clear, loaded } = useCart();
   const { user, profile } = useAuth();
