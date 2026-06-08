@@ -46,12 +46,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.session?.user) await fetchProfile(data.session.user.id);
       setLoading(false);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, sess) => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, sess) => {
       setSession(sess);
       setUser(sess?.user ?? null);
-      if (sess?.user) await fetchProfile(sess.user.id);
-      else setProfile(null);
+      if (sess?.user) {
+        await fetchProfile(sess.user.id);
+        if (event === "SIGNED_IN") {
+          const { error } = await supabase.rpc("claim_guest_orders");
+          if (error) console.error("claim orders:", error);
+        }
+
+      } else setProfile(null);
     });
+
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();

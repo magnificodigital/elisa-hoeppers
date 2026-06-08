@@ -94,6 +94,11 @@ function CheckoutPage() {
   const [shippingError, setShippingError] = useState<string | null>(null);
   const [selectedShipping, setSelectedShipping] = useState<ShippingOption | null>(null);
 
+  const [createAccount, setCreateAccount] = useState(true);
+  const [password, setPassword] = useState("");
+  const [accountError, setAccountError] = useState<string | null>(null);
+
+
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
@@ -156,10 +161,45 @@ function CheckoutPage() {
   }
 
 
+  async function maybeCreateAccount(): Promise<boolean> {
+    if (user) return true; // já logado
+    if (!createAccount) return true; // optou por não criar
+
+    if (password.length < 6) {
+      setAccountError("A senha precisa ter no mínimo 6 caracteres.");
+      return false;
+    }
+
+    const { error } = await supabase.auth.signUp({
+      email: form.email,
+      password,
+      options: { data: { full_name: form.name } },
+    });
+
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes("already registered") || msg.includes("already exists")) {
+        setAccountError("Já existe uma conta com esse email. Faça login antes de continuar.");
+        return false;
+      }
+      setAccountError(error.message);
+      return false;
+    }
+
+    await supabase.auth.signInWithPassword({ email: form.email, password });
+    return true;
+  }
+
   async function submitOrder(method: "whatsapp" | "mercadopago") {
     setSubmitError(null);
+    setAccountError(null);
+
+    const accountOk = await maybeCreateAccount();
+    if (!accountOk) return;
+
     try {
       setSubmitting(method);
+
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
@@ -271,7 +311,61 @@ function CheckoutPage() {
                     />
                   </Field>
                 </div>
+
+                {!user && (
+                  <div className="pt-3 mt-1 border-t border-border">
+                    <label className="flex items-start gap-2.5 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={createAccount}
+                        onChange={(e) => setCreateAccount(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      <div>
+                        <span className="block text-sm text-primary-dark font-medium">
+                          Quero criar uma conta com esse email
+                        </span>
+                        <span className="block text-xs text-[var(--text-muted)] mt-0.5">
+                          Permite acompanhar pedidos em "Meu painel" e comprar mais rápido na próxima vez.
+                        </span>
+                      </div>
+                    </label>
+
+                    {createAccount && (
+                      <div className="mt-3">
+                        <Field label="Senha">
+                          <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            className={inputCls}
+                          />
+                        </Field>
+                      </div>
+                    )}
+
+                    {accountError && (
+                      <p className="text-red-700 text-sm mt-2">
+                        {accountError}
+                        {accountError.includes("login") && (
+                          <>
+                            {" "}
+                            <Link
+                              to="/login"
+                              search={{ next: "/checkout" }}
+                              className="underline font-medium"
+                            >
+                              Ir pro login
+                            </Link>
+                          </>
+                        )}
+                      </p>
+                    )}
+                  </div>
+                )}
               </Section>
+
 
               <Section title="Endereço de entrega">
                 <p className="text-xs text-[var(--text-muted)] -mt-2 mb-2">

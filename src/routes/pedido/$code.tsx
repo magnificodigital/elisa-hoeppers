@@ -83,6 +83,8 @@ function OrderPage() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const isOwner = !!user && !!order.user_id && user.id === order.user_id;
+  const isGuestOrder = !order.user_id && !user;
+
 
   const cancel = useMutation({
     mutationFn: () => cancelMyOrder(order.id),
@@ -199,12 +201,33 @@ function OrderPage() {
               </a>
             </div>
           )}
+
+          {isGuestOrder && (
+            <div className="mt-6 bg-white rounded-lg p-6 text-center">
+              <p className="font-display text-lg text-primary-dark">
+                Quer acompanhar todos os seus pedidos num só lugar?
+              </p>
+              <p className="text-sm text-[var(--text-muted)] mt-2 mb-4">
+                Crie sua conta gratuita com o mesmo email do pedido pra ver tudo no seu painel.
+              </p>
+              <Link
+                to="/cadastro-de-alunos"
+                search={{ email: undefined }}
+                className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+
+              >
+                Criar conta agora
+              </Link>
+            </div>
+          )}
+
           <Link
             to="/loja"
             className="block text-center mt-4 text-sm text-primary-dark hover:text-primary"
           >
             Voltar pra loja
           </Link>
+
         </div>
       </section>
     </Layout>

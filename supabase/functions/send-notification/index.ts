@@ -145,6 +145,13 @@ async function handleOrder(recordId: string) {
 
   const firstName = order.customer_name.split(" ")[0];
 
+  const hasAccount = !!order.user_id;
+  const accountCta = hasAccount
+    ? `<a class="btn" href="${SITE_URL}/painel/pedidos">Ver meus pedidos</a>`
+    : `<a class="btn" href="${SITE_URL}/pedido/${order.code}">Ver pedido</a>
+       <p class="muted" style="margin-top:16px;">Quer acompanhar futuras compras num lugar só?
+       <a href="${SITE_URL}/cadastro-de-alunos">Crie sua conta aqui</a> (leva 30 segundos).</p>`;
+
   const customerHtml = wrap(`
     <div class="card">
       <h1>Pedido recebido!</h1>
@@ -154,9 +161,10 @@ async function handleOrder(recordId: string) {
       <div class="total-row"><span>Total</span><span>${formatBRL(order.total_cents)}</span></div>
       <p class="muted">Frete combinado por WhatsApp</p>
       <p><span class="label">Código</span> <span class="code">#${order.code}</span></p>
-      <a class="btn" href="${SITE_URL}/pedido/${order.code}">Ver pedido</a>
+      ${accountCta}
     </div>
   `);
+
 
   const elisaHtml = wrap(`
     <div class="card">

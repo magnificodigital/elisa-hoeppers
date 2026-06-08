@@ -1406,6 +1406,7 @@ export type Database = {
           starts_at: string
         }[]
       }
+      claim_guest_orders: { Args: never; Returns: number }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
