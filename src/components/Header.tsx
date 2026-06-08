@@ -105,7 +105,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-cream border-t border-border">
           <nav className="flex flex-col p-6 space-y-4 text-primary-dark">
-            {[...leftItems, ...rightItems].map((i) => (
+            {[...leftItems, ...rightItems, accountItem].map((i) => (
               <Link
                 key={i.href}
                 to={i.href}
@@ -115,13 +115,16 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
                 {i.label}
               </Link>
             ))}
-            <Link
-              to="/cadastro-de-alunos"
-              className="border border-primary text-primary px-6 py-2 rounded-full text-[11px] tracking-widest text-center uppercase"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              INSCREVA-SE
-            </Link>
+            {!user && (
+              <Link
+                to="/cadastro-de-alunos"
+                className="border border-primary text-primary px-6 py-2 rounded-full text-[11px] tracking-widest text-center uppercase"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                INSCREVA-SE
+              </Link>
+            )}
+
             <div className="flex justify-center space-x-6 pt-3">
               <a href="https://instagram.com/elisahoepperscasas" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
               <a href="https://www.youtube.com/@ElisaHoeppers" target="_blank" rel="noreferrer"><Youtube size={20} /></a>
