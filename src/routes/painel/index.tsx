@@ -236,11 +236,17 @@ function PainelPage() {
               <h2 className="font-display text-xl text-primary-dark mb-4">Painel</h2>
 
               {/* Stat cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
                 <StatCard icon={<BookOpen size={20} className="text-primary" />} value={totalEnrolled} label="Cursos matriculados" />
                 <StatCard icon={<Activity size={20} className="text-primary" />} value={totalActive} label="Cursos ativos" />
                 <StatCard icon={<Award size={20} className="text-primary" />} value={totalCompleted} label="Cursos completos" />
+                <StatCard
+                  icon={<Package size={20} className="text-primary" />}
+                  value={totalOrders}
+                  label={pendingOrders > 0 ? `Pedidos · ${pendingOrders} pendente${pendingOrders === 1 ? "" : "s"}` : "Pedidos"}
+                />
               </div>
+
 
               <h3 className="font-display text-lg text-primary-dark mb-4">Cursos em progresso</h3>
 
