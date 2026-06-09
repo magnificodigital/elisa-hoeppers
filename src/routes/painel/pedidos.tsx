@@ -80,7 +80,7 @@ function MyOrdersPage() {
   );
 }
 
-function OrderRow({ order: o }: { order: Order }) {
+function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlighted?: boolean }) {
   const qc = useQueryClient();
   const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
 
@@ -96,13 +96,22 @@ function OrderRow({ order: o }: { order: Order }) {
     },
   });
 
+  const isCancelled = o.status === "cancelled";
+  const stages: { key: Order["status"]; label: string; reached: boolean }[] = [
+    { key: "pending", label: "Pendente", reached: true },
+    { key: "confirmed", label: "Confirmado", reached: ["confirmed", "shipped", "completed"].includes(o.status) },
+    { key: "shipped", label: "Enviado", reached: ["shipped", "completed"].includes(o.status) },
+    { key: "completed", label: "Entregue", reached: o.status === "completed" },
+  ];
+
   return (
-    <div className="bg-white rounded-lg p-5 hover:shadow-md transition">
-      <Link
-        to="/pedido/$code"
-        params={{ code: o.code }}
-        className="block group"
-      >
+    <div className={`bg-white rounded-lg p-5 hover:shadow-md transition ${isHighlighted ? "ring-2 ring-primary" : ""}`}>
+      {isHighlighted && (
+        <div className="mb-3 rounded-md bg-primary/10 text-primary text-xs px-3 py-2 font-medium">
+          ✓ Pedido criado agora há pouco
+        </div>
+      )}
+      <Link to="/pedido/$code" params={{ code: o.code }} className="block group">
         <div className="flex items-center gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap mb-1">
@@ -117,11 +126,6 @@ function OrderRow({ order: o }: { order: Order }) {
                 ? `${o.items[0].qty}× ${o.items[0].name}`
                 : `${o.items.length} produtos · ${totalQty} ${totalQty === 1 ? "item" : "itens"}`}
             </p>
-            {o.tracking_code && (o.status === "shipped" || o.status === "completed") && (
-              <p className="text-xs text-primary-dark/60 mt-1 font-mono">
-                Rastreio: {o.tracking_code}
-              </p>
-            )}
           </div>
           <div className="text-right shrink-0">
             <p className="font-display text-lg text-primary-dark">{formatPriceBRL(o.total_cents)}</p>
@@ -129,6 +133,57 @@ function OrderRow({ order: o }: { order: Order }) {
           <ChevronRight className="text-primary-dark/30 group-hover:text-primary transition shrink-0" size={20} />
         </div>
       </Link>
+
+      {/* Timeline de status (só se não cancelado) */}
+      {!isCancelled && (
+        <div className="mt-4 pt-4 border-t border-border">
+          <div className="flex items-center">
+            {stages.map((s, i) => (
+              <div key={s.key} className="flex items-center flex-1 last:flex-none">
+                <div className="flex flex-col items-center">
+                  {s.reached ? (
+                    <CheckCircle className="w-5 h-5 text-primary" />
+                  ) : (
+                    <Circle className="w-5 h-5 text-primary-dark/25" />
+                  )}
+                  <span className={`mt-1 text-[10px] ${s.reached ? "text-primary" : "text-primary-dark/40"}`}>
+                    {s.label}
+                  </span>
+                </div>
+                {i < stages.length - 1 && (
+                  <div className={`h-0.5 flex-1 mx-1 -mt-4 ${stages[i + 1].reached ? "bg-primary" : "bg-primary-dark/15"}`} />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {o.tracking_code && (
+            <div className="mt-4 flex items-center justify-between gap-3 bg-cream rounded-md px-3 py-2">
+              <div className="flex items-center gap-2 text-xs text-primary-dark min-w-0">
+                <Truck className="w-4 h-4 shrink-0 text-primary" />
+                <span className="text-primary-dark/60">Rastreio:</span>
+                <span className="font-mono truncate">{o.tracking_code}</span>
+              </div>
+              <a
+                href={`https://rastreamento.correios.com.br/app/index.php?objetos=${o.tracking_code}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-xs uppercase tracking-widest text-primary hover:opacity-70 transition shrink-0"
+              >
+                Rastrear <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+
+      {isCancelled && (
+        <div className="mt-3 pt-3 border-t border-border flex items-center gap-2 text-red-700 text-sm">
+          <XCircle className="w-4 h-4" />
+          Pedido cancelado
+        </div>
+      )}
 
       {o.status === "pending" && (
         <div className="mt-3 pt-3 border-t border-border">
