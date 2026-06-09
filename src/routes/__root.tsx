@@ -134,6 +134,7 @@ function RootComponent() {
         <Outlet />
         <FloatingCart />
         <CookieBanner />
+        <Toaster position="top-right" expand richColors closeButton />
       </AuthProvider>
     </QueryClientProvider>
   );
