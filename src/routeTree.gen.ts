@@ -55,6 +55,7 @@ import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
+import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
@@ -292,6 +293,12 @@ const AdminConfiguracoesMercadopagoRoute =
     path: '/admin/configuracoes/mercadopago',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminConfiguracoesMelhorEnvioRoute =
+  AdminConfiguracoesMelhorEnvioRouteImport.update({
+    id: '/admin/configuracoes/melhor-envio',
+    path: '/admin/configuracoes/melhor-envio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   id: '/admin/blog/$id',
   path: '/admin/blog/$id',
@@ -355,6 +362,7 @@ export interface FileRoutesByFullPath {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -407,6 +415,7 @@ export interface FileRoutesByTo {
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -460,6 +469,7 @@ export interface FileRoutesById {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -514,6 +524,7 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
@@ -566,6 +577,7 @@ export interface FileRouteTypes {
     | '/loja'
     | '/painel'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
@@ -618,6 +630,7 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
@@ -671,6 +684,7 @@ export interface RootRouteChildren {
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
   AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
   AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
@@ -1006,6 +1020,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesMercadopagoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/melhor-envio': {
+      id: '/admin/configuracoes/melhor-envio'
+      path: '/admin/configuracoes/melhor-envio'
+      fullPath: '/admin/configuracoes/melhor-envio'
+      preLoaderRoute: typeof AdminConfiguracoesMelhorEnvioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/$id': {
       id: '/admin/blog/$id'
       path: '/admin/blog/$id'
@@ -1089,6 +1110,7 @@ const rootRouteChildren: RootRouteChildren = {
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
   AdminBlogIdRoute: AdminBlogIdRoute,
+  AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
   AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
