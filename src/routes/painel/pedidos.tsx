@@ -193,15 +193,22 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
       {o.status === "pending" && (
         <div className="mt-3 pt-3 border-t border-border">
           <button
-            onClick={() => {
-              if (confirm("Cancelar este pedido? Você ainda pode refazer depois.")) cancel.mutate();
-            }}
+            onClick={() => setConfirmOpen(true)}
             disabled={cancel.isPending}
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-red-700 hover:opacity-70 transition disabled:opacity-50"
           >
             <X className="w-3.5 h-3.5" />
             {cancel.isPending ? "Cancelando..." : "Cancelar pedido"}
           </button>
+          <ConfirmDialog
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            title="Cancelar pedido?"
+            description="Você ainda pode refazer depois. Esta ação avisa a Elisa por email."
+            confirmLabel="Sim, cancelar"
+            variant="destructive"
+            onConfirm={() => cancel.mutate()}
+          />
         </div>
       )}
     </div>
