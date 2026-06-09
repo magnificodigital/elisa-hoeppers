@@ -1,115 +1,24 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { Save, Eye, EyeOff, CreditCard, Mail, Truck, CalendarClock, ChevronRight } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { Save, Eye, EyeOff } from "lucide-react";
 import { listSettings, updateSetting, type AppSetting } from "@/lib/settings";
 
-export const Route = createFileRoute("/admin/configuracoes")({
-  head: () => ({ meta: [{ title: "Admin — Configurações" }] }),
-  component: () => (
-    <AdminGuard>
-      <SettingsPage />
-    </AdminGuard>
-  ),
-});
-
-function SettingsPage() {
+export function SettingsCategory({ category }: { category: string }) {
   const { data: settings, isLoading } = useQuery({
-    queryKey: ["app-settings"],
-    queryFn: () => listSettings(),
+    queryKey: ["app-settings", category],
+    queryFn: () => listSettings(category),
   });
 
-  const byCategory = useMemo(() => {
-    const out: Record<string, AppSetting[]> = {};
-    (settings ?? []).forEach((s) => {
-      if (!out[s.category]) out[s.category] = [];
-      out[s.category].push(s);
-    });
-    return out;
-  }, [settings]);
+  if (isLoading) return <p className="text-[var(--text-muted)]">Carregando…</p>;
+
+  const list = settings ?? [];
+  if (list.length === 0) {
+    return <p className="text-primary-dark/60 text-sm">Nenhuma configuração nesta categoria.</p>;
+  }
 
   return (
-    <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-3xl mx-auto px-4">
-          <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Configurações</h1>
-          <p className="text-primary-dark/70 mb-10">Chaves de integrações e configurações do site.</p>
-
-          <Link
-            to="/admin/disponibilidade"
-            className="bg-white rounded-xl p-6 mb-6 shadow-sm flex items-center gap-3 hover:shadow-lg transition group"
-          >
-            <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center shrink-0">
-              <CalendarClock size={20} className="text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="font-display text-2xl text-primary-dark group-hover:text-primary transition">Disponibilidade</h2>
-              <p className="text-sm text-primary-dark/60">Horários da semana e períodos bloqueados.</p>
-            </div>
-            <ChevronRight size={20} className="text-primary-dark/40 shrink-0" />
-          </Link>
-
-          {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
-
-          {byCategory.mercadopago && (
-            <SettingsSection
-              title="Mercado Pago"
-              icon={<CreditCard size={20} className="text-primary" />}
-              description="Configure o checkout online pra aceitar cartão, PIX e boleto. As chaves vêm do seu painel MP > Sua aplicação > Credenciais de produção."
-              settings={byCategory.mercadopago}
-              helpLink={{ href: "https://www.mercadopago.com.br/developers/panel", label: "Abrir painel Mercado Pago" }}
-            />
-          )}
-
-          {byCategory.melhorenvio && (
-            <SettingsSection
-              title="Melhor Envio"
-              icon={<Truck size={20} className="text-primary" />}
-              description="Cálculo de frete automático no checkout e geração de etiquetas no admin. Gere o token em melhorenvio.com.br > Permissões de Acesso."
-              settings={byCategory.melhorenvio}
-              helpLink={{ href: "https://app.melhorenvio.com.br/integracoes/permissoes-de-acesso", label: "Abrir Permissões no Melhor Envio" }}
-            />
-          )}
-
-          {byCategory.newsletter && (
-            <SettingsSection
-              title="Newsletter"
-              icon={<Mail size={20} className="text-primary" />}
-              description="Captura email de visitantes pra envio de broadcasts. Crie uma audience no Resend e cole o ID aqui."
-              settings={byCategory.newsletter}
-              helpLink={{ href: "https://resend.com/audiences", label: "Abrir Audiences no Resend" }}
-            />
-          )}
-        </div>
-      </section>
-    </Layout>
-  );
-}
-
-function SettingsSection({ title, icon, description, settings, helpLink }: {
-  title: string;
-  icon: React.ReactNode;
-  description?: string;
-  settings: AppSetting[];
-  helpLink?: { href: string; label: string };
-}) {
-  return (
-    <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center">{icon}</div>
-        <h2 className="font-display text-2xl text-primary-dark">{title}</h2>
-      </div>
-      {description && <p className="text-sm text-primary-dark/60 mb-3">{description}</p>}
-      {helpLink && (
-        <a href={helpLink.href} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline inline-block mb-4">
-          {helpLink.label} ↗
-        </a>
-      )}
-      <div className="space-y-5 mt-4">
-        {settings.map((s) => <SettingField key={s.key} setting={s} />)}
-      </div>
+    <div className="space-y-5 mt-2">
+      {list.map((s) => <SettingField key={s.key} setting={s} />)}
     </div>
   );
 }
@@ -230,7 +139,6 @@ function CarrierSelectorField({ setting, value, setValue, save, saved }: {
     const next = new Set(selected);
     if (next.has(id)) next.delete(id);
     else next.add(id);
-    // mantém a ordem dos IDs conhecidos
     const ordered = ME_CARRIERS.filter((c) => next.has(c.id)).map((c) => c.id);
     setValue(ordered.join(","));
   };

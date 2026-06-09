@@ -45,15 +45,20 @@ import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
-import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
+import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/configuracoes/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
+import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
+import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin/configuracoes/newsletter'
+import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
+import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
+import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
@@ -240,11 +245,6 @@ const AdminDiagnosticoEnvioRoute = AdminDiagnosticoEnvioRouteImport.update({
   path: '/admin/diagnostico-envio',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
-  id: '/admin/configuracoes',
-  path: '/admin/configuracoes',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminClientesRoute = AdminClientesRouteImport.update({
   id: '/admin/clientes',
   path: '/admin/clientes',
@@ -270,6 +270,11 @@ const AdminCursosIndexRoute = AdminCursosIndexRouteImport.update({
   path: '/admin/cursos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminConfiguracoesIndexRoute = AdminConfiguracoesIndexRouteImport.update({
+  id: '/admin/configuracoes/',
+  path: '/admin/configuracoes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   id: '/admin/blog/',
   path: '/admin/blog/',
@@ -285,6 +290,36 @@ const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
   path: '/admin/produtos/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminConfiguracoesUsuariosRoute =
+  AdminConfiguracoesUsuariosRouteImport.update({
+    id: '/admin/configuracoes/usuarios',
+    path: '/admin/configuracoes/usuarios',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminConfiguracoesNewsletterRoute =
+  AdminConfiguracoesNewsletterRouteImport.update({
+    id: '/admin/configuracoes/newsletter',
+    path: '/admin/configuracoes/newsletter',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminConfiguracoesMercadopagoRoute =
+  AdminConfiguracoesMercadopagoRouteImport.update({
+    id: '/admin/configuracoes/mercadopago',
+    path: '/admin/configuracoes/mercadopago',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminConfiguracoesMelhorEnvioRoute =
+  AdminConfiguracoesMelhorEnvioRouteImport.update({
+    id: '/admin/configuracoes/melhor-envio',
+    path: '/admin/configuracoes/melhor-envio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminConfiguracoesDiagnosticosRoute =
+  AdminConfiguracoesDiagnosticosRouteImport.update({
+    id: '/admin/configuracoes/diagnosticos',
+    path: '/admin/configuracoes/diagnosticos',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   id: '/admin/blog/$id',
   path: '/admin/blog/$id',
@@ -324,7 +359,6 @@ export interface FileRoutesByFullPath {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -349,9 +383,15 @@ export interface FileRoutesByFullPath {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
+  '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
+  '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
+  '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
@@ -375,7 +415,6 @@ export interface FileRoutesByTo {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -400,9 +439,15 @@ export interface FileRoutesByTo {
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
+  '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
+  '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
+  '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog': typeof AdminBlogIndexRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
   '/admin/produtos': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
@@ -427,7 +472,6 @@ export interface FileRoutesById {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -452,9 +496,15 @@ export interface FileRoutesById {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
+  '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
+  '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
+  '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
@@ -480,7 +530,6 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
-    | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -505,9 +554,15 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/diagnosticos'
+    | '/admin/configuracoes/melhor-envio'
+    | '/admin/configuracoes/mercadopago'
+    | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
+    | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
     | '/admin/cursos/$id/aulas'
@@ -531,7 +586,6 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
-    | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -556,9 +610,15 @@ export interface FileRouteTypes {
     | '/loja'
     | '/painel'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/diagnosticos'
+    | '/admin/configuracoes/melhor-envio'
+    | '/admin/configuracoes/mercadopago'
+    | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog'
+    | '/admin/configuracoes'
     | '/admin/cursos'
     | '/admin/produtos'
     | '/admin/cursos/$id/aulas'
@@ -582,7 +642,6 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
-    | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -607,9 +666,15 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/diagnosticos'
+    | '/admin/configuracoes/melhor-envio'
+    | '/admin/configuracoes/mercadopago'
+    | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
+    | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
     | '/admin/cursos/$id/aulas'
@@ -634,7 +699,6 @@ export interface RootRouteChildren {
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
-  AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
@@ -659,9 +723,15 @@ export interface RootRouteChildren {
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
   AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
+  AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
+  AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
+  AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
+  AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+  AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
   AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
@@ -922,13 +992,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDiagnosticoEnvioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/configuracoes': {
-      id: '/admin/configuracoes'
-      path: '/admin/configuracoes'
-      fullPath: '/admin/configuracoes'
-      preLoaderRoute: typeof AdminConfiguracoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/clientes': {
       id: '/admin/clientes'
       path: '/admin/clientes'
@@ -964,6 +1027,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCursosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/': {
+      id: '/admin/configuracoes/'
+      path: '/admin/configuracoes'
+      fullPath: '/admin/configuracoes/'
+      preLoaderRoute: typeof AdminConfiguracoesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/': {
       id: '/admin/blog/'
       path: '/admin/blog'
@@ -983,6 +1053,41 @@ declare module '@tanstack/react-router' {
       path: '/admin/produtos/$id'
       fullPath: '/admin/produtos/$id'
       preLoaderRoute: typeof AdminProdutosIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes/usuarios': {
+      id: '/admin/configuracoes/usuarios'
+      path: '/admin/configuracoes/usuarios'
+      fullPath: '/admin/configuracoes/usuarios'
+      preLoaderRoute: typeof AdminConfiguracoesUsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes/newsletter': {
+      id: '/admin/configuracoes/newsletter'
+      path: '/admin/configuracoes/newsletter'
+      fullPath: '/admin/configuracoes/newsletter'
+      preLoaderRoute: typeof AdminConfiguracoesNewsletterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes/mercadopago': {
+      id: '/admin/configuracoes/mercadopago'
+      path: '/admin/configuracoes/mercadopago'
+      fullPath: '/admin/configuracoes/mercadopago'
+      preLoaderRoute: typeof AdminConfiguracoesMercadopagoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes/melhor-envio': {
+      id: '/admin/configuracoes/melhor-envio'
+      path: '/admin/configuracoes/melhor-envio'
+      fullPath: '/admin/configuracoes/melhor-envio'
+      preLoaderRoute: typeof AdminConfiguracoesMelhorEnvioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes/diagnosticos': {
+      id: '/admin/configuracoes/diagnosticos'
+      path: '/admin/configuracoes/diagnosticos'
+      fullPath: '/admin/configuracoes/diagnosticos'
+      preLoaderRoute: typeof AdminConfiguracoesDiagnosticosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/blog/$id': {
@@ -1044,7 +1149,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
-  AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
@@ -1069,9 +1173,15 @@ const rootRouteChildren: RootRouteChildren = {
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
   AdminBlogIdRoute: AdminBlogIdRoute,
+  AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
+  AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
+  AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
+  AdminConfiguracoesNewsletterRoute: AdminConfiguracoesNewsletterRoute,
+  AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
+  AdminConfiguracoesIndexRoute: AdminConfiguracoesIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
   AdminProdutosIndexRoute: AdminProdutosIndexRoute,
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
