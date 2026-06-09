@@ -263,7 +263,14 @@ function CheckoutPage() {
 
       await supabase.from("orders").update({ payment_method: "whatsapp" }).eq("id", orderResult.order_id);
       clear();
-      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+      // Logado → vai pra lista de pedidos (com highlight do pedido novo)
+      // Guest → vai pra página do pedido
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        navigate({ to: "/painel/pedidos", search: { highlight: orderResult.code } });
+      } else {
+        navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+      }
     } catch (err) {
       setSubmitError(friendlyError((err as Error).message));
     } finally {
