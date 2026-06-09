@@ -55,11 +55,7 @@ function PainelPage() {
   });
 
   const courseIds = (progress ?? []).map((c) => c.course_id);
-  const { data: ratings } = useQuery({
-    queryKey: ["ratings-by-ids", courseIds.sort().join(",")],
-    queryFn: () => getRatingSummariesByIds(courseIds),
-    enabled: courseIds.length > 0,
-  });
+
 
   const { data: nextLessonByCourse } = useQuery({
     queryKey: ["next-lesson-by-course", user?.id, courseIds.sort().join(",")],
