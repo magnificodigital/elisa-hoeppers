@@ -378,6 +378,7 @@ serve(async (req) => {
     else if (type === "order_cancelled") await handleOrderCancelled(record_id);
     else if (type === "order_shipped") await handleOrderShipped(record_id);
     else if (type === "order_completed") await handleOrderCompleted(record_id);
+    else if (type === "course_purchased") await handleCoursePurchased(record_id);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,
