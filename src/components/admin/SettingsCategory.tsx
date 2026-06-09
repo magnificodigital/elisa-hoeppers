@@ -122,12 +122,11 @@ const ME_CARRIERS: { id: string; name: string; company: string }[] = [
   { id: "31", name: "Mini Envios", company: "Correios" },
 ];
 
-function CarrierSelectorField({ setting, value, setValue, save, saved }: {
+function CarrierSelectorField({ setting, value, setValue, save }: {
   setting: AppSetting;
   value: string;
   setValue: (v: string) => void;
   save: ReturnType<typeof useMutation<unknown, Error, void>> | any;
-  saved: boolean;
 }) {
   const selected = useMemo(
     () => new Set(value.split(/[,\s]+/).map((s) => s.trim()).filter((s) => /^\d+$/.test(s))),
