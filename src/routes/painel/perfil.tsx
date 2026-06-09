@@ -150,8 +150,6 @@ function ProfilePage() {
                 <Save className="w-3.5 h-3.5" />
                 {saveProfile.isPending ? "Salvando…" : "Salvar alterações"}
               </button>
-              {profileSaved && <p className="text-sm text-primary">✓ Salvo</p>}
-              {saveProfile.error && <p className="text-sm text-red-700">{(saveProfile.error as Error).message}</p>}
             </div>
           </div>
 
