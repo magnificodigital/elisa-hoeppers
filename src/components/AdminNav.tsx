@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   GraduationCap,
   Calendar,
-  CalendarClock,
   ShoppingBag,
   Package,
   Users,
