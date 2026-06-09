@@ -45,7 +45,6 @@ import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/d
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
-import { Route as AdminAvaliacoesRouteImport } from './routes/admin/avaliacoes'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
@@ -238,11 +237,6 @@ const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
   path: '/admin/broadcast',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminAvaliacoesRoute = AdminAvaliacoesRouteImport.update({
-  id: '/admin/avaliacoes',
-  path: '/admin/avaliacoes',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   id: '/admin/agendamentos',
   path: '/admin/agendamentos',
@@ -310,7 +304,6 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
-  '/admin/avaliacoes': typeof AdminAvaliacoesRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -359,7 +352,6 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
-  '/admin/avaliacoes': typeof AdminAvaliacoesRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -409,7 +401,6 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
-  '/admin/avaliacoes': typeof AdminAvaliacoesRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -460,7 +451,6 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
-    | '/admin/avaliacoes'
     | '/admin/broadcast'
     | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
@@ -509,7 +499,6 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
-    | '/admin/avaliacoes'
     | '/admin/broadcast'
     | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
@@ -558,7 +547,6 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
-    | '/admin/avaliacoes'
     | '/admin/broadcast'
     | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
@@ -608,7 +596,6 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
-  AdminAvaliacoesRoute: typeof AdminAvaliacoesRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
@@ -896,13 +883,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBroadcastRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/avaliacoes': {
-      id: '/admin/avaliacoes'
-      path: '/admin/avaliacoes'
-      fullPath: '/admin/avaliacoes'
-      preLoaderRoute: typeof AdminAvaliacoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/agendamentos': {
       id: '/admin/agendamentos'
       path: '/admin/agendamentos'
@@ -1002,7 +982,6 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
-  AdminAvaliacoesRoute: AdminAvaliacoesRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
@@ -1038,3 +1017,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
