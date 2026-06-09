@@ -1,16 +1,21 @@
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { ChevronUp, ChevronDown, ShoppingCart, Video, Eye, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress, groupLessonsByModule } from "@/lib/lessons";
-import { enrollInCourse, getMyEnrollment } from "@/lib/enrollments";
+import { enrollInCourse, getMyEnrollment, purchaseCourse } from "@/lib/enrollments";
+import { formatPriceBRL } from "@/lib/shop";
 
 import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/cursos/$slug")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    status: typeof s.status === "string" ? s.status : undefined,
+  }),
   loader: async ({ params }) => {
     const course = await getCourseBySlug(params.slug);
     if (!course) throw notFound();
@@ -66,13 +71,37 @@ function CourseDetail() {
     },
   });
 
+  const search = Route.useSearch();
+
+  useEffect(() => {
+    if (search.status === "success") {
+      toast.success("Pagamento aprovado! Sua matrícula está sendo ativada (chega em até 1 min).");
+      qc.invalidateQueries({ queryKey: ["my-enrollment", user?.id, course.id] });
+    } else if (search.status === "pending") {
+      toast.info("Pagamento em processamento. PIX cai em minutos, boleto pode levar 2 dias úteis.");
+    } else if (search.status === "failure") {
+      toast.error("Pagamento não foi concluído. Tente novamente ou combine via WhatsApp.");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.status]);
+
+  const buy = useMutation({
+    mutationFn: () => purchaseCourse(course.id),
+    onSuccess: (initPoint) => {
+      window.location.href = initPoint;
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const sortedLessons = (lessons ?? [])
     .slice()
     .sort((a, b) => a.display_order - b.display_order);
   const total = sortedLessons.length;
   const completed = sortedLessons.filter((l) => l.completed).length;
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const isPaid = !!course.price_cents && course.price_cents > 0;
   const isEnrolled = enrollment?.status === "active";
+  const isPending = enrollment?.status === "pending_payment";
   const nextLesson = sortedLessons.find((l) => !l.completed) ?? sortedLessons[0];
   const groups = groupLessonsByModule(sortedLessons);
 
@@ -188,11 +217,13 @@ function CourseDetail() {
                       </li>
                     </ul>
                     <p className="text-2xl font-semibold text-primary-dark mb-4">
-                      {course.price_cents == null
+                      {!isPaid
                         ? "Grátis"
-                        : `R$ ${(course.price_cents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`}
+                        : formatPriceBRL(course.price_cents)}
                     </p>
-                    {!user ? (
+
+                    {/* SEM LOGIN */}
+                    {!user && (
                       <button
                         onClick={() =>
                           navigate({
@@ -202,9 +233,27 @@ function CourseDetail() {
                         }
                         className="block w-full text-center bg-primary text-white py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary-dark transition"
                       >
-                        Entrar para matricular
+                        {isPaid
+                          ? `Fazer login pra comprar · ${formatPriceBRL(course.price_cents)}`
+                          : "Entrar para matricular"}
                       </button>
-                    ) : (
+                    )}
+
+                    {/* LOGADO, NÃO MATRICULADA, CURSO PAGO */}
+                    {user && !isEnrolled && !isPending && isPaid && (
+                      <button
+                        onClick={() => buy.mutate()}
+                        disabled={buy.isPending}
+                        className="block w-full text-center bg-primary text-white py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary-dark transition disabled:opacity-60"
+                      >
+                        {buy.isPending
+                          ? "Redirecionando…"
+                          : `Comprar curso · ${formatPriceBRL(course.price_cents)}`}
+                      </button>
+                    )}
+
+                    {/* LOGADO, NÃO MATRICULADA, CURSO GRATUITO */}
+                    {user && !isEnrolled && !isPending && !isPaid && (
                       <button
                         onClick={() => enrollMutation.mutate()}
                         disabled={enrollMutation.isPending}
@@ -213,6 +262,17 @@ function CourseDetail() {
                         {enrollMutation.isPending
                           ? "Matriculando…"
                           : "Matricular-se gratuitamente"}
+                      </button>
+                    )}
+
+                    {/* LOGADO, PAGAMENTO PENDENTE */}
+                    {user && isPending && (
+                      <button
+                        onClick={() => buy.mutate()}
+                        disabled={buy.isPending}
+                        className="block w-full text-center border border-primary text-primary py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary hover:text-white transition disabled:opacity-60"
+                      >
+                        {buy.isPending ? "Redirecionando…" : "Concluir pagamento"}
                       </button>
                     )}
                   </>

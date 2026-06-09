@@ -326,6 +326,8 @@ export type Database = {
           course_id: string
           enrolled_at: string
           id: string
+          paid_cents: number | null
+          payment_preference_id: string | null
           status: Database["public"]["Enums"]["enrollment_status"]
           user_id: string
         }
@@ -334,6 +336,8 @@ export type Database = {
           course_id: string
           enrolled_at?: string
           id?: string
+          paid_cents?: number | null
+          payment_preference_id?: string | null
           status?: Database["public"]["Enums"]["enrollment_status"]
           user_id: string
         }
@@ -342,6 +346,8 @@ export type Database = {
           course_id?: string
           enrolled_at?: string
           id?: string
+          paid_cents?: number | null
+          payment_preference_id?: string | null
           status?: Database["public"]["Enums"]["enrollment_status"]
           user_id?: string
         }
