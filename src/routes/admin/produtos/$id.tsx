@@ -48,7 +48,7 @@ function ProductEditPage() {
     width_cm: "" as string | number,
     height_cm: "" as string | number,
   });
-  const [saved, setSaved] = useState(false);
+  const [delOpen, setDelOpen] = useState(false);
 
   useEffect(() => {
     if (product) {
