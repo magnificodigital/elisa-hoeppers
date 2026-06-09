@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import {
   LayoutDashboard, User, GraduationCap, Bookmark, ClipboardList,
   ShoppingBag, MessageCircleQuestion, Settings, LogOut,
-  BookOpen, Activity, Award,
+  BookOpen, Activity, Award, Package,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { StarRating } from "@/components/StarRating";
@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
 import { listLessonsWithProgress } from "@/lib/lessons";
 import { getRatingSummariesByIds } from "@/lib/reviews";
+import { listMyOrders, formatPriceBRL, type Order as ShopOrder } from "@/lib/shop";
 
 export const Route = createFileRoute("/painel/")({
   head: () => ({ meta: [{ title: "Meu Painel — Elisa Hoeppers" }] }),
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/painel/")({
 const navItems = [
   { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
   { id: "perfil", icon: User, label: "Meu perfil", enabled: true },
-  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
+  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true },
   { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
   { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
@@ -76,7 +77,14 @@ function PainelPage() {
     enabled: !!user && courseIds.length > 0,
   });
 
+  const { data: orders } = useQuery({
+    queryKey: ["my-orders", user?.id],
+    queryFn: listMyOrders,
+    enabled: !!user,
+  });
 
+  const totalOrders = orders?.length ?? 0;
+  const pendingOrders = (orders ?? []).filter((o) => o.status === "pending" || o.status === "confirmed").length;
 
   if (loading || !user) {
     return (
@@ -95,6 +103,9 @@ function PainelPage() {
   const totalEnrolled = enrolled.length;
   const totalCompleted = enrolled.filter((c) => c.total_lessons > 0 && c.completed_lessons === c.total_lessons).length;
   const totalActive = totalEnrolled - totalCompleted;
+
+  const hasOrders = (orders?.length ?? 0) > 0;
+  const hasCourses = enrolled.length > 0;
 
   return (
     <Layout>
@@ -225,103 +236,158 @@ function PainelPage() {
               <h2 className="font-display text-xl text-primary-dark mb-4">Painel</h2>
 
               {/* Stat cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
                 <StatCard icon={<BookOpen size={20} className="text-primary" />} value={totalEnrolled} label="Cursos matriculados" />
                 <StatCard icon={<Activity size={20} className="text-primary" />} value={totalActive} label="Cursos ativos" />
                 <StatCard icon={<Award size={20} className="text-primary" />} value={totalCompleted} label="Cursos completos" />
+                <StatCard
+                  icon={<Package size={20} className="text-primary" />}
+                  value={totalOrders}
+                  label={pendingOrders > 0 ? `Pedidos · ${pendingOrders} pendente${pendingOrders === 1 ? "" : "s"}` : "Pedidos"}
+                />
               </div>
 
-              <h3 className="font-display text-lg text-primary-dark mb-4">Cursos em progresso</h3>
 
-              {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
-
-              {!isLoading && enrolled.length === 0 && (
+              {/* Empty state geral — sem cursos E sem pedidos */}
+              {!isLoading && !hasCourses && !hasOrders && (
                 <div className="bg-white rounded-lg p-8 text-center">
-                  <p className="text-primary-dark mb-4">Você ainda não está matriculada em nenhum curso.</p>
-                  <Link
-                    to="/cursos"
-                    className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
-                  >
-                    Explorar aulas
-                  </Link>
+                  <h3 className="font-display text-xl text-primary-dark mb-2">Bem-vinda! Por onde quer começar?</h3>
+                  <p className="text-primary-dark/70 mb-6">Você ainda não tem cursos nem pedidos.</p>
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <Link
+                      to="/cursos"
+                      className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+                    >
+                      Ver aulas
+                    </Link>
+                    <Link
+                      to="/loja"
+                      className="inline-block border border-primary text-primary px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary hover:text-white transition"
+                    >
+                      Ver loja
+                    </Link>
+                  </div>
                 </div>
               )}
 
-              <div className="space-y-4">
-                {enrolled.map((c) => {
-                  const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
-                  const nextId = nextLessonByCourse?.[c.course_id];
-                  const cardInner = (
-                    <>
-                      {c.cover_image && (
-                        <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
-                          <img
-                            src={c.cover_image}
-                            alt={c.course_title}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
-                        <div>
-                          {(() => {
-                            const r = ratings?.[c.course_id];
-                            const avg = r?.avg_rating ?? 0;
-                            const cnt = r?.review_count ?? 0;
-                            return (
-                              <div className="flex items-center gap-1 mb-2">
-                                <StarRating value={avg} size={14} />
-                                <span className="text-xs text-primary-dark/50 ml-1">
-                                  {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
+              {/* Seção cursos */}
+              {(hasCourses || (!hasOrders && !isLoading)) && (
+                <div className="mb-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-display text-lg text-primary-dark">Cursos em progresso</h3>
+                    {hasCourses && (
+                      <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                        Ver todos →
+                      </Link>
+                    )}
+                  </div>
+
+                  {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
+
+                  {!isLoading && enrolled.length === 0 && hasOrders && (
+                    <div className="bg-white rounded-lg p-6 text-center">
+                      <p className="text-primary-dark mb-3">Você ainda não está matriculada em nenhum curso.</p>
+                      <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                        Explorar aulas →
+                      </Link>
+                    </div>
+                  )}
+
+                  <div className="space-y-4">
+                    {enrolled.map((c) => {
+                      const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
+                      const nextId = nextLessonByCourse?.[c.course_id];
+                      const cardInner = (
+                        <>
+                          {c.cover_image && (
+                            <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
+                              <img
+                                src={c.cover_image}
+                                alt={c.course_title}
+                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
+                            <div>
+                              {(() => {
+                                const r = ratings?.[c.course_id];
+                                const avg = r?.avg_rating ?? 0;
+                                const cnt = r?.review_count ?? 0;
+                                return (
+                                  <div className="flex items-center gap-1 mb-2">
+                                    <StarRating value={avg} size={14} />
+                                    <span className="text-xs text-primary-dark/50 ml-1">
+                                      {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
+                                    </span>
+                                  </div>
+                                );
+                              })()}
+
+                              <h4 className="font-display text-lg text-primary-dark mb-1">
+                                {c.course_title}
+                              </h4>
+
+                              <p className="text-sm text-primary-dark/60 mb-4">
+                                Aulas completas: {c.completed_lessons} de {c.total_lessons} aulas
+                              </p>
+                            </div>
+
+                            <div className="mt-auto">
+                              <div className="h-2 bg-cream rounded-full overflow-hidden mb-2">
+                                <div
+                                  className="h-full bg-primary transition-all"
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-primary-dark/50">
+                                  {pct}% Completo
                                 </span>
                               </div>
-                            );
-                          })()}
-
-                          <h4 className="font-display text-lg text-primary-dark mb-1">
-                            {c.course_title}
-                          </h4>
-
-                          <p className="text-sm text-primary-dark/60 mb-4">
-                            Aulas completas: {c.completed_lessons} de {c.total_lessons} aulas
-                          </p>
-                        </div>
-
-                        <div className="mt-auto">
-                          <div className="h-2 bg-cream rounded-full overflow-hidden mb-2">
-                            <div
-                              className="h-full bg-primary transition-all"
-                              style={{ width: `${pct}%` }}
-                            />
+                            </div>
                           </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs text-primary-dark/50">
-                              {pct}% Completo
-                            </span>
-                          </div>
+                        </>
+                      );
+                      return nextId ? (
+                        <Link
+                          key={c.course_id}
+                          to="/painel/aula/$lessonId"
+                          params={{ lessonId: nextId }}
+                          className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
+                        >
+                          {cardInner}
+                        </Link>
+                      ) : (
+                        <div
+                          key={c.course_id}
+                          className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden group"
+                        >
+                          {cardInner}
                         </div>
-                      </div>
-                    </>
-                  );
-                  return nextId ? (
-                    <Link
-                      key={c.course_id}
-                      to="/painel/aula/$lessonId"
-                      params={{ lessonId: nextId }}
-                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
-                    >
-                      {cardInner}
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Seção pedidos */}
+              {hasOrders && (
+                <div className="mb-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-display text-lg text-primary-dark">Pedidos recentes</h3>
+                    <Link to="/painel/pedidos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                      Ver todos →
                     </Link>
-                  ) : (
-                    <div
-                      key={c.course_id}
-                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden group"
-                    >
-                      {cardInner}
-                    </div>
-                  );
-                })}
-              </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {(orders ?? []).slice(0, 3).map((o) => (
+                      <CompactOrderRow key={o.id} order={o} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -341,5 +407,42 @@ function StatCard({ icon, value, label }: { icon: React.ReactNode; value: number
         <div className="text-xs text-primary-dark/60">{label}</div>
       </div>
     </div>
+  );
+}
+
+function CompactOrderRow({ order: o }: { order: ShopOrder }) {
+  const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
+  const statusMap: Record<string, { label: string; cls: string }> = {
+    pending: { label: "Pendente", cls: "bg-peach/40 text-primary-dark" },
+    confirmed: { label: "Confirmado", cls: "bg-primary/10 text-primary" },
+    shipped: { label: "Enviado", cls: "bg-accent-teal/15 text-accent-teal" },
+    completed: { label: "Concluído", cls: "bg-primary-dark/10 text-primary-dark" },
+    cancelled: { label: "Cancelado", cls: "bg-red-100 text-red-700" },
+  };
+  const s = statusMap[o.status] ?? statusMap.pending;
+
+  return (
+    <Link
+      to="/painel/pedidos"
+      className="block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition"
+    >
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap mb-1">
+            <span className="font-display text-primary-dark">#{o.code}</span>
+            <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full ${s.cls}`}>{s.label}</span>
+            <span className="text-xs text-primary-dark/50">
+              {new Date(o.created_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}
+            </span>
+          </div>
+          <p className="text-sm text-primary-dark/60 truncate">
+            {o.items.length === 1
+              ? `${o.items[0].qty}× ${o.items[0].name}`
+              : `${o.items.length} produtos · ${totalQty} ${totalQty === 1 ? "item" : "itens"}`}
+          </p>
+        </div>
+        <p className="font-display text-primary-dark shrink-0">{formatPriceBRL(o.total_cents)}</p>
+      </div>
+    </Link>
   );
 }
