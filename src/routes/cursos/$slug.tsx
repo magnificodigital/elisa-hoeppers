@@ -71,13 +71,37 @@ function CourseDetail() {
     },
   });
 
+  const search = Route.useSearch();
+
+  useEffect(() => {
+    if (search.status === "success") {
+      toast.success("Pagamento aprovado! Sua matrícula está sendo ativada (chega em até 1 min).");
+      qc.invalidateQueries({ queryKey: ["my-enrollment", user?.id, course.id] });
+    } else if (search.status === "pending") {
+      toast.info("Pagamento em processamento. PIX cai em minutos, boleto pode levar 2 dias úteis.");
+    } else if (search.status === "failure") {
+      toast.error("Pagamento não foi concluído. Tente novamente ou combine via WhatsApp.");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.status]);
+
+  const buy = useMutation({
+    mutationFn: () => purchaseCourse(course.id),
+    onSuccess: (initPoint) => {
+      window.location.href = initPoint;
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const sortedLessons = (lessons ?? [])
     .slice()
     .sort((a, b) => a.display_order - b.display_order);
   const total = sortedLessons.length;
   const completed = sortedLessons.filter((l) => l.completed).length;
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const isPaid = !!course.price_cents && course.price_cents > 0;
   const isEnrolled = enrollment?.status === "active";
+  const isPending = enrollment?.status === "pending_payment";
   const nextLesson = sortedLessons.find((l) => !l.completed) ?? sortedLessons[0];
   const groups = groupLessonsByModule(sortedLessons);
 
