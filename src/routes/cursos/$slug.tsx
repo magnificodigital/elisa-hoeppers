@@ -217,11 +217,13 @@ function CourseDetail() {
                       </li>
                     </ul>
                     <p className="text-2xl font-semibold text-primary-dark mb-4">
-                      {course.price_cents == null
+                      {!isPaid
                         ? "Grátis"
-                        : `R$ ${(course.price_cents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`}
+                        : formatPriceBRL(course.price_cents)}
                     </p>
-                    {!user ? (
+
+                    {/* SEM LOGIN */}
+                    {!user && (
                       <button
                         onClick={() =>
                           navigate({
@@ -231,9 +233,27 @@ function CourseDetail() {
                         }
                         className="block w-full text-center bg-primary text-white py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary-dark transition"
                       >
-                        Entrar para matricular
+                        {isPaid
+                          ? `Fazer login pra comprar · ${formatPriceBRL(course.price_cents)}`
+                          : "Entrar para matricular"}
                       </button>
-                    ) : (
+                    )}
+
+                    {/* LOGADO, NÃO MATRICULADA, CURSO PAGO */}
+                    {user && !isEnrolled && !isPending && isPaid && (
+                      <button
+                        onClick={() => buy.mutate()}
+                        disabled={buy.isPending}
+                        className="block w-full text-center bg-primary text-white py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary-dark transition disabled:opacity-60"
+                      >
+                        {buy.isPending
+                          ? "Redirecionando…"
+                          : `Comprar curso · ${formatPriceBRL(course.price_cents)}`}
+                      </button>
+                    )}
+
+                    {/* LOGADO, NÃO MATRICULADA, CURSO GRATUITO */}
+                    {user && !isEnrolled && !isPending && !isPaid && (
                       <button
                         onClick={() => enrollMutation.mutate()}
                         disabled={enrollMutation.isPending}
@@ -242,6 +262,17 @@ function CourseDetail() {
                         {enrollMutation.isPending
                           ? "Matriculando…"
                           : "Matricular-se gratuitamente"}
+                      </button>
+                    )}
+
+                    {/* LOGADO, PAGAMENTO PENDENTE */}
+                    {user && isPending && (
+                      <button
+                        onClick={() => buy.mutate()}
+                        disabled={buy.isPending}
+                        className="block w-full text-center border border-primary text-primary py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary hover:text-white transition disabled:opacity-60"
+                      >
+                        {buy.isPending ? "Redirecionando…" : "Concluir pagamento"}
                       </button>
                     )}
                   </>
