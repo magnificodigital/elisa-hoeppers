@@ -6,7 +6,6 @@ import HomeCourses from "@/components/home/HomeCourses";
 import HomeBodyoga from "@/components/home/HomeBodyoga";
 import HomeOils from "@/components/home/HomeOils";
 import HomeBio from "@/components/home/HomeBio";
-import HomeReviews from "@/components/home/HomeReviews";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeNewsletter from "@/components/home/HomeNewsletter";
 import HomeInstagram from "@/components/home/HomeInstagram";

@@ -7,11 +7,9 @@ import {
   BookOpen, Activity, Award, Package,
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
 import { listLessonsWithProgress } from "@/lib/lessons";
-import { getRatingSummariesByIds } from "@/lib/reviews";
 import { listMyOrders, formatPriceBRL, type Order as ShopOrder } from "@/lib/shop";
 
 export const Route = createFileRoute("/painel/")({
@@ -55,11 +53,7 @@ function PainelPage() {
   });
 
   const courseIds = (progress ?? []).map((c) => c.course_id);
-  const { data: ratings } = useQuery({
-    queryKey: ["ratings-by-ids", courseIds.sort().join(",")],
-    queryFn: () => getRatingSummariesByIds(courseIds),
-    enabled: courseIds.length > 0,
-  });
+
 
   const { data: nextLessonByCourse } = useQuery({
     queryKey: ["next-lesson-by-course", user?.id, courseIds.sort().join(",")],
@@ -310,19 +304,7 @@ function PainelPage() {
                           )}
                           <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
                             <div>
-                              {(() => {
-                                const r = ratings?.[c.course_id];
-                                const avg = r?.avg_rating ?? 0;
-                                const cnt = r?.review_count ?? 0;
-                                return (
-                                  <div className="flex items-center gap-1 mb-2">
-                                    <StarRating value={avg} size={14} />
-                                    <span className="text-xs text-primary-dark/50 ml-1">
-                                      {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
-                                    </span>
-                                  </div>
-                                );
-                              })()}
+
 
                               <h4 className="font-display text-lg text-primary-dark mb-1">
                                 {c.course_title}

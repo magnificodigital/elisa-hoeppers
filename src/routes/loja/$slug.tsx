@@ -1,15 +1,10 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
-import { ProductReviews } from "@/components/ProductReviews";
-import { StarRating } from "@/components/StarRating";
-import { useAuth } from "@/hooks/useAuth";
-import { getProductRatingSummary, hasPurchasedProduct } from "@/lib/productReviews";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
@@ -57,18 +52,7 @@ export const Route = createFileRoute("/loja/$slug")({
 function ProductDetail() {
   const { product } = Route.useLoaderData();
   const [activeImage, setActiveImage] = useState(0);
-  const { user } = useAuth();
 
-  const { data: ratingSummary } = useQuery({
-    queryKey: ["product-rating-summary", product.id],
-    queryFn: () => getProductRatingSummary(product.id),
-  });
-
-  const { data: canReview } = useQuery({
-    queryKey: ["can-review-product", user?.id, product.id],
-    queryFn: () => hasPurchasedProduct(product.id),
-    enabled: !!user,
-  });
   const wppMessage = encodeURIComponent(
     `Oi Elisa! Tenho interesse no ${product.name} (${formatPriceBRL(product.price_cents)}). Como faço pra comprar?`
   );
@@ -135,14 +119,7 @@ function ProductDetail() {
                 {product.name}
               </h1>
 
-              {(ratingSummary?.review_count ?? 0) > 0 && (
-                <div className="flex items-center gap-2 mt-2">
-                  <StarRating value={Number(ratingSummary!.avg_rating)} size={16} />
-                  <span className="text-sm text-[var(--text-muted)]">
-                    {Number(ratingSummary!.avg_rating).toFixed(1)} ({ratingSummary!.review_count})
-                  </span>
-                </div>
-              )}
+
 
               <div className="flex items-baseline gap-3 mt-4">
                 {product.compare_at_price_cents &&
@@ -208,7 +185,7 @@ function ProductDetail() {
             </div>
           </div>
 
-          <ProductReviews productId={product.id} canReview={!!canReview} />
+          
         </div>
       </section>
     </Layout>

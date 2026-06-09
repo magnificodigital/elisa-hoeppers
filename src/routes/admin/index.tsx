@@ -13,7 +13,7 @@ import {
   Users,
   Bell,
   AlertCircle,
-  Star,
+  
   Send,
   Stethoscope,
   Truck,
@@ -38,7 +38,7 @@ const sections = [
   { to: "/admin/disponibilidade", icon: Calendar, title: "Disponibilidade", desc: "Horários da semana e bloqueios." },
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
-  { to: "/admin/avaliacoes", icon: Star, title: "Avaliações", desc: "Modere reviews de cursos e produtos." },
+  
   { to: "/admin/inscritos", icon: Mail, title: "Inscritos", desc: "Lista da newsletter e exportação." },
   { to: "/admin/broadcast", icon: Send, title: "Broadcast", desc: "Envie email pra newsletter ou alunas." },
   { to: "/admin/blog", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },

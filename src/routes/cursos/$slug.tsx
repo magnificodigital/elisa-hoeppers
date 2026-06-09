@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress, groupLessonsByModule } from "@/lib/lessons";
 import { enrollInCourse, getMyEnrollment } from "@/lib/enrollments";
-import { CourseReviews } from "@/components/CourseReviews";
+
 import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/cursos/$slug")({
@@ -349,9 +349,6 @@ function CourseDetail() {
               )}
             </div>
           </div>
-
-
-          <CourseReviews courseId={course.id} isEnrolled={isEnrolled} />
         </div>
       </section>
     </Layout>
