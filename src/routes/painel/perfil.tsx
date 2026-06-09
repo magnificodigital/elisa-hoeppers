@@ -25,8 +25,6 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [profileSaved, setProfileSaved] = useState(false);
-  const [passwordSaved, setPasswordSaved] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login", search: { next: "/painel/perfil" } });
