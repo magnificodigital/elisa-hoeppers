@@ -2,13 +2,26 @@ import { supabase } from "./supabase";
 import type { Course } from "./supabase";
 import { track } from "./analytics";
 
+export type EnrollmentStatus = "active" | "pending_payment" | "cancelled" | "completed";
+
 export type Enrollment = {
   id: string;
   user_id: string;
   course_id: string;
-  status: "active" | "cancelled" | "completed";
+  status: EnrollmentStatus;
   enrolled_at: string;
 };
+
+export async function purchaseCourse(courseId: string): Promise<string> {
+  const { data, error } = await supabase.functions.invoke("create-course-payment", {
+    body: { course_id: courseId },
+  });
+  if (error) throw error;
+  if ((data as any)?.error) throw new Error((data as any).error);
+  const initPoint = (data as { init_point?: string })?.init_point;
+  if (!initPoint) throw new Error("Falha ao criar pagamento");
+  return initPoint;
+}
 
 export async function enrollInCourse(courseId: string): Promise<void> {
   const { data: sessionData } = await supabase.auth.getSession();
