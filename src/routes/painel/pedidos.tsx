@@ -1,13 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Package, ChevronRight, ShoppingBag, X } from "lucide-react";
+import { Package, ChevronRight, ShoppingBag, X, CheckCircle, Circle, Truck, XCircle, ExternalLink } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyOrders, formatPriceBRL, cancelMyOrder, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/painel/pedidos")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    highlight: typeof s.highlight === "string" ? s.highlight : undefined,
+  }),
   head: () => ({ meta: [{ title: "Meus pedidos — Elisa Hoeppers" }] }),
   component: MyOrdersPage,
 });
