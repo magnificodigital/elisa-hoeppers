@@ -27,17 +27,16 @@ function SettingField({ setting }: { setting: AppSetting }) {
   const qc = useQueryClient();
   const [value, setValue] = useState(setting.value);
   const [show, setShow] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   useEffect(() => { setValue(setting.value); }, [setting.value]);
 
   const save = useMutation({
     mutationFn: () => updateSetting(setting.key, value),
     onSuccess: () => {
-      setSaved(true);
+      toast.success(`${setting.label ?? setting.key} salvo`);
       qc.invalidateQueries({ queryKey: ["app-settings"] });
-      setTimeout(() => setSaved(false), 2500);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   if (setting.key.endsWith("_enabled")) {
