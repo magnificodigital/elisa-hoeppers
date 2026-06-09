@@ -71,7 +71,7 @@ function MyOrdersPage() {
 
           <div className="space-y-3">
             {(orders ?? []).map((o) => (
-              <OrderRow key={o.id} order={o} />
+              <OrderRow key={o.id} order={o} isHighlighted={!!highlightCode && o.code === highlightCode} />
             ))}
           </div>
         </div>
