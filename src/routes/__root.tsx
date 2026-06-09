@@ -10,6 +10,7 @@ import {
 import { AuthProvider } from "@/contexts/AuthContext";
 import { FloatingCart } from "@/components/FloatingCart";
 import { CookieBanner } from "@/components/CookieBanner";
+import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 
