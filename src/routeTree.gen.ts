@@ -45,12 +45,12 @@ import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
-import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
+import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/configuracoes/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
@@ -240,11 +240,6 @@ const AdminDiagnosticoEnvioRoute = AdminDiagnosticoEnvioRouteImport.update({
   path: '/admin/diagnostico-envio',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
-  id: '/admin/configuracoes',
-  path: '/admin/configuracoes',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminClientesRoute = AdminClientesRouteImport.update({
   id: '/admin/clientes',
   path: '/admin/clientes',
@@ -268,6 +263,11 @@ const AdminProdutosIndexRoute = AdminProdutosIndexRouteImport.update({
 const AdminCursosIndexRoute = AdminCursosIndexRouteImport.update({
   id: '/admin/cursos/',
   path: '/admin/cursos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminConfiguracoesIndexRoute = AdminConfiguracoesIndexRouteImport.update({
+  id: '/admin/configuracoes/',
+  path: '/admin/configuracoes/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
@@ -324,7 +324,6 @@ export interface FileRoutesByFullPath {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -352,6 +351,7 @@ export interface FileRoutesByFullPath {
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
@@ -375,7 +375,6 @@ export interface FileRoutesByTo {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -403,6 +402,7 @@ export interface FileRoutesByTo {
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog': typeof AdminBlogIndexRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
   '/admin/produtos': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
@@ -427,7 +427,6 @@ export interface FileRoutesById {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
-  '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -455,6 +454,7 @@ export interface FileRoutesById {
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
@@ -480,7 +480,6 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
-    | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -508,6 +507,7 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
+    | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
     | '/admin/cursos/$id/aulas'
@@ -531,7 +531,6 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
-    | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -559,6 +558,7 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog'
+    | '/admin/configuracoes'
     | '/admin/cursos'
     | '/admin/produtos'
     | '/admin/cursos/$id/aulas'
@@ -582,7 +582,6 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
-    | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -610,6 +609,7 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
+    | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
     | '/admin/cursos/$id/aulas'
@@ -634,7 +634,6 @@ export interface RootRouteChildren {
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
-  AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
@@ -662,6 +661,7 @@ export interface RootRouteChildren {
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+  AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
   AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
@@ -922,13 +922,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDiagnosticoEnvioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/configuracoes': {
-      id: '/admin/configuracoes'
-      path: '/admin/configuracoes'
-      fullPath: '/admin/configuracoes'
-      preLoaderRoute: typeof AdminConfiguracoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/clientes': {
       id: '/admin/clientes'
       path: '/admin/clientes'
@@ -962,6 +955,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/cursos'
       fullPath: '/admin/cursos/'
       preLoaderRoute: typeof AdminCursosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/configuracoes/': {
+      id: '/admin/configuracoes/'
+      path: '/admin/configuracoes'
+      fullPath: '/admin/configuracoes/'
+      preLoaderRoute: typeof AdminConfiguracoesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/blog/': {
@@ -1044,7 +1044,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
-  AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
@@ -1072,6 +1071,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
+  AdminConfiguracoesIndexRoute: AdminConfiguracoesIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
   AdminProdutosIndexRoute: AdminProdutosIndexRoute,
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
@@ -1080,3 +1080,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
