@@ -65,7 +65,7 @@ function SettingField({ setting }: { setting: AppSetting }) {
   }
 
   if (setting.key === "me_allowed_services") {
-    return <CarrierSelectorField setting={setting} value={value} setValue={setValue} save={save} saved={saved} />;
+    return <CarrierSelectorField setting={setting} value={value} setValue={setValue} save={save} />;
   }
 
   const masked = setting.is_secret && !show;
