@@ -83,8 +83,21 @@ function OrderPage() {
 
   const { user } = useAuth();
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const isOwner = !!user && !!order.user_id && user.id === order.user_id;
   const isGuestOrder = !order.user_id && !user;
+
+  useEffect(() => {
+    // Logado E dona do pedido E pedido criado nos últimos 5 minutos → vai pra lista
+    if (user && order.user_id && user.id === order.user_id) {
+      const createdRecently = new Date(order.created_at).getTime() > Date.now() - 5 * 60 * 1000;
+      if (createdRecently && (search.status === "success" || !search.status)) {
+        navigate({ to: "/painel/pedidos", search: { highlight: order.code } });
+      }
+    }
+  }, [user, order.user_id, order.created_at, order.code, search.status, navigate]);
+
+
 
 
   const cancel = useMutation({
