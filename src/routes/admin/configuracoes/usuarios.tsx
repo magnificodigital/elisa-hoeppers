@@ -97,19 +97,31 @@ function Page() {
 
 function UserRowCard({ user: u }: { user: UserRow }) {
   const qc = useQueryClient();
+  const [resetOpen, setResetOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const update = useMutation({
     mutationFn: (role: UserRow["role"]) => updateUserRole(u.id, role),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
+    onSuccess: () => {
+      toast.success("Papel atualizado");
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const remove = useMutation({
     mutationFn: () => deleteUser(u.id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
+    onSuccess: () => {
+      toast.success("Usuário excluído");
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const reset = useMutation({
     mutationFn: () => sendPasswordResetForUser(u.email),
+    onSuccess: () => toast.success("Email de troca de senha enviado"),
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const initials = (u.full_name?.trim() || u.email).slice(0, 2).toUpperCase();
