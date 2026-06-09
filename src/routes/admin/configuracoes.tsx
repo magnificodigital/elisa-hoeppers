@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { Save, Eye, EyeOff, CreditCard, Mail, Truck } from "lucide-react";
+import { Save, Eye, EyeOff, CreditCard, Mail, Truck, CalendarClock, ChevronRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { listSettings, updateSetting, type AppSetting } from "@/lib/settings";
@@ -36,6 +36,20 @@ function SettingsPage() {
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Configurações</h1>
           <p className="text-primary-dark/70 mb-10">Chaves de integrações e configurações do site.</p>
+
+          <Link
+            to="/admin/disponibilidade"
+            className="bg-white rounded-xl p-6 mb-6 shadow-sm flex items-center gap-3 hover:shadow-lg transition group"
+          >
+            <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center shrink-0">
+              <CalendarClock size={20} className="text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-display text-2xl text-primary-dark group-hover:text-primary transition">Disponibilidade</h2>
+              <p className="text-sm text-primary-dark/60">Horários da semana e períodos bloqueados.</p>
+            </div>
+            <ChevronRight size={20} className="text-primary-dark/40 shrink-0" />
+          </Link>
 
           {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
 
