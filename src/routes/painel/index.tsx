@@ -310,19 +310,7 @@ function PainelPage() {
                           )}
                           <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
                             <div>
-                              {(() => {
-                                const r = ratings?.[c.course_id];
-                                const avg = r?.avg_rating ?? 0;
-                                const cnt = r?.review_count ?? 0;
-                                return (
-                                  <div className="flex items-center gap-1 mb-2">
-                                    <StarRating value={avg} size={14} />
-                                    <span className="text-xs text-primary-dark/50 ml-1">
-                                      {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
-                                    </span>
-                                  </div>
-                                );
-                              })()}
+
 
                               <h4 className="font-display text-lg text-primary-dark mb-1">
                                 {c.course_title}
