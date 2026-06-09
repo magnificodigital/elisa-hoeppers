@@ -409,3 +409,40 @@ function StatCard({ icon, value, label }: { icon: React.ReactNode; value: number
     </div>
   );
 }
+
+function CompactOrderRow({ order: o }: { order: ShopOrder }) {
+  const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
+  const statusMap: Record<string, { label: string; cls: string }> = {
+    pending: { label: "Pendente", cls: "bg-peach/40 text-primary-dark" },
+    confirmed: { label: "Confirmado", cls: "bg-primary/10 text-primary" },
+    shipped: { label: "Enviado", cls: "bg-accent-teal/15 text-accent-teal" },
+    completed: { label: "Concluído", cls: "bg-primary-dark/10 text-primary-dark" },
+    cancelled: { label: "Cancelado", cls: "bg-red-100 text-red-700" },
+  };
+  const s = statusMap[o.status] ?? statusMap.pending;
+
+  return (
+    <Link
+      to="/painel/pedidos"
+      className="block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition"
+    >
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap mb-1">
+            <span className="font-display text-primary-dark">#{o.code}</span>
+            <span className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full ${s.cls}`}>{s.label}</span>
+            <span className="text-xs text-primary-dark/50">
+              {new Date(o.created_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}
+            </span>
+          </div>
+          <p className="text-sm text-primary-dark/60 truncate">
+            {o.items.length === 1
+              ? `${o.items[0].qty}× ${o.items[0].name}`
+              : `${o.items.length} produtos · ${totalQty} ${totalQty === 1 ? "item" : "itens"}`}
+          </p>
+        </div>
+        <p className="font-display text-primary-dark shrink-0">{formatPriceBRL(o.total_cents)}</p>
+      </div>
+    </Link>
+  );
+}
