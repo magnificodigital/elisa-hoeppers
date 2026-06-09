@@ -1,16 +1,21 @@
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { ChevronUp, ChevronDown, ShoppingCart, Video, Eye, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { getCourseBySlug } from "@/lib/courses";
 import { listLessonsWithProgress, groupLessonsByModule } from "@/lib/lessons";
-import { enrollInCourse, getMyEnrollment } from "@/lib/enrollments";
+import { enrollInCourse, getMyEnrollment, purchaseCourse } from "@/lib/enrollments";
+import { formatPriceBRL } from "@/lib/shop";
 
 import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/cursos/$slug")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    status: typeof s.status === "string" ? s.status : undefined,
+  }),
   loader: async ({ params }) => {
     const course = await getCourseBySlug(params.slug);
     if (!course) throw notFound();
