@@ -8,16 +8,33 @@ import {
   ShoppingBag,
   Package,
   Users,
-  Mail,
-  Send,
   FileText,
+  Share2,
+  Mail,
+  Newspaper,
   Settings,
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 
-const NAV_ITEMS = [
+type NavLeaf = {
+  to: string;
+  label: string;
+  icon: any;
+  exact?: boolean;
+};
+
+type NavGroup = {
+  label: string;
+  icon: any;
+  children: NavLeaf[];
+};
+
+type NavEntry = NavLeaf | NavGroup;
+
+const NAV_ITEMS: NavEntry[] = [
   { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
@@ -25,17 +42,28 @@ const NAV_ITEMS = [
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
-  
-  { to: "/admin/broadcast", label: "Broadcast", icon: Send },
-  { to: "/admin/blog", label: "Blog", icon: FileText },
+  {
+    label: "Posts",
+    icon: Newspaper,
+    children: [
+      { to: "/admin/blog", label: "Blog Posts", icon: FileText },
+      { to: "/admin/social", label: "Social Posts", icon: Share2 },
+      { to: "/admin/broadcast", label: "Emails", icon: Mail },
+    ],
+  },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
+
+function isGroup(entry: NavEntry): entry is NavGroup {
+  return "children" in entry;
+}
 
 export function AdminNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
@@ -54,6 +82,12 @@ export function AdminNav() {
       el.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
     };
+  }, []);
+
+  useEffect(() => {
+    const onClick = () => setOpenGroup(null);
+    window.addEventListener("click", onClick);
+    return () => window.removeEventListener("click", onClick);
   }, []);
 
   const scrollBy = (dir: number) => {
@@ -95,7 +129,56 @@ export function AdminNav() {
           <span className="h-5 w-px bg-[#DBCCBF]/20 shrink-0" />
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
-            const active = isActive(item.to, "exact" in item ? item.exact : false);
+
+            if (isGroup(item)) {
+              const active = item.children.some((c) => isActive(c.to));
+              const open = openGroup === item.label;
+              return (
+                <div key={item.label} className="relative shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenGroup(open ? null : item.label);
+                    }}
+                    className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap ${
+                      active || open
+                        ? "bg-[#DBCCBF] text-[#3B4F30] font-semibold"
+                        : "text-[#DBCCBF]/80 hover:bg-[#DBCCBF]/15 hover:text-[#DBCCBF]"
+                    }`}
+                  >
+                    <Icon size={14} />
+                    {item.label}
+                    <ChevronDown size={13} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+                  </button>
+                  {open && (
+                    <div className="absolute left-0 mt-2 z-30 min-w-[170px] rounded-xl bg-[#3B4F30] border border-[#DBCCBF]/20 shadow-lg p-1.5">
+                      {item.children.map((child) => {
+                        const ChildIcon = child.icon;
+                        const childActive = isActive(child.to);
+                        return (
+                          <Link
+                            key={child.to}
+                            to={child.to}
+                            onClick={() => setOpenGroup(null)}
+                            className={`flex items-center gap-2 text-xs px-3 py-2 rounded-lg transition-colors whitespace-nowrap ${
+                              childActive
+                                ? "bg-[#DBCCBF] text-[#3B4F30] font-semibold"
+                                : "text-[#DBCCBF]/85 hover:bg-[#DBCCBF]/15 hover:text-[#DBCCBF]"
+                            }`}
+                          >
+                            <ChildIcon size={14} />
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            const active = isActive(item.to, item.exact);
             return (
               <Link
                 key={item.to}
