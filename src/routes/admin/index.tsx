@@ -8,6 +8,7 @@ import {
   Settings,
   Mail,
   FileText,
+  Share2,
   TrendingUp,
   DollarSign,
   Users,
