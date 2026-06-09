@@ -168,7 +168,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
 
       <button
         type="button"
-        onClick={() => { if (confirm(`Enviar email de troca de senha pra ${u.email}?`)) reset.mutate(); }}
+        onClick={() => setResetOpen(true)}
         disabled={reset.isPending}
         className="text-primary-dark/40 hover:text-primary p-1.5 disabled:opacity-50"
         aria-label="Enviar reset de senha"
@@ -179,7 +179,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
 
       <button
         type="button"
-        onClick={() => { if (confirm(`Excluir ${u.email}? Esta ação é definitiva e remove pedidos/matrículas.`)) remove.mutate(); }}
+        onClick={() => setDeleteOpen(true)}
         disabled={remove.isPending}
         className="text-red-600/60 hover:text-red-700 p-1.5 disabled:opacity-50"
         aria-label="Excluir usuário"
@@ -187,6 +187,24 @@ function UserRowCard({ user: u }: { user: UserRow }) {
       >
         <Trash2 size={16} />
       </button>
+
+      <ConfirmDialog
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+        title="Enviar troca de senha?"
+        description={`Enviar email de troca de senha para ${u.email}?`}
+        confirmLabel="Enviar"
+        onConfirm={() => reset.mutate()}
+      />
+      <ConfirmDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title="Excluir usuário?"
+        description={`Excluir ${u.email}? Esta ação é definitiva e remove pedidos/matrículas.`}
+        confirmLabel="Sim, excluir"
+        variant="destructive"
+        onConfirm={() => remove.mutate()}
+      />
     </div>
   );
 }
