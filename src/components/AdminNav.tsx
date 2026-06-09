@@ -39,7 +39,6 @@ const NAV_ITEMS: NavEntry[] = [
   { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
-  { to: "/admin/disponibilidade", label: "Disponibilidade", icon: CalendarClock },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
