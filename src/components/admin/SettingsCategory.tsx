@@ -199,7 +199,7 @@ function CarrierSelectorField({ setting, value, setValue, save }: {
         >
           <Save size={14} /> {save.isPending ? "..." : "Salvar"}
         </button>
-        {saved && <span className="text-xs text-primary">✓ Salvo</span>}
+        
         {save.error && <span className="text-xs text-red-700">{(save.error as Error).message}</span>}
       </div>
     </div>
