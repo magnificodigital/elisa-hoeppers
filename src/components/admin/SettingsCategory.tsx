@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Save, Eye, EyeOff } from "lucide-react";
 import { listSettings, updateSetting, type AppSetting } from "@/lib/settings";
+import { toast } from "sonner";
 
 export function SettingsCategory({ category }: { category: string }) {
   const { data: settings, isLoading } = useQuery({
@@ -27,17 +28,16 @@ function SettingField({ setting }: { setting: AppSetting }) {
   const qc = useQueryClient();
   const [value, setValue] = useState(setting.value);
   const [show, setShow] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   useEffect(() => { setValue(setting.value); }, [setting.value]);
 
   const save = useMutation({
     mutationFn: () => updateSetting(setting.key, value),
     onSuccess: () => {
-      setSaved(true);
+      toast.success(`${setting.label ?? setting.key} salvo`);
       qc.invalidateQueries({ queryKey: ["app-settings"] });
-      setTimeout(() => setSaved(false), 2500);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   if (setting.key.endsWith("_enabled")) {
@@ -65,7 +65,7 @@ function SettingField({ setting }: { setting: AppSetting }) {
   }
 
   if (setting.key === "me_allowed_services") {
-    return <CarrierSelectorField setting={setting} value={value} setValue={setValue} save={save} saved={saved} />;
+    return <CarrierSelectorField setting={setting} value={value} setValue={setValue} save={save} />;
   }
 
   const masked = setting.is_secret && !show;
@@ -105,7 +105,7 @@ function SettingField({ setting }: { setting: AppSetting }) {
         </button>
       </div>
       {setting.description && <p className="text-xs text-primary-dark/60 mt-1.5">{setting.description}</p>}
-      {saved && <p className="text-xs text-primary mt-1.5">✓ Salvo</p>}
+      
       {save.error && <p className="text-xs text-red-700 mt-1.5">{(save.error as Error).message}</p>}
     </div>
   );
@@ -122,12 +122,11 @@ const ME_CARRIERS: { id: string; name: string; company: string }[] = [
   { id: "31", name: "Mini Envios", company: "Correios" },
 ];
 
-function CarrierSelectorField({ setting, value, setValue, save, saved }: {
+function CarrierSelectorField({ setting, value, setValue, save }: {
   setting: AppSetting;
   value: string;
   setValue: (v: string) => void;
   save: ReturnType<typeof useMutation<unknown, Error, void>> | any;
-  saved: boolean;
 }) {
   const selected = useMemo(
     () => new Set(value.split(/[,\s]+/).map((s) => s.trim()).filter((s) => /^\d+$/.test(s))),
@@ -200,7 +199,7 @@ function CarrierSelectorField({ setting, value, setValue, save, saved }: {
         >
           <Save size={14} /> {save.isPending ? "..." : "Salvar"}
         </button>
-        {saved && <span className="text-xs text-primary">✓ Salvo</span>}
+        
         {save.error && <span className="text-xs text-red-700">{(save.error as Error).message}</span>}
       </div>
     </div>

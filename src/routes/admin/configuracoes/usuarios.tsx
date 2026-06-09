@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ChevronLeft, Users, UserPlus, Trash2, Key } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { toast } from "sonner";
 import {
   listUsers,
   updateUserRole,
@@ -97,19 +99,31 @@ function Page() {
 
 function UserRowCard({ user: u }: { user: UserRow }) {
   const qc = useQueryClient();
+  const [resetOpen, setResetOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const update = useMutation({
     mutationFn: (role: UserRow["role"]) => updateUserRole(u.id, role),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
+    onSuccess: () => {
+      toast.success("Papel atualizado");
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const remove = useMutation({
     mutationFn: () => deleteUser(u.id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
+    onSuccess: () => {
+      toast.success("Usuário excluído");
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const reset = useMutation({
     mutationFn: () => sendPasswordResetForUser(u.email),
+    onSuccess: () => toast.success("Email de troca de senha enviado"),
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const initials = (u.full_name?.trim() || u.email).slice(0, 2).toUpperCase();
@@ -154,7 +168,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
 
       <button
         type="button"
-        onClick={() => { if (confirm(`Enviar email de troca de senha pra ${u.email}?`)) reset.mutate(); }}
+        onClick={() => setResetOpen(true)}
         disabled={reset.isPending}
         className="text-primary-dark/40 hover:text-primary p-1.5 disabled:opacity-50"
         aria-label="Enviar reset de senha"
@@ -165,7 +179,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
 
       <button
         type="button"
-        onClick={() => { if (confirm(`Excluir ${u.email}? Esta ação é definitiva e remove pedidos/matrículas.`)) remove.mutate(); }}
+        onClick={() => setDeleteOpen(true)}
         disabled={remove.isPending}
         className="text-red-600/60 hover:text-red-700 p-1.5 disabled:opacity-50"
         aria-label="Excluir usuário"
@@ -173,6 +187,24 @@ function UserRowCard({ user: u }: { user: UserRow }) {
       >
         <Trash2 size={16} />
       </button>
+
+      <ConfirmDialog
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+        title="Enviar troca de senha?"
+        description={`Enviar email de troca de senha para ${u.email}?`}
+        confirmLabel="Enviar"
+        onConfirm={() => reset.mutate()}
+      />
+      <ConfirmDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        title="Excluir usuário?"
+        description={`Excluir ${u.email}? Esta ação é definitiva e remove pedidos/matrículas.`}
+        confirmLabel="Sim, excluir"
+        variant="destructive"
+        onConfirm={() => remove.mutate()}
+      />
     </div>
   );
 }

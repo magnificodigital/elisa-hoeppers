@@ -6,6 +6,8 @@ import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, type ProductImage } from "@/lib/shop";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/admin/produtos/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar produto" }] }),
@@ -46,7 +48,7 @@ function ProductEditPage() {
     width_cm: "" as string | number,
     height_cm: "" as string | number,
   });
-  const [saved, setSaved] = useState(false);
+  const [delOpen, setDelOpen] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -91,12 +93,12 @@ function ProductEditPage() {
       height_cm: form.height_cm === "" ? null : Number(form.height_cm),
     }),
     onSuccess: () => {
-      setSaved(true);
+      toast.success("Produto atualizado");
       qc.invalidateQueries({ queryKey: ["admin-products"] });
       qc.invalidateQueries({ queryKey: ["admin-product", id] });
       qc.invalidateQueries({ queryKey: ["products"] });
-      setTimeout(() => setSaved(false), 2500);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   const del = useMutation({
@@ -282,19 +284,27 @@ function ProductEditPage() {
                 className="bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60">
                 {save.isPending ? "Salvando…" : "Salvar"}
               </button>
-              {saved && <span className="text-sm text-primary-dark">✓ Salvo</span>}
               <Link to="/loja/$slug" params={{ slug: form.slug }} target="_blank"
                 className="ml-auto text-xs uppercase tracking-widest text-primary hover:opacity-70">
                 Ver na loja →
               </Link>
               <button
                 type="button"
-                onClick={() => { if (confirm("Excluir produto? Esta ação não pode ser desfeita.")) del.mutate(); }}
+                onClick={() => setDelOpen(true)}
                 className="text-xs uppercase tracking-widest text-red-700 hover:opacity-70 inline-flex items-center gap-1"
               >
                 <Trash2 className="w-3.5 h-3.5" /> Excluir
               </button>
             </div>
+            <ConfirmDialog
+              open={delOpen}
+              onOpenChange={setDelOpen}
+              title="Excluir produto?"
+              description="Esta ação não pode ser desfeita."
+              confirmLabel="Sim, excluir"
+              variant="destructive"
+              onConfirm={() => del.mutate()}
+            />
           </form>
         </div>
       </section>

@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Package, ChevronRight, ShoppingBag, X, CheckCircle, Circle, Truck, XCircle, ExternalLink } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyOrders, formatPriceBRL, cancelMyOrder, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/painel/pedidos")({
   validateSearch: (s: Record<string, unknown>) => ({
@@ -83,10 +85,12 @@ function MyOrdersPage() {
 function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlighted?: boolean }) {
   const qc = useQueryClient();
   const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const cancel = useMutation({
     mutationFn: () => cancelMyOrder(o.id),
     onSuccess: () => {
+      toast.success("Pedido cancelado");
       qc.invalidateQueries({ queryKey: ["my-orders"] });
       supabase.functions
         .invoke("send-notification", {
@@ -94,6 +98,7 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
         })
         .catch((e) => console.error("cancel email failed:", e));
     },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const isCancelled = o.status === "cancelled";
@@ -188,15 +193,22 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
       {o.status === "pending" && (
         <div className="mt-3 pt-3 border-t border-border">
           <button
-            onClick={() => {
-              if (confirm("Cancelar este pedido? Você ainda pode refazer depois.")) cancel.mutate();
-            }}
+            onClick={() => setConfirmOpen(true)}
             disabled={cancel.isPending}
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-red-700 hover:opacity-70 transition disabled:opacity-50"
           >
             <X className="w-3.5 h-3.5" />
             {cancel.isPending ? "Cancelando..." : "Cancelar pedido"}
           </button>
+          <ConfirmDialog
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            title="Cancelar pedido?"
+            description="Você ainda pode refazer depois. Esta ação avisa a Elisa por email."
+            confirmLabel="Sim, cancelar"
+            variant="destructive"
+            onConfirm={() => cancel.mutate()}
+          />
         </div>
       )}
     </div>

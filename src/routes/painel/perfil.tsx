@@ -5,6 +5,7 @@ import { User, Save, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/painel/perfil")({
   head: () => ({ meta: [{ title: "Meu perfil — Elisa Hoeppers" }] }),
@@ -24,8 +25,6 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [profileSaved, setProfileSaved] = useState(false);
-  const [passwordSaved, setPasswordSaved] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login", search: { next: "/painel/perfil" } });
@@ -54,10 +53,10 @@ function ProfilePage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      setProfileSaved(true);
+      toast.success("Perfil salvo");
       qc.invalidateQueries({ queryKey: ["profile", user?.id] });
-      setTimeout(() => setProfileSaved(false), 2500);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   const changePassword = useMutation({
@@ -68,11 +67,11 @@ function ProfilePage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      setPasswordSaved(true);
+      toast.success("Senha atualizada");
       setNewPassword("");
       setConfirmPassword("");
-      setTimeout(() => setPasswordSaved(false), 3000);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   if (loading || !user) {
@@ -151,8 +150,6 @@ function ProfilePage() {
                 <Save className="w-3.5 h-3.5" />
                 {saveProfile.isPending ? "Salvando…" : "Salvar alterações"}
               </button>
-              {profileSaved && <p className="text-sm text-primary">✓ Salvo</p>}
-              {saveProfile.error && <p className="text-sm text-red-700">{(saveProfile.error as Error).message}</p>}
             </div>
           </div>
 
@@ -183,8 +180,6 @@ function ProfilePage() {
                 <Lock className="w-3.5 h-3.5" />
                 {changePassword.isPending ? "Trocando…" : "Trocar senha"}
               </button>
-              {passwordSaved && <p className="text-sm text-primary">✓ Senha atualizada</p>}
-              {changePassword.error && <p className="text-sm text-red-700">{(changePassword.error as Error).message}</p>}
             </div>
           </div>
         </div>
