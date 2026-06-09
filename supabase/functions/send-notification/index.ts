@@ -231,6 +231,57 @@ async function handleCourseCompleted(certificateId: string) {
   await sendEmail(ELISA_EMAIL, `✓ Aluna concluiu curso: ${cert.student_name} · ${cert.course_title}`, elisaHtml).catch((e) => console.error("elisa course email failed:", e));
 }
 
+async function handleCoursePurchased(enrollmentId: string) {
+  const { data: enrollment, error } = await supabase
+    .from("enrollments")
+    .select("*, course:courses(id, slug, title, cover_image)")
+    .eq("id", enrollmentId)
+    .maybeSingle();
+  if (error || !enrollment) throw new Error("enrollment not found");
+
+  const { data: authUser } = await supabase.auth.admin.getUserById(enrollment.user_id);
+  const studentEmail = authUser?.user?.email;
+  const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", enrollment.user_id).maybeSingle();
+  const firstName = (profile?.full_name ?? "").split(" ")[0] || "Aluna";
+
+  const { data: firstLesson } = await supabase
+    .from("lessons")
+    .select("id")
+    .eq("course_id", enrollment.course_id)
+    .order("display_order", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  const accessUrl = firstLesson
+    ? `${SITE_URL}/painel/aula/${firstLesson.id}`
+    : `${SITE_URL}/cursos/${enrollment.course.slug}`;
+
+  if (studentEmail) {
+    const studentHtml = wrap(`
+      <div class="card">
+        <h1>Você está matriculada! 🌿</h1>
+        <p>Olá ${firstName}, seu pagamento foi confirmado.</p>
+        <h2>${enrollment.course.title}</h2>
+        <p>Seu acesso está liberado e disponível pra começar agora.</p>
+        <a class="btn" href="${accessUrl}">Acessar curso</a>
+        <p class="muted">Boas práticas: assista numa hora tranquila, sem pressa. As aulas ficam disponíveis pra sempre.</p>
+      </div>
+    `);
+    await sendEmail(studentEmail, `🎉 Você está matriculada em ${enrollment.course.title}`, studentHtml).catch((e) => console.error("student course email failed:", e));
+  }
+
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>Nova matrícula paga</h1>
+      <p><span class="label">Aluna</span><br/>${profile?.full_name ?? studentEmail ?? "Sem nome"}</p>
+      <p><span class="label">Curso</span><br/>${enrollment.course.title}</p>
+      <p><span class="label">Valor pago</span> ${formatBRL(enrollment.paid_cents ?? 0)}</p>
+      <a class="btn" href="${SITE_URL}/admin/cursos">Abrir admin</a>
+    </div>
+  `);
+  await sendEmail(ELISA_EMAIL, `✓ Matrícula paga: ${profile?.full_name ?? studentEmail} · ${enrollment.course.title}`, elisaHtml).catch((e) => console.error("elisa course email failed:", e));
+}
+
 async function handleOrderCancelled(orderId: string) {
   const { data: order, error } = await supabase
     .from("orders")
