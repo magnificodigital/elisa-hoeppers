@@ -44,6 +44,7 @@ import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponi
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
 import { Route as AdminConfiguracoesRouteImport } from './routes/admin/configuracoes'
+import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
@@ -232,6 +233,11 @@ const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
   path: '/admin/configuracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminClientesRoute = AdminClientesRouteImport.update({
+  id: '/admin/clientes',
+  path: '/admin/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
   id: '/admin/broadcast',
   path: '/admin/broadcast',
@@ -305,6 +311,7 @@ export interface FileRoutesByFullPath {
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
+  '/admin/clientes': typeof AdminClientesRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
@@ -353,6 +360,7 @@ export interface FileRoutesByTo {
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
+  '/admin/clientes': typeof AdminClientesRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
@@ -402,6 +410,7 @@ export interface FileRoutesById {
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
+  '/admin/clientes': typeof AdminClientesRoute
   '/admin/configuracoes': typeof AdminConfiguracoesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
@@ -452,6 +461,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/broadcast'
+    | '/admin/clientes'
     | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
@@ -500,6 +510,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/broadcast'
+    | '/admin/clientes'
     | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
@@ -548,6 +559,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/broadcast'
+    | '/admin/clientes'
     | '/admin/configuracoes'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
@@ -597,6 +609,7 @@ export interface RootRouteChildren {
   TermosRoute: typeof TermosRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
+  AdminClientesRoute: typeof AdminClientesRoute
   AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
@@ -876,6 +889,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/clientes': {
+      id: '/admin/clientes'
+      path: '/admin/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AdminClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/broadcast': {
       id: '/admin/broadcast'
       path: '/admin/broadcast'
@@ -983,6 +1003,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermosRoute: TermosRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
+  AdminClientesRoute: AdminClientesRoute,
   AdminConfiguracoesRoute: AdminConfiguracoesRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
