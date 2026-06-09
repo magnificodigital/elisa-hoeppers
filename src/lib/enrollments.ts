@@ -88,7 +88,7 @@ export type MyEnrollment = {
   id: string;
   user_id: string;
   course_id: string;
-  status: "active" | "cancelled" | "completed";
+  status: EnrollmentStatus;
   enrolled_at: string;
 };
 
