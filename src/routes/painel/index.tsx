@@ -20,7 +20,7 @@ export const Route = createFileRoute("/painel/")({
 
 const navItems = [
   { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
-  { id: "perfil", icon: User, label: "Meu perfil", enabled: false },
+  { id: "perfil", icon: User, label: "Meu perfil", enabled: true },
   { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
   { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },

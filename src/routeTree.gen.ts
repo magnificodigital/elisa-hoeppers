@@ -31,6 +31,7 @@ import { Route as PedidoCodeRouteImport } from './routes/pedido/$code'
 import { Route as PainelWishlistRouteImport } from './routes/painel/wishlist'
 import { Route as PainelTentativasRouteImport } from './routes/painel/tentativas'
 import { Route as PainelPerguntasRouteImport } from './routes/painel/perguntas'
+import { Route as PainelPerfilRouteImport } from './routes/painel/perfil'
 import { Route as PainelPedidosRouteImport } from './routes/painel/pedidos'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
@@ -164,6 +165,11 @@ const PainelTentativasRoute = PainelTentativasRouteImport.update({
 const PainelPerguntasRoute = PainelPerguntasRouteImport.update({
   id: '/painel/perguntas',
   path: '/painel/perguntas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelPerfilRoute = PainelPerfilRouteImport.update({
+  id: '/painel/perfil',
+  path: '/painel/perfil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PainelPedidosRoute = PainelPedidosRouteImport.update({
@@ -318,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
+  '/painel/perfil': typeof PainelPerfilRoute
   '/painel/perguntas': typeof PainelPerguntasRoute
   '/painel/tentativas': typeof PainelTentativasRoute
   '/painel/wishlist': typeof PainelWishlistRoute
@@ -366,6 +373,7 @@ export interface FileRoutesByTo {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
+  '/painel/perfil': typeof PainelPerfilRoute
   '/painel/perguntas': typeof PainelPerguntasRoute
   '/painel/tentativas': typeof PainelTentativasRoute
   '/painel/wishlist': typeof PainelWishlistRoute
@@ -415,6 +423,7 @@ export interface FileRoutesById {
   '/loja/$slug': typeof LojaSlugRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
+  '/painel/perfil': typeof PainelPerfilRoute
   '/painel/perguntas': typeof PainelPerguntasRoute
   '/painel/tentativas': typeof PainelTentativasRoute
   '/painel/wishlist': typeof PainelWishlistRoute
@@ -465,6 +474,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/pedidos'
+    | '/painel/perfil'
     | '/painel/perguntas'
     | '/painel/tentativas'
     | '/painel/wishlist'
@@ -513,6 +523,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/pedidos'
+    | '/painel/perfil'
     | '/painel/perguntas'
     | '/painel/tentativas'
     | '/painel/wishlist'
@@ -561,6 +572,7 @@ export interface FileRouteTypes {
     | '/loja/$slug'
     | '/painel/certificados'
     | '/painel/pedidos'
+    | '/painel/perfil'
     | '/painel/perguntas'
     | '/painel/tentativas'
     | '/painel/wishlist'
@@ -610,6 +622,7 @@ export interface RootRouteChildren {
   LojaSlugRoute: typeof LojaSlugRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelPedidosRoute: typeof PainelPedidosRoute
+  PainelPerfilRoute: typeof PainelPerfilRoute
   PainelPerguntasRoute: typeof PainelPerguntasRoute
   PainelTentativasRoute: typeof PainelTentativasRoute
   PainelWishlistRoute: typeof PainelWishlistRoute
@@ -783,6 +796,13 @@ declare module '@tanstack/react-router' {
       path: '/painel/perguntas'
       fullPath: '/painel/perguntas'
       preLoaderRoute: typeof PainelPerguntasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel/perfil': {
+      id: '/painel/perfil'
+      path: '/painel/perfil'
+      fullPath: '/painel/perfil'
+      preLoaderRoute: typeof PainelPerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/painel/pedidos': {
@@ -996,6 +1016,7 @@ const rootRouteChildren: RootRouteChildren = {
   LojaSlugRoute: LojaSlugRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelPedidosRoute: PainelPedidosRoute,
+  PainelPerfilRoute: PainelPerfilRoute,
   PainelPerguntasRoute: PainelPerguntasRoute,
   PainelTentativasRoute: PainelTentativasRoute,
   PainelWishlistRoute: PainelWishlistRoute,
