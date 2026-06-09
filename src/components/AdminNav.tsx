@@ -44,6 +44,7 @@ const NAV_ITEMS: NavEntry[] = [
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   {
     label: "Posts",
+    to: "/admin/posts",
     icon: Newspaper,
     children: [
       { to: "/admin/blog", label: "Blog Posts", icon: FileText },
