@@ -180,8 +180,6 @@ function ProfilePage() {
                 <Lock className="w-3.5 h-3.5" />
                 {changePassword.isPending ? "Trocando…" : "Trocar senha"}
               </button>
-              {passwordSaved && <p className="text-sm text-primary">✓ Senha atualizada</p>}
-              {changePassword.error && <p className="text-sm text-red-700">{(changePassword.error as Error).message}</p>}
             </div>
           </div>
         </div>
