@@ -18,6 +18,8 @@ export const Route = createFileRoute("/painel/pedidos")({
 function MyOrdersPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const search = Route.useSearch();
+  const highlightCode = search.highlight;
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login", search: { next: "/painel/pedidos" } });
