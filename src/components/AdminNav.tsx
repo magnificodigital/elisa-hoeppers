@@ -24,7 +24,7 @@ const NAV_ITEMS = [
   { to: "/admin/disponibilidade", label: "Disponibilidade", icon: CalendarClock },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
-  
+  { to: "/admin/clientes", label: "Clientes", icon: Users },
   { to: "/admin/inscritos", label: "Inscritos", icon: Mail },
   { to: "/admin/broadcast", label: "Broadcast", icon: Send },
   { to: "/admin/blog", label: "Blog", icon: FileText },
