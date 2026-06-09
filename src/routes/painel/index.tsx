@@ -138,6 +138,10 @@ function PainelPage() {
                             <Link to="/painel/perguntas" className="flex-1">
                               {item.label}
                             </Link>
+                          ) : item.id === "perfil" ? (
+                            <Link to="/painel/perfil" className="flex-1">
+                              {item.label}
+                            </Link>
                           ) : (
                             <Link to={`/painel/${item.id}`} className="flex-1">
                               {item.label}
