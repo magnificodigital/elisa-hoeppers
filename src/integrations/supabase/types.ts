@@ -239,13 +239,6 @@ export type Database = {
             foreignKeyName: "certificates_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
-            referencedRelation: "course_rating_summary"
-            referencedColumns: ["course_id"]
-          },
-          {
-            foreignKeyName: "certificates_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
             referencedRelation: "courses"
             referencedColumns: ["id"]
           },
@@ -258,71 +251,6 @@ export type Database = {
           },
           {
             foreignKeyName: "certificates_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      course_reviews: {
-        Row: {
-          author_name: string | null
-          comment: string | null
-          course_id: string
-          created_at: string
-          id: string
-          is_published: boolean
-          rating: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          author_name?: string | null
-          comment?: string | null
-          course_id: string
-          created_at?: string
-          id?: string
-          is_published?: boolean
-          rating: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          author_name?: string | null
-          comment?: string | null
-          course_id?: string
-          created_at?: string
-          id?: string
-          is_published?: boolean
-          rating?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_reviews_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "course_rating_summary"
-            referencedColumns: ["course_id"]
-          },
-          {
-            foreignKeyName: "course_reviews_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "course_reviews_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "my_course_progress"
-            referencedColumns: ["course_id"]
-          },
-          {
-            foreignKeyName: "course_reviews_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -418,13 +346,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "enrollments_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "course_rating_summary"
-            referencedColumns: ["course_id"]
-          },
           {
             foreignKeyName: "enrollments_course_id_fkey"
             columns: ["course_id"]
@@ -631,13 +552,6 @@ export type Database = {
             foreignKeyName: "lessons_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
-            referencedRelation: "course_rating_summary"
-            referencedColumns: ["course_id"]
-          },
-          {
-            foreignKeyName: "lessons_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
             referencedRelation: "courses"
             referencedColumns: ["id"]
           },
@@ -680,13 +594,6 @@ export type Database = {
           title?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "modules_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "course_rating_summary"
-            referencedColumns: ["course_id"]
-          },
           {
             foreignKeyName: "modules_course_id_fkey"
             columns: ["course_id"]
@@ -869,54 +776,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
-      }
-      product_reviews: {
-        Row: {
-          author_name: string | null
-          comment: string | null
-          created_at: string
-          id: string
-          is_published: boolean
-          product_id: string
-          rating: number
-          user_id: string
-        }
-        Insert: {
-          author_name?: string | null
-          comment?: string | null
-          created_at?: string
-          id?: string
-          is_published?: boolean
-          product_id: string
-          rating: number
-          user_id: string
-        }
-        Update: {
-          author_name?: string | null
-          comment?: string | null
-          created_at?: string
-          id?: string
-          is_published?: boolean
-          product_id?: string
-          rating?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "product_reviews_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_rating_summary"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "product_reviews_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       products: {
         Row: {
@@ -1234,13 +1093,6 @@ export type Database = {
             foreignKeyName: "wishlist_items_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
-            referencedRelation: "course_rating_summary"
-            referencedColumns: ["course_id"]
-          },
-          {
-            foreignKeyName: "wishlist_items_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
             referencedRelation: "courses"
             referencedColumns: ["id"]
           },
@@ -1250,13 +1102,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "my_course_progress"
             referencedColumns: ["course_id"]
-          },
-          {
-            foreignKeyName: "wishlist_items_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "product_rating_summary"
-            referencedColumns: ["product_id"]
           },
           {
             foreignKeyName: "wishlist_items_product_id_fkey"
@@ -1276,31 +1121,6 @@ export type Database = {
       }
     }
     Views: {
-      admin_all_reviews: {
-        Row: {
-          author_name: string | null
-          comment: string | null
-          created_at: string | null
-          id: string | null
-          is_published: boolean | null
-          kind: string | null
-          rating: number | null
-          target_id: string | null
-          target_slug: string | null
-          target_title: string | null
-          user_id: string | null
-        }
-        Relationships: []
-      }
-      course_rating_summary: {
-        Row: {
-          avg_rating: number | null
-          course_id: string | null
-          course_slug: string | null
-          review_count: number | null
-        }
-        Relationships: []
-      }
       my_course_progress: {
         Row: {
           completed_lessons: number | null
@@ -1312,15 +1132,6 @@ export type Database = {
           next_lesson_id: string | null
           overlay_label: string | null
           total_lessons: number | null
-        }
-        Relationships: []
-      }
-      product_rating_summary: {
-        Row: {
-          avg_rating: number | null
-          product_id: string | null
-          product_slug: string | null
-          review_count: number | null
         }
         Relationships: []
       }
