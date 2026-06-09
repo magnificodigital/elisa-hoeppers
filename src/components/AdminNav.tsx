@@ -137,22 +137,33 @@ export function AdminNav() {
               const open = openGroup === item.label;
               return (
                 <div key={item.label} className="relative shrink-0">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenGroup(open ? null : item.label);
-                    }}
-                    className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors whitespace-nowrap ${
+                  <div
+                    className={`flex items-center gap-1 text-xs pl-3 pr-1.5 py-1.5 rounded-full transition-colors whitespace-nowrap ${
                       active || open
                         ? "bg-[#DBCCBF] text-[#3B4F30] font-semibold"
                         : "text-[#DBCCBF]/80 hover:bg-[#DBCCBF]/15 hover:text-[#DBCCBF]"
                     }`}
                   >
-                    <Icon size={14} />
-                    {item.label}
-                    <ChevronDown size={13} className={`transition-transform ${open ? "rotate-180" : ""}`} />
-                  </button>
+                    <Link
+                      to={item.to ?? item.children[0].to}
+                      onClick={() => setOpenGroup(null)}
+                      className="flex items-center gap-1.5"
+                    >
+                      <Icon size={14} />
+                      {item.label}
+                    </Link>
+                    <button
+                      type="button"
+                      aria-label={`Abrir ${item.label}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenGroup(open ? null : item.label);
+                      }}
+                      className="flex items-center"
+                    >
+                      <ChevronDown size={13} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+                    </button>
+                  </div>
                   {open && (
                     <div className="absolute left-0 mt-2 z-30 min-w-[170px] rounded-xl bg-[#3B4F30] border border-[#DBCCBF]/20 shadow-lg p-1.5">
                       {item.children.map((child) => {
