@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import {
@@ -11,6 +11,7 @@ import {
   AlertCircle,
   CheckCircle,
   Loader2,
+  ArrowLeft,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
@@ -129,6 +130,12 @@ function BroadcastPage() {
     <Layout>
       <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
+          <Link
+            to="/admin/posts"
+            className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
+          >
+            <ArrowLeft size={16} /> Voltar para Posts
+          </Link>
           <div className="flex items-center gap-2 mb-2">
             <Send className="w-6 h-6 text-primary" />
             <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Broadcast</h1>

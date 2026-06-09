@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, FileText } from "lucide-react";
+import { Plus, FileText, ArrowLeft } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
@@ -40,6 +40,12 @@ function AdminBlogList() {
     <Layout>
       <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
+          <Link
+            to="/admin/posts"
+            className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
+          >
+            <ArrowLeft size={16} /> Voltar para Posts
+          </Link>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <FileText className="text-primary" size={22} />

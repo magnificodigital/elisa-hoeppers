@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Share2 } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Share2, ArrowLeft } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -16,6 +16,12 @@ function SocialPostsPage() {
   return (
     <Layout>
       <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-10">
+        <Link
+          to="/admin/posts"
+          className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
+        >
+          <ArrowLeft size={16} /> Voltar para Posts
+        </Link>
         <div className="flex items-center gap-3 mb-2">
           <Share2 className="text-primary-dark" size={28} />
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Social Posts</h1>
