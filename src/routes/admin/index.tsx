@@ -13,7 +13,7 @@ import {
   Users,
   Bell,
   AlertCircle,
-  Star,
+  
   Send,
   Stethoscope,
   Truck,
