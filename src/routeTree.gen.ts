@@ -54,6 +54,7 @@ import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/conf
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
+import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
@@ -285,6 +286,12 @@ const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
   path: '/admin/produtos/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminConfiguracoesMercadopagoRoute =
+  AdminConfiguracoesMercadopagoRouteImport.update({
+    id: '/admin/configuracoes/mercadopago',
+    path: '/admin/configuracoes/mercadopago',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   id: '/admin/blog/$id',
   path: '/admin/blog/$id',
@@ -348,6 +355,7 @@ export interface FileRoutesByFullPath {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
@@ -399,6 +407,7 @@ export interface FileRoutesByTo {
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog': typeof AdminBlogIndexRoute
@@ -451,6 +460,7 @@ export interface FileRoutesById {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
@@ -504,6 +514,7 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/mercadopago'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
@@ -555,6 +566,7 @@ export interface FileRouteTypes {
     | '/loja'
     | '/painel'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/mercadopago'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog'
@@ -606,6 +618,7 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/configuracoes/mercadopago'
     | '/admin/produtos/$id'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
@@ -658,6 +671,7 @@ export interface RootRouteChildren {
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
   AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
@@ -985,6 +999,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProdutosIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/mercadopago': {
+      id: '/admin/configuracoes/mercadopago'
+      path: '/admin/configuracoes/mercadopago'
+      fullPath: '/admin/configuracoes/mercadopago'
+      preLoaderRoute: typeof AdminConfiguracoesMercadopagoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/$id': {
       id: '/admin/blog/$id'
       path: '/admin/blog/$id'
@@ -1068,6 +1089,7 @@ const rootRouteChildren: RootRouteChildren = {
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
   AdminBlogIdRoute: AdminBlogIdRoute,
+  AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
