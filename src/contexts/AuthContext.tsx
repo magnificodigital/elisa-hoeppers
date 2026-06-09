@@ -7,6 +7,8 @@ export type Profile = {
   role: "student" | "instructor" | "admin";
   full_name: string | null;
   avatar_url: string | null;
+  bio: string | null;
+  phone: string | null;
 };
 
 export type AuthContextValue = {
