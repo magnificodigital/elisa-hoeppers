@@ -93,12 +93,12 @@ function ProductEditPage() {
       height_cm: form.height_cm === "" ? null : Number(form.height_cm),
     }),
     onSuccess: () => {
-      setSaved(true);
+      toast.success("Produto atualizado");
       qc.invalidateQueries({ queryKey: ["admin-products"] });
       qc.invalidateQueries({ queryKey: ["admin-product", id] });
       qc.invalidateQueries({ queryKey: ["products"] });
-      setTimeout(() => setSaved(false), 2500);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   const del = useMutation({
