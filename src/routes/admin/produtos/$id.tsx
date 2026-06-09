@@ -6,6 +6,8 @@ import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, type ProductImage } from "@/lib/shop";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/admin/produtos/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar produto" }] }),
