@@ -6,6 +6,8 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyOrders, formatPriceBRL, cancelMyOrder, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export const Route = createFileRoute("/painel/pedidos")({
   validateSearch: (s: Record<string, unknown>) => ({
