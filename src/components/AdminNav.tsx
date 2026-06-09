@@ -29,6 +29,7 @@ type NavLeaf = {
 type NavGroup = {
   label: string;
   icon: any;
+  to?: string;
   children: NavLeaf[];
 };
 
