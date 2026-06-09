@@ -19,12 +19,7 @@ function CursosListing() {
     queryFn: listPublishedCourses,
   });
 
-  const courseIds = (courses ?? []).map((c) => c.id);
-  const { data: ratings } = useQuery({
-    queryKey: ["ratings-by-ids", courseIds.sort().join(",")],
-    queryFn: () => getRatingSummariesByIds(courseIds),
-    enabled: courseIds.length > 0,
-  });
+
 
   return (
     <Layout>
