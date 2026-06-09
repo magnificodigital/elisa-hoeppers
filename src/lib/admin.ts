@@ -124,3 +124,24 @@ export async function adminGlobalSearch(query: string): Promise<GlobalSearchResu
     students: [], courses: [], lessons: [], products: [], orders: [], appointments: [],
   }) as GlobalSearchResult;
 }
+
+// ============== CLIENTES ==============
+export type AdminCustomer = {
+  email: string;
+  name: string | null;
+  phone: string | null;
+  has_account: boolean;
+  account_created_at: string | null;
+  orders_count: number;
+  total_spent_cents: number;
+  last_order_at: string | null;
+  subscribed: boolean;
+  enrolled: boolean;
+  last_activity: string | null;
+};
+
+export async function listCustomers(): Promise<AdminCustomer[]> {
+  const { data, error } = await (supabase as any).rpc("admin_list_customers");
+  if (error) throw error;
+  return (data ?? []) as AdminCustomer[];
+}

@@ -1204,6 +1204,7 @@ export type Database = {
       }
       admin_dashboard_stats: { Args: never; Returns: Json }
       admin_global_search: { Args: { p_query: string }; Returns: Json }
+      admin_list_customers: { Args: never; Returns: Json }
       book_appointment: {
         Args: {
           p_customer_email: string
