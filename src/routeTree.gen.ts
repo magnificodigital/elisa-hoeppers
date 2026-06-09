@@ -39,6 +39,7 @@ import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
+import { Route as AdminPostsRouteImport } from './routes/admin/posts'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
@@ -208,6 +209,11 @@ const AdminSocialRoute = AdminSocialRouteImport.update({
   path: '/admin/social',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPostsRoute = AdminPostsRouteImport.update({
+  id: '/admin/posts',
+  path: '/admin/posts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminPedidosRoute = AdminPedidosRouteImport.update({
   id: '/admin/pedidos',
   path: '/admin/pedidos',
@@ -324,6 +330,7 @@ export interface FileRoutesByFullPath {
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -374,6 +381,7 @@ export interface FileRoutesByTo {
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -425,6 +433,7 @@ export interface FileRoutesById {
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -477,6 +486,7 @@ export interface FileRouteTypes {
     | '/admin/disponibilidade'
     | '/admin/inscritos'
     | '/admin/pedidos'
+    | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -527,6 +537,7 @@ export interface FileRouteTypes {
     | '/admin/disponibilidade'
     | '/admin/inscritos'
     | '/admin/pedidos'
+    | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -577,6 +588,7 @@ export interface FileRouteTypes {
     | '/admin/disponibilidade'
     | '/admin/inscritos'
     | '/admin/pedidos'
+    | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -628,6 +640,7 @@ export interface RootRouteChildren {
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
+  AdminPostsRoute: typeof AdminPostsRoute
   AdminSocialRoute: typeof AdminSocialRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
@@ -867,6 +880,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSocialRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/posts': {
+      id: '/admin/posts'
+      path: '/admin/posts'
+      fullPath: '/admin/posts'
+      preLoaderRoute: typeof AdminPostsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/pedidos': {
       id: '/admin/pedidos'
       path: '/admin/pedidos'
@@ -1030,6 +1050,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
   AdminInscritosRoute: AdminInscritosRoute,
   AdminPedidosRoute: AdminPedidosRoute,
+  AdminPostsRoute: AdminPostsRoute,
   AdminSocialRoute: AdminSocialRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
