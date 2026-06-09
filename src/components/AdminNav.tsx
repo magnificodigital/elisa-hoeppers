@@ -7,7 +7,7 @@ import {
   CalendarClock,
   ShoppingBag,
   Package,
-  
+  Users,
   Mail,
   Send,
   FileText,
