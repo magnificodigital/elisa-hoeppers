@@ -85,10 +85,12 @@ function MyOrdersPage() {
 function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlighted?: boolean }) {
   const qc = useQueryClient();
   const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const cancel = useMutation({
     mutationFn: () => cancelMyOrder(o.id),
     onSuccess: () => {
+      toast.success("Pedido cancelado");
       qc.invalidateQueries({ queryKey: ["my-orders"] });
       supabase.functions
         .invoke("send-notification", {
@@ -96,6 +98,7 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
         })
         .catch((e) => console.error("cancel email failed:", e));
     },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const isCancelled = o.status === "cancelled";
