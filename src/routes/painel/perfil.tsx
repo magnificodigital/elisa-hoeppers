@@ -5,6 +5,7 @@ import { User, Save, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/painel/perfil")({
   head: () => ({ meta: [{ title: "Meu perfil — Elisa Hoeppers" }] }),
