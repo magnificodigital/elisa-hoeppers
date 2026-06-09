@@ -248,97 +248,146 @@ function PainelPage() {
               </div>
 
 
-              <h3 className="font-display text-lg text-primary-dark mb-4">Cursos em progresso</h3>
-
-              {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
-
-              {!isLoading && enrolled.length === 0 && (
+              {/* Empty state geral — sem cursos E sem pedidos */}
+              {!isLoading && !hasCourses && !hasOrders && (
                 <div className="bg-white rounded-lg p-8 text-center">
-                  <p className="text-primary-dark mb-4">Você ainda não está matriculada em nenhum curso.</p>
-                  <Link
-                    to="/cursos"
-                    className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
-                  >
-                    Explorar aulas
-                  </Link>
+                  <h3 className="font-display text-xl text-primary-dark mb-2">Bem-vinda! Por onde quer começar?</h3>
+                  <p className="text-primary-dark/70 mb-6">Você ainda não tem cursos nem pedidos.</p>
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <Link
+                      to="/cursos"
+                      className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
+                    >
+                      Ver aulas
+                    </Link>
+                    <Link
+                      to="/loja"
+                      className="inline-block border border-primary text-primary px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary hover:text-white transition"
+                    >
+                      Ver loja
+                    </Link>
+                  </div>
                 </div>
               )}
 
-              <div className="space-y-4">
-                {enrolled.map((c) => {
-                  const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
-                  const nextId = nextLessonByCourse?.[c.course_id];
-                  const cardInner = (
-                    <>
-                      {c.cover_image && (
-                        <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
-                          <img
-                            src={c.cover_image}
-                            alt={c.course_title}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
-                        <div>
-                          {(() => {
-                            const r = ratings?.[c.course_id];
-                            const avg = r?.avg_rating ?? 0;
-                            const cnt = r?.review_count ?? 0;
-                            return (
-                              <div className="flex items-center gap-1 mb-2">
-                                <StarRating value={avg} size={14} />
-                                <span className="text-xs text-primary-dark/50 ml-1">
-                                  {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
+              {/* Seção cursos */}
+              {(hasCourses || (!hasOrders && !isLoading)) && (
+                <div className="mb-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-display text-lg text-primary-dark">Cursos em progresso</h3>
+                    {hasCourses && (
+                      <Link to="/painel/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                        Ver todos →
+                      </Link>
+                    )}
+                  </div>
+
+                  {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
+
+                  {!isLoading && enrolled.length === 0 && hasOrders && (
+                    <div className="bg-white rounded-lg p-6 text-center">
+                      <p className="text-primary-dark mb-3">Você ainda não está matriculada em nenhum curso.</p>
+                      <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                        Explorar aulas →
+                      </Link>
+                    </div>
+                  )}
+
+                  <div className="space-y-4">
+                    {enrolled.map((c) => {
+                      const pct = c.total_lessons > 0 ? Math.round((c.completed_lessons / c.total_lessons) * 100) : 0;
+                      const nextId = nextLessonByCourse?.[c.course_id];
+                      const cardInner = (
+                        <>
+                          {c.cover_image && (
+                            <div className="sm:w-72 shrink-0 relative aspect-video sm:aspect-auto overflow-hidden bg-primary-dark">
+                              <img
+                                src={c.cover_image}
+                                alt={c.course_title}
+                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
+                            <div>
+                              {(() => {
+                                const r = ratings?.[c.course_id];
+                                const avg = r?.avg_rating ?? 0;
+                                const cnt = r?.review_count ?? 0;
+                                return (
+                                  <div className="flex items-center gap-1 mb-2">
+                                    <StarRating value={avg} size={14} />
+                                    <span className="text-xs text-primary-dark/50 ml-1">
+                                      {avg.toFixed(2)}{cnt > 0 ? ` (${cnt})` : ""}
+                                    </span>
+                                  </div>
+                                );
+                              })()}
+
+                              <h4 className="font-display text-lg text-primary-dark mb-1">
+                                {c.course_title}
+                              </h4>
+
+                              <p className="text-sm text-primary-dark/60 mb-4">
+                                Aulas completas: {c.completed_lessons} de {c.total_lessons} aulas
+                              </p>
+                            </div>
+
+                            <div className="mt-auto">
+                              <div className="h-2 bg-cream rounded-full overflow-hidden mb-2">
+                                <div
+                                  className="h-full bg-primary transition-all"
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-primary-dark/50">
+                                  {pct}% Completo
                                 </span>
                               </div>
-                            );
-                          })()}
-
-                          <h4 className="font-display text-lg text-primary-dark mb-1">
-                            {c.course_title}
-                          </h4>
-
-                          <p className="text-sm text-primary-dark/60 mb-4">
-                            Aulas completas: {c.completed_lessons} de {c.total_lessons} aulas
-                          </p>
-                        </div>
-
-                        <div className="mt-auto">
-                          <div className="h-2 bg-cream rounded-full overflow-hidden mb-2">
-                            <div
-                              className="h-full bg-primary transition-all"
-                              style={{ width: `${pct}%` }}
-                            />
+                            </div>
                           </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs text-primary-dark/50">
-                              {pct}% Completo
-                            </span>
-                          </div>
+                        </>
+                      );
+                      return nextId ? (
+                        <Link
+                          key={c.course_id}
+                          to="/painel/aula/$lessonId"
+                          params={{ lessonId: nextId }}
+                          className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
+                        >
+                          {cardInner}
+                        </Link>
+                      ) : (
+                        <div
+                          key={c.course_id}
+                          className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden group"
+                        >
+                          {cardInner}
                         </div>
-                      </div>
-                    </>
-                  );
-                  return nextId ? (
-                    <Link
-                      key={c.course_id}
-                      to="/painel/aula/$lessonId"
-                      params={{ lessonId: nextId }}
-                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden hover:shadow-lg transition group"
-                    >
-                      {cardInner}
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Seção pedidos */}
+              {hasOrders && (
+                <div className="mb-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-display text-lg text-primary-dark">Pedidos recentes</h3>
+                    <Link to="/painel/pedidos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                      Ver todos →
                     </Link>
-                  ) : (
-                    <div
-                      key={c.course_id}
-                      className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden group"
-                    >
-                      {cardInner}
-                    </div>
-                  );
-                })}
-              </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {(orders ?? []).slice(0, 3).map((o) => (
+                      <CompactOrderRow key={o.id} order={o} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
