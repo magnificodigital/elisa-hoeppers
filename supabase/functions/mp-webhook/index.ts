@@ -43,6 +43,31 @@ serve(async (req) => {
       return new Response(JSON.stringify({ ok: false }), { status: 200 });
     }
     const payment = await paymentRes.json();
+    const externalRef = String(payment.external_reference ?? "");
+
+    if (externalRef.startsWith("enrollment:")) {
+      const enrollmentId = externalRef.split(":")[1];
+      if (!enrollmentId) return new Response("missing enrollment_id", { status: 400 });
+
+      const { data: enrollment } = await supabase
+        .from("enrollments")
+        .select("*, course:courses(id, slug, title)")
+        .eq("id", enrollmentId)
+        .maybeSingle();
+      if (!enrollment) return new Response("enrollment not found", { status: 404 });
+
+      if (payment.status === "approved" && enrollment.status === "pending_payment") {
+        await supabase.from("enrollments").update({ status: "active" }).eq("id", enrollmentId);
+        supabase.functions.invoke("send-notification", {
+          body: { type: "course_purchased", record_id: enrollmentId },
+        }).catch((e) => console.error("course_purchased email failed:", e));
+      } else if (payment.status === "rejected" || payment.status === "cancelled") {
+        await supabase.from("enrollments").update({ status: "cancelled" }).eq("id", enrollmentId);
+      }
+
+      return new Response("OK", { status: 200 });
+    }
+
     const orderId: string | undefined = payment.external_reference;
     if (!orderId) return new Response(JSON.stringify({ ok: true }), { status: 200 });
 
