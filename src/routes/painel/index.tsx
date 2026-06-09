@@ -7,11 +7,9 @@ import {
   BookOpen, Activity, Award, Package,
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
 import { listLessonsWithProgress } from "@/lib/lessons";
-import { getRatingSummariesByIds } from "@/lib/reviews";
 import { listMyOrders, formatPriceBRL, type Order as ShopOrder } from "@/lib/shop";
 
 export const Route = createFileRoute("/painel/")({
