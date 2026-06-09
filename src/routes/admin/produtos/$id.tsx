@@ -284,19 +284,27 @@ function ProductEditPage() {
                 className="bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60">
                 {save.isPending ? "Salvando…" : "Salvar"}
               </button>
-              {saved && <span className="text-sm text-primary-dark">✓ Salvo</span>}
               <Link to="/loja/$slug" params={{ slug: form.slug }} target="_blank"
                 className="ml-auto text-xs uppercase tracking-widest text-primary hover:opacity-70">
                 Ver na loja →
               </Link>
               <button
                 type="button"
-                onClick={() => { if (confirm("Excluir produto? Esta ação não pode ser desfeita.")) del.mutate(); }}
+                onClick={() => setDelOpen(true)}
                 className="text-xs uppercase tracking-widest text-red-700 hover:opacity-70 inline-flex items-center gap-1"
               >
                 <Trash2 className="w-3.5 h-3.5" /> Excluir
               </button>
             </div>
+            <ConfirmDialog
+              open={delOpen}
+              onOpenChange={setDelOpen}
+              title="Excluir produto?"
+              description="Esta ação não pode ser desfeita."
+              confirmLabel="Sim, excluir"
+              variant="destructive"
+              onConfirm={() => del.mutate()}
+            />
           </form>
         </div>
       </section>
