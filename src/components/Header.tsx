@@ -58,7 +58,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           ))}
         </nav>
 
-        <Link to="/" className="flex-shrink-0 flex justify-center">
+        <Link to="/" className="flex-shrink-0 flex justify-center lg:static absolute left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto">
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
