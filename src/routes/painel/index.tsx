@@ -104,6 +104,9 @@ function PainelPage() {
   const totalCompleted = enrolled.filter((c) => c.total_lessons > 0 && c.completed_lessons === c.total_lessons).length;
   const totalActive = totalEnrolled - totalCompleted;
 
+  const hasOrders = (orders?.length ?? 0) > 0;
+  const hasCourses = enrolled.length > 0;
+
   return (
     <Layout>
       <section className="py-10 md:py-16 bg-cream min-h-[70vh]">
