@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ChevronLeft, Users, UserPlus, Trash2, Key } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { toast } from "sonner";
 import {
   listUsers,
   updateUserRole,
