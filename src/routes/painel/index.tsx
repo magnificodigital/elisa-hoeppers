@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import {
   LayoutDashboard, User, GraduationCap, Bookmark, ClipboardList,
   ShoppingBag, MessageCircleQuestion, Settings, LogOut,
-  BookOpen, Activity, Award,
+  BookOpen, Activity, Award, Package,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { StarRating } from "@/components/StarRating";
@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
 import { listLessonsWithProgress } from "@/lib/lessons";
 import { getRatingSummariesByIds } from "@/lib/reviews";
+import { listMyOrders, formatPriceBRL, type Order as ShopOrder } from "@/lib/shop";
 
 export const Route = createFileRoute("/painel/")({
   head: () => ({ meta: [{ title: "Meu Painel — Elisa Hoeppers" }] }),
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/painel/")({
 const navItems = [
   { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
   { id: "perfil", icon: User, label: "Meu perfil", enabled: true },
-  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: false },
+  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true },
   { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
   { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
   { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
@@ -76,7 +77,14 @@ function PainelPage() {
     enabled: !!user && courseIds.length > 0,
   });
 
+  const { data: orders } = useQuery({
+    queryKey: ["my-orders", user?.id],
+    queryFn: listMyOrders,
+    enabled: !!user,
+  });
 
+  const totalOrders = orders?.length ?? 0;
+  const pendingOrders = (orders ?? []).filter((o) => o.status === "pending" || o.status === "confirmed").length;
 
   if (loading || !user) {
     return (
