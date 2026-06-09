@@ -49,16 +49,8 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${headerBg}`}>
-      <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-20 md:h-24 gap-6 md:gap-10 ${textColor}`}>
-        <nav className="hidden lg:flex flex-1 items-center justify-end space-x-8">
-          {leftItems.map((i) => (
-            <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
-              {i.label}
-            </Link>
-          ))}
-        </nav>
-
-        <Link to="/" className="flex-shrink-0 flex-1 flex justify-center lg:flex-initial">
+      <div className={`max-w-[1280px] mx-auto px-4 md:px-6 flex items-center h-20 md:h-24 gap-6 md:gap-10 ${textColor}`}>
+        <Link to="/" className="flex-shrink-0 flex justify-center">
           <img
             src={LOGO_WORDMARK}
             alt="Elisa Hoeppers"
@@ -73,8 +65,8 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           />
         </Link>
 
-        <nav className="hidden lg:flex flex-1 items-center justify-end space-x-8">
-          {rightItems.map((i) => (
+        <nav className="hidden lg:flex flex-1 items-center justify-start space-x-8">
+          {[...leftItems, ...rightItems].map((i) => (
             <Link key={i.href} to={i.href} className="text-[12px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity font-medium">
               {i.label}
             </Link>
@@ -91,8 +83,6 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
             </Link>
           )}
         </nav>
-
-
 
         <button
           className={`lg:hidden ${textColor}`}
