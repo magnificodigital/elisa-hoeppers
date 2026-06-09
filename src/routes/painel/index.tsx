@@ -276,7 +276,7 @@ function PainelPage() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-lg text-primary-dark">Cursos em progresso</h3>
                     {hasCourses && (
-                      <Link to="/painel/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                      <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
                         Ver todos →
                       </Link>
                     )}
