@@ -105,7 +105,7 @@ function SettingField({ setting }: { setting: AppSetting }) {
         </button>
       </div>
       {setting.description && <p className="text-xs text-primary-dark/60 mt-1.5">{setting.description}</p>}
-      {saved && <p className="text-xs text-primary mt-1.5">✓ Salvo</p>}
+      
       {save.error && <p className="text-xs text-red-700 mt-1.5">{(save.error as Error).message}</p>}
     </div>
   );
