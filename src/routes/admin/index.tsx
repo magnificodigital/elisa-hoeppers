@@ -15,7 +15,7 @@ import {
   Bell,
   AlertCircle,
   
-  Send,
+  
   Stethoscope,
   Truck,
 } from "lucide-react";
