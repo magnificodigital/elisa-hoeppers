@@ -53,10 +53,10 @@ function ProfilePage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      setProfileSaved(true);
+      toast.success("Perfil salvo");
       qc.invalidateQueries({ queryKey: ["profile", user?.id] });
-      setTimeout(() => setProfileSaved(false), 2500);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   const changePassword = useMutation({
@@ -67,11 +67,11 @@ function ProfilePage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      setPasswordSaved(true);
+      toast.success("Senha atualizada");
       setNewPassword("");
       setConfirmPassword("");
-      setTimeout(() => setPasswordSaved(false), 3000);
     },
+    onError: (err: Error) => toast.error(err.message),
   });
 
   if (loading || !user) {
