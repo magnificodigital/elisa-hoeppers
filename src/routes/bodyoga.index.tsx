@@ -1,6 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Leaf, Sparkles, Flower2, Sprout, ArrowRight } from "lucide-react";
+import {
+  Leaf,
+  Sparkles,
+  Flower2,
+  Sprout,
+  ArrowRight,
+  HandHeart,
+  Recycle,
+  FlaskConical,
+  PawPrint,
+  Wind,
+  PackageOpen,
+} from "lucide-react";
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import { BodyogaFooter } from "@/components/bodyoga/BodyogaFooter";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
