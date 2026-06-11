@@ -41,6 +41,7 @@ function AdminProductsList() {
         length_cm: null,
         width_cm: null,
         height_cm: null,
+        brand: null,
       });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-products"] }),
