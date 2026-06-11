@@ -63,7 +63,7 @@ function BodyogaLanding() {
             <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 leading-relaxed">
               <span className="whitespace-nowrap">Cosméticos naturais artesanais com óleos essenciais.</span>
               <br />
-              <span className="whitespace-nowrap">Criados à mão por Elisa Hoeppers Casas,</span>
+              <span className="whitespace-nowrap">Criados à mão por <strong className="font-bold">Elisa Hoeppers Casas</strong>,</span>
               <br />
               <span className="whitespace-nowrap">no encontro entre o yoga e o cuidado natural.</span>
             </p>
