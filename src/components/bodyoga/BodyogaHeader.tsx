@@ -19,9 +19,9 @@ export function BodyogaHeader() {
 
   return (
     <header className="sticky top-0 z-40 bg-bodyoga-green shadow-sm">
-      <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-20">
+      <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-24">
         {/* Left nav */}
-        <nav className="hidden md:flex flex-1 items-center justify-end gap-8">
+        <nav className="hidden md:flex flex-1 items-center justify-end gap-8 md:pr-12">
           {leftItems.map((item) => (
             <Link
               key={item.label}
