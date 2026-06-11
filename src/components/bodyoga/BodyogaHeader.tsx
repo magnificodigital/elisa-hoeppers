@@ -39,11 +39,11 @@ export function BodyogaHeader() {
           to="/bodyoga"
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
-          <BodyogaLogo variant="full" size={40} tone="cream" />
+          <BodyogaLogo variant="full" size={60} tone="cream" />
         </Link>
 
         {/* Right nav */}
-        <nav className="hidden md:flex flex-1 items-center justify-start gap-8">
+        <nav className="hidden md:flex flex-1 items-center justify-start gap-8 md:pl-12">
           {rightItems.map((item) => (
             <Link
               key={item.label}
