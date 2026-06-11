@@ -75,7 +75,7 @@ export function BodyogaHeader() {
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-bodyoga-cream"
+          className="md:hidden text-bodyoga-green"
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
