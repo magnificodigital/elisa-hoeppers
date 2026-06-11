@@ -30,6 +30,8 @@ const CATEGORIES = [
 ];
 
 function ShopListing() {
+  const navigate = Route.useNavigate();
+  const { brand: brandFilter } = Route.useSearch();
   const [category, setCategory] = useState("all");
   const [showOutOfStock, setShowOutOfStock] = useState(true);
 
@@ -40,10 +42,14 @@ function ShopListing() {
 
   const filtered = useMemo(() => {
     let list = products ?? [];
+    if (brandFilter)
+      list = list.filter(
+        (p) => (p.brand ?? "").toLowerCase() === brandFilter.toLowerCase(),
+      );
     if (category !== "all") list = list.filter((p) => p.category === category);
     if (!showOutOfStock) list = list.filter((p) => p.in_stock);
     return list;
-  }, [products, category, showOutOfStock]);
+  }, [products, category, showOutOfStock, brandFilter]);
 
   return (
     <Layout>
