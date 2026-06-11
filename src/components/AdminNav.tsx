@@ -117,7 +117,7 @@ export function AdminNav() {
 
         <div
           ref={scrollRef}
-          className="flex items-center gap-2 overflow-x-auto py-2 no-scrollbar scroll-smooth"
+          className="flex items-center justify-center gap-2 overflow-x-auto py-2 no-scrollbar scroll-smooth"
         >
           <Link
             to="/"
