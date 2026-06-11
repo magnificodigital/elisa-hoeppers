@@ -50,10 +50,10 @@ function BodyogaLanding() {
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-bodyoga-green/10 blur-3xl pointer-events-none" />
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="font-display text-4xl md:text-6xl leading-tight text-bodyoga-green">
-              Rituais para corpo,
+            <h1 className="font-display text-4xl md:text-5xl leading-tight text-bodyoga-green">
+              <span className="whitespace-nowrap">Rituais para corpo,</span>
               <br />
-              mente e ambiente.
+              <span className="whitespace-nowrap">mente e ambiente.</span>
             </h1>
             <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 leading-relaxed">
               Cosméticos naturais artesanais com óleos essenciais.
