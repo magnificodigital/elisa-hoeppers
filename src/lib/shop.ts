@@ -20,10 +20,11 @@ export type Product = {
   length_cm: number | null;
   width_cm: number | null;
   height_cm: number | null;
+  brand: string | null;
 };
 
 const COLS =
-  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm";
+  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand";
 
 export async function listProducts(filter?: {
   onlyInStock?: boolean;

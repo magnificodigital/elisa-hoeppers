@@ -32,6 +32,7 @@ function AdminBlogList() {
         author_name: "Elisa Hoeppers",
         published_at: null,
         is_published: false,
+        tags: [],
       }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-posts"] }),
   });
