@@ -97,7 +97,7 @@ function BodyogaLanding() {
             />
           </div>
           <div className="order-1 md:order-2">
-            <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-cream/70">A Marca</span>
+            
             <h2 className="font-display text-3xl md:text-4xl mt-4 leading-tight">
               Inspirado no Equilíbrio.
             </h2>
