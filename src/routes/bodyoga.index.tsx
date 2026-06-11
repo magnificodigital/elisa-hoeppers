@@ -47,7 +47,7 @@ function BodyogaLanding() {
       <BodyogaHeader />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-bodyoga-cream">
+      <section className="relative overflow-hidden bg-bodyoga-cream -mt-24 pt-24">
         <div
           className="absolute inset-0 bg-cover bg-center pointer-events-none"
           style={{ backgroundImage: `url(${heroBg})` }}
