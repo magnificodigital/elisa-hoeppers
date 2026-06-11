@@ -53,7 +53,7 @@ function BodyogaLanding() {
           style={{ backgroundImage: `url(${heroBg})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/80 to-transparent pointer-events-none" />
-        <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="font-display text-4xl md:text-5xl leading-tight text-bodyoga-green">
               <span className="whitespace-nowrap">Rituais para corpo,</span>
