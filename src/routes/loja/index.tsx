@@ -5,6 +5,9 @@ import Layout from "@/components/Layout";
 import { listProducts, formatPriceBRL, firstImage } from "@/lib/shop";
 
 export const Route = createFileRoute("/loja/")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    brand: typeof s.brand === "string" ? s.brand : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Loja — Elisa Hoeppers" },
