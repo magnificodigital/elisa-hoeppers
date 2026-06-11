@@ -50,13 +50,12 @@ function BodyogaLanding() {
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-bodyoga-green/10 blur-3xl pointer-events-none" />
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <BodyogaLogo size={56} className="mb-8" />
             <h1 className="font-display text-4xl md:text-6xl leading-tight text-bodyoga-green">
               Rituais para corpo,
               <br />
               mente e ambiente.
             </h1>
-            <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 max-w-md leading-relaxed">
+            <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 max-w-sm leading-relaxed">
               Cosméticos naturais artesanais com óleos essenciais. Criados à mão por Elisa Hoeppers Casas, no encontro entre o yoga e o cuidado natural.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
