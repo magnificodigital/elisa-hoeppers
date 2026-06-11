@@ -18,8 +18,10 @@ export function BodyogaHeader() {
   const rightItems = navItems.slice(2);
 
   return (
-    <header className="sticky top-0 z-40 pb-24 bg-gradient-to-b from-[#FCEDCF] via-[#FCEDCF]/60 to-transparent">
+    <header className="sticky top-0 z-40">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#FCEDCF] via-[#FCEDCF]/60 to-transparent" />
       <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-24">
+
         {/* Left nav */}
         <nav className="hidden md:flex flex-1 items-center justify-end gap-8 md:pr-12">
           {leftItems.map((item) => (
