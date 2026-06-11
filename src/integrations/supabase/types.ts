@@ -752,6 +752,7 @@ export type Database = {
           is_published: boolean
           published_at: string | null
           slug: string
+          tags: Json | null
           title: string
           updated_at: string
         }
@@ -765,6 +766,7 @@ export type Database = {
           is_published?: boolean
           published_at?: string | null
           slug: string
+          tags?: Json | null
           title: string
           updated_at?: string
         }
@@ -778,6 +780,7 @@ export type Database = {
           is_published?: boolean
           published_at?: string | null
           slug?: string
+          tags?: Json | null
           title?: string
           updated_at?: string
         }
@@ -785,6 +788,7 @@ export type Database = {
       }
       products: {
         Row: {
+          brand: string | null
           category: string | null
           compare_at_price_cents: number | null
           created_at: string
@@ -806,6 +810,7 @@ export type Database = {
           width_cm: number | null
         }
         Insert: {
+          brand?: string | null
           category?: string | null
           compare_at_price_cents?: number | null
           created_at?: string
@@ -827,6 +832,7 @@ export type Database = {
           width_cm?: number | null
         }
         Update: {
+          brand?: string | null
           category?: string | null
           compare_at_price_cents?: number | null
           created_at?: string
