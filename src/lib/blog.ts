@@ -10,6 +10,7 @@ export type Post = {
   author_name: string | null;
   published_at: string | null;
   is_published: boolean;
+  tags: string[] | null;
   created_at: string;
 };
 
