@@ -56,11 +56,11 @@ function BodyogaLanding() {
               <span className="whitespace-nowrap">mente e ambiente.</span>
             </h1>
             <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 leading-relaxed">
-              Cosméticos naturais artesanais com óleos essenciais.
+              <span className="whitespace-nowrap">Cosméticos naturais artesanais com óleos essenciais.</span>
               <br />
-              Criados à mão por Elisa Hoeppers Casas,
+              <span className="whitespace-nowrap">Criados à mão por Elisa Hoeppers Casas,</span>
               <br />
-              no encontro entre o yoga e o cuidado natural.
+              <span className="whitespace-nowrap">no encontro entre o yoga e o cuidado natural.</span>
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a
