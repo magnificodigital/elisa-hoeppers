@@ -79,8 +79,8 @@ function BodyogaLanding() {
 
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-green/10">
             <img
-              src="/images/bodyoga/hero.jpg"
-              alt="Rituais BODYOGA"
+              src={sprayHero.url}
+              alt="Spray Antisséptico BODYOGA"
               className="w-full h-full object-cover"
               onError={hideOnError}
               loading="lazy"
