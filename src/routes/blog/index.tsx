@@ -39,10 +39,30 @@ function BlogListing() {
             </p>
           </div>
 
+          {tag && (
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <span className="text-sm text-primary/60">Filtrado por tag:</span>
+              <span className="inline-flex items-center gap-2 bg-primary text-white text-xs uppercase tracking-widest px-3 py-1.5 rounded-full">
+                {tag.toUpperCase()}
+                <button
+                  onClick={() => navigate({ search: { tag: undefined } })}
+                  aria-label="Remover filtro"
+                  className="hover:text-white/70"
+                >
+                  ×
+                </button>
+              </span>
+            </div>
+          )}
+
           {isLoading && <p className="text-center text-primary/60">Carregando posts…</p>}
 
+          {!isLoading && filteredPosts.length === 0 && (
+            <p className="text-center text-primary/60 mt-8">Nenhum post encontrado.</p>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mt-12">
-            {(posts ?? []).map((p, i) => (
+            {filteredPosts.map((p, i) => (
               <Link
                 key={p.slug}
                 to="/blog/$slug"
