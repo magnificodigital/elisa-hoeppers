@@ -15,29 +15,36 @@ export function BodyogaHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-bodyoga-cream/95 backdrop-blur border-b border-bodyoga-brown/20">
-      <div className="max-w-[1170px] mx-auto px-4 md:px-6 flex items-center justify-between h-20">
-        {/* Logo */}
-        <Link to="/bodyoga" className="flex items-center gap-3">
-          <BodyogaLogo variant="full" size={40} />
-        </Link>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+    <header className="sticky top-0 z-40 bg-bodyoga-green shadow-sm">
+      <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-20">
+        {/* Left nav */}
+        <nav className="hidden md:flex flex-1 items-center justify-end gap-8">
           {navItems.map((item) => (
             <Link
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
+              className="text-xs uppercase tracking-[0.18em] text-bodyoga-cream hover:opacity-70 transition"
             >
               {item.label}
             </Link>
           ))}
+        </nav>
+
+        {/* Centered logo */}
+        <Link
+          to="/bodyoga"
+          className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
+        >
+          <BodyogaLogo variant="full" size={40} tone="cream" />
+        </Link>
+
+        {/* Right nav */}
+        <nav className="hidden md:flex flex-1 items-center justify-start gap-8">
           {user ? (
             <Link
               to="/painel"
-              className="inline-flex items-center gap-1.5 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
+              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-bodyoga-cream hover:opacity-70 transition"
             >
               <User className="w-4 h-4" />
               Painel
@@ -45,7 +52,7 @@ export function BodyogaHeader() {
           ) : (
             <Link
               to="/login"
-              className="text-sm uppercase tracking-[0.18em] px-5 py-2 rounded-full bg-bodyoga-green text-bodyoga-cream hover:bg-bodyoga-brown transition"
+              className="text-xs uppercase tracking-[0.18em] px-5 py-2 rounded-full border border-bodyoga-cream text-bodyoga-cream hover:bg-bodyoga-cream hover:text-bodyoga-green transition"
             >
               Inscreva-se
             </Link>
@@ -55,7 +62,7 @@ export function BodyogaHeader() {
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-bodyoga-green"
+          className="md:hidden text-bodyoga-cream"
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -64,14 +71,14 @@ export function BodyogaHeader() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-t border-bodyoga-brown/20 px-4 py-6 space-y-4 bg-bodyoga-cream">
+        <div className="md:hidden border-t border-bodyoga-cream/20 px-4 py-6 space-y-4 bg-bodyoga-green">
           {navItems.map((item) => (
             <Link
               key={item.label}
               to={item.to}
               search={item.search}
               onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
+              className="block text-base uppercase tracking-[0.18em] text-bodyoga-cream"
             >
               {item.label}
             </Link>
@@ -80,7 +87,7 @@ export function BodyogaHeader() {
             <Link
               to="/painel"
               onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
+              className="block text-base uppercase tracking-[0.18em] text-bodyoga-cream"
             >
               Painel
             </Link>
@@ -88,7 +95,7 @@ export function BodyogaHeader() {
             <Link
               to="/login"
               onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
+              className="block text-base uppercase tracking-[0.18em] text-bodyoga-cream"
             >
               Inscreva-se
             </Link>
