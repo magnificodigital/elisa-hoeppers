@@ -6,6 +6,7 @@ import { BodyogaFooter } from "@/components/bodyoga/BodyogaFooter";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import { listProducts, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import heroBg from "@/assets/bodyoga/hero-bg.jpg";
+import sprayHero from "@/assets/bodyoga/spray-hero.jpg.asset.json";
 
 export const Route = createFileRoute("/bodyoga/")({
   head: () => ({
