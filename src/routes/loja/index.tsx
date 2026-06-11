@@ -62,6 +62,23 @@ function ShopListing() {
             Produtos selecionados pra apoiar sua prática e seu ritual de cuidado.
           </p>
 
+          {brandFilter && (
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <span className="text-sm text-[var(--text-muted)]">Filtrado por marca:</span>
+              <span className="inline-flex items-center gap-2 bg-primary text-white text-xs uppercase tracking-widest px-3 py-1.5 rounded-full">
+                {brandFilter.toUpperCase()}
+                <button
+                  onClick={() => navigate({ search: { brand: undefined } })}
+                  aria-label="Remover filtro"
+                  className="hover:text-white/70"
+                >
+                  ×
+                </button>
+              </span>
+            </div>
+          )}
+
+
           {/* Filtros */}
           <div className="flex flex-wrap items-center justify-center gap-3 mt-10">
             {CATEGORIES.map((c) => (
