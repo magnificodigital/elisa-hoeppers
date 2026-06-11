@@ -4,6 +4,9 @@ import Layout from "@/components/Layout";
 import { listPublishedPosts } from "@/lib/blog";
 
 export const Route = createFileRoute("/blog/")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    tag: typeof s.tag === "string" ? s.tag : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Dicas e Novidades — Elisa Hoeppers" },
@@ -14,10 +17,16 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogListing() {
+  const navigate = Route.useNavigate();
+  const { tag } = Route.useSearch();
   const { data: posts, isLoading } = useQuery({
     queryKey: ["blog-posts"],
     queryFn: listPublishedPosts,
   });
+
+  const filteredPosts = tag
+    ? (posts ?? []).filter((p) => Array.isArray(p.tags) && p.tags.includes(tag))
+    : posts ?? [];
 
   return (
     <Layout>
