@@ -73,7 +73,7 @@ function BodyogaLanding() {
       <section className="relative overflow-hidden bg-bodyoga-cream -mt-24 pt-24">
         <div
           className="absolute inset-0 bg-cover pointer-events-none"
-          style={{ backgroundImage: `url(${heroBg})`, backgroundPosition: "center 20%" }}
+          style={{ backgroundImage: `url(${heroBg})`, backgroundPosition: "center top" }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
         <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 py-24 md:py-36 pb-32 md:pb-48">
