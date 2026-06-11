@@ -14,12 +14,15 @@ export function BodyogaHeader() {
     { to: "/blog" as const, search: { tag: "bodyoga" }, label: "Dicas" },
   ];
 
+  const leftItems = navItems.slice(0, 2);
+  const rightItems = navItems.slice(2);
+
   return (
     <header className="sticky top-0 z-40 bg-bodyoga-green shadow-sm">
       <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-20">
         {/* Left nav */}
         <nav className="hidden md:flex flex-1 items-center justify-end gap-8">
-          {navItems.map((item) => (
+          {leftItems.map((item) => (
             <Link
               key={item.label}
               to={item.to}
@@ -41,6 +44,16 @@ export function BodyogaHeader() {
 
         {/* Right nav */}
         <nav className="hidden md:flex flex-1 items-center justify-start gap-8">
+          {rightItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.to}
+              search={item.search}
+              className="text-xs uppercase tracking-[0.18em] text-bodyoga-cream hover:opacity-70 transition"
+            >
+              {item.label}
+            </Link>
+          ))}
           {user ? (
             <Link
               to="/painel"
