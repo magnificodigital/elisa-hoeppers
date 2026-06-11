@@ -135,3 +135,41 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ============ BODYOGA palette (escopado) ============ */
+.bodyoga-scope {
+  --bodyoga-green: #3B4F30;
+  --bodyoga-cream: #F6E9D6;
+  --bodyoga-brown: #A88C70;
+}
+
+.bg-bodyoga-green { background-color: var(--bodyoga-green); }
+.bg-bodyoga-cream { background-color: var(--bodyoga-cream); }
+.bg-bodyoga-brown { background-color: var(--bodyoga-brown); }
+.text-bodyoga-green { color: var(--bodyoga-green); }
+.text-bodyoga-cream { color: var(--bodyoga-cream); }
+.text-bodyoga-brown { color: var(--bodyoga-brown); }
+.border-bodyoga-green { border-color: var(--bodyoga-green); }
+.border-bodyoga-cream { border-color: var(--bodyoga-cream); }
+.border-bodyoga-brown { border-color: var(--bodyoga-brown); }
+.hover\:bg-bodyoga-green:hover { background-color: var(--bodyoga-green); }
+.hover\:bg-bodyoga-brown:hover { background-color: var(--bodyoga-brown); }
+.hover\:text-bodyoga-green:hover { color: var(--bodyoga-green); }
+.hover\:text-bodyoga-brown:hover { color: var(--bodyoga-brown); }
+.hover\:text-bodyoga-cream:hover { color: var(--bodyoga-cream); }
+
+/* Tipografia BODYOGA — Montserrat Thin/Light pra parecer com Garet Book */
+.bodyoga-scope {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+}
+.bodyoga-scope .font-display {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  letter-spacing: 0.02em;
+}
+
+.bodyoga-scope hr,
+.bodyoga-scope .divider {
+  border-color: rgba(168, 140, 112, 0.25);
+}
