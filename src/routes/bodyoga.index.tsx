@@ -67,14 +67,8 @@ function BodyogaLanding() {
                 href="#produtos"
                 className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm uppercase tracking-[0.18em] hover:bg-bodyoga-brown transition"
               >
-                Conhecer os rituais
+                Conhecer rituais
               </a>
-              <Link
-                to="/bodyoga/sobre"
-                className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-              >
-                Sobre a marca
-              </Link>
             </div>
           </div>
 
