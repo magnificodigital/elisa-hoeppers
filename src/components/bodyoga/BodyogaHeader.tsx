@@ -84,14 +84,14 @@ export function BodyogaHeader() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-t border-bodyoga-cream/20 px-4 py-6 space-y-4 bg-bodyoga-green">
+        <div className="md:hidden border-t border-bodyoga-green/20 px-4 py-6 space-y-4 bg-bodyoga-cream">
           {navItems.map((item) => (
             <Link
               key={item.label}
               to={item.to}
               search={item.search}
               onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-cream"
+              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
             >
               {item.label}
             </Link>
@@ -100,7 +100,7 @@ export function BodyogaHeader() {
             <Link
               to="/painel"
               onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-cream"
+              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
             >
               Painel
             </Link>
@@ -108,7 +108,7 @@ export function BodyogaHeader() {
             <Link
               to="/login"
               onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-cream"
+              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
             >
               Inscreva-se
             </Link>
