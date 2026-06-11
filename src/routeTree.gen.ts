@@ -25,6 +25,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PainelIndexRouteImport } from './routes/painel/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
+import { Route as BodyogaIndexRouteImport } from './routes/bodyoga.index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PedidoCodeRouteImport } from './routes/pedido/$code'
@@ -37,6 +38,7 @@ import { Route as PainelCertificadosRouteImport } from './routes/painel/certific
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
+import { Route as BodyogaSobreRouteImport } from './routes/bodyoga.sobre'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
@@ -144,6 +146,11 @@ const CursosIndexRoute = CursosIndexRouteImport.update({
   path: '/cursos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BodyogaIndexRoute = BodyogaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BodyogaRoute,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -203,6 +210,11 @@ const CertificadoCodeRoute = CertificadoCodeRouteImport.update({
   id: '/certificado/$code',
   path: '/certificado/$code',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BodyogaSobreRoute = BodyogaSobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => BodyogaRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
@@ -346,7 +358,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
-  '/bodyoga': typeof BodyogaRoute
+  '/bodyoga': typeof BodyogaRouteWithChildren
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
@@ -367,6 +379,7 @@ export interface FileRoutesByFullPath {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/bodyoga/sobre': typeof BodyogaSobreRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
@@ -379,6 +392,7 @@ export interface FileRoutesByFullPath {
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/bodyoga/': typeof BodyogaIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
@@ -402,7 +416,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
-  '/bodyoga': typeof BodyogaRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
@@ -423,6 +436,7 @@ export interface FileRoutesByTo {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/bodyoga/sobre': typeof BodyogaSobreRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
@@ -435,6 +449,7 @@ export interface FileRoutesByTo {
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/bodyoga': typeof BodyogaIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
@@ -459,7 +474,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
-  '/bodyoga': typeof BodyogaRoute
+  '/bodyoga': typeof BodyogaRouteWithChildren
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
@@ -480,6 +495,7 @@ export interface FileRoutesById {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/bodyoga/sobre': typeof BodyogaSobreRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
@@ -492,6 +508,7 @@ export interface FileRoutesById {
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/bodyoga/': typeof BodyogaIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
@@ -538,6 +555,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
+    | '/bodyoga/sobre'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
@@ -550,6 +568,7 @@ export interface FileRouteTypes {
     | '/pedido/$code'
     | '/admin/'
     | '/blog/'
+    | '/bodyoga/'
     | '/cursos/'
     | '/loja/'
     | '/painel/'
@@ -573,7 +592,6 @@ export interface FileRouteTypes {
     | '/'
     | '/agende-sua-aula'
     | '/bio'
-    | '/bodyoga'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
@@ -594,6 +612,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
+    | '/bodyoga/sobre'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
@@ -606,6 +625,7 @@ export interface FileRouteTypes {
     | '/pedido/$code'
     | '/admin'
     | '/blog'
+    | '/bodyoga'
     | '/cursos'
     | '/loja'
     | '/painel'
@@ -650,6 +670,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
+    | '/bodyoga/sobre'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
@@ -662,6 +683,7 @@ export interface FileRouteTypes {
     | '/pedido/$code'
     | '/admin/'
     | '/blog/'
+    | '/bodyoga/'
     | '/cursos/'
     | '/loja/'
     | '/painel/'
@@ -686,7 +708,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
   BioRoute: typeof BioRoute
-  BodyogaRoute: typeof BodyogaRoute
+  BodyogaRoute: typeof BodyogaRouteWithChildren
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
@@ -852,6 +874,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CursosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bodyoga/': {
+      id: '/bodyoga/'
+      path: '/'
+      fullPath: '/bodyoga/'
+      preLoaderRoute: typeof BodyogaIndexRouteImport
+      parentRoute: typeof BodyogaRoute
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -935,6 +964,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/certificado/$code'
       preLoaderRoute: typeof CertificadoCodeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/bodyoga/sobre': {
+      id: '/bodyoga/sobre'
+      path: '/sobre'
+      fullPath: '/bodyoga/sobre'
+      preLoaderRoute: typeof BodyogaSobreRouteImport
+      parentRoute: typeof BodyogaRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -1121,6 +1157,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface BodyogaRouteChildren {
+  BodyogaSobreRoute: typeof BodyogaSobreRoute
+  BodyogaIndexRoute: typeof BodyogaIndexRoute
+}
+
+const BodyogaRouteChildren: BodyogaRouteChildren = {
+  BodyogaSobreRoute: BodyogaSobreRoute,
+  BodyogaIndexRoute: BodyogaIndexRoute,
+}
+
+const BodyogaRouteWithChildren =
+  BodyogaRoute._addFileChildren(BodyogaRouteChildren)
+
 interface AdminCursosIdAulasRouteChildren {
   AdminCursosIdAulasLessonIdQuizRoute: typeof AdminCursosIdAulasLessonIdQuizRoute
 }
@@ -1136,7 +1185,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgendeSuaAulaRoute: AgendeSuaAulaRoute,
   BioRoute: BioRoute,
-  BodyogaRoute: BodyogaRoute,
+  BodyogaRoute: BodyogaRouteWithChildren,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
@@ -1190,3 +1239,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
