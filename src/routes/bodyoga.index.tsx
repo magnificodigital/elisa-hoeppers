@@ -99,12 +99,10 @@ function BodyogaLanding() {
           <div className="order-1 md:order-2">
             <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-cream/70">A Marca</span>
             <h2 className="font-display text-3xl md:text-4xl mt-4 leading-tight">
-              Inspirado em uma posição de yoga.
-              <br />
-              Equilíbrio.
+              Inspirado no Equilíbrio.
             </h2>
             <p className="mt-6 text-bodyoga-cream/80 leading-relaxed">
-              BODYOGA é a fusão entre yoga e cuidado consciente. Cada produto é um ritual — pensado pra trazer presença ao gesto cotidiano de cuidar de si.
+              BODYOGA é a fusão entre yoga e cuidado consciente. Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.
             </p>
             <p className="mt-4 text-bodyoga-cream/80 leading-relaxed">
               Feito à mão em pequenos lotes, com óleos essenciais que acolhem, equilibram e harmonizam corpo, mente e ambiente.
