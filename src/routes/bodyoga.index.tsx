@@ -115,7 +115,7 @@ function BodyogaLanding() {
       <section className="bg-bodyoga-cream overflow-hidden">
         <div className="w-full relative flex flex-col md:flex-row items-stretch justify-between min-h-[500px] md:min-h-[620px]">
           {/* Foto lateral esquerda - Elisa */}
-          <div className="hidden md:block absolute left-0 top-0 bottom-0 w-[26%] lg:w-[28%]">
+          <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-[16%] lg:w-[18%] aspect-[3/4]">
             <img
               src="/images/home/bodyoga/bodyoga-left.png"
               alt="Elisa Hoeppers com os pesinhos BODYOGA"
@@ -165,7 +165,7 @@ function BodyogaLanding() {
           </div>
 
           {/* Foto lateral direita - pesinhos */}
-          <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[26%] lg:w-[28%]">
+          <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[16%] lg:w-[18%] aspect-[3/4]">
             <img
               src="/images/home/bodyoga/bodyoga-right.png"
               alt="Pesinhos BODYOGA"
