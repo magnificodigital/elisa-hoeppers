@@ -159,39 +159,8 @@ function BodyogaLanding() {
       {/* RITUAIS POR CATEGORIA */}
       <RitualCategories products={bodyogaProducts} />
 
-      {/* MARCA */}
-      <section className="bg-bodyoga-green text-bodyoga-cream">
 
-        <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-cream/10 order-2 md:order-1">
-            <img
-              src="/images/bodyoga/marca.jpg"
-              alt="A marca BODYOGA"
-              className="w-full h-full object-cover"
-              onError={hideOnError}
-              loading="lazy"
-            />
-          </div>
-          <div className="order-1 md:order-2">
-            
-            <h2 className="font-display text-3xl md:text-4xl mt-4 leading-tight">
-              Inspirado no Equilíbrio.
-            </h2>
-            <p className="mt-6 text-bodyoga-cream/80 leading-relaxed">
-              BODYOGA é a fusão entre yoga e cuidado consciente. Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.
-            </p>
-            <p className="mt-4 text-bodyoga-cream/80 leading-relaxed">
-              Feito à mão em pequenos lotes, com óleos essenciais que acolhem, equilibram e harmonizam corpo, mente e ambiente.
-            </p>
-            <Link
-              to="/bodyoga/sobre"
-              className="inline-flex items-center gap-2 mt-8 text-sm uppercase tracking-[0.18em] text-bodyoga-cream hover:text-bodyoga-brown transition"
-            >
-              Conhecer toda a história <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
+
 
       {/* PRODUTOS */}
       <section id="produtos" className="bg-bodyoga-cream">
