@@ -17,6 +17,8 @@ import {
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import { BodyogaFooter } from "@/components/bodyoga/BodyogaFooter";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
+import HomeBlog from "@/components/home/HomeBlog";
+import HomeInstagram from "@/components/home/HomeInstagram";
 import { listProducts, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
 import ritualCorpo from "@/assets/bodyoga/ritual-corpo.jpg";
@@ -220,6 +222,8 @@ function BodyogaLanding() {
 
 
 
+      <HomeBlog />
+      <HomeInstagram />
 
       <BodyogaFooter />
     </div>
