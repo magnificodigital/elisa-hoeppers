@@ -30,6 +30,11 @@ function ProductEditPage() {
     queryFn: () => getProductForAdmin(id),
   });
 
+  const { data: rituals } = useQuery({
+    queryKey: ["bodyoga-rituals-active"],
+    queryFn: listActiveRituals,
+  });
+
   const [form, setForm] = useState({
     name: "",
     slug: "",
