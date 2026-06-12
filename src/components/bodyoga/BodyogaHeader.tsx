@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -75,28 +75,23 @@ export function BodyogaHeader() {
               {item.label}
             </Link>
           ))}
-          {user ? (
-            <Link
-              to="/painel"
-              className={`inline-flex items-center gap-1.5 ${linkClass}`}
-              style={linkStyle}
-            >
-              <User className="w-4 h-4" />
-              Painel
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="text-xs font-medium uppercase tracking-[0.18em] px-5 py-2 rounded-full border transition"
-              style={
-                scrolled
-                  ? { color: CREAM, borderColor: CREAM }
-                  : undefined
-              }
-            >
-              <span className={scrolled ? "" : "text-bodyoga-green"}>Inscreva-se</span>
-            </Link>
-          )}
+          <Link
+            to={user ? "/painel" : "/login"}
+            aria-label={user ? "Painel" : "Entrar"}
+            className="hover:opacity-70 transition"
+            style={scrolled ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+          >
+            <User className="w-5 h-5" />
+          </Link>
+          <Link
+            to="/carrinho"
+            aria-label="Carrinho"
+            className="hover:opacity-70 transition"
+            style={scrolled ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+          >
+            <ShoppingCart className="w-5 h-5" />
+          </Link>
+
         </nav>
 
         {/* Mobile menu button */}
@@ -124,23 +119,23 @@ export function BodyogaHeader() {
               {item.label}
             </Link>
           ))}
-          {user ? (
-            <Link
-              to="/painel"
-              onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
-            >
-              Painel
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
-            >
-              Inscreva-se
-            </Link>
-          )}
+          <Link
+            to={user ? "/painel" : "/login"}
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-base uppercase tracking-[0.18em] text-bodyoga-green"
+          >
+            <User className="w-5 h-5" />
+            {user ? "Painel" : "Conta"}
+          </Link>
+          <Link
+            to="/carrinho"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-base uppercase tracking-[0.18em] text-bodyoga-green"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            Carrinho
+          </Link>
+
         </div>
       )}
     </header>
