@@ -20,7 +20,7 @@ export function BodyogaFooter() {
             <h4 className="text-sm uppercase tracking-[0.2em] mb-4">Navegação</h4>
             <ul className="space-y-2 text-sm text-bodyoga-cream/80">
               <li>
-                <Link to="/bodyoga/sobre" className="hover:text-bodyoga-brown transition">Sobre</Link>
+                <Link to="/sobre" className="hover:text-bodyoga-brown transition">Sobre</Link>
               </li>
               <li>
                 <Link to="/loja" search={{ brand: "bodyoga" }} className="hover:text-bodyoga-brown transition">Shop</Link>

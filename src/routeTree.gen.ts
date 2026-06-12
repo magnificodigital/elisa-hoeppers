@@ -38,7 +38,6 @@ import { Route as PainelCertificadosRouteImport } from './routes/painel/certific
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
-import { Route as BodyogaSobreRouteImport } from './routes/bodyoga.sobre'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
@@ -211,11 +210,6 @@ const CertificadoCodeRoute = CertificadoCodeRouteImport.update({
   path: '/certificado/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BodyogaSobreRoute = BodyogaSobreRouteImport.update({
-  id: '/sobre',
-  path: '/sobre',
-  getParentRoute: () => BodyogaRoute,
-} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -379,7 +373,6 @@ export interface FileRoutesByFullPath {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/bodyoga/sobre': typeof BodyogaSobreRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
@@ -436,7 +429,6 @@ export interface FileRoutesByTo {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/bodyoga/sobre': typeof BodyogaSobreRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
@@ -495,7 +487,6 @@ export interface FileRoutesById {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/bodyoga/sobre': typeof BodyogaSobreRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
@@ -555,7 +546,6 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
-    | '/bodyoga/sobre'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
@@ -612,7 +602,6 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
-    | '/bodyoga/sobre'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
@@ -670,7 +659,6 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/social'
     | '/blog/$slug'
-    | '/bodyoga/sobre'
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
@@ -965,13 +953,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertificadoCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bodyoga/sobre': {
-      id: '/bodyoga/sobre'
-      path: '/sobre'
-      fullPath: '/bodyoga/sobre'
-      preLoaderRoute: typeof BodyogaSobreRouteImport
-      parentRoute: typeof BodyogaRoute
-    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -1158,12 +1139,10 @@ declare module '@tanstack/react-router' {
 }
 
 interface BodyogaRouteChildren {
-  BodyogaSobreRoute: typeof BodyogaSobreRoute
   BodyogaIndexRoute: typeof BodyogaIndexRoute
 }
 
 const BodyogaRouteChildren: BodyogaRouteChildren = {
-  BodyogaSobreRoute: BodyogaSobreRoute,
   BodyogaIndexRoute: BodyogaIndexRoute,
 }
 
