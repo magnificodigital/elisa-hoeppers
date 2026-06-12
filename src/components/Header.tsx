@@ -59,20 +59,21 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
         </nav>
 
         <Link to="/" className="flex-shrink-0 flex justify-center lg:static absolute left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto">
-          <div className="relative hidden md:block h-14 md:h-16 w-44">
+          <div className="relative hidden md:block h-16 md:h-20 w-52">
             <img
               src={LOGO_WORDMARK}
               alt="Elisa Hoeppers"
-              className="footer-logo-a absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-14 md:h-16 w-auto"
+              className="footer-logo-a absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-11 md:h-12 w-auto"
               style={{ filter: logoFilter }}
             />
             <img
               src="/images/home/bodyoga/logo-bodyoga.png"
               alt="BODYOGA"
-              className="footer-logo-b absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-12 md:h-14 w-auto"
+              className="footer-logo-b absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-16 md:h-20 w-auto"
               style={{ filter: logoFilter }}
             />
           </div>
+
           <img
             src={LOGO_ICON}
             alt="Elisa Hoeppers"
