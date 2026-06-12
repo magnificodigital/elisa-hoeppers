@@ -114,8 +114,9 @@ function BodyogaLanding() {
       {/* RITUAIS POR CATEGORIA */}
       <RitualCategories products={bodyogaProducts} />
 
-
+      {/* MARCA */}
       <section className="bg-bodyoga-green text-bodyoga-cream">
+
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-cream/10 order-2 md:order-1">
             <img
