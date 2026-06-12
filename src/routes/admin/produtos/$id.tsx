@@ -69,6 +69,7 @@ function ProductEditPage() {
         is_active: product.is_active,
         is_featured: product.is_featured,
         category: product.category ?? "",
+        ritual_id: product.ritual_id ?? "",
         display_order: product.display_order,
         gallery: product.gallery,
         weight_g: product.weight_g ?? "",
