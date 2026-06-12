@@ -305,6 +305,28 @@ const ritualCategorias = [
   },
 ];
 
+const ritualSymbols: Record<string, React.ReactNode> = {
+  corpo: (
+    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="50" cy="28" r="9" />
+      <path d="M50 40 C40 48 38 58 50 66 C62 58 60 48 50 40 Z" />
+      <path d="M22 66 C32 60 44 64 50 67 C56 64 68 60 78 66" />
+    </svg>
+  ),
+  mente: (
+    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M50 50 m0 0 a4 4 0 1 1 0.1 0 M50 50 a10 10 0 1 1 -7 17 a18 18 0 1 0 22 -30" />
+      <circle cx="33" cy="40" r="2" fill="currentColor" stroke="none" />
+    </svg>
+  ),
+  ambiente: (
+    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 44 C34 34 46 50 58 44 C68 39 74 42 78 46" />
+      <path d="M22 58 C34 48 46 64 58 58 C68 53 74 56 78 60" />
+    </svg>
+  ),
+};
+
 function RitualCategories({ products }: { products: Product[] }) {
   const [active, setActive] = useState<string | null>(null);
 
@@ -315,56 +337,58 @@ function RitualCategories({ products }: { products: Product[] }) {
 
   return (
     <section className="bg-bodyoga-cream">
-      <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">
-            Explore por intenção
-          </span>
-          <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
-            Rituais para corpo, mente e ambiente
-          </h2>
-          <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
-            Escolha uma categoria para descobrir os produtos de cada ritual.
-          </p>
-        </div>
+      <div className="text-center max-w-2xl mx-auto px-4 pt-20 md:pt-28 mb-14">
+        <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">
+          Explore por intenção
+        </span>
+        <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
+          Rituais para corpo, mente e ambiente
+        </h2>
+        <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
+          Escolha uma categoria para descobrir os produtos de cada ritual.
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-          {ritualCategorias.map((c) => {
-            const isActive = c.id === active;
-            return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => setActive(isActive ? null : c.id)}
-                className={`group relative aspect-[3/4] overflow-hidden rounded-2xl text-left transition focus:outline-none ${
-                  isActive ? "ring-2 ring-bodyoga-green ring-offset-2 ring-offset-bodyoga-cream" : ""
-                }`}
-              >
-                <img
-                  src={c.image}
-                  alt={c.title}
-                  width={768}
-                  height={1024}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6 text-bodyoga-cream">
-                  <h3 className="font-display text-xl md:text-2xl">{c.title}</h3>
-                  <p className="mt-2 text-sm text-bodyoga-cream/85 leading-relaxed">
-                    {c.desc}
-                  </p>
-                  <span className="inline-flex items-center gap-2 mt-4 text-xs uppercase tracking-[0.18em]">
-                    {isActive ? "Fechar" : "Ver produtos"}
-                    <ArrowRight
-                      className={`w-3.5 h-3.5 transition-transform ${isActive ? "rotate-90" : ""}`}
-                    />
-                  </span>
+      <div className="grid grid-cols-1 md:grid-cols-3">
+        {ritualCategorias.map((c) => {
+          const isActive = c.id === active;
+          return (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => setActive(isActive ? null : c.id)}
+              className="group relative aspect-[3/4] md:aspect-[3/5] overflow-hidden text-center focus:outline-none"
+            >
+              <img
+                src={c.image}
+                alt={c.title}
+                width={768}
+                height={1024}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className={`absolute inset-0 bg-black/30 transition-colors ${isActive ? "bg-black/50" : "group-hover:bg-black/40"}`} />
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-bodyoga-cream">
+                <div className="w-16 h-16 md:w-20 md:h-20 mb-7 text-bodyoga-cream/95">
+                  {ritualSymbols[c.id]}
                 </div>
-              </button>
-            );
-          })}
-        </div>
+                <h3 className="font-display text-xl md:text-2xl uppercase tracking-[0.28em] leading-relaxed">
+                  {c.title}
+                </h3>
+                <span className="inline-flex items-center gap-2 mt-6 text-[11px] uppercase tracking-[0.22em] opacity-90">
+                  {isActive ? "Fechar" : "Ver produtos"}
+                  <ArrowRight
+                    className={`w-3.5 h-3.5 transition-transform ${isActive ? "rotate-90" : ""}`}
+                  />
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="max-w-[1170px] mx-auto px-4 md:px-6 pb-20 md:pb-28">
+        {!activeCat && <div className="h-0" />}
 
         {activeCat && (
           <div className="mt-12">
