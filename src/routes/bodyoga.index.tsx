@@ -102,6 +102,7 @@ function BodyogaLanding() {
               </a>
 
             </div>
+            </div>
           </div>
         </div>
       </section>
