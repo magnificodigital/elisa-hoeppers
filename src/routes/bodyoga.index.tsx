@@ -96,7 +96,7 @@ function BodyogaLanding() {
             <div className="mt-8 flex flex-wrap gap-4">
               <a
                 href="#produtos"
-                className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
               >
                 Conhecer rituais
               </a>
