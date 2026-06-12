@@ -5,7 +5,7 @@ import { ChevronLeft, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ImageUploader } from "@/components/ImageUploader";
-import { getProductForAdmin, updateProduct, deleteProduct, type ProductImage } from "@/lib/shop";
+import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
@@ -30,6 +30,11 @@ function ProductEditPage() {
     queryFn: () => getProductForAdmin(id),
   });
 
+  const { data: rituals } = useQuery({
+    queryKey: ["bodyoga-rituals-active"],
+    queryFn: listActiveRituals,
+  });
+
   const [form, setForm] = useState({
     name: "",
     slug: "",
@@ -41,6 +46,7 @@ function ProductEditPage() {
     is_active: true,
     is_featured: false,
     category: "",
+    ritual_id: "" as string,
     display_order: 0,
     gallery: [] as ProductImage[],
     weight_g: "" as string | number,
@@ -63,6 +69,7 @@ function ProductEditPage() {
         is_active: product.is_active,
         is_featured: product.is_featured,
         category: product.category ?? "",
+        ritual_id: product.ritual_id ?? "",
         display_order: product.display_order,
         gallery: product.gallery,
         weight_g: product.weight_g ?? "",
@@ -85,6 +92,7 @@ function ProductEditPage() {
       is_active: form.is_active,
       is_featured: form.is_featured,
       category: form.category || null,
+      ritual_id: form.ritual_id || null,
       display_order: form.display_order,
       gallery: form.gallery,
       weight_g: form.weight_g === "" ? null : Number(form.weight_g),
@@ -176,6 +184,14 @@ function ProductEditPage() {
                 <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) || 0 })} className={inputCls} />
               </Field>
             </div>
+
+            <Field label="Ritual BODYOGA (em qual ritual este produto aparece)">
+              <select value={form.ritual_id} onChange={(e) => setForm({ ...form, ritual_id: e.target.value })} className={inputCls}>
+                <option value="">— nenhum ritual —</option>
+                {(rituals ?? []).map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
+              </select>
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Define onde o produto aparece na página BODYOGA. Gerencie os rituais em Admin → Rituais.</p>
+            </Field>
 
             <div className="flex flex-wrap gap-4 pt-2">
               <label className="flex items-center gap-2 cursor-pointer">

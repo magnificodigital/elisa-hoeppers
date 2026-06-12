@@ -158,6 +158,42 @@ export type Database = {
         }
         Relationships: []
       }
+      bodyoga_rituals: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          image_url: string | null
+          is_active: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       broadcasts: {
         Row: {
           body_html: string
@@ -803,6 +839,7 @@ export type Database = {
           length_cm: number | null
           name: string
           price_cents: number
+          ritual_id: string | null
           short_description: string | null
           slug: string
           updated_at: string
@@ -825,6 +862,7 @@ export type Database = {
           length_cm?: number | null
           name: string
           price_cents: number
+          ritual_id?: string | null
           short_description?: string | null
           slug: string
           updated_at?: string
@@ -847,13 +885,22 @@ export type Database = {
           length_cm?: number | null
           name?: string
           price_cents?: number
+          ritual_id?: string | null
           short_description?: string | null
           slug?: string
           updated_at?: string
           weight_g?: number | null
           width_cm?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "products_ritual_id_fkey"
+            columns: ["ritual_id"]
+            isOneToOne: false
+            referencedRelation: "bodyoga_rituals"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {

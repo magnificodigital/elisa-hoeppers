@@ -12,6 +12,7 @@ import {
   Mail,
   Newspaper,
   Settings,
+  Sparkles,
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
@@ -39,6 +40,7 @@ const NAV_ITEMS: NavEntry[] = [
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
+  { to: "/admin/bodyoga-rituais", label: "Rituais", icon: Sparkles },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   {

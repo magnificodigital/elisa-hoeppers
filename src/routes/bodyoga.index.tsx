@@ -19,11 +19,17 @@ import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
-import { listProducts, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Ritual } from "@/lib/shop";
 import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
 import ritualCorpo from "@/assets/bodyoga/ritual-corpo.jpg";
 import ritualMente from "@/assets/bodyoga/ritual-mente.jpg";
 import ritualAmbiente from "@/assets/bodyoga/ritual-ambiente.jpg";
+
+const RITUAL_FALLBACK_IMAGES: Record<string, string> = {
+  corpo: ritualCorpo,
+  mente: ritualMente,
+  ambiente: ritualAmbiente,
+};
 
 export const Route = createFileRoute("/bodyoga/")({
   head: () => ({
@@ -65,6 +71,11 @@ function BodyogaLanding() {
   const { data: products } = useQuery({
     queryKey: ["bodyoga-products"],
     queryFn: () => listProducts({ onlyInStock: false }),
+  });
+
+  const { data: rituals } = useQuery({
+    queryKey: ["bodyoga-rituals-active"],
+    queryFn: listActiveRituals,
   });
 
   const bodyogaProducts = (products ?? []).filter(
@@ -159,7 +170,9 @@ function BodyogaLanding() {
 
 
       {/* RITUAIS POR CATEGORIA */}
-      <RitualCategories products={bodyogaProducts} />
+      {(rituals ?? []).length > 0 && (
+        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
+      )}
 
 
 
@@ -230,40 +243,7 @@ function BodyogaLanding() {
   );
 }
 
-const ritualCategorias = [
-  {
-    id: "corpo",
-    title: "Rituais do Corpo",
-    desc: "Cuidado e presença no gesto de cuidar da pele e do toque.",
-    image: ritualCorpo,
-    match: (p: Product) =>
-      /sabonete|antisseptico|antisséptico|banho|corpo|mao|mão/i.test(
-        `${p.slug} ${p.name}`,
-      ),
-  },
-  {
-    id: "mente",
-    title: "Rituais da Mente",
-    desc: "Aromas que acalmam, equilibram e trazem foco e tranquilidade.",
-    image: ritualMente,
-    match: (p: Product) =>
-      /medita|mente|calma|foco|lavanda/i.test(`${p.slug} ${p.name}`),
-  },
-  {
-    id: "ambiente",
-    title: "Rituais do Ambiente",
-    desc: "Sprays aromáticos que harmonizam e perfumam cada espaço.",
-    image: ritualAmbiente,
-    match: (p: Product) =>
-      /aromatico|aromático|ambiente|spray-aromatico/i.test(
-        `${p.slug} ${p.name}`,
-      ),
-  },
-];
-
-
-
-function RitualCategories({ products }: { products: Product[] }) {
+function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: Product[] }) {
   const [active, setActive] = useState<string | null>(null);
 
   return (
@@ -272,10 +252,11 @@ function RitualCategories({ products }: { products: Product[] }) {
         className="flex flex-col md:flex-row md:h-[640px]"
         onMouseLeave={() => setActive(null)}
       >
-        {ritualCategorias.map((c) => {
+        {rituals.map((c) => {
           const isActive = c.id === active;
           const hidden = active !== null && !isActive;
-          const catProducts = products.filter((p) => c.match(p));
+          const catProducts = products.filter((p) => p.ritual_id === c.id);
+          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
           return (
             <div
               key={c.id}
@@ -298,7 +279,7 @@ function RitualCategories({ products }: { products: Product[] }) {
                 }}
               >
                 <img
-                  src={c.image}
+                  src={image}
                   alt={c.title}
                   width={768}
                   height={1024}
@@ -327,7 +308,7 @@ function RitualProductsSlider({
   category,
   products,
 }: {
-  category: (typeof ritualCategorias)[number];
+  category: Ritual;
   products: Product[];
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -343,7 +324,7 @@ function RitualProductsSlider({
           <h3 className="font-display text-xl md:text-2xl text-bodyoga-green truncate">
             {category.title}
           </h3>
-          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.desc}</p>
+          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.description}</p>
         </div>
         {products.length > 0 && (
           <div className="hidden md:flex gap-2 shrink-0 ml-4">
