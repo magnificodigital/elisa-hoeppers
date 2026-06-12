@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import {
   Leaf,
   Sparkles,
@@ -18,6 +19,9 @@ import { BodyogaFooter } from "@/components/bodyoga/BodyogaFooter";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import { listProducts, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 import heroBg from "@/assets/bodyoga/hero-combined-v2.jpg";
+import ritualCorpo from "@/assets/bodyoga/ritual-corpo.jpg";
+import ritualMente from "@/assets/bodyoga/ritual-mente.jpg";
+import ritualAmbiente from "@/assets/bodyoga/ritual-ambiente.jpg";
 
 export const Route = createFileRoute("/bodyoga/")({
   head: () => ({
@@ -107,8 +111,12 @@ function BodyogaLanding() {
         </div>
       </section>
 
+      {/* RITUAIS POR CATEGORIA */}
+      <RitualCategories products={bodyogaProducts} />
+
       {/* MARCA */}
       <section className="bg-bodyoga-green text-bodyoga-cream">
+
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-cream/10 order-2 md:order-1">
             <img
@@ -265,6 +273,132 @@ function BodyogaLanding() {
     </div>
   );
 }
+
+const ritualCategorias = [
+  {
+    id: "corpo",
+    title: "Rituais do Corpo",
+    desc: "Cuidado e presença no gesto de cuidar da pele e do toque.",
+    image: ritualCorpo,
+    match: (p: Product) =>
+      /sabonete|antisseptico|antisséptico|banho|corpo|mao|mão/i.test(
+        `${p.slug} ${p.name}`,
+      ),
+  },
+  {
+    id: "mente",
+    title: "Rituais da Mente",
+    desc: "Aromas que acalmam, equilibram e trazem foco e tranquilidade.",
+    image: ritualMente,
+    match: (p: Product) =>
+      /medita|mente|calma|foco|lavanda/i.test(`${p.slug} ${p.name}`),
+  },
+  {
+    id: "ambiente",
+    title: "Rituais do Ambiente",
+    desc: "Sprays aromáticos que harmonizam e perfumam cada espaço.",
+    image: ritualAmbiente,
+    match: (p: Product) =>
+      /aromatico|aromático|ambiente|spray-aromatico/i.test(
+        `${p.slug} ${p.name}`,
+      ),
+  },
+];
+
+function RitualCategories({ products }: { products: Product[] }) {
+  const [active, setActive] = useState<string | null>(null);
+
+  const activeCat = ritualCategorias.find((c) => c.id === active) ?? null;
+  const activeProducts = activeCat
+    ? products.filter((p) => activeCat.match(p))
+    : [];
+
+  return (
+    <section className="bg-bodyoga-cream">
+      <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">
+            Explore por intenção
+          </span>
+          <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
+            Rituais para corpo, mente e ambiente
+          </h2>
+          <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
+            Escolha uma categoria para descobrir os produtos de cada ritual.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          {ritualCategorias.map((c) => {
+            const isActive = c.id === active;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setActive(isActive ? null : c.id)}
+                className={`group relative aspect-[3/4] overflow-hidden rounded-2xl text-left transition focus:outline-none ${
+                  isActive ? "ring-2 ring-bodyoga-green ring-offset-2 ring-offset-bodyoga-cream" : ""
+                }`}
+              >
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  width={768}
+                  height={1024}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-6 text-bodyoga-cream">
+                  <h3 className="font-display text-xl md:text-2xl">{c.title}</h3>
+                  <p className="mt-2 text-sm text-bodyoga-cream/85 leading-relaxed">
+                    {c.desc}
+                  </p>
+                  <span className="inline-flex items-center gap-2 mt-4 text-xs uppercase tracking-[0.18em]">
+                    {isActive ? "Fechar" : "Ver produtos"}
+                    <ArrowRight
+                      className={`w-3.5 h-3.5 transition-transform ${isActive ? "rotate-90" : ""}`}
+                    />
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {activeCat && (
+          <div className="mt-12">
+            <h3 className="font-display text-2xl text-bodyoga-green text-center mb-8">
+              {activeCat.title}
+            </h3>
+            {activeProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                {activeProducts.map((p) => (
+                  <BodyogaProductCard key={p.slug} product={p} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center">
+                <p className="text-bodyoga-green/70">
+                  Em breve novos produtos para este ritual.
+                </p>
+                <Link
+                  to="/loja"
+                  search={{ brand: "bodyoga" }}
+                  className="inline-flex items-center gap-2 mt-6 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
+                >
+                  Ver linha completa <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+
 
 function BodyogaProductCard({ product }: { product: Product }) {
   const img = firstImage(product);
