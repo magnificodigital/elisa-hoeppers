@@ -79,7 +79,7 @@ function BodyogaLanding() {
         <div className="absolute inset-x-0 bottom-0 h-24 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
         <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-start min-h-[85vh]">
           <div className="relative max-w-xl">
-            <div className="absolute -inset-x-10 -inset-y-8 backdrop-blur-md [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_85%)] pointer-events-none" />
+            <div className="absolute -inset-x-10 -inset-y-8 backdrop-blur-md bg-[#E6DAC5]/60 [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_85%)] pointer-events-none" />
             <div className="relative">
             <h1 className="font-display text-4xl md:text-5xl leading-tight text-bodyoga-green">
               <span className="whitespace-nowrap">Rituais para corpo,</span>
