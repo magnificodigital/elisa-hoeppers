@@ -15,7 +15,7 @@ import {
   PackageOpen,
 } from "lucide-react";
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
-import { BodyogaFooter } from "@/components/bodyoga/BodyogaFooter";
+import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
@@ -225,7 +225,7 @@ function BodyogaLanding() {
       <HomeBlog />
       <HomeInstagram />
 
-      <BodyogaFooter />
+      <Footer />
     </div>
   );
 }
