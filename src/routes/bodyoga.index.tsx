@@ -305,27 +305,7 @@ const ritualCategorias = [
   },
 ];
 
-const ritualSymbols: Record<string, React.ReactNode> = {
-  corpo: (
-    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="50" cy="28" r="9" />
-      <path d="M50 40 C40 48 38 58 50 66 C62 58 60 48 50 40 Z" />
-      <path d="M22 66 C32 60 44 64 50 67 C56 64 68 60 78 66" />
-    </svg>
-  ),
-  mente: (
-    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M50 50 m0 0 a4 4 0 1 1 0.1 0 M50 50 a10 10 0 1 1 -7 17 a18 18 0 1 0 22 -30" />
-      <circle cx="33" cy="40" r="2" fill="currentColor" stroke="none" />
-    </svg>
-  ),
-  ambiente: (
-    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 44 C34 34 46 50 58 44 C68 39 74 42 78 46" />
-      <path d="M22 58 C34 48 46 64 58 58 C68 53 74 56 78 60" />
-    </svg>
-  ),
-};
+
 
 function RitualCategories({ products }: { products: Product[] }) {
   const [active, setActive] = useState<string | null>(null);
