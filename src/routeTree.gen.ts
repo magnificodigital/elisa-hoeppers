@@ -61,6 +61,7 @@ import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin
 import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
 import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
 import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
+import { Route as AdminBodyogaRituaisIdRouteImport } from './routes/admin/bodyoga-rituais/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
@@ -333,6 +334,11 @@ const AdminConfiguracoesDiagnosticosRoute =
     path: '/admin/configuracoes/diagnosticos',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminBodyogaRituaisIdRoute = AdminBodyogaRituaisIdRouteImport.update({
+  id: '/admin/bodyoga-rituais/$id',
+  path: '/admin/bodyoga-rituais/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   id: '/admin/blog/$id',
   path: '/admin/blog/$id',
@@ -397,6 +403,7 @@ export interface FileRoutesByFullPath {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
@@ -454,6 +461,7 @@ export interface FileRoutesByTo {
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
@@ -513,6 +521,7 @@ export interface FileRoutesById {
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
+  '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
@@ -573,6 +582,7 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/bodyoga-rituais/$id'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
@@ -630,6 +640,7 @@ export interface FileRouteTypes {
     | '/loja'
     | '/painel'
     | '/admin/blog/$id'
+    | '/admin/bodyoga-rituais/$id'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
@@ -688,6 +699,7 @@ export interface FileRouteTypes {
     | '/loja/'
     | '/painel/'
     | '/admin/blog/$id'
+    | '/admin/bodyoga-rituais/$id'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
@@ -746,6 +758,7 @@ export interface RootRouteChildren {
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
   AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminBodyogaRituaisIdRoute: typeof AdminBodyogaRituaisIdRoute
   AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
   AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
   AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
@@ -1128,6 +1141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesDiagnosticosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/bodyoga-rituais/$id': {
+      id: '/admin/bodyoga-rituais/$id'
+      path: '/admin/bodyoga-rituais/$id'
+      fullPath: '/admin/bodyoga-rituais/$id'
+      preLoaderRoute: typeof AdminBodyogaRituaisIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/$id': {
       id: '/admin/blog/$id'
       path: '/admin/blog/$id'
@@ -1222,6 +1242,7 @@ const rootRouteChildren: RootRouteChildren = {
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
   AdminBlogIdRoute: AdminBlogIdRoute,
+  AdminBodyogaRituaisIdRoute: AdminBodyogaRituaisIdRoute,
   AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
   AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
   AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,

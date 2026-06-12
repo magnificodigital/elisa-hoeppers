@@ -12,6 +12,7 @@ import {
   Mail,
   Newspaper,
   Settings,
+  Sparkles,
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
