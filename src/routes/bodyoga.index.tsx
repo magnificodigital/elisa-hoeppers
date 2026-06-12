@@ -113,58 +113,58 @@ function BodyogaLanding() {
 
       {/* INTRO ELISA HOEPPERS */}
       <section className="bg-bodyoga-cream overflow-hidden">
-        <div className="w-full relative flex flex-col md:flex-row items-stretch justify-between min-h-[500px] md:min-h-[620px]">
-          {/* Foto lateral esquerda - Elisa */}
-          <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-[27%] lg:w-[29%] aspect-[3/4]">
-            <img
-              src="/images/home/bodyoga/bodyoga-left.png"
-              alt="Elisa Hoeppers com os pesinhos BODYOGA"
-              className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
+        <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
+            {/* Composição de imagens */}
+            <div className="md:col-span-6 relative">
+              <div className="aspect-[4/5] w-full overflow-hidden bg-bodyoga-green/5">
+                <img
+                  src="/images/home/bodyoga/bodyoga-left.png"
+                  alt="Elisa Hoeppers com os pesinhos BODYOGA"
+                  className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              {/* Detalhe sobreposto */}
+              <div className="absolute -bottom-8 -right-4 md:-right-10 w-1/2 aspect-square shadow-xl border-[12px] md:border-[16px] border-bodyoga-cream z-10">
+                <img
+                  src="/images/home/bodyoga/bodyoga-right.png"
+                  alt="Pesinhos BODYOGA"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
 
-          {/* Conteúdo central */}
-          <div className="flex-1 flex flex-col items-center text-center px-8 md:px-12 z-10 mx-auto max-w-xl py-16 md:py-24">
-            <p className="text-bodyoga-green/80 text-sm md:text-base leading-relaxed mb-6">
-              BODYOGA é a fusão entre yoga e cuidado consciente. Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.
-            </p>
-            <p className="text-bodyoga-green/80 text-sm md:text-base leading-relaxed">
-              Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.
-            </p>
-          </div>
+            {/* Conteúdo de texto */}
+            <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
+                BODYOGA é a fusão entre <span className="italic">yoga</span> e cuidado consciente.
+              </h2>
 
-          {/* Imagens mobile */}
-          <div className="md:hidden flex w-full gap-2 mt-4 px-4 pb-10">
-            <img
-              src="/images/home/bodyoga/bodyoga-left.png"
-              className="w-1/2 aspect-[3/4] object-cover rounded-sm"
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="/images/home/bodyoga/bodyoga-right.png"
-              className="w-1/2 aspect-[3/4] object-cover rounded-sm"
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
+              <div className="space-y-6 max-w-md">
+                <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed">
+                  Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.
+                </p>
+                <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide">
+                  Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.
+                </p>
+              </div>
 
-          {/* Foto lateral direita - pesinhos */}
-          <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[27%] lg:w-[29%] aspect-[3/4]">
-            <img
-              src="/images/home/bodyoga/bodyoga-right.png"
-              alt="Pesinhos BODYOGA"
-              className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
+              <div>
+                <div className="inline-block px-7 py-4 border border-bodyoga-green/20">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green font-semibold">
+                    Harmonia &amp; Equilíbrio
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
 
       {/* RITUAIS POR CATEGORIA */}
       <RitualCategories products={bodyogaProducts} />
