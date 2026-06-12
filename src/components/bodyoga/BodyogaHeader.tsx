@@ -1,12 +1,22 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, User } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 
+const CREAM = "#FEF2D4";
+
 export function BodyogaHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navItems = [
     { to: "/bodyoga/sobre" as const, label: "Sobre" },
@@ -17,8 +27,16 @@ export function BodyogaHeader() {
   const leftItems = navItems.slice(0, 2);
   const rightItems = navItems.slice(2);
 
+  const linkStyle = scrolled ? { color: CREAM } : undefined;
+  const linkClass = scrolled
+    ? "text-xs font-medium uppercase tracking-[0.18em] hover:opacity-70 transition"
+    : "text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition";
+
   return (
-    <header className="fixed top-0 inset-x-0 z-40">
+    <header
+      className="fixed top-0 inset-x-0 z-40 transition-colors duration-300"
+      style={scrolled ? { backgroundColor: "var(--bodyoga-green)" } : undefined}
+    >
       <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-24">
 
         {/* Left nav */}
@@ -28,7 +46,8 @@ export function BodyogaHeader() {
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className={linkClass}
+              style={linkStyle}
             >
               {item.label}
             </Link>
@@ -40,7 +59,7 @@ export function BodyogaHeader() {
           to="/bodyoga"
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
-          <BodyogaLogo variant="full" size={60} tone="green" />
+          <BodyogaLogo variant="full" size={60} tone={scrolled ? "cream" : "green"} />
         </Link>
 
         {/* Right nav */}
@@ -50,7 +69,8 @@ export function BodyogaHeader() {
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className={linkClass}
+              style={linkStyle}
             >
               {item.label}
             </Link>
@@ -58,7 +78,8 @@ export function BodyogaHeader() {
           {user ? (
             <Link
               to="/painel"
-              className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className={`inline-flex items-center gap-1.5 ${linkClass}`}
+              style={linkStyle}
             >
               <User className="w-4 h-4" />
               Painel
@@ -66,9 +87,14 @@ export function BodyogaHeader() {
           ) : (
             <Link
               to="/login"
-              className="text-xs uppercase tracking-[0.18em] px-5 py-2 rounded-full border border-bodyoga-green text-bodyoga-green hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+              className="text-xs font-medium uppercase tracking-[0.18em] px-5 py-2 rounded-full border transition"
+              style={
+                scrolled
+                  ? { color: CREAM, borderColor: CREAM }
+                  : undefined
+              }
             >
-              Inscreva-se
+              <span className={scrolled ? "" : "text-bodyoga-green"}>Inscreva-se</span>
             </Link>
           )}
         </nav>
@@ -76,7 +102,8 @@ export function BodyogaHeader() {
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-bodyoga-green"
+          className="md:hidden"
+          style={scrolled ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
