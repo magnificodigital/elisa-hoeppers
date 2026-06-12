@@ -185,6 +185,14 @@ function ProductEditPage() {
               </Field>
             </div>
 
+            <Field label="Ritual BODYOGA (em qual ritual este produto aparece)">
+              <select value={form.ritual_id} onChange={(e) => setForm({ ...form, ritual_id: e.target.value })} className={inputCls}>
+                <option value="">— nenhum ritual —</option>
+                {(rituals ?? []).map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
+              </select>
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Define onde o produto aparece na página BODYOGA. Gerencie os rituais em Admin → Rituais.</p>
+            </Field>
+
             <div className="flex flex-wrap gap-4 pt-2">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
