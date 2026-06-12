@@ -5,7 +5,7 @@ import { ChevronLeft, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ImageUploader } from "@/components/ImageUploader";
-import { getProductForAdmin, updateProduct, deleteProduct, type ProductImage } from "@/lib/shop";
+import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
