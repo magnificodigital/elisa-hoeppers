@@ -332,20 +332,34 @@ function RitualCategories({ products }: { products: Product[] }) {
 
   return (
     <section className="bg-bodyoga-cream">
-      <div className="flex flex-col md:flex-row md:h-[600px]">
+      <div
+        className="flex flex-col md:flex-row md:h-[640px]"
+        onMouseLeave={() => setActive(null)}
+      >
         {ritualCategorias.map((c) => {
           const isActive = c.id === active;
+          const hidden = active !== null && !isActive;
           const catProducts = products.filter((p) => c.match(p));
           return (
             <div
               key={c.id}
-              className="flex flex-col md:flex-row min-w-0 transition-[flex-grow] duration-500 ease-out"
-              style={{ flexGrow: active ? (isActive ? 1.1 : 0.55) : 1, flexBasis: 0 }}
+              onMouseEnter={() => setActive(c.id)}
+              className="relative flex min-w-0 overflow-hidden transition-all duration-700 ease-out"
+              style={{
+                flexGrow: hidden ? 0 : 1,
+                flexBasis: 0,
+                width: hidden ? 0 : undefined,
+                opacity: hidden ? 0 : 1,
+              }}
             >
-              <button
-                type="button"
-                onClick={() => setActive(isActive ? null : c.id)}
-                className="group relative h-[420px] md:h-full w-full md:w-auto md:flex-1 md:min-w-[180px] overflow-hidden text-center focus:outline-none"
+              {/* Imagem + título do ritual */}
+              <div
+                className="group relative h-[420px] md:h-full overflow-hidden text-center shrink-0 transition-all duration-700 ease-out"
+                style={{
+                  width: isActive ? "clamp(260px, 32%, 420px)" : "100%",
+                  flexBasis: isActive ? "clamp(260px, 32%, 420px)" : "auto",
+                  flexGrow: isActive ? 0 : 1,
+                }}
               >
                 <img
                   src={c.image}
@@ -355,7 +369,7 @@ function RitualCategories({ products }: { products: Product[] }) {
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className={`absolute inset-0 bg-black/30 transition-colors ${isActive ? "bg-black/50" : "group-hover:bg-black/40"}`} />
+                <div className={`absolute inset-0 bg-black/30 transition-colors ${isActive ? "bg-black/45" : "group-hover:bg-black/40"}`} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-bodyoga-cream">
                   <div className="w-16 h-16 md:w-20 md:h-20 mb-7 text-bodyoga-cream/95">
                     {ritualSymbols[c.id]}
@@ -363,17 +377,15 @@ function RitualCategories({ products }: { products: Product[] }) {
                   <h3 className="font-display text-xl md:text-2xl uppercase tracking-[0.28em] leading-relaxed">
                     {c.title}
                   </h3>
-                  <span className="inline-flex items-center gap-2 mt-6 text-[11px] uppercase tracking-[0.22em] opacity-90">
-                    {isActive ? "Fechar" : "Ver produtos"}
-                    <ArrowRight
-                      className={`w-3.5 h-3.5 transition-transform ${isActive ? "rotate-90" : ""}`}
-                    />
+                  <span className="inline-flex items-center gap-2 mt-6 h-3 w-3">
+                    <span className="block w-1 h-1 rounded-full bg-bodyoga-cream/70" />
                   </span>
                 </div>
-              </button>
+              </div>
 
+              {/* Produtos do ritual (abre ao passar o mouse) */}
               {isActive && (
-                <div className="w-full md:w-auto md:flex-[2.2] md:min-w-0 bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500">
+                <div className="flex-1 min-w-0 bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500">
                   <RitualProductsSlider category={c} products={catProducts} />
                 </div>
               )}
