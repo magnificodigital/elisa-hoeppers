@@ -28,7 +28,7 @@ export function BodyogaHeader() {
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-xs uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className="text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
             >
               {item.label}
             </Link>
@@ -50,7 +50,7 @@ export function BodyogaHeader() {
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-xs uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className="text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
             >
               {item.label}
             </Link>
@@ -58,7 +58,7 @@ export function BodyogaHeader() {
           {user ? (
             <Link
               to="/painel"
-              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
             >
               <User className="w-4 h-4" />
               Painel
