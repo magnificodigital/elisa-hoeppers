@@ -373,10 +373,7 @@ function RitualCategories({ products }: { products: Product[] }) {
               </button>
 
               {isActive && (
-                <div
-                  className="bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500"
-                  style={{ flexGrow: 2.2, flexBasis: 0 }}
-                >
+                <div className="w-full md:w-auto md:flex-[2.2] md:min-w-0 bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500">
                   <RitualProductsSlider category={c} products={catProducts} />
                 </div>
               )}
