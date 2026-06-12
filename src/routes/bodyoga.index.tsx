@@ -222,6 +222,8 @@ function BodyogaLanding() {
 
 
 
+      <HomeBlog />
+      <HomeInstagram />
 
       <BodyogaFooter />
     </div>
