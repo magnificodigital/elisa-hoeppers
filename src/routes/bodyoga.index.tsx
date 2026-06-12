@@ -369,19 +369,9 @@ function RitualCategories({ products }: { products: Product[] }) {
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className={`absolute inset-0 bg-black/30 transition-colors ${isActive ? "bg-black/45" : "group-hover:bg-black/40"}`} />
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-bodyoga-cream">
-                  <div className="w-16 h-16 md:w-20 md:h-20 mb-7 text-bodyoga-cream/95">
-                    {ritualSymbols[c.id]}
-                  </div>
-                  <h3 className="font-display text-xl md:text-2xl uppercase tracking-[0.28em] leading-relaxed">
-                    {c.title}
-                  </h3>
-                  <span className="inline-flex items-center gap-2 mt-6 h-3 w-3">
-                    <span className="block w-1 h-1 rounded-full bg-bodyoga-cream/70" />
-                  </span>
-                </div>
+                <div className={`absolute inset-0 transition-colors ${isActive ? "bg-black/15" : "bg-black/0 group-hover:bg-black/15"}`} />
               </div>
+
 
               {/* Produtos do ritual (abre ao passar o mouse) */}
               {isActive && (
