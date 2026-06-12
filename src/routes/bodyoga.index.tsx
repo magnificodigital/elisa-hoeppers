@@ -170,7 +170,9 @@ function BodyogaLanding() {
 
 
       {/* RITUAIS POR CATEGORIA */}
-      <RitualCategories products={bodyogaProducts} />
+      {(rituals ?? []).length > 0 && (
+        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
+      )}
 
 
 
