@@ -19,7 +19,7 @@ export function BodyogaHeader() {
   }, []);
 
   const navItems = [
-    { to: "/bodyoga/sobre" as const, label: "Sobre" },
+    { to: "/sobre" as const, label: "Sobre" },
     { to: "/loja" as const, search: { brand: "bodyoga" }, label: "Shop" },
     { to: "/blog" as const, search: { tag: "bodyoga" }, label: "Dicas" },
   ];
