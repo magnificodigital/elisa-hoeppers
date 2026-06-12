@@ -115,23 +115,13 @@ function BodyogaLanding() {
       <section className="bg-bodyoga-cream overflow-hidden">
         <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
-            {/* Composição de imagens */}
+            {/* Imagem da Elisa */}
             <div className="md:col-span-6 relative">
-              <div className="aspect-[4/5] w-full overflow-hidden bg-bodyoga-green/5">
+              <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
                 <img
                   src="/images/home/bodyoga/bodyoga-left.png"
                   alt="Elisa Hoeppers com os pesinhos BODYOGA"
                   className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              {/* Detalhe sobreposto */}
-              <div className="absolute -bottom-8 -right-4 md:-right-10 w-1/2 aspect-square shadow-xl border-[12px] md:border-[16px] border-bodyoga-cream z-10">
-                <img
-                  src="/images/home/bodyoga/bodyoga-right.png"
-                  alt="Pesinhos BODYOGA"
-                  className="w-full h-full object-cover"
                   loading="lazy"
                   decoding="async"
                 />
@@ -154,7 +144,7 @@ function BodyogaLanding() {
               </div>
 
               <div>
-                <div className="inline-block px-7 py-4 border border-bodyoga-green/20">
+                <div className="inline-block px-7 py-4 rounded-full border border-bodyoga-green/20">
                   <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green font-semibold">
                     Harmonia &amp; Equilíbrio
                   </span>
