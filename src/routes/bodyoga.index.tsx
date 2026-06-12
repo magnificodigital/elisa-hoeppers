@@ -345,7 +345,7 @@ function RitualCategories({ products }: { products: Product[] }) {
               <button
                 type="button"
                 onClick={() => setActive(isActive ? null : c.id)}
-                className="group relative h-[420px] md:h-full w-full md:min-w-[220px] overflow-hidden text-center focus:outline-none"
+                className="group relative h-[420px] md:h-full w-full md:w-auto md:flex-1 md:min-w-[180px] overflow-hidden text-center focus:outline-none"
               >
                 <img
                   src={c.image}
