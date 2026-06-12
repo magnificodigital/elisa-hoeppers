@@ -220,68 +220,6 @@ function BodyogaLanding() {
 
 
 
-      {/* AROMATERAPIA */}
-      <section className="bg-bodyoga-brown/15">
-        <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
-          <div className="text-center max-w-2xl mx-auto">
-            <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">Aromaterapia</span>
-            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
-              Óleos essenciais que cuidam
-            </h2>
-            <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
-              Os 4 aromas que compõem nossos rituais — cada um com sua própria intenção e benefício.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
-            {aromas.map((a) => {
-              const Icon = a.icon;
-              return (
-                <div key={a.name} className="bg-bodyoga-cream rounded-2xl p-8 text-center">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-bodyoga-green/10 flex items-center justify-center mb-5">
-                    <Icon className="w-6 h-6 text-bodyoga-green" />
-                  </div>
-                  <h3 className="font-display text-lg text-bodyoga-green">{a.name}</h3>
-                  <p className="mt-2 text-sm text-bodyoga-green/70 leading-relaxed">{a.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ELISA */}
-      <section className="bg-bodyoga-cream">
-        <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-green/10">
-            <img
-              src="/images/bodyoga/elisa.jpg"
-              alt="Elisa Hoeppers Casas"
-              className="w-full h-full object-cover"
-              onError={hideOnError}
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">Criado à mão por</span>
-            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
-              Elisa Hoeppers Casas
-            </h2>
-            <p className="mt-6 text-bodyoga-green/80 leading-relaxed">
-              Professora de yoga e fundadora do BODYOGA. Há 18 anos no caminho do yoga, dedicada a unir tradição ancestral e cuidado contemporâneo.
-            </p>
-            <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
-              Os produtos BODYOGA nasceram da própria prática — feitos em pequenos lotes, com a mesma atenção que ela dedica a cada aula.
-            </p>
-            <Link
-              to="/bio"
-              className="inline-flex items-center gap-2 mt-8 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
-            >
-              Conhecer Elisa <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
 
       <BodyogaFooter />
     </div>
