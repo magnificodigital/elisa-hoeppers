@@ -89,17 +89,18 @@ function BodyogaLanding() {
             <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 leading-relaxed">
               <span className="whitespace-nowrap">Cosméticos naturais artesanais com óleos essenciais.</span>
               <br />
-              <span className="whitespace-nowrap">Criados à mão por <strong className="font-bold">Elisa Hoeppers Casas</strong>,</span>
+              <span className="whitespace-nowrap">Criados à mão por <strong className="font-bold">Elisa Hoeppers Casas</strong>, no encontro</span>
               <br />
-              <span className="whitespace-nowrap">no encontro entre o yoga e o cuidado natural.</span>
+              <span className="whitespace-nowrap">entre o yoga e o cuidado natural.</span>
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a
                 href="#produtos"
-                className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm uppercase tracking-[0.18em] hover:bg-bodyoga-brown transition"
+                className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
               >
                 Conhecer rituais
               </a>
+
             </div>
           </div>
         </div>
