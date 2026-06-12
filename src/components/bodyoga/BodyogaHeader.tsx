@@ -18,8 +18,7 @@ export function BodyogaHeader() {
   const rightItems = navItems.slice(2);
 
   return (
-    <header className="sticky top-0 z-40">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#FCEDCF] via-[#FCEDCF]/60 to-transparent" />
+    <header className="fixed top-0 inset-x-0 z-40">
       <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-24">
 
         {/* Left nav */}
@@ -29,7 +28,7 @@ export function BodyogaHeader() {
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-xs uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className="text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
             >
               {item.label}
             </Link>
@@ -51,7 +50,7 @@ export function BodyogaHeader() {
               key={item.label}
               to={item.to}
               search={item.search}
-              className="text-xs uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className="text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
             >
               {item.label}
             </Link>
@@ -59,7 +58,7 @@ export function BodyogaHeader() {
           {user ? (
             <Link
               to="/painel"
-              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
+              className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition"
             >
               <User className="w-4 h-4" />
               Painel
