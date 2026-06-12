@@ -119,23 +119,23 @@ export function BodyogaHeader() {
               {item.label}
             </Link>
           ))}
-          {user ? (
-            <Link
-              to="/painel"
-              onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
-            >
-              Painel
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              onClick={() => setOpen(false)}
-              className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
-            >
-              Inscreva-se
-            </Link>
-          )}
+          <Link
+            to={user ? "/painel" : "/login"}
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-base uppercase tracking-[0.18em] text-bodyoga-green"
+          >
+            <User className="w-5 h-5" />
+            {user ? "Painel" : "Conta"}
+          </Link>
+          <Link
+            to="/carrinho"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-base uppercase tracking-[0.18em] text-bodyoga-green"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            Carrinho
+          </Link>
+
         </div>
       )}
     </header>
