@@ -243,40 +243,7 @@ function BodyogaLanding() {
   );
 }
 
-const ritualCategorias = [
-  {
-    id: "corpo",
-    title: "Rituais do Corpo",
-    desc: "Cuidado e presença no gesto de cuidar da pele e do toque.",
-    image: ritualCorpo,
-    match: (p: Product) =>
-      /sabonete|antisseptico|antisséptico|banho|corpo|mao|mão/i.test(
-        `${p.slug} ${p.name}`,
-      ),
-  },
-  {
-    id: "mente",
-    title: "Rituais da Mente",
-    desc: "Aromas que acalmam, equilibram e trazem foco e tranquilidade.",
-    image: ritualMente,
-    match: (p: Product) =>
-      /medita|mente|calma|foco|lavanda/i.test(`${p.slug} ${p.name}`),
-  },
-  {
-    id: "ambiente",
-    title: "Rituais do Ambiente",
-    desc: "Sprays aromáticos que harmonizam e perfumam cada espaço.",
-    image: ritualAmbiente,
-    match: (p: Product) =>
-      /aromatico|aromático|ambiente|spray-aromatico/i.test(
-        `${p.slug} ${p.name}`,
-      ),
-  },
-];
-
-
-
-function RitualCategories({ products }: { products: Product[] }) {
+function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: Product[] }) {
   const [active, setActive] = useState<string | null>(null);
 
   return (
@@ -285,10 +252,11 @@ function RitualCategories({ products }: { products: Product[] }) {
         className="flex flex-col md:flex-row md:h-[640px]"
         onMouseLeave={() => setActive(null)}
       >
-        {ritualCategorias.map((c) => {
+        {rituals.map((c) => {
           const isActive = c.id === active;
           const hidden = active !== null && !isActive;
-          const catProducts = products.filter((p) => c.match(p));
+          const catProducts = products.filter((p) => p.ritual_id === c.id);
+          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
           return (
             <div
               key={c.id}
@@ -311,7 +279,7 @@ function RitualCategories({ products }: { products: Product[] }) {
                 }}
               >
                 <img
-                  src={c.image}
+                  src={image}
                   alt={c.title}
                   width={768}
                   height={1024}
@@ -340,7 +308,7 @@ function RitualProductsSlider({
   category,
   products,
 }: {
-  category: (typeof ritualCategorias)[number];
+  category: Ritual;
   products: Product[];
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
