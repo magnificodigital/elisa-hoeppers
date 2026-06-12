@@ -92,6 +92,7 @@ function ProductEditPage() {
       is_active: form.is_active,
       is_featured: form.is_featured,
       category: form.category || null,
+      ritual_id: form.ritual_id || null,
       display_order: form.display_order,
       gallery: form.gallery,
       weight_g: form.weight_g === "" ? null : Number(form.weight_g),
