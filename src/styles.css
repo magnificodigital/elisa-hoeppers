@@ -173,3 +173,17 @@
 .bodyoga-scope .divider {
   border-color: rgba(168, 140, 112, 0.25);
 }
+
+/* Footer logo swap animation */
+@keyframes logoSwapA {
+  0%, 42% { opacity: 1; }
+  50%, 92% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes logoSwapB {
+  0%, 42% { opacity: 0; }
+  50%, 92% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.footer-logo-a { animation: logoSwapA 7s ease-in-out infinite; }
+.footer-logo-b { animation: logoSwapB 7s ease-in-out infinite; }
