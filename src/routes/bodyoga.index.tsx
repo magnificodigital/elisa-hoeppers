@@ -330,95 +330,132 @@ const ritualSymbols: Record<string, React.ReactNode> = {
 function RitualCategories({ products }: { products: Product[] }) {
   const [active, setActive] = useState<string | null>(null);
 
-  const activeCat = ritualCategorias.find((c) => c.id === active) ?? null;
-  const activeProducts = activeCat
-    ? products.filter((p) => activeCat.match(p))
-    : [];
-
   return (
     <section className="bg-bodyoga-cream">
-      <div className="text-center max-w-2xl mx-auto px-4 pt-20 md:pt-28 mb-14">
-        <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">
-          Explore por intenção
-        </span>
-        <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
-          Rituais para corpo, mente e ambiente
-        </h2>
-        <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
-          Escolha uma categoria para descobrir os produtos de cada ritual.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3">
+      <div className="flex flex-col md:flex-row md:h-[600px]">
         {ritualCategorias.map((c) => {
           const isActive = c.id === active;
+          const catProducts = products.filter((p) => c.match(p));
           return (
-            <button
+            <div
               key={c.id}
-              type="button"
-              onClick={() => setActive(isActive ? null : c.id)}
-              className="group relative aspect-[3/4] md:aspect-[3/5] overflow-hidden text-center focus:outline-none"
+              className="flex flex-col md:flex-row min-w-0 transition-[flex-grow] duration-500 ease-out"
+              style={{ flexGrow: active ? (isActive ? 1.1 : 0.55) : 1, flexBasis: 0 }}
             >
-              <img
-                src={c.image}
-                alt={c.title}
-                width={768}
-                height={1024}
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className={`absolute inset-0 bg-black/30 transition-colors ${isActive ? "bg-black/50" : "group-hover:bg-black/40"}`} />
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-bodyoga-cream">
-                <div className="w-16 h-16 md:w-20 md:h-20 mb-7 text-bodyoga-cream/95">
-                  {ritualSymbols[c.id]}
+              <button
+                type="button"
+                onClick={() => setActive(isActive ? null : c.id)}
+                className="group relative h-[420px] md:h-full w-full md:min-w-[220px] overflow-hidden text-center focus:outline-none"
+              >
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  width={768}
+                  height={1024}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className={`absolute inset-0 bg-black/30 transition-colors ${isActive ? "bg-black/50" : "group-hover:bg-black/40"}`} />
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-bodyoga-cream">
+                  <div className="w-16 h-16 md:w-20 md:h-20 mb-7 text-bodyoga-cream/95">
+                    {ritualSymbols[c.id]}
+                  </div>
+                  <h3 className="font-display text-xl md:text-2xl uppercase tracking-[0.28em] leading-relaxed">
+                    {c.title}
+                  </h3>
+                  <span className="inline-flex items-center gap-2 mt-6 text-[11px] uppercase tracking-[0.22em] opacity-90">
+                    {isActive ? "Fechar" : "Ver produtos"}
+                    <ArrowRight
+                      className={`w-3.5 h-3.5 transition-transform ${isActive ? "rotate-90" : ""}`}
+                    />
+                  </span>
                 </div>
-                <h3 className="font-display text-xl md:text-2xl uppercase tracking-[0.28em] leading-relaxed">
-                  {c.title}
-                </h3>
-                <span className="inline-flex items-center gap-2 mt-6 text-[11px] uppercase tracking-[0.22em] opacity-90">
-                  {isActive ? "Fechar" : "Ver produtos"}
-                  <ArrowRight
-                    className={`w-3.5 h-3.5 transition-transform ${isActive ? "rotate-90" : ""}`}
-                  />
-                </span>
-              </div>
-            </button>
+              </button>
+
+              {isActive && (
+                <div
+                  className="bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500"
+                  style={{ flexGrow: 2.2, flexBasis: 0 }}
+                >
+                  <RitualProductsSlider category={c} products={catProducts} />
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
+    </section>
+  );
+}
 
-      <div className="max-w-[1170px] mx-auto px-4 md:px-6 pb-20 md:pb-28">
-        {!activeCat && <div className="h-0" />}
+function RitualProductsSlider({
+  category,
+  products,
+}: {
+  category: (typeof ritualCategorias)[number];
+  products: Product[];
+}) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
-        {activeCat && (
-          <div className="mt-12">
-            <h3 className="font-display text-2xl text-bodyoga-green text-center mb-8">
-              {activeCat.title}
-            </h3>
-            {activeProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {activeProducts.map((p) => (
-                  <BodyogaProductCard key={p.slug} product={p} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center">
-                <p className="text-bodyoga-green/70">
-                  Em breve novos produtos para este ritual.
-                </p>
-                <Link
-                  to="/loja"
-                  search={{ brand: "bodyoga" }}
-                  className="inline-flex items-center gap-2 mt-6 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
-                >
-                  Ver linha completa <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            )}
+  const scrollBy = (dir: number) => {
+    scrollerRef.current?.scrollBy({ left: dir * 280, behavior: "smooth" });
+  };
+
+  return (
+    <div className="h-full flex flex-col px-5 md:px-8 py-8 md:py-10">
+      <div className="flex items-center justify-between mb-5">
+        <div className="min-w-0">
+          <h3 className="font-display text-xl md:text-2xl text-bodyoga-green truncate">
+            {category.title}
+          </h3>
+          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.desc}</p>
+        </div>
+        {products.length > 0 && (
+          <div className="hidden md:flex gap-2 shrink-0 ml-4">
+            <button
+              type="button"
+              onClick={() => scrollBy(-1)}
+              aria-label="Anterior"
+              className="w-10 h-10 rounded-full border border-bodyoga-green/30 text-bodyoga-green flex items-center justify-center hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollBy(1)}
+              aria-label="Próximo"
+              className="w-10 h-10 rounded-full border border-bodyoga-green/30 text-bodyoga-green flex items-center justify-center hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         )}
       </div>
-    </section>
+
+      {products.length > 0 ? (
+        <div
+          ref={scrollerRef}
+          className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
+        >
+          {products.map((p) => (
+            <div key={p.slug} className="snap-start shrink-0 w-[230px] md:w-[260px]">
+              <BodyogaProductCard product={p} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
+          <p className="text-bodyoga-green/70">Em breve novos produtos para este ritual.</p>
+          <Link
+            to="/loja"
+            search={{ brand: "bodyoga" }}
+            className="inline-flex items-center gap-2 mt-6 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
+          >
+            Ver linha completa <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }
 
