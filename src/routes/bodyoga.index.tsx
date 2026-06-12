@@ -73,6 +73,11 @@ function BodyogaLanding() {
     queryFn: () => listProducts({ onlyInStock: false }),
   });
 
+  const { data: rituals } = useQuery({
+    queryKey: ["bodyoga-rituals-active"],
+    queryFn: listActiveRituals,
+  });
+
   const bodyogaProducts = (products ?? []).filter(
     (p) => (p.brand ?? "").toLowerCase() === "bodyoga",
   );
