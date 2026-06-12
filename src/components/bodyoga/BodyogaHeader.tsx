@@ -21,7 +21,7 @@ export function BodyogaHeader() {
   const navItems = [
     { to: "/sobre" as const, label: "Sobre" },
     { to: "/loja" as const, search: { brand: "bodyoga" }, label: "Shop" },
-    { to: "/blog" as const, search: { tag: "bodyoga" }, label: "Dicas" },
+    { to: "/blog" as const, label: "Dicas" },
   ];
 
   const leftItems = navItems.slice(0, 2);
