@@ -18,7 +18,7 @@ import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import { BodyogaFooter } from "@/components/bodyoga/BodyogaFooter";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import { listProducts, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
-import heroBg from "@/assets/bodyoga/hero-combined-v2.jpg";
+import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
 import ritualCorpo from "@/assets/bodyoga/ritual-corpo.jpg";
 import ritualMente from "@/assets/bodyoga/ritual-mente.jpg";
 import ritualAmbiente from "@/assets/bodyoga/ritual-ambiente.jpg";
