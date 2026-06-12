@@ -21,10 +21,76 @@ export type Product = {
   width_cm: number | null;
   height_cm: number | null;
   brand: string | null;
+  ritual_id: string | null;
 };
 
 const COLS =
-  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand";
+  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
+
+// =================== BODYOGA RITUALS ===================
+export type Ritual = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+  display_order: number;
+  is_active: boolean;
+};
+
+const RITUAL_COLS = "id, slug, title, description, image_url, display_order, is_active";
+
+export async function listActiveRituals(): Promise<Ritual[]> {
+  const { data, error } = await supabase
+    .from("bodyoga_rituals")
+    .select(RITUAL_COLS)
+    .eq("is_active", true)
+    .order("display_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Ritual[];
+}
+
+export async function listAllRitualsForAdmin(): Promise<Ritual[]> {
+  const { data, error } = await supabase
+    .from("bodyoga_rituals")
+    .select(RITUAL_COLS)
+    .order("display_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Ritual[];
+}
+
+export async function getRitualForAdmin(id: string): Promise<Ritual | null> {
+  const { data, error } = await supabase
+    .from("bodyoga_rituals")
+    .select(RITUAL_COLS)
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data as Ritual | null;
+}
+
+export type RitualInsert = Omit<Ritual, "id">;
+export type RitualUpdate = Partial<RitualInsert>;
+
+export async function createRitual(input: RitualInsert): Promise<Ritual> {
+  const { data, error } = await supabase
+    .from("bodyoga_rituals")
+    .insert(input)
+    .select(RITUAL_COLS)
+    .single();
+  if (error) throw error;
+  return data as Ritual;
+}
+
+export async function updateRitual(id: string, patch: RitualUpdate): Promise<void> {
+  const { error } = await supabase.from("bodyoga_rituals").update(patch).eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteRitual(id: string): Promise<void> {
+  const { error } = await supabase.from("bodyoga_rituals").delete().eq("id", id);
+  if (error) throw error;
+}
 
 export async function listProducts(filter?: {
   onlyInStock?: boolean;
