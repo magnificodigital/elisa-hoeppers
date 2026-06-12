@@ -324,7 +324,7 @@ function RitualProductsSlider({
           <h3 className="font-display text-xl md:text-2xl text-bodyoga-green truncate">
             {category.title}
           </h3>
-          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.desc}</p>
+          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.description}</p>
         </div>
         {products.length > 0 && (
           <div className="hidden md:flex gap-2 shrink-0 ml-4">
