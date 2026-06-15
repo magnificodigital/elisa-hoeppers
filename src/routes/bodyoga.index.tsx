@@ -157,11 +157,14 @@ function BodyogaLanding() {
               </div>
 
               <div>
-                <div className="inline-block px-7 py-4 rounded-full border border-bodyoga-green/20">
+                <Link
+                  to="/sobre"
+                  className="inline-block px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green/5 transition-colors"
+                >
                   <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green font-semibold">
                     Harmonia &amp; Equilíbrio
                   </span>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
