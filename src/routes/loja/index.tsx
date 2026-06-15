@@ -23,9 +23,9 @@ export const Route = createFileRoute("/loja/")({
 
 const CATEGORIES = [
   { id: "all", label: "Todos" },
-  { id: "oleos", label: "Óleos essenciais" },
-  { id: "ambiente", label: "Ambiente" },
-  { id: "cuidados", label: "Cuidados" },
+  { id: "oleos", label: "Rituais da Mente" },
+  { id: "ambiente", label: "Rituais da Ambiente" },
+  { id: "cuidados", label: "Rituais da Corpo" },
   { id: "bodyoga", label: "BODYOGA" },
 ];
 
