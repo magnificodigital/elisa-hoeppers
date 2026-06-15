@@ -10,7 +10,7 @@ export const Route = createFileRoute("/loja/")({
   }),
   head: () => ({
     meta: [
-      { title: "Loja — Elisa Hoeppers" },
+      { title: "Shop — Elisa Hoeppers" },
       {
         name: "description",
         content:
@@ -30,7 +30,7 @@ const CATEGORIES = [
 ];
 
 function ShopListing() {
-  const navigate = Route.useNavigate();
+  
   const { brand: brandFilter } = Route.useSearch();
   const [category, setCategory] = useState("all");
   const [showOutOfStock, setShowOutOfStock] = useState(true);
@@ -56,27 +56,15 @@ function ShopListing() {
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[1170px] mx-auto px-4 md:px-6">
           <h1 className="font-display text-4xl md:text-5xl text-primary-dark text-center">
-            Loja
+            Shop
           </h1>
           <p className="text-center text-[var(--text-muted)] mt-3 max-w-xl mx-auto">
             Produtos selecionados pra apoiar sua prática e seu ritual de cuidado.
           </p>
 
-          {brandFilter && (
-            <div className="flex items-center justify-center gap-3 mt-6">
-              <span className="text-sm text-[var(--text-muted)]">Filtrado por marca:</span>
-              <span className="inline-flex items-center gap-2 bg-primary text-white text-xs uppercase tracking-widest px-3 py-1.5 rounded-full">
-                {brandFilter.toUpperCase()}
-                <button
-                  onClick={() => navigate({ search: { brand: undefined } })}
-                  aria-label="Remover filtro"
-                  className="hover:text-white/70"
-                >
-                  ×
-                </button>
-              </span>
-            </div>
-          )}
+
+
+
 
 
           {/* Filtros */}
@@ -135,7 +123,7 @@ function ShopListing() {
                   )}
                   {!p.in_stock && (
                     <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">
-                      Fora De Estoque
+                      Esgotado
                     </span>
                   )}
                 </div>
