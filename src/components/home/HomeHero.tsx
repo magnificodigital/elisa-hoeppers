@@ -63,7 +63,7 @@ const HomeHero = () => {
                 Corpo forte, mente tranquila.
               </p>
               <Link
-                to="/cursos"
+                to="/bodyoga"
                 className="bg-white text-primary-dark px-10 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary-dark hover:text-white transition"
               >
                 SAIBA MAIS
