@@ -30,7 +30,7 @@ const CATEGORIES = [
 ];
 
 function ShopListing() {
-  const navigate = Route.useNavigate();
+  
   const { brand: brandFilter } = Route.useSearch();
   const [category, setCategory] = useState("all");
   const [showOutOfStock, setShowOutOfStock] = useState(true);
