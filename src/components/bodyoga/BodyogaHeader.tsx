@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const CREAM = "#FEF2D4";
 
-export function BodyogaHeader() {
+export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
@@ -18,6 +18,8 @@ export function BodyogaHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const green = scrolled || alwaysGreen;
+
   const navItems = [
     { to: "/sobre" as const, label: "Sobre" },
     { to: "/loja" as const, search: { brand: "bodyoga" }, label: "Shop" },
@@ -27,15 +29,15 @@ export function BodyogaHeader() {
   const leftItems = navItems.slice(0, 2);
   const rightItems = navItems.slice(2);
 
-  const linkStyle = scrolled ? { color: CREAM } : undefined;
-  const linkClass = scrolled
+  const linkStyle = green ? { color: CREAM } : undefined;
+  const linkClass = green
     ? "text-xs font-medium uppercase tracking-[0.18em] hover:opacity-70 transition"
     : "text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition";
 
   return (
     <header
       className="fixed top-0 inset-x-0 z-40 transition-colors duration-300"
-      style={scrolled ? { backgroundColor: "var(--bodyoga-green)" } : undefined}
+      style={green ? { backgroundColor: "var(--bodyoga-green)" } : undefined}
     >
       <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-24">
 
@@ -59,7 +61,7 @@ export function BodyogaHeader() {
           to="/bodyoga"
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
-          <BodyogaLogo variant="full" size={60} tone={scrolled ? "cream" : "green"} />
+          <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} />
         </Link>
 
         {/* Right nav */}
@@ -79,7 +81,7 @@ export function BodyogaHeader() {
             to={user ? "/painel" : "/login"}
             aria-label={user ? "Painel" : "Entrar"}
             className="hover:opacity-70 transition"
-            style={scrolled ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+            style={green ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
           >
             <User className="w-5 h-5" />
           </Link>
@@ -87,7 +89,7 @@ export function BodyogaHeader() {
             to="/carrinho"
             aria-label="Carrinho"
             className="hover:opacity-70 transition"
-            style={scrolled ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+            style={green ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
           >
             <ShoppingCart className="w-5 h-5" />
           </Link>
@@ -98,7 +100,7 @@ export function BodyogaHeader() {
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden"
-          style={scrolled ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+          style={green ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

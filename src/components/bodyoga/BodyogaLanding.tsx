@@ -72,7 +72,7 @@ export function BodyogaLanding() {
 
   return (
     <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
-      <BodyogaHeader />
+      <BodyogaHeader alwaysGreen />
 
       {/* HERO SLIDER */}
       <BodyogaHeroSlider />
