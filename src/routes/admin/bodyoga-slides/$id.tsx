@@ -36,6 +36,7 @@ function SlideEditPage() {
     image_url: "" as string,
     display_order: 0,
     is_active: true,
+    duration_seconds: 7,
   });
   const [delOpen, setDelOpen] = useState(false);
 
