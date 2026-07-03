@@ -25,18 +25,11 @@ export function BodyogaFooter() {
           <div>
             <h4 className="text-sm uppercase tracking-[0.2em] mb-4">Navegação</h4>
             <ul className="space-y-2 text-sm text-bodyoga-cream/80">
-              <li>
-                <Link to="/sobre" className="hover:text-bodyoga-brown transition">Sobre</Link>
-              </li>
-              <li>
-                <Link to="/loja" search={{ brand: "bodyoga" }} className="hover:text-bodyoga-brown transition">Shop</Link>
-              </li>
-              <li>
-                <Link to="/blog" search={{ tag: "bodyoga" }} className="hover:text-bodyoga-brown transition">Dicas</Link>
-              </li>
-              <li>
-                <Link to="/" className="hover:text-bodyoga-brown transition">Site Elisa Hoeppers</Link>
-              </li>
+              {navLinks.map((item) => (
+                <li key={item.id}>
+                  <Link to={item.href} className="hover:text-bodyoga-brown transition">{item.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
