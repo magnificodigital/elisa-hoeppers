@@ -1,6 +1,6 @@
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+
 import { AdminNav } from "@/components/AdminNav";
 import { useRouterState } from "@tanstack/react-router";
 import { ReactNode } from "react";
@@ -33,7 +33,6 @@ const Layout = ({ children, noTopPadding = false, transparentHeader = false }: L
         <main className={`flex-grow ${noTopPadding ? "" : "pt-24"}`}>{children}</main>
       )}
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 };

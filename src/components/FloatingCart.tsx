@@ -8,7 +8,7 @@ export function FloatingCart() {
   return (
     <Link
       to="/carrinho"
-      className="fixed bottom-6 left-6 z-40 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-primary-dark transition"
+      className="fixed bottom-24 right-6 z-50 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-primary-dark transition"
       aria-label="Ver carrinho"
     >
       <ShoppingBag className="w-5 h-5" />
