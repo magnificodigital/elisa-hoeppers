@@ -59,7 +59,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
         </nav>
 
         <Link to="/" className="flex-shrink-0 flex justify-center lg:static absolute left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto">
-          <div className="hidden md:block h-20 md:h-24 w-72">
+          <div className="relative hidden md:block h-20 md:h-24 w-72">
             <img
               src="/images/home/bodyoga/logo-bodyoga.png"
               alt="BODYOGA"
