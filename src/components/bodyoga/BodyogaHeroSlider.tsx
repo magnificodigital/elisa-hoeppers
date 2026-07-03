@@ -130,6 +130,9 @@ export function BodyogaHeroSlider() {
       ? (slides ?? []).map((s) => <CustomSlide key={s.id} slide={s} />)
       : [<DefaultHero key="default" />];
 
+  // Second slide is the presentation video used before.
+  items.splice(1, 0, <VideoSlide key="video" />);
+
   const [index, setIndex] = useState(0);
   const count = items.length;
 
