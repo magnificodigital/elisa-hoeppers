@@ -35,6 +35,7 @@ function SlidesList() {
         image_url: null,
         display_order: order,
         is_active: false,
+        duration_seconds: 7,
       });
     },
     onSuccess: (s) => {

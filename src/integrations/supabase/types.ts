@@ -200,6 +200,7 @@ export type Database = {
           cta_href: string | null
           cta_label: string | null
           display_order: number
+          duration_seconds: number
           id: string
           image_url: string | null
           is_active: boolean
@@ -212,6 +213,7 @@ export type Database = {
           cta_href?: string | null
           cta_label?: string | null
           display_order?: number
+          duration_seconds?: number
           id?: string
           image_url?: string | null
           is_active?: boolean
@@ -224,6 +226,7 @@ export type Database = {
           cta_href?: string | null
           cta_label?: string | null
           display_order?: number
+          duration_seconds?: number
           id?: string
           image_url?: string | null
           is_active?: boolean

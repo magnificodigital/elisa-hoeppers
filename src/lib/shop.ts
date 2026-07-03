@@ -102,9 +102,10 @@ export type Slide = {
   image_url: string | null;
   display_order: number;
   is_active: boolean;
+  duration_seconds: number;
 };
 
-const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, display_order, is_active";
+const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, display_order, is_active, duration_seconds";
 
 export async function listActiveSlides(): Promise<Slide[]> {
   const { data, error } = await supabase

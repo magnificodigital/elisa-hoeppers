@@ -36,6 +36,7 @@ function SlideEditPage() {
     image_url: "" as string,
     display_order: 0,
     is_active: true,
+    duration_seconds: 7,
   });
   const [delOpen, setDelOpen] = useState(false);
 
@@ -49,6 +50,7 @@ function SlideEditPage() {
         image_url: slide.image_url ?? "",
         display_order: slide.display_order,
         is_active: slide.is_active,
+        duration_seconds: slide.duration_seconds ?? 7,
       });
     }
   }, [slide]);
@@ -63,6 +65,7 @@ function SlideEditPage() {
         image_url: form.image_url || null,
         display_order: form.display_order,
         is_active: form.is_active,
+        duration_seconds: form.duration_seconds,
       }),
     onSuccess: () => {
       toast.success("Slide atualizado");
@@ -127,9 +130,15 @@ function SlideEditPage() {
               </Field>
             </div>
 
-            <Field label="Ordem">
-              <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) || 0 })} className={inputCls} />
-            </Field>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label="Ordem">
+                <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) || 0 })} className={inputCls} />
+              </Field>
+              <Field label="Duração na tela (segundos)">
+                <input type="number" min={1} value={form.duration_seconds} onChange={(e) => setForm({ ...form, duration_seconds: Math.max(1, parseInt(e.target.value) || 1) })} className={inputCls} />
+                <p className="text-[10px] text-[var(--text-muted)] mt-1">Tempo que este slide fica visível antes de trocar automaticamente.</p>
+              </Field>
+            </div>
 
             <div>
               <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Imagem de fundo do slide</label>
