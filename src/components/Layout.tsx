@@ -33,7 +33,6 @@ const Layout = ({ children, noTopPadding = false, transparentHeader = false }: L
         <main className={`flex-grow ${noTopPadding ? "" : "pt-24"}`}>{children}</main>
       )}
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 };
