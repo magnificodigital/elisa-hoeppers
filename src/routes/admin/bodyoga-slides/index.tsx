@@ -7,7 +7,7 @@ import { listAllSlidesForAdmin, createSlide } from "@/lib/shop";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/bodyoga-slides/")({
-  head: () => ({ meta: [{ title: "Admin — Slides BODYOGA" }] }),
+  head: () => ({ meta: [{ title: "Admin — Slides" }] }),
   component: () => (
     <AdminGuard>
       <SlidesList />
@@ -49,7 +49,7 @@ function SlidesList() {
       <section className="py-12 md:py-20 bg-[var(--surface-cream)] min-h-screen">
         <div className="container mx-auto px-6 max-w-3xl">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Slides BODYOGA</h1>
+            <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Slides</h1>
             <button
               onClick={() => create.mutate()}
               disabled={create.isPending}

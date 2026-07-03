@@ -97,11 +97,11 @@ export function BodyogaHeroSlider() {
     queryFn: listActiveSlides,
   });
 
-  // Default hero is always the main/first slide; DB slides follow.
-  const items: ReactNode[] = [
-    <DefaultHero key="default" />,
-    ...(slides ?? []).map((s) => <CustomSlide key={s.id} slide={s} />),
-  ];
+  // Render DB slides; fall back to the built-in default hero when there are none.
+  const items: ReactNode[] =
+    (slides ?? []).length > 0
+      ? (slides ?? []).map((s) => <CustomSlide key={s.id} slide={s} />)
+      : [<DefaultHero key="default" />];
 
   const [index, setIndex] = useState(0);
   const count = items.length;
