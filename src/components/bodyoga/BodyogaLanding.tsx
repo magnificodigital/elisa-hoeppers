@@ -55,7 +55,7 @@ function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
   e.currentTarget.style.display = "none";
 }
 
-function BodyogaLanding() {
+export function BodyogaLanding() {
   const { data: products } = useQuery({
     queryKey: ["bodyoga-products"],
     queryFn: () => listProducts({ onlyInStock: false }),
