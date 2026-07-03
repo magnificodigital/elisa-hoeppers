@@ -55,12 +55,7 @@ function ShopListing() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-          <h1 className="font-display text-4xl md:text-5xl text-primary-dark text-center">
-            Shop
-          </h1>
-          <p className="text-center text-[var(--text-muted)] mt-3 max-w-xl mx-auto">
-            Produtos selecionados pra apoiar sua prática e seu ritual de cuidado.
-          </p>
+          <h1 className="sr-only">Shop</h1>
 
 
 
