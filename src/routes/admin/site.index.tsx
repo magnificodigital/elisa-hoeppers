@@ -3,7 +3,7 @@ import { Sparkles, GalleryHorizontal, Menu } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
-export const Route = createFileRoute("/admin/site")({
+export const Route = createFileRoute("/admin/site/")({
   head: () => ({ meta: [{ title: "Admin — Site" }] }),
   component: () => (
     <AdminGuard>
