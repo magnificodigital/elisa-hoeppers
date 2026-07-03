@@ -140,11 +140,11 @@ export function BodyogaLanding() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 mt-16 justify-items-center">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-12 mt-16">
             {beneficios.map((b) => {
               const Icon = b.icon;
               return (
-                <div key={b.title} className="text-center px-2">
+                <div key={b.title} className="text-center px-2 w-40 md:w-56">
                   <div className="w-16 h-16 mx-auto rounded-full border border-bodyoga-green/40 flex items-center justify-center mb-5">
                     <Icon className="w-7 h-7 text-bodyoga-green" strokeWidth={1.5} />
                   </div>
