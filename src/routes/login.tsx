@@ -1,14 +1,15 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
+import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
+import loginBg from "@/assets/bodyoga/login-bg.png.asset.json";
 
 const searchSchema = z.object({ next: z.string().optional() });
 
 export const Route = createFileRoute("/login")({
   validateSearch: searchSchema,
-  head: () => ({ meta: [{ title: "Entrar — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Entrar — BODYOGA" }] }),
   component: LoginPage,
 });
 
@@ -36,48 +37,73 @@ function LoginPage() {
   }
 
   return (
-    <Layout>
-      <section className="py-20 bg-cream min-h-[70vh]">
-        <div className="max-w-md mx-auto px-4">
-          <h1 className="font-display text-3xl text-primary-dark mb-8 text-center">Entrar</h1>
+    <main
+      className="min-h-screen flex items-center justify-center p-4 md:p-8 bg-bodyoga-green bg-cover bg-center relative"
+      style={{ backgroundImage: `url(${loginBg.url})` }}
+    >
+      {/* dark overlay for legibility */}
+      <div className="absolute inset-0 bg-black/45" />
+
+      <div className="relative z-10 w-full max-w-md">
+        <div className="rounded-3xl bg-black/30 backdrop-blur-xl border border-white/15 shadow-2xl p-8 md:p-10">
+          <div className="flex flex-col items-center mb-8">
+            <BodyogaLogo variant="full" tone="cream" size={44} />
+            <p className="mt-4 text-sm text-bodyoga-cream/80 tracking-wide text-center">
+              Bem-vinda de volta ao seu ritual.
+            </p>
+          </div>
+
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm text-primary-dark mb-2">E-mail</label>
+              <label className="block text-xs uppercase tracking-[0.18em] text-bodyoga-cream/70 mb-2">
+                E-mail
+              </label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-border rounded-md px-4 py-3 bg-white text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-full px-5 py-3.5 bg-white/10 text-bodyoga-cream placeholder-bodyoga-cream/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-bodyoga-cream/60 transition"
+                placeholder="seu@email.com"
               />
             </div>
             <div>
-              <label className="block text-sm text-primary-dark mb-2">Senha</label>
+              <label className="block text-xs uppercase tracking-[0.18em] text-bodyoga-cream/70 mb-2">
+                Senha
+              </label>
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-border rounded-md px-4 py-3 bg-white text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-full px-5 py-3.5 bg-white/10 text-bodyoga-cream placeholder-bodyoga-cream/40 border border-white/20 focus:outline-none focus:ring-2 focus:ring-bodyoga-cream/60 transition"
+                placeholder="••••••••"
               />
             </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-300">{error}</p>}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary text-white px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+              className="w-full bg-bodyoga-cream text-bodyoga-green px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-white transition disabled:opacity-60"
             >
               {loading ? "Entrando…" : "Entrar"}
             </button>
           </form>
-          <p className="text-center text-sm text-primary-dark mt-6">
+
+          <p className="text-center text-sm text-bodyoga-cream/80 mt-7">
             Ainda não tem conta?{" "}
-            <Link to="/cadastro-de-alunos" className="underline">
+            <Link to="/cadastro-de-alunos" className="underline hover:text-bodyoga-cream">
               Cadastre-se
             </Link>
           </p>
         </div>
-      </section>
-    </Layout>
+
+        <p className="text-center mt-6">
+          <Link to="/" className="text-xs uppercase tracking-[0.18em] text-bodyoga-cream/70 hover:text-bodyoga-cream transition">
+            ← Voltar ao início
+          </Link>
+        </p>
+      </div>
+    </main>
   );
 }
