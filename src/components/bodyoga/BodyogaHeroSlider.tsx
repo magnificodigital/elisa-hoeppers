@@ -131,10 +131,13 @@ export function BodyogaHeroSlider() {
   });
 
   // Render DB slides; fall back to the built-in default hero when there are none.
+  // A slide with a video_url renders as a video slide; otherwise as a custom slide.
   const dbSlides = slides ?? [];
   const items: ReactNode[] =
     dbSlides.length > 0
-      ? dbSlides.map((s) => <CustomSlide key={s.id} slide={s} />)
+      ? dbSlides.map((s) =>
+          s.video_url ? <VideoSlide key={s.id} slide={s} /> : <CustomSlide key={s.id} slide={s} />,
+        )
       : [<DefaultHero key="default" />];
   // Per-slide durations (seconds) parallel to items.
   const durations: number[] =
@@ -142,9 +145,6 @@ export function BodyogaHeroSlider() {
       ? dbSlides.map((s) => s.duration_seconds ?? 7)
       : [7];
 
-  // Second slide is the presentation video used before (fixed 7s).
-  items.splice(1, 0, <VideoSlide key="video" />);
-  durations.splice(1, 0, 7);
 
   const [index, setIndex] = useState(0);
   const count = items.length;
