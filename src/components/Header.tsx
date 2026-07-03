@@ -7,8 +7,6 @@ interface HeaderProps {
   transparentOnTop?: boolean;
 }
 
-const LOGO_WORDMARK = "/images/logo/logo-wordmark.png";
-const LOGO_ICON = "/images/logo/logo-icon.png";
 
 const Header = ({ transparentOnTop = false }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
