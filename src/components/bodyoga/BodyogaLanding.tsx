@@ -138,10 +138,7 @@ export function BodyogaLanding() {
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
           <div className="text-center max-w-2xl mx-auto">
             <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">Os rituais</span>
-            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">Nossa linha</h2>
-            <p className="mt-4 text-bodyoga-green/80 leading-relaxed">
-              Três rituais para diferentes momentos do dia. Mãos, ambiente e banho — cada um com seu próprio aroma e propósito.
-            </p>
+            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">Rituais para diferentes momentos do dia.</h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-14">
