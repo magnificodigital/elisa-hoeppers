@@ -108,9 +108,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <div className="md:hidden border-t border-bodyoga-green/20 px-4 py-6 space-y-4 bg-bodyoga-cream">
           {navItems.map((item) => (
             <Link
-              key={item.label}
-              to={item.to}
-              search={item.search}
+              key={item.id}
+              to={item.href}
               onClick={() => setOpen(false)}
               className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
             >
