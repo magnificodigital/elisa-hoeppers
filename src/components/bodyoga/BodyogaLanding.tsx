@@ -134,7 +134,7 @@ export function BodyogaLanding() {
       <section className="bg-bodyoga-green text-bodyoga-cream">
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
           <div className="text-center max-w-2xl mx-auto">
-            <span className="text-xs uppercase tracking-[0.3em] text-bodyoga-brown">Por que BODYOGA</span>
+            
             <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-cream">
               Cuidado natural em cada detalhe
             </h2>
