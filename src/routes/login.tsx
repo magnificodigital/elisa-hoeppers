@@ -44,7 +44,7 @@ function LoginPage() {
       style={{ backgroundImage: `url(${loginBg.url})` }}
     >
       {/* green tint overlay to make the photo a bit more opaque */}
-      <div className="absolute inset-0 bg-bodyoga-green/60" />
+      <div className="absolute inset-0" style={{ backgroundColor: "rgba(59, 79, 48, 0.6)" }} />
 
       <div className="relative z-10 w-full max-w-md">
 
