@@ -39,17 +39,17 @@ function LoginPage() {
   return (
     <main className="bodyoga-scope min-h-screen flex items-center justify-center p-4 md:p-8 bg-bodyoga-green relative">
       <div className="relative z-10 w-full max-w-md">
-        <div className="rounded-3xl border border-bodyoga-cream/25 shadow-2xl p-8 md:p-10">
+        <div className="rounded-3xl border border-bodyoga-cream shadow-2xl p-8 md:p-10">
           <div className="flex flex-col items-center mb-8">
             <BodyogaLogo variant="full" tone="cream" size={44} />
-            <p className="mt-4 text-sm text-bodyoga-cream/80 tracking-wide text-center">
+            <p className="mt-4 text-sm text-bodyoga-cream tracking-wide text-center">
               Bem-vinda de volta ao seu ritual.
             </p>
           </div>
 
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs uppercase tracking-[0.18em] text-bodyoga-cream/80 mb-2">
+              <label className="block text-xs uppercase tracking-[0.18em] text-bodyoga-cream mb-2">
                 E-mail
               </label>
               <input
@@ -57,12 +57,12 @@ function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-full px-5 py-3.5 bg-bodyoga-cream/10 text-bodyoga-cream placeholder-bodyoga-cream/40 border border-bodyoga-cream/30 focus:outline-none focus:ring-2 focus:ring-bodyoga-cream/50 transition"
+                className="w-full rounded-full px-5 py-3.5 bg-transparent text-bodyoga-cream border border-bodyoga-cream focus:outline-none focus:ring-2 focus:ring-bodyoga-cream transition"
                 placeholder="seu@email.com"
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-[0.18em] text-bodyoga-cream/80 mb-2">
+              <label className="block text-xs uppercase tracking-[0.18em] text-bodyoga-cream mb-2">
                 Senha
               </label>
               <input
@@ -70,7 +70,7 @@ function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-full px-5 py-3.5 bg-bodyoga-cream/10 text-bodyoga-cream placeholder-bodyoga-cream/40 border border-bodyoga-cream/30 focus:outline-none focus:ring-2 focus:ring-bodyoga-cream/50 transition"
+                className="w-full rounded-full px-5 py-3.5 bg-transparent text-bodyoga-cream border border-bodyoga-cream focus:outline-none focus:ring-2 focus:ring-bodyoga-cream transition"
                 placeholder="••••••••"
               />
             </div>
@@ -84,13 +84,14 @@ function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-bodyoga-cream/80 mt-7">
+          <p className="text-center text-sm text-bodyoga-cream mt-7">
             Ainda não tem conta?{" "}
             <Link to="/cadastro-de-alunos" className="underline hover:text-bodyoga-cream">
               Cadastre-se
             </Link>
           </p>
         </div>
+
 
 
         <p className="text-center mt-6">
