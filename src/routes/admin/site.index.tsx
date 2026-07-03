@@ -37,36 +37,38 @@ const OPTIONS = [
 function SitePage() {
   return (
     <Layout>
-      <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-8">
-        <h1 className="text-2xl font-semibold text-[#3B4F30] mb-1">Site</h1>
-        <p className="text-sm text-[#3B4F30]/70 mb-6">
-          Escolha o que deseja gerenciar.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {OPTIONS.map((opt) => {
-            const Icon = opt.icon;
-            return (
-              <Link
-                key={opt.to}
-                to={opt.to}
-                className="group flex items-start gap-4 rounded-2xl border border-[#DBCCBF]/60 bg-white p-6 transition-colors hover:border-[#3B4F30] hover:bg-[#3B4F30]/5"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#3B4F30]/10 text-[#3B4F30] group-hover:bg-[#3B4F30] group-hover:text-[#DBCCBF] transition-colors">
-                  <Icon size={22} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-[#3B4F30]">
-                    {opt.label}
-                  </h2>
-                  <p className="text-sm text-[#3B4F30]/70 mt-1">
-                    {opt.description}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
+      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+        <div className="max-w-3xl mx-auto px-4">
+          <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Site</h1>
+          <p className="text-primary-dark/70 mb-10">Selecione abaixo o que deseja gerenciar.</p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {OPTIONS.map((opt) => {
+              const Icon = opt.icon;
+              return (
+                <Link
+                  key={opt.to}
+                  to={opt.to}
+                  className="bg-white rounded-xl p-6 shadow-sm flex items-start gap-3 hover:shadow-lg transition group"
+                >
+                  <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center shrink-0">
+                    <Icon size={20} className="text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-display text-xl text-primary-dark group-hover:text-primary transition">
+                      {opt.label}
+                    </h2>
+                    <p className="text-sm text-primary-dark/60 mt-0.5">
+                      {opt.description}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </section>
     </Layout>
   );
 }
+
