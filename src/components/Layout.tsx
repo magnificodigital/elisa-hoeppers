@@ -1,6 +1,6 @@
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+
 import { AdminNav } from "@/components/AdminNav";
 import { useRouterState } from "@tanstack/react-router";
 import { ReactNode } from "react";
