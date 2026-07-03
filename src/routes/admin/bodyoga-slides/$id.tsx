@@ -34,10 +34,12 @@ function SlideEditPage() {
     cta_label: "",
     cta_href: "",
     image_url: "" as string,
+    video_url: "" as string,
     display_order: 0,
     is_active: true,
     duration_seconds: 7,
   });
+
   const [delOpen, setDelOpen] = useState(false);
 
   useEffect(() => {
