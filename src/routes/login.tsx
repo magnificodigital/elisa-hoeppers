@@ -37,7 +37,7 @@ function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 md:p-8 bg-bodyoga-green relative">
+    <main className="bodyoga-scope min-h-screen flex items-center justify-center p-4 md:p-8 bg-bodyoga-green relative">
       <div className="relative z-10 w-full max-w-md">
         <div className="rounded-3xl border border-bodyoga-cream/25 shadow-2xl p-8 md:p-10">
           <div className="flex flex-col items-center mb-8">
