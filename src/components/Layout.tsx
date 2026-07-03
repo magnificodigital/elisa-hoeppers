@@ -17,9 +17,9 @@ const Layout = ({ children, noTopPadding = false, transparentHeader = false }: L
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header transparentOnTop={transparentHeader} />
+      <BodyogaHeader />
       {isAdmin && <AdminNav />}
-      <main className={`flex-grow ${noTopPadding ? "" : "pt-16 md:pt-20"}`}>{children}</main>
+      <main className={`flex-grow ${noTopPadding ? "" : "pt-24"}`}>{children}</main>
       <Footer />
       <WhatsAppButton />
     </div>
