@@ -67,6 +67,8 @@ function SlideEditPage() {
         cta_label: form.cta_label || null,
         cta_href: form.cta_href || null,
         image_url: form.image_url || null,
+        video_url: form.video_url || null,
+
         display_order: form.display_order,
         is_active: form.is_active,
         duration_seconds: form.duration_seconds,
