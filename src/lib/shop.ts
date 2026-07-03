@@ -92,6 +92,72 @@ export async function deleteRitual(id: string): Promise<void> {
   if (error) throw error;
 }
 
+// =================== BODYOGA SLIDES (HERO SLIDER) ===================
+export type Slide = {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  cta_label: string | null;
+  cta_href: string | null;
+  image_url: string | null;
+  display_order: number;
+  is_active: boolean;
+};
+
+const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, display_order, is_active";
+
+export async function listActiveSlides(): Promise<Slide[]> {
+  const { data, error } = await supabase
+    .from("bodyoga_slides")
+    .select(SLIDE_COLS)
+    .eq("is_active", true)
+    .order("display_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Slide[];
+}
+
+export async function listAllSlidesForAdmin(): Promise<Slide[]> {
+  const { data, error } = await supabase
+    .from("bodyoga_slides")
+    .select(SLIDE_COLS)
+    .order("display_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as Slide[];
+}
+
+export async function getSlideForAdmin(id: string): Promise<Slide | null> {
+  const { data, error } = await supabase
+    .from("bodyoga_slides")
+    .select(SLIDE_COLS)
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data as Slide | null;
+}
+
+export type SlideInsert = Omit<Slide, "id">;
+export type SlideUpdate = Partial<SlideInsert>;
+
+export async function createSlide(input: SlideInsert): Promise<Slide> {
+  const { data, error } = await supabase
+    .from("bodyoga_slides")
+    .insert(input)
+    .select(SLIDE_COLS)
+    .single();
+  if (error) throw error;
+  return data as Slide;
+}
+
+export async function updateSlide(id: string, patch: SlideUpdate): Promise<void> {
+  const { error } = await supabase.from("bodyoga_slides").update(patch).eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteSlide(id: string): Promise<void> {
+  const { error } = await supabase.from("bodyoga_slides").delete().eq("id", id);
+  if (error) throw error;
+}
+
 export async function listProducts(filter?: {
   onlyInStock?: boolean;
   featured?: boolean;
