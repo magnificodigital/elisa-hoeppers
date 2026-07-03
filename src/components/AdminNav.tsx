@@ -41,15 +41,7 @@ const NAV_ITEMS: NavEntry[] = [
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
-  {
-    label: "Site",
-    icon: Sparkles,
-    to: "/admin/bodyoga-rituais",
-    children: [
-      { to: "/admin/bodyoga-rituais", label: "Rituais", icon: Sparkles },
-      { to: "/admin/bodyoga-slides", label: "Slides", icon: GalleryHorizontal },
-    ],
-  },
+  { to: "/admin/site", label: "Site", icon: Sparkles },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   {
