@@ -11,6 +11,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
+  const navConfig = useNavConfig();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -21,14 +22,10 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
   const green = scrolled || alwaysGreen;
 
-  const navItems = [
-    { to: "/sobre" as const, label: "Sobre" },
-    { to: "/loja" as const, search: { brand: "bodyoga" }, label: "Shop" },
-    { to: "/blog" as const, label: "Dicas" },
-  ];
+  const leftItems = itemsFor(navConfig, "header", "left");
+  const rightItems = itemsFor(navConfig, "header", "right");
+  const navItems = [...leftItems, ...rightItems];
 
-  const leftItems = navItems.slice(0, 2);
-  const rightItems = navItems.slice(2);
 
   const linkStyle = green ? { color: CREAM } : undefined;
   const linkClass = green
