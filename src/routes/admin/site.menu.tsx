@@ -1,15 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, Save } from "lucide-react";
+import { ChevronLeft, Save, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
-  NAV_CATALOG,
+  PAGE_OPTIONS,
   DEFAULT_NAV_CONFIG,
   getNavConfig,
   saveNavConfig,
+  newNavItem,
   type NavMenuConfig,
+  type NavItem,
   type NavPosition,
+  type NavHref,
 } from "@/lib/nav-config";
 
 export const Route = createFileRoute("/admin/site/menu")({
@@ -43,8 +46,8 @@ function PositionSelect({
           onClick={() => onChange(opt.value)}
           className={`px-3 py-1.5 text-xs font-medium transition-colors ${
             value === opt.value
-              ? "bg-[#3B4F30] text-[#DBCCBF]"
-              : "bg-white text-[#3B4F30] hover:bg-[#3B4F30]/5"
+              ? "bg-primary text-cream"
+              : "bg-white text-primary-dark hover:bg-primary/5"
           }`}
         >
           {opt.label}
@@ -55,34 +58,38 @@ function PositionSelect({
 }
 
 function MenuPage() {
-  const [config, setConfig] = useState<NavMenuConfig>(DEFAULT_NAV_CONFIG);
+  const [items, setItems] = useState<NavItem[]>(DEFAULT_NAV_CONFIG.items);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     getNavConfig().then((c) => {
-      setConfig(c);
+      setItems(c.items);
       setLoading(false);
     });
   }, []);
 
-  const update = (
-    id: keyof NavMenuConfig,
-    target: "header" | "footer",
-    value: NavPosition,
-  ) => {
+  const patch = (id: string, changes: Partial<NavItem>) => {
     setSaved(false);
-    setConfig((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], [target]: value },
-    }));
+    setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...changes } : it)));
+  };
+
+  const addItem = () => {
+    setSaved(false);
+    setItems((prev) => [...prev, newNavItem()]);
+  };
+
+  const removeItem = (id: string) => {
+    setSaved(false);
+    setItems((prev) => prev.filter((it) => it.id !== id));
   };
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      await saveNavConfig(config);
+      const cfg: NavMenuConfig = { items };
+      await saveNavConfig(cfg);
       setSaved(true);
     } finally {
       setSaving(false);
@@ -95,7 +102,7 @@ function MenuPage() {
         <div className="max-w-3xl mx-auto px-4">
           <Link
             to="/admin/site"
-            className="inline-flex items-center gap-1 text-sm text-[#3B4F30]/70 hover:text-[#3B4F30] transition mb-6"
+            className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6"
           >
             <ChevronLeft size={16} /> Voltar
           </Link>
@@ -103,64 +110,104 @@ function MenuPage() {
             Menu de navegação
           </h1>
           <p className="text-sm text-primary-dark/60 mb-8">
-            Escolha quais páginas aparecem no cabeçalho (header) e no rodapé
-            (footer), e de que lado.
+            Adicione itens, escolha a página de cada um e defina de que lado
+            aparecem no cabeçalho (header) e no rodapé (footer).
           </p>
 
-
           {loading ? (
-            <p className="text-sm text-[#3B4F30]/60">Carregando…</p>
+            <p className="text-sm text-primary-dark/60">Carregando…</p>
           ) : (
             <div className="space-y-4">
-              {NAV_CATALOG.map((item) => (
+              {items.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-2xl border border-[#DBCCBF]/60 p-5"
+                  className="bg-white rounded-xl shadow-sm p-5"
                 >
                   <div className="flex flex-col gap-4">
-                    <div>
-                      <h2 className="text-base font-semibold text-[#3B4F30]">
-                        {item.label}
-                      </h2>
-                      <p className="text-xs text-[#3B4F30]/50">{item.href}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs uppercase tracking-wide text-primary-dark/60 mb-1.5">
+                          Nome no menu
+                        </label>
+                        <input
+                          type="text"
+                          value={item.label}
+                          onChange={(e) => patch(item.id, { label: e.target.value })}
+                          className="w-full rounded-lg border border-[#DBCCBF] px-3 py-2 text-sm text-primary-dark focus:outline-none focus:border-primary"
+                          placeholder="Ex: Aulas"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs uppercase tracking-wide text-primary-dark/60 mb-1.5">
+                          Página vinculada
+                        </label>
+                        <select
+                          value={item.href}
+                          onChange={(e) =>
+                            patch(item.id, { href: e.target.value as NavHref })
+                          }
+                          className="w-full rounded-lg border border-[#DBCCBF] px-3 py-2 text-sm text-primary-dark bg-white focus:outline-none focus:border-primary"
+                        >
+                          {PAGE_OPTIONS.map((p) => (
+                            <option key={p.href} value={p.href}>
+                              {p.label} ({p.href})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <span className="block text-xs uppercase tracking-wide text-[#3B4F30]/60 mb-1.5">
+                        <span className="block text-xs uppercase tracking-wide text-primary-dark/60 mb-1.5">
                           Header
                         </span>
                         <PositionSelect
-                          value={config[item.id].header}
-                          onChange={(v) => update(item.id, "header", v)}
+                          value={item.header}
+                          onChange={(v) => patch(item.id, { header: v })}
                         />
                       </div>
                       <div>
-                        <span className="block text-xs uppercase tracking-wide text-[#3B4F30]/60 mb-1.5">
+                        <span className="block text-xs uppercase tracking-wide text-primary-dark/60 mb-1.5">
                           Footer
                         </span>
                         <PositionSelect
-                          value={config[item.id].footer}
-                          onChange={(v) => update(item.id, "footer", v)}
+                          value={item.footer}
+                          onChange={(v) => patch(item.id, { footer: v })}
                         />
                       </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.id)}
+                        className="inline-flex items-center gap-1.5 text-xs text-red-600/80 hover:text-red-600 transition"
+                      >
+                        <Trash2 size={14} /> Remover
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
+
+              <button
+                type="button"
+                onClick={addItem}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-dashed border-primary/40 text-primary py-3 text-sm font-medium hover:bg-primary/5 transition"
+              >
+                <Plus size={16} /> Adicionar item
+              </button>
 
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
                   onClick={handleSave}
                   disabled={saving}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#3B4F30] text-[#DBCCBF] px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary text-cream px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-60"
                 >
                   <Save size={16} />
                   {saving ? "Salvando…" : "Salvar"}
                 </button>
-                {saved && (
-                  <span className="text-sm text-[#3B4F30]">Salvo!</span>
-                )}
+                {saved && <span className="text-sm text-primary">Salvo!</span>}
               </div>
             </div>
           )}
