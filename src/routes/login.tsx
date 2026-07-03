@@ -49,9 +49,10 @@ function LoginPage() {
       <div className="relative z-10 w-full max-w-md">
 
         <div
-          className="rounded-3xl border border-bodyoga-cream/40 shadow-2xl p-8 md:p-10 backdrop-blur-xl"
-          style={{ backgroundColor: "rgba(59, 79, 48, 0.35)" }}
+          className="rounded-3xl border shadow-2xl p-8 md:p-10 backdrop-blur-xl"
+          style={{ backgroundColor: "rgba(59, 79, 48, 0.35)", borderColor: "rgba(246, 233, 214, 0.4)" }}
         >
+
 
           <div className="flex flex-col items-center mb-8">
             <BodyogaLogo variant="full" tone="cream" size={68} />
