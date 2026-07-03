@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sparkles, GalleryHorizontal } from "lucide-react";
+import { Sparkles, GalleryHorizontal, Menu } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
-export const Route = createFileRoute("/admin/site")({
+export const Route = createFileRoute("/admin/site/")({
   head: () => ({ meta: [{ title: "Admin — Site" }] }),
   component: () => (
     <AdminGuard>
@@ -25,7 +25,14 @@ const OPTIONS = [
     description: "Gerencie os slides do banner principal.",
     icon: GalleryHorizontal,
   },
+  {
+    to: "/admin/site/menu",
+    label: "Menu de navegação",
+    description: "Escolha o que aparece no header e no footer, e de que lado.",
+    icon: Menu,
+  },
 ] as const;
+
 
 function SitePage() {
   return (

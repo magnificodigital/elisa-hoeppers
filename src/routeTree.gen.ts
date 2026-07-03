@@ -40,7 +40,6 @@ import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
-import { Route as AdminSiteRouteImport } from './routes/admin/site'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
@@ -50,6 +49,7 @@ import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagno
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
+import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/configuracoes/index'
@@ -57,6 +57,7 @@ import { Route as AdminBodyogaSlidesIndexRouteImport } from './routes/admin/body
 import { Route as AdminBodyogaRituaisIndexRouteImport } from './routes/admin/bodyoga-rituais/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
+import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
 import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin/configuracoes/newsletter'
@@ -225,11 +226,6 @@ const AdminSocialRoute = AdminSocialRouteImport.update({
   path: '/admin/social',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSiteRoute = AdminSiteRouteImport.update({
-  id: '/admin/site',
-  path: '/admin/site',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminPostsRoute = AdminPostsRouteImport.update({
   id: '/admin/posts',
   path: '/admin/posts',
@@ -276,6 +272,11 @@ const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   path: '/admin/agendamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSiteIndexRoute = AdminSiteIndexRouteImport.update({
+  id: '/admin/site/',
+  path: '/admin/site/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProdutosIndexRoute = AdminProdutosIndexRouteImport.update({
   id: '/admin/produtos/',
   path: '/admin/produtos/',
@@ -310,6 +311,11 @@ const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
 const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
   id: '/painel/aula/$lessonId',
   path: '/painel/aula/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSiteMenuRoute = AdminSiteMenuRouteImport.update({
+  id: '/admin/site/menu',
+  path: '/admin/site/menu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
@@ -402,7 +408,6 @@ export interface FileRoutesByFullPath {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
-  '/admin/site': typeof AdminSiteRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -430,6 +435,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/menu': typeof AdminSiteMenuRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/bodyoga-rituais/': typeof AdminBodyogaRituaisIndexRoute
@@ -437,6 +443,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
+  '/admin/site/': typeof AdminSiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -463,7 +470,6 @@ export interface FileRoutesByTo {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
-  '/admin/site': typeof AdminSiteRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -491,6 +497,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/menu': typeof AdminSiteMenuRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/bodyoga-rituais': typeof AdminBodyogaRituaisIndexRoute
@@ -498,6 +505,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
   '/admin/produtos': typeof AdminProdutosIndexRoute
+  '/admin/site': typeof AdminSiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -526,7 +534,6 @@ export interface FileRoutesById {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
-  '/admin/site': typeof AdminSiteRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -554,6 +561,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/menu': typeof AdminSiteMenuRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/bodyoga-rituais/': typeof AdminBodyogaRituaisIndexRoute
@@ -561,6 +569,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
+  '/admin/site/': typeof AdminSiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -590,7 +599,6 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/admin/posts'
-    | '/admin/site'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -618,6 +626,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/newsletter'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/menu'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
     | '/admin/bodyoga-rituais/'
@@ -625,6 +634,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
+    | '/admin/site/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -651,7 +661,6 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/admin/posts'
-    | '/admin/site'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -679,6 +688,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/newsletter'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/menu'
     | '/painel/aula/$lessonId'
     | '/admin/blog'
     | '/admin/bodyoga-rituais'
@@ -686,6 +696,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/cursos'
     | '/admin/produtos'
+    | '/admin/site'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -713,7 +724,6 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/admin/posts'
-    | '/admin/site'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -741,6 +751,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/newsletter'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/menu'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
     | '/admin/bodyoga-rituais/'
@@ -748,6 +759,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
+    | '/admin/site/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -776,7 +788,6 @@ export interface RootRouteChildren {
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   AdminPostsRoute: typeof AdminPostsRoute
-  AdminSiteRoute: typeof AdminSiteRoute
   AdminSocialRoute: typeof AdminSocialRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
@@ -803,6 +814,7 @@ export interface RootRouteChildren {
   AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
+  AdminSiteMenuRoute: typeof AdminSiteMenuRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminBodyogaRituaisIndexRoute: typeof AdminBodyogaRituaisIndexRoute
@@ -810,6 +822,7 @@ export interface RootRouteChildren {
   AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
   AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
+  AdminSiteIndexRoute: typeof AdminSiteIndexRoute
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
   AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
 }
@@ -1033,13 +1046,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSocialRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/site': {
-      id: '/admin/site'
-      path: '/admin/site'
-      fullPath: '/admin/site'
-      preLoaderRoute: typeof AdminSiteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/posts': {
       id: '/admin/posts'
       path: '/admin/posts'
@@ -1103,6 +1109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/site/': {
+      id: '/admin/site/'
+      path: '/admin/site'
+      fullPath: '/admin/site/'
+      preLoaderRoute: typeof AdminSiteIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/produtos/': {
       id: '/admin/produtos/'
       path: '/admin/produtos'
@@ -1150,6 +1163,13 @@ declare module '@tanstack/react-router' {
       path: '/painel/aula/$lessonId'
       fullPath: '/painel/aula/$lessonId'
       preLoaderRoute: typeof PainelAulaLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/site/menu': {
+      id: '/admin/site/menu'
+      path: '/admin/site/menu'
+      fullPath: '/admin/site/menu'
+      preLoaderRoute: typeof AdminSiteMenuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/produtos/$id': {
@@ -1284,7 +1304,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminInscritosRoute: AdminInscritosRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   AdminPostsRoute: AdminPostsRoute,
-  AdminSiteRoute: AdminSiteRoute,
   AdminSocialRoute: AdminSocialRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
@@ -1311,6 +1330,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminConfiguracoesNewsletterRoute: AdminConfiguracoesNewsletterRoute,
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
+  AdminSiteMenuRoute: AdminSiteMenuRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminBodyogaRituaisIndexRoute: AdminBodyogaRituaisIndexRoute,
@@ -1318,19 +1338,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdminConfiguracoesIndexRoute: AdminConfiguracoesIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
   AdminProdutosIndexRoute: AdminProdutosIndexRoute,
+  AdminSiteIndexRoute: AdminSiteIndexRoute,
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
