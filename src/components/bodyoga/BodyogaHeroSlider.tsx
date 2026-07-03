@@ -164,7 +164,7 @@ export function BodyogaHeroSlider() {
         {items.map((node, i) => (
           <div
             key={i}
-            className={`transition-opacity duration-700 ${i === index ? "relative opacity-100" : "absolute inset-0 opacity-0 pointer-events-none"}`}
+            className={`transition-opacity duration-1000 ease-in-out ${i === index ? "relative opacity-100" : "absolute inset-0 opacity-0 pointer-events-none"}`}
             aria-hidden={i !== index}
           >
             {node}
