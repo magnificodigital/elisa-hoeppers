@@ -66,11 +66,6 @@ function BlogPost() {
             <Link to="/blog" className="inline-block text-white/80 hover:text-white text-sm mb-4 transition-colors">
               ← Dicas e Novidades
             </Link>
-            {post.published_at && (
-              <span className="block text-white/80 text-sm mb-3">
-                {new Date(post.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
-              </span>
-            )}
             <h1 className="font-display text-3xl md:text-5xl leading-tight">{post.title}</h1>
           </div>
         </div>
