@@ -135,7 +135,7 @@ export function AdminNav() {
             className="flex items-center gap-1.5 shrink-0 text-[#DBCCBF]/80 hover:text-[#DBCCBF] text-xs px-2.5 py-1.5 rounded-full transition-colors"
           >
             <ArrowLeft size={14} />
-            Site
+            Ver site
           </Link>
           <span className="h-5 w-px bg-[#DBCCBF]/20 shrink-0" />
           {NAV_ITEMS.map((item) => {
