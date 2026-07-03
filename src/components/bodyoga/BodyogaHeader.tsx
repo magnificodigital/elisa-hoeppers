@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
+import { useNavConfig, itemsFor } from "@/lib/nav-config";
 
 const CREAM = "#FEF2D4";
 
@@ -10,6 +11,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
+  const navConfig = useNavConfig();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -20,14 +22,10 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
   const green = scrolled || alwaysGreen;
 
-  const navItems = [
-    { to: "/sobre" as const, label: "Sobre" },
-    { to: "/loja" as const, search: { brand: "bodyoga" }, label: "Shop" },
-    { to: "/blog" as const, label: "Dicas" },
-  ];
+  const leftItems = itemsFor(navConfig, "header", "left");
+  const rightItems = itemsFor(navConfig, "header", "right");
+  const navItems = [...leftItems, ...rightItems];
 
-  const leftItems = navItems.slice(0, 2);
-  const rightItems = navItems.slice(2);
 
   const linkStyle = green ? { color: CREAM } : undefined;
   const linkClass = green
@@ -45,9 +43,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <nav className="hidden md:flex flex-1 items-center justify-end gap-8 md:pr-12">
           {leftItems.map((item) => (
             <Link
-              key={item.label}
-              to={item.to}
-              search={item.search}
+              key={item.id}
+              to={item.href}
               className={linkClass}
               style={linkStyle}
             >
@@ -68,9 +65,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <nav className="hidden md:flex flex-1 items-center justify-start gap-8 md:pl-12">
           {rightItems.map((item) => (
             <Link
-              key={item.label}
-              to={item.to}
-              search={item.search}
+              key={item.id}
+              to={item.href}
               className={linkClass}
               style={linkStyle}
             >
@@ -112,9 +108,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <div className="md:hidden border-t border-bodyoga-green/20 px-4 py-6 space-y-4 bg-bodyoga-cream">
           {navItems.map((item) => (
             <Link
-              key={item.label}
-              to={item.to}
-              search={item.search}
+              key={item.id}
+              to={item.href}
               onClick={() => setOpen(false)}
               className="block text-base uppercase tracking-[0.18em] text-bodyoga-green"
             >
