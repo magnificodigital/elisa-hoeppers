@@ -15,6 +15,7 @@ import {
   PackageOpen,
 } from "lucide-react";
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
+import { BodyogaHeroSlider } from "@/components/bodyoga/BodyogaHeroSlider";
 import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
