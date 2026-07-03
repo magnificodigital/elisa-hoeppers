@@ -50,7 +50,7 @@ function LoginPage() {
 
         <div className="rounded-3xl border border-bodyoga-cream shadow-2xl p-8 md:p-10">
           <div className="flex flex-col items-center mb-8">
-            <BodyogaLogo variant="full" tone="cream" size={44} />
+            <BodyogaLogo variant="full" tone="cream" size={68} />
             <p className="mt-4 text-sm text-bodyoga-cream tracking-wide text-center">
               Bem-vinda de volta ao seu ritual.
             </p>
