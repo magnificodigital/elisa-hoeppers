@@ -41,8 +41,15 @@ const NAV_ITEMS: NavEntry[] = [
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
-  { to: "/admin/bodyoga-rituais", label: "Rituais", icon: Sparkles },
-  { to: "/admin/bodyoga-slides", label: "Slides", icon: GalleryHorizontal },
+  {
+    label: "Site",
+    icon: Sparkles,
+    to: "/admin/bodyoga-rituais",
+    children: [
+      { to: "/admin/bodyoga-rituais", label: "Rituais", icon: Sparkles },
+      { to: "/admin/bodyoga-slides", label: "Slides", icon: GalleryHorizontal },
+    ],
+  },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   {
@@ -128,7 +135,7 @@ export function AdminNav() {
             className="flex items-center gap-1.5 shrink-0 text-[#DBCCBF]/80 hover:text-[#DBCCBF] text-xs px-2.5 py-1.5 rounded-full transition-colors"
           >
             <ArrowLeft size={14} />
-            Site
+            Ver site
           </Link>
           <span className="h-5 w-px bg-[#DBCCBF]/20 shrink-0" />
           {NAV_ITEMS.map((item) => {
