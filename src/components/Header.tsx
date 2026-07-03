@@ -13,6 +13,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
+  const navConfig = useNavConfig();
 
   useEffect(() => {
     if (!transparentOnTop) {
@@ -25,15 +26,8 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [transparentOnTop]);
 
-  const leftItems = [
-    { label: "SOBRE", href: "/sobre" as const },
-    { label: "BODYOGA", href: "/bodyoga" as const },
-    { label: "SHOP", href: "/loja" as const },
-  ];
-  const rightItems = [
-    { label: "AULAS", href: "/cursos" as const },
-    { label: "DICAS", href: "/blog" as const },
-  ];
+  const leftItems = itemsFor(navConfig, "header", "left");
+  const rightItems = itemsFor(navConfig, "header", "right");
   // Logged-out users see LOGIN; logged-in users see PAINEL (and no INSCREVA-SE)
   const accountItem = user
     ? { label: "PAINEL", href: "/painel" as const }
