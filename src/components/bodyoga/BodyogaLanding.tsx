@@ -41,12 +41,7 @@ const aromas = [
 ];
 
 const beneficios = [
-  { title: "100% natural", desc: "Feito com ingredientes de origem vegetal.", icon: Leaf },
   { title: "Artesanal", desc: "Produzido à mão em pequenos lotes.", icon: HandHeart },
-  { title: "Vegano", desc: "Sem ingredientes de origem animal.", icon: Sprout },
-  { title: "Óleos essenciais", desc: "Aromaterapia pura em cada fórmula.", icon: FlaskConical },
-  { title: "Cruelty free", desc: "Nunca testado em animais.", icon: PawPrint },
-  { title: "Embalagem consciente", desc: "Materiais recicláveis e reaproveitáveis.", icon: Recycle },
   { title: "Livre de tóxicos", desc: "Sem parabenos, sulfatos ou fragrâncias artificiais.", icon: Wind },
   { title: "Fresquinho", desc: "Feito sob demanda, sempre recém-produzido.", icon: PackageOpen },
 ];
