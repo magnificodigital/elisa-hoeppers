@@ -3,7 +3,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { useAuth } from "@/hooks/useAuth";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
-import loginBg from "@/assets/bodyoga/login-bg.jpg.asset.json";
+
 
 const searchSchema = z.object({ next: z.string().optional() });
 
