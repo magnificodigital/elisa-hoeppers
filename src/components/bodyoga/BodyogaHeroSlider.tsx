@@ -127,22 +127,30 @@ export function BodyogaHeroSlider() {
   });
 
   // Render DB slides; fall back to the built-in default hero when there are none.
+  const dbSlides = slides ?? [];
   const items: ReactNode[] =
-    (slides ?? []).length > 0
-      ? (slides ?? []).map((s) => <CustomSlide key={s.id} slide={s} />)
+    dbSlides.length > 0
+      ? dbSlides.map((s) => <CustomSlide key={s.id} slide={s} />)
       : [<DefaultHero key="default" />];
+  // Per-slide durations (seconds) parallel to items.
+  const durations: number[] =
+    dbSlides.length > 0
+      ? dbSlides.map((s) => s.duration_seconds ?? 7)
+      : [7];
 
-  // Second slide is the presentation video used before.
+  // Second slide is the presentation video used before (fixed 7s).
   items.splice(1, 0, <VideoSlide key="video" />);
+  durations.splice(1, 0, 7);
 
   const [index, setIndex] = useState(0);
   const count = items.length;
 
   useEffect(() => {
     if (count <= 1) return;
-    const t = setInterval(() => setIndex((i) => (i + 1) % count), 7000);
-    return () => clearInterval(t);
-  }, [count]);
+    const ms = (durations[index] ?? 7) * 1000;
+    const t = setTimeout(() => setIndex((i) => (i + 1) % count), ms);
+    return () => clearTimeout(t);
+  }, [count, index, durations]);
 
   useEffect(() => {
     if (index >= count) setIndex(0);
