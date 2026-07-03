@@ -1,47 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Layout from "@/components/Layout";
-import HomeHero from "@/components/home/HomeHero";
-import HomeShop from "@/components/home/HomeShop";
-import HomeCourses from "@/components/home/HomeCourses";
-import HomeBodyoga from "@/components/home/HomeBodyoga";
-import HomeOils from "@/components/home/HomeOils";
-import HomeBio from "@/components/home/HomeBio";
-import HomeBlog from "@/components/home/HomeBlog";
-import HomeNewsletter from "@/components/home/HomeNewsletter";
-import HomeInstagram from "@/components/home/HomeInstagram";
+import { BodyogaLanding } from "@/components/bodyoga/BodyogaLanding";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Elisa Hoeppers — Yoga, BODYOGA e Aromaterapia" },
+      { title: "BODYOGA — Rituais para corpo, mente e ambiente" },
       {
         name: "description",
         content:
-          "Aulas de Hatha e Vinyasa Yoga, BODYOGA com pesinhos, óleos essenciais e cursos com Elisa Hoeppers Casas.",
+          "Cosméticos naturais artesanais com óleos essenciais. Spray antisséptico, spray aromático de ambiente e sabonete natural — criados por Elisa Hoeppers Casas.",
       },
-      { property: "og:title", content: "Elisa Hoeppers — Yoga, BODYOGA e Aromaterapia" },
+      { property: "og:title", content: "BODYOGA — Rituais para corpo, mente e ambiente" },
       {
         property: "og:description",
         content:
-          "Movimente seu corpo, cuide da sua mente. Aulas, BODYOGA e óleos essenciais com Elisa Hoeppers.",
+          "Cosméticos naturais artesanais com óleos essenciais, criados à mão por Elisa Hoeppers Casas.",
       },
     ],
   }),
-  component: Index,
+  component: BodyogaLanding,
 });
-
-function Index() {
-  return (
-    <Layout noTopPadding transparentHeader>
-      <HomeHero />
-      <HomeShop />
-      <HomeCourses />
-      <HomeBodyoga />
-      <HomeOils />
-      <HomeBio />
-      <HomeBlog />
-      <HomeNewsletter />
-      <HomeInstagram />
-    </Layout>
-  );
-}
