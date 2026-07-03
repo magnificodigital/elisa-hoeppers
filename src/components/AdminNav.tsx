@@ -44,16 +44,7 @@ const NAV_ITEMS: NavEntry[] = [
   { to: "/admin/site", label: "Site", icon: Sparkles },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
-  {
-    label: "Posts",
-    to: "/admin/posts",
-    icon: Newspaper,
-    children: [
-      { to: "/admin/blog", label: "Blog Posts", icon: FileText },
-      { to: "/admin/social", label: "Social Posts", icon: Share2 },
-      { to: "/admin/broadcast", label: "Emails", icon: Mail },
-    ],
-  },
+  { to: "/admin/posts", label: "Posts", icon: Newspaper },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
 
