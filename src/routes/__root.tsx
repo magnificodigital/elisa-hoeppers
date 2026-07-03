@@ -134,6 +134,7 @@ function RootComponent() {
       <AuthProvider>
         <Outlet />
         <FloatingCart />
+        <WhatsAppButton />
         <CookieBanner />
         <Toaster position="top-right" expand richColors closeButton />
       </AuthProvider>
