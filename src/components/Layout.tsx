@@ -17,7 +17,7 @@ const Layout = ({ children, noTopPadding = false, transparentHeader = false }: L
 
   return (
     <div className="bodyoga-scope min-h-screen flex flex-col">
-      <BodyogaHeader />
+      <BodyogaHeader alwaysGreen />
       {isAdmin && <AdminNav />}
       <main className={`flex-grow ${noTopPadding ? "" : "pt-24"}`}>{children}</main>
       <Footer />
