@@ -99,13 +99,14 @@ function MenuPage() {
           >
             <ChevronLeft size={16} /> Voltar
           </Link>
-          <h1 className="text-2xl font-semibold text-[#3B4F30] mb-1">
+          <h1 className="font-display text-3xl text-primary-dark mb-2">
             Menu de navegação
           </h1>
-          <p className="text-sm text-[#3B4F30]/70 mb-8">
+          <p className="text-sm text-primary-dark/60 mb-8">
             Escolha quais páginas aparecem no cabeçalho (header) e no rodapé
             (footer), e de que lado.
           </p>
+
 
           {loading ? (
             <p className="text-sm text-[#3B4F30]/60">Carregando…</p>
