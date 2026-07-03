@@ -3,6 +3,8 @@ import { useState } from "react";
 import { z } from "zod";
 import { useAuth } from "@/hooks/useAuth";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
+import loginBg from "@/assets/bodyoga/login-leaves.png.asset.json";
+
 
 
 const searchSchema = z.object({ next: z.string().optional() });
@@ -37,8 +39,15 @@ function LoginPage() {
   }
 
   return (
-    <main className="bodyoga-scope min-h-screen flex items-center justify-center p-4 md:p-8 bg-bodyoga-green relative">
+    <main
+      className="bodyoga-scope min-h-screen flex items-center justify-center p-4 md:p-8 bg-bodyoga-green bg-cover bg-center relative"
+      style={{ backgroundImage: `url(${loginBg.url})` }}
+    >
+      {/* green tint overlay to make the photo a bit more opaque */}
+      <div className="absolute inset-0" style={{ backgroundColor: "rgba(59, 79, 48, 0.35)" }} />
+
       <div className="relative z-10 w-full max-w-md">
+
         <div className="rounded-3xl border border-bodyoga-cream shadow-2xl p-8 md:p-10">
           <div className="flex flex-col items-center mb-8">
             <BodyogaLogo variant="full" tone="cream" size={44} />
