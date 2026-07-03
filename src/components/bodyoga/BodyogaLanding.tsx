@@ -97,7 +97,7 @@ export function BodyogaLanding() {
             {/* Conteúdo de texto */}
             <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
-                BODYOGA é a fusão entre <span className="italic">yoga</span> e cuidado consciente.
+                BODYOGA é a <br />fusão entre <span className="italic">yoga</span> e <br />cuidado consciente.
               </h2>
 
               <div className="space-y-6 max-w-md">
