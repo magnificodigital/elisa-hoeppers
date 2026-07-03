@@ -16,7 +16,7 @@ const Layout = ({ children, noTopPadding = false, transparentHeader = false }: L
   const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="bodyoga-scope min-h-screen flex flex-col">
       <BodyogaHeader />
       {isAdmin && <AdminNav />}
       <main className={`flex-grow ${noTopPadding ? "" : "pt-24"}`}>{children}</main>
