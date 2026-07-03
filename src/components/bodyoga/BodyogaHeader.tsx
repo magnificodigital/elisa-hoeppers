@@ -43,9 +43,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <nav className="hidden md:flex flex-1 items-center justify-end gap-8 md:pr-12">
           {leftItems.map((item) => (
             <Link
-              key={item.label}
-              to={item.to}
-              search={item.search}
+              key={item.id}
+              to={item.href}
               className={linkClass}
               style={linkStyle}
             >
