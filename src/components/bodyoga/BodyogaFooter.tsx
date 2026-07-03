@@ -1,8 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Mail, MessageCircle } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
+import { useNavConfig, itemsFor } from "@/lib/nav-config";
 
 export function BodyogaFooter() {
+  const navConfig = useNavConfig();
+  const navLinks = [
+    ...itemsFor(navConfig, "footer", "left"),
+    ...itemsFor(navConfig, "footer", "right"),
+  ];
   return (
     <footer className="bg-bodyoga-green text-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-16">
