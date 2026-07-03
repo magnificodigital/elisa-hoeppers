@@ -131,25 +131,25 @@ export function BodyogaLanding() {
 
 
       {/* BENEFÍCIOS */}
-      <section className="bg-bodyoga-green text-bodyoga-cream">
+      <section className="bg-bodyoga-cream text-bodyoga-green">
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
           <div className="text-center max-w-2xl mx-auto">
             
-            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-cream">
+            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
               Cuidado natural em cada detalhe
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 mt-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 mt-16 justify-items-center">
             {beneficios.map((b) => {
               const Icon = b.icon;
               return (
                 <div key={b.title} className="text-center px-2">
-                  <div className="w-16 h-16 mx-auto rounded-full border border-bodyoga-cream/40 flex items-center justify-center mb-5">
-                    <Icon className="w-7 h-7 text-bodyoga-cream" strokeWidth={1.5} />
+                  <div className="w-16 h-16 mx-auto rounded-full border border-bodyoga-green/40 flex items-center justify-center mb-5">
+                    <Icon className="w-7 h-7 text-bodyoga-green" strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-display text-base md:text-lg text-bodyoga-cream">{b.title}</h3>
-                  <p className="mt-2 text-sm text-bodyoga-cream/70 leading-relaxed">{b.desc}</p>
+                  <h3 className="font-display text-base md:text-lg text-bodyoga-green">{b.title}</h3>
+                  <p className="mt-2 text-sm text-bodyoga-green/70 leading-relaxed">{b.desc}</p>
                 </div>
               );
             })}
