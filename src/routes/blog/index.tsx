@@ -79,11 +79,6 @@ function BlogListing() {
                 <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
                 <div className="absolute inset-0 px-6 flex items-center justify-center text-center">
                   <div>
-                    {false && p.published_at && (
-                      <span className="block text-white/80 text-sm mb-2">
-                        {new Date(p.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
-                      </span>
-                    )}
                     <h3 className="font-sans font-light text-white text-xl md:text-2xl leading-relaxed">
                       {p.title}
                     </h3>
