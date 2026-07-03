@@ -15,7 +15,7 @@ const HomeBlog = () => {
   return (
     <section className="py-20 md:py-28 bg-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-        <SectionTitle subtitle="Encontre a harmonia e as boas energias que você precisa com aulas de yoga e aromaterapia! A prática do yoga, aliada aos benefícios terapêuticos dos óleos essenciais, pode transformar sua vida e trazer equilíbrio para seu corpo e mente.">
+        <SectionTitle subtitle="Encontre a harmonia e as boas energias que você precisa">
           Dicas e Novidades
         </SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-12">
