@@ -65,6 +65,7 @@ function SlideEditPage() {
         image_url: form.image_url || null,
         display_order: form.display_order,
         is_active: form.is_active,
+        duration_seconds: form.duration_seconds,
       }),
     onSuccess: () => {
       toast.success("Slide atualizado");
