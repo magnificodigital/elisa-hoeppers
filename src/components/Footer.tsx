@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Youtube, MessageCircle } from "lucide-react";
 
-const LOGO_URL = "/images/logo/logo-wordmark.png";
+
 
 const Footer = () => {
   return (
