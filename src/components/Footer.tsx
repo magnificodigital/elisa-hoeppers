@@ -1,9 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Youtube, MessageCircle } from "lucide-react";
+import { useNavConfig, itemsFor } from "@/lib/nav-config";
 
 
 
 const Footer = () => {
+  const navConfig = useNavConfig();
+  const leftItems = itemsFor(navConfig, "footer", "left");
+  const rightItems = itemsFor(navConfig, "footer", "right");
+
   return (
     <footer className="bg-[#3B4F30] text-cream pt-16 pb-8">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
