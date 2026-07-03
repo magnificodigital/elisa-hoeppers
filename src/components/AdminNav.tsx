@@ -13,6 +13,7 @@ import {
   Newspaper,
   Settings,
   Sparkles,
+  GalleryHorizontal,
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
