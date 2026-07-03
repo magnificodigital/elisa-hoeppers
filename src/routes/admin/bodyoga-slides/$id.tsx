@@ -34,10 +34,12 @@ function SlideEditPage() {
     cta_label: "",
     cta_href: "",
     image_url: "" as string,
+    video_url: "" as string,
     display_order: 0,
     is_active: true,
     duration_seconds: 7,
   });
+
   const [delOpen, setDelOpen] = useState(false);
 
   useEffect(() => {
@@ -48,6 +50,8 @@ function SlideEditPage() {
         cta_label: slide.cta_label ?? "",
         cta_href: slide.cta_href ?? "",
         image_url: slide.image_url ?? "",
+        video_url: slide.video_url ?? "",
+
         display_order: slide.display_order,
         is_active: slide.is_active,
         duration_seconds: slide.duration_seconds ?? 7,
@@ -63,6 +67,8 @@ function SlideEditPage() {
         cta_label: form.cta_label || null,
         cta_href: form.cta_href || null,
         image_url: form.image_url || null,
+        video_url: form.video_url || null,
+
         display_order: form.display_order,
         is_active: form.is_active,
         duration_seconds: form.duration_seconds,
@@ -149,6 +155,19 @@ function SlideEditPage() {
               />
               <p className="text-[10px] text-[var(--text-muted)] mt-2">Imagem horizontal (paisagem) fica melhor no banner.</p>
             </div>
+
+            <Field label="Vídeo de fundo (URL de embed do YouTube)">
+              <input
+                value={form.video_url}
+                onChange={(e) => setForm({ ...form, video_url: e.target.value })}
+                placeholder="Ex: https://www.youtube.com/embed/ID_DO_VIDEO"
+                className={inputCls}
+              />
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">
+                Se preenchido, este slide exibe o vídeo em tela cheia (a imagem de fundo é ignorada). Deixe vazio para um slide normal.
+              </p>
+            </Field>
+
 
             <label className="flex items-center gap-2 cursor-pointer pt-1">
               <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />

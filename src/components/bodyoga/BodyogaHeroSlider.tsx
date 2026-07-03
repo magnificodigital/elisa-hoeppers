@@ -45,15 +45,16 @@ function DefaultHero() {
   );
 }
 
-/** Video slide — the YouTube presentation video used before. */
-function VideoSlide() {
+/** Video slide — renders a background video (e.g. YouTube embed) from a slide. */
+function VideoSlide({ slide }: { slide: Slide }) {
+  const videoUrl = slide.video_url!;
   return (
     <>
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
         <iframe
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full h-[56.25vw] min-h-full pointer-events-none"
-          src="https://www.youtube.com/embed/h5ztu79aj4k?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playlist=h5ztu79aj4k"
-          title="BODYOGA"
+          src={`${videoUrl}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playlist=${videoUrl.split("/").pop()}`}
+          title={slide.title}
           allow="autoplay; encrypted-media"
           frameBorder={0}
         />
@@ -63,16 +64,19 @@ function VideoSlide() {
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
       <div className="absolute inset-x-0 bottom-0 h-24 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
       <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-center min-h-[85vh]">
-        <a
-          href="/agendar"
-          className="px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
-        >
-          Agende sua aula
-        </a>
+        {slide.cta_label && (
+          <a
+            href={slide.cta_href || "/agendar"}
+            className="px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
+          >
+            {slide.cta_label}
+          </a>
+        )}
       </div>
     </>
   );
 }
+
 
 function CustomSlide({ slide }: { slide: Slide }) {
   const titleLines = slide.title.split("\n");
@@ -127,10 +131,13 @@ export function BodyogaHeroSlider() {
   });
 
   // Render DB slides; fall back to the built-in default hero when there are none.
+  // A slide with a video_url renders as a video slide; otherwise as a custom slide.
   const dbSlides = slides ?? [];
   const items: ReactNode[] =
     dbSlides.length > 0
-      ? dbSlides.map((s) => <CustomSlide key={s.id} slide={s} />)
+      ? dbSlides.map((s) =>
+          s.video_url ? <VideoSlide key={s.id} slide={s} /> : <CustomSlide key={s.id} slide={s} />,
+        )
       : [<DefaultHero key="default" />];
   // Per-slide durations (seconds) parallel to items.
   const durations: number[] =
@@ -138,9 +145,6 @@ export function BodyogaHeroSlider() {
       ? dbSlides.map((s) => s.duration_seconds ?? 7)
       : [7];
 
-  // Second slide is the presentation video used before (fixed 7s).
-  items.splice(1, 0, <VideoSlide key="video" />);
-  durations.splice(1, 0, 7);
 
   const [index, setIndex] = useState(0);
   const count = items.length;

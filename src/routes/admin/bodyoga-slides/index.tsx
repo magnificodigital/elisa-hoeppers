@@ -33,6 +33,8 @@ function SlidesList() {
         cta_label: null,
         cta_href: null,
         image_url: null,
+        video_url: null,
+
         display_order: order,
         is_active: false,
         duration_seconds: 7,
