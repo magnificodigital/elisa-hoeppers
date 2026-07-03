@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { FloatingCart } from "@/components/FloatingCart";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { CookieBanner } from "@/components/CookieBanner";
 import { Toaster } from "@/components/ui/sonner";
 
