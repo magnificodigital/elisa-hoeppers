@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
+import { useNavConfig, itemsFor } from "@/lib/nav-config";
 
 const CREAM = "#FEF2D4";
 
