@@ -79,7 +79,7 @@ function BlogListing() {
                 <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
                 <div className="absolute inset-0 px-6 flex items-center justify-center text-center">
                   <div>
-                    {p.published_at && (
+                    {false && p.published_at && (
                       <span className="block text-white/80 text-sm mb-2">
                         {new Date(p.published_at).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
                       </span>
