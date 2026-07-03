@@ -50,6 +50,8 @@ function SlideEditPage() {
         cta_label: slide.cta_label ?? "",
         cta_href: slide.cta_href ?? "",
         image_url: slide.image_url ?? "",
+        video_url: slide.video_url ?? "",
+
         display_order: slide.display_order,
         is_active: slide.is_active,
         duration_seconds: slide.duration_seconds ?? 7,
