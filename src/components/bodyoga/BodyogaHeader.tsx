@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const CREAM = "#FEF2D4";
 
-export function BodyogaHeader() {
+export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
@@ -18,6 +18,8 @@ export function BodyogaHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const green = scrolled || alwaysGreen;
+
   const navItems = [
     { to: "/sobre" as const, label: "Sobre" },
     { to: "/loja" as const, search: { brand: "bodyoga" }, label: "Shop" },
@@ -27,8 +29,8 @@ export function BodyogaHeader() {
   const leftItems = navItems.slice(0, 2);
   const rightItems = navItems.slice(2);
 
-  const linkStyle = scrolled ? { color: CREAM } : undefined;
-  const linkClass = scrolled
+  const linkStyle = green ? { color: CREAM } : undefined;
+  const linkClass = green
     ? "text-xs font-medium uppercase tracking-[0.18em] hover:opacity-70 transition"
     : "text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition";
 
