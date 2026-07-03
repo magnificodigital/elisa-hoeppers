@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sparkles, GalleryHorizontal } from "lucide-react";
+import { Sparkles, GalleryHorizontal, Menu } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -25,7 +25,14 @@ const OPTIONS = [
     description: "Gerencie os slides do banner principal.",
     icon: GalleryHorizontal,
   },
+  {
+    to: "/admin/site/menu",
+    label: "Menu de navegação",
+    description: "Escolha o que aparece no header e no footer, e de que lado.",
+    icon: Menu,
+  },
 ] as const;
+
 
 function SitePage() {
   return (
