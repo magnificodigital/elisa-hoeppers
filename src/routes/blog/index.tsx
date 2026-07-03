@@ -35,7 +35,7 @@ function BlogListing() {
           <div className="text-center mb-12">
             <h1 className="font-display text-4xl md:text-5xl mb-4">Dicas e Novidades</h1>
             <p className="text-lg text-primary/70 max-w-2xl mx-auto">
-              Encontre a harmonia e as boas energias que você precisa com aulas de yoga e aromaterapia! A prática do yoga, aliada aos benefícios terapêuticos dos óleos essenciais, pode transformar sua vida e trazer equilíbrio para seu corpo e mente.
+              Encontre a harmonia e as boas energias que você precisa
             </p>
           </div>
 
