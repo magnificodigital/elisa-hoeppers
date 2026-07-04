@@ -55,6 +55,7 @@ function CheckoutPage() {
   const { items, subtotalCents, totalItems, clear, loaded } = useCart();
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const qc = useQueryClient();
 
   const [form, setForm] = useState({
     name: "",
@@ -89,6 +90,12 @@ function CheckoutPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
+  const [cepFilled, setCepFilled] = useState(false);
+
+  const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+  const [saveThisAddress, setSaveThisAddress] = useState(false);
+  const [addressLabel, setAddressLabel] = useState("");
 
   const [meEnabled, setMeEnabled] = useState(false);
   const [shippingOpts, setShippingOpts] = useState<ShippingOption[]>([]);
