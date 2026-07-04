@@ -743,7 +743,9 @@ export type Database = {
           notes: string | null
           paid_at: string | null
           payment_id: string | null
+          payment_installments: number | null
           payment_method: string | null
+          payment_method_type: string | null
           payment_preference_id: string | null
           shipping_cents: number
           shipping_destination_cep: string | null
@@ -771,7 +773,9 @@ export type Database = {
           notes?: string | null
           paid_at?: string | null
           payment_id?: string | null
+          payment_installments?: number | null
           payment_method?: string | null
+          payment_method_type?: string | null
           payment_preference_id?: string | null
           shipping_cents?: number
           shipping_destination_cep?: string | null
@@ -799,7 +803,9 @@ export type Database = {
           notes?: string | null
           paid_at?: string | null
           payment_id?: string | null
+          payment_installments?: number | null
           payment_method?: string | null
+          payment_method_type?: string | null
           payment_preference_id?: string | null
           shipping_cents?: number
           shipping_destination_cep?: string | null
@@ -998,6 +1004,7 @@ export type Database = {
           id: string
           phone: string | null
           role: Database["public"]["Enums"]["user_role"]
+          saved_addresses: Json
           updated_at: string
         }
         Insert: {
@@ -1008,6 +1015,7 @@ export type Database = {
           id: string
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          saved_addresses?: Json
           updated_at?: string
         }
         Update: {
@@ -1018,6 +1026,7 @@ export type Database = {
           id?: string
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          saved_addresses?: Json
           updated_at?: string
         }
         Relationships: []
