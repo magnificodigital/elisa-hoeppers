@@ -1333,22 +1333,39 @@ export type Database = {
       gen_appointment_code: { Args: never; Returns: string }
       gen_certificate_code: { Args: never; Returns: string }
       gen_order_code: { Args: never; Returns: string }
-      get_order_by_code: {
-        Args: { p_code: string }
-        Returns: {
-          code: string
-          created_at: string
-          customer_name: string
-          id: string
-          items: Json
-          shipping_cents: number
-          status: Database["public"]["Enums"]["order_status"]
-          subtotal_cents: number
-          total_cents: number
-          tracking_code: string
-          user_id: string
-        }[]
-      }
+      get_order_by_code:
+        | {
+            Args: { p_code: string }
+            Returns: {
+              code: string
+              created_at: string
+              customer_name: string
+              id: string
+              items: Json
+              shipping_cents: number
+              status: Database["public"]["Enums"]["order_status"]
+              subtotal_cents: number
+              total_cents: number
+              tracking_code: string
+              user_id: string
+            }[]
+          }
+        | {
+            Args: { p_code: string; p_email?: string }
+            Returns: {
+              code: string
+              created_at: string
+              customer_name: string
+              id: string
+              items: Json
+              shipping_cents: number
+              status: Database["public"]["Enums"]["order_status"]
+              subtotal_cents: number
+              total_cents: number
+              tracking_code: string
+              user_id: string
+            }[]
+          }
       get_public_setting: { Args: { p_key: string }; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
