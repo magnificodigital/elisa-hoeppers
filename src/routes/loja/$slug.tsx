@@ -107,11 +107,15 @@ function ProductDetail() {
                         i === activeImage ? "border-primary" : "border-transparent"
                       }`}
                     >
-                      <img
-                        src={img.url}
-                        alt={img.alt ?? ""}
-                        className="w-full h-full object-cover"
-                      />
+                      {isVideoUrl(img.url) ? (
+                        <video src={img.url} className="w-full h-full object-cover" muted playsInline />
+                      ) : (
+                        <img
+                          src={img.url}
+                          alt={img.alt ?? ""}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </button>
                   ))}
                 </div>
