@@ -124,6 +124,69 @@ function AdminHome() {
             <AdminSearchBar />
           </div>
 
+          {isLow && (
+            <div className="mb-6 bg-red-50 border border-red-300 rounded-xl p-4 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">⚠️</span>
+                <div>
+                  <p className="font-medium text-red-800">Saldo Melhor Envio baixo</p>
+                  <p className="text-xs text-red-700">
+                    Saldo atual: {formatBRL(balance!.balance_cents!)}. Comprar etiquetas pode falhar.
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://melhorenvio.com.br/carteira"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-red-700 text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-red-800 transition whitespace-nowrap"
+              >
+                Adicionar saldo
+              </a>
+            </div>
+          )}
+
+          {actionsTotal > 0 && (
+            <div className="mb-8 bg-white border border-primary/30 rounded-xl p-5">
+              <h2 className="font-display text-lg text-primary-dark mb-3 flex items-center gap-2">🎯 Ações necessárias</h2>
+              <div className="space-y-2 text-sm">
+                {actions!.pending_orders > 0 && (
+                  <Link to="/admin/pedidos" className="flex items-center justify-between p-3 bg-peach/20 rounded-md hover:bg-peach/30 transition">
+                    <span className="text-primary-dark">
+                      <strong>{actions!.pending_orders}</strong> pedido(s) aguardando aprovação
+                    </span>
+                    <span className="text-xs uppercase tracking-widest text-primary">Ver →</span>
+                  </Link>
+                )}
+                {actions!.confirmed_no_label > 0 && (
+                  <Link to="/admin/pedidos" className="flex items-center justify-between p-3 bg-primary/10 rounded-md hover:bg-primary/20 transition">
+                    <span className="text-primary-dark">
+                      <strong>{actions!.confirmed_no_label}</strong> pedido(s) aguardando etiqueta ME
+                    </span>
+                    <span className="text-xs uppercase tracking-widest text-primary">Ver →</span>
+                  </Link>
+                )}
+                {actions!.pending_appointments > 0 && (
+                  <Link to="/admin/agendamentos" className="flex items-center justify-between p-3 bg-accent-teal/10 rounded-md hover:bg-accent-teal/20 transition">
+                    <span className="text-primary-dark">
+                      <strong>{actions!.pending_appointments}</strong> reserva(s) aguardando confirmação
+                    </span>
+                    <span className="text-xs uppercase tracking-widest text-accent-teal">Ver →</span>
+                  </Link>
+                )}
+                {actions!.me_failed > 0 && (
+                  <Link to="/admin/pedidos" className="flex items-center justify-between p-3 bg-red-50 rounded-md hover:bg-red-100 transition">
+                    <span className="text-red-700">
+                      ⚠️ <strong>{actions!.me_failed}</strong> etiqueta(s) ME com falha
+                    </span>
+                    <span className="text-xs uppercase tracking-widest text-red-700">Ver →</span>
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
+
+
           {pendingCount > 0 && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8">
               <div className="flex items-start gap-3">
