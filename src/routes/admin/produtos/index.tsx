@@ -63,7 +63,11 @@ function AdminProductsList() {
               <Plus className="w-4 h-4" /> Novo produto
             </button>
           </div>
-          <p className="text-[var(--text-muted)] mb-8 text-sm">Gerencie o catálogo da loja.</p>
+          <p className="text-[var(--text-muted)] mb-6 text-sm">Gerencie o catálogo da loja.</p>
+
+          <InstagramFeedCard />
+
+
 
           {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
 
