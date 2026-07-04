@@ -301,8 +301,16 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
   );
 
   return (
-    <div className="bg-white rounded-lg p-5 md:p-6 shadow-sm">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
+    <div className={`bg-white rounded-lg p-5 md:p-6 shadow-sm transition ${isSelected ? "ring-2 ring-primary" : ""}`}>
+      <div className="flex items-start gap-3 mb-4">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={onToggleSelect}
+          onClick={(e) => e.stopPropagation()}
+          className="mt-1 shrink-0"
+        />
+      <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-start md:justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
             <span className="font-mono text-sm text-primary-dark">#{o.code}</span>
