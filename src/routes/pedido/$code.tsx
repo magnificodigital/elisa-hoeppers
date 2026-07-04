@@ -32,13 +32,18 @@ type Order = {
 export const Route = createFileRoute("/pedido/$code")({
   validateSearch: (s: Record<string, unknown>) => ({
     status: typeof s.status === "string" ? s.status : undefined,
+    email: typeof s.email === "string" ? s.email : undefined,
   }),
-  loader: async ({ params }) => {
-    const { data, error } = await supabase.rpc("get_order_by_code", { p_code: params.code });
+  loaderDeps: ({ search }) => ({ email: search.email }),
+  loader: async ({ params, deps }) => {
+    const { data, error } = await supabase.rpc("get_order_by_code", {
+      p_code: params.code,
+      p_email: deps.email ?? null,
+    });
     if (error) throw error;
     const order = Array.isArray(data) ? data[0] : data;
-    if (!order) throw notFound();
-    return { order: order as Order };
+    if (!order) return { order: null as Order | null, needsEmail: true };
+    return { order: order as Order, needsEmail: false };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `Pedido #${loaderData?.order.code} — Elisa Hoeppers` }],
