@@ -118,3 +118,63 @@ function AdminProductsList() {
     </Layout>
   );
 }
+
+function InstagramFeedCard() {
+  const [copied, setCopied] = useState(false);
+  const feedUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/api/public/instagram-feed.xml`
+      : "/api/public/instagram-feed.xml";
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(feedUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  return (
+    <div className="bg-white border border-border rounded-lg p-5 mb-8">
+      <div className="flex items-center gap-2 mb-2">
+        <Instagram className="w-5 h-5 text-primary" />
+        <h2 className="font-medium text-primary-dark">Lojinha do Instagram</h2>
+      </div>
+      <p className="text-sm text-[var(--text-muted)] mb-3">
+        Conecte seus produtos ao Instagram Shopping usando o feed de catálogo abaixo. No{" "}
+        <a
+          href="https://business.facebook.com/commerce"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline"
+        >
+          Meta Commerce Manager
+        </a>
+        , crie um catálogo → <strong>Fontes de dados</strong> → <strong>Feed de dados</strong> →{" "}
+        <strong>Agendado</strong> e cole este endereço. A Meta atualiza os produtos automaticamente.
+      </p>
+      <div className="flex items-center gap-2">
+        <input
+          readOnly
+          value={feedUrl}
+          onFocus={(e) => e.currentTarget.select()}
+          className="flex-1 border border-border rounded-md px-3 py-2 bg-cream/40 text-sm text-primary-dark"
+        />
+        <button
+          type="button"
+          onClick={copy}
+          className="inline-flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-md text-xs uppercase tracking-widest font-semibold hover:bg-primary-dark transition"
+        >
+          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          {copied ? "Copiado" : "Copiar"}
+        </button>
+      </div>
+      <p className="text-[10px] text-[var(--text-muted)] mt-2">
+        Apenas produtos ativos com imagem aparecem no feed. Requer uma conta comercial no Instagram conectada ao Facebook.
+      </p>
+    </div>
+  );
+}
+
