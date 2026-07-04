@@ -75,11 +75,20 @@ function ProductDetail() {
             <div>
               <div className="relative aspect-square rounded-lg overflow-hidden bg-sand">
                 {product.gallery?.[activeImage] && (
-                  <img
-                    src={product.gallery[activeImage].url}
-                    alt={product.gallery[activeImage].alt ?? product.name}
-                    className="w-full h-full object-cover"
-                  />
+                  isVideoUrl(product.gallery[activeImage].url) ? (
+                    <video
+                      src={product.gallery[activeImage].url}
+                      className="w-full h-full object-cover"
+                      controls
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={product.gallery[activeImage].url}
+                      alt={product.gallery[activeImage].alt ?? product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  )
                 )}
                 {!product.in_stock && (
                   <span className="absolute top-4 right-4 bg-primary-dark text-white text-xs px-3 py-1 rounded-md tracking-wide">
