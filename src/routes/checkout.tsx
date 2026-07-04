@@ -149,25 +149,72 @@ function CheckoutPage() {
   async function lookupCep(rawCep: string) {
     const cep = rawCep.replace(/\D/g, "");
     if (cep.length !== 8) return;
+
+    setCepLoading(true);
+    setCepFilled(false);
     try {
-      setCepLoading(true);
       const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      if (!res.ok) return;
       const data = await res.json();
       if (data.erro) return;
+
+      // Auto-preenche só campos vazios (não sobrescreve o que a cliente já digitou)
       setForm((f) => ({
         ...f,
-        street: data.logradouro || f.street,
-        district: data.bairro || f.district,
+        street: f.street || data.logradouro || "",
+        district: f.district || data.bairro || "",
         cityState:
-          data.localidade && data.uf ? `${data.localidade}/${data.uf}` : f.cityState,
-        complement: data.complemento || f.complement,
+          f.cityState || (data.localidade && data.uf ? `${data.localidade}/${data.uf}` : ""),
       }));
-    } catch {
-      // silenciosamente ignora falha de consulta de CEP
+      setCepFilled(true);
+      toast.success("Endereço preenchido pelo CEP");
+    } catch (e) {
+      console.warn("ViaCEP lookup falhou:", e);
+      // Silencia — cliente pode digitar manual
     } finally {
       setCepLoading(false);
     }
   }
+
+  // Debounce: dispara só quando o CEP chega a 8 dígitos
+  useEffect(() => {
+    const clean = form.cep.replace(/\D/g, "");
+    if (clean.length !== 8) {
+      setCepFilled(false);
+      return;
+    }
+    const t = setTimeout(() => lookupCep(form.cep), 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.cep]);
+
+  function applyAddress(addr: any) {
+    setForm((f) => ({
+      ...f,
+      cep: addr.cep ?? "",
+      street: addr.street ?? "",
+      number: addr.number ?? "",
+      complement: addr.complement ?? "",
+      district: addr.district ?? "",
+      cityState: addr.city && addr.state ? `${addr.city}/${addr.state}` : "",
+    }));
+  }
+
+  // Carrega endereços salvos do perfil
+  useEffect(() => {
+    if (!user || !profile?.saved_addresses) {
+      setSavedAddresses([]);
+      return;
+    }
+    const list = Array.isArray(profile.saved_addresses) ? profile.saved_addresses : [];
+    setSavedAddresses(list);
+    const def = list.find((a: any) => a.is_default);
+    if (def && !form.street) {
+      applyAddress(def);
+      setSelectedAddressId(def.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, profile?.saved_addresses]);
 
 
   async function maybeCreateAccount(): Promise<boolean> {
