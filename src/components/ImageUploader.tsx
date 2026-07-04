@@ -53,12 +53,16 @@ export function ImageUploader({
 
       {value ? (
         <div className="relative inline-block rounded-md overflow-hidden bg-sand border border-border" style={{ aspectRatio, width: "12rem" }}>
-          <img src={value} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+          {allowVideo && isVideoUrl(value) ? (
+            <video src={value} className="w-full h-full object-cover" controls muted playsInline />
+          ) : (
+            <img src={value} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+          )}
           <button
             type="button"
             onClick={() => onChange(null)}
             className="absolute top-1 right-1 w-7 h-7 rounded-full bg-white/90 text-red-700 hover:bg-white flex items-center justify-center shadow"
-            aria-label="Remover imagem"
+            aria-label="Remover mídia"
           >
             <X className="w-4 h-4" />
           </button>
