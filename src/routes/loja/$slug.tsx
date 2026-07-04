@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import { isVideoUrl } from "@/lib/storage";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
 
