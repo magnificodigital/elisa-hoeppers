@@ -123,9 +123,19 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
             <div className="flex items-center gap-3 flex-wrap mb-1">
               <span className="font-mono font-semibold text-primary-dark">#{o.code}</span>
               <StatusPill status={o.status} />
+              <PaymentMethodBadge type={o.payment_method_type} installments={o.payment_installments} />
               <span className="text-xs text-primary-dark/50">
                 {new Date(o.created_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" })}
               </span>
+              {o.status === "pending" && o.payment_method_type && (
+                <span className="text-xs text-primary-dark/60">
+                  {o.payment_method_type === "pix"
+                    ? "⏳ PIX aguardando"
+                    : o.payment_method_type === "ticket"
+                    ? "⏳ Boleto emitido"
+                    : "⏳ Processando"}
+                </span>
+              )}
             </div>
             <p className="text-sm text-primary-dark/70 truncate">
               {o.items.length === 1
