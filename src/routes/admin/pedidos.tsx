@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
+import { toast } from "sonner";
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
+import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";
+import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
