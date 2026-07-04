@@ -195,6 +195,11 @@ serve(async (req) => {
     const { error } = await supabase.from("orders").update(patch).eq("id", orderId);
     if (error) console.error("supabase update error:", error);
 
+    await supabase
+      .from("processed_mp_payments")
+      .update({ order_id: orderId })
+      .eq("payment_id", String(payment.id));
+
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
   } catch (err) {
     console.error(err);
