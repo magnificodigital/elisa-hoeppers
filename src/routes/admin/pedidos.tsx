@@ -238,11 +238,18 @@ function BulkBuyLabelsButton({ ids, onDone, orders }: { ids: string[]; onDone: (
 }
 
 
-function OrderCard({ order: o }: { order: Order }) {
+function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isSelected: boolean; onToggleSelect: () => void }) {
   const qc = useQueryClient();
   const [expanded, setExpanded] = useState(false);
-  const [shippingInput, setShippingInput] = useState((o.shipping_cents / 100).toFixed(2).replace(".", ","));
+  const [shippingDisplay, setShippingDisplay] = useState(o.shipping_cents ? centsToBRL(o.shipping_cents) : "");
+  const [shippingCents, setShippingCents] = useState(o.shipping_cents);
   const [trackingInput, setTrackingInput] = useState(o.tracking_code ?? "");
+
+  function handleShippingChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { display, cents } = formatBRLInput(e.target.value);
+    setShippingDisplay(display);
+    setShippingCents(cents);
+  }
 
   const updateTracking = useMutation({
     mutationFn: () => updateOrderTracking(o.id, trackingInput.trim() || null),
