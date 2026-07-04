@@ -372,9 +372,9 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
           <div>
             <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-1">Frete (R$)</p>
             <div className="flex gap-2">
-              <input value={shippingInput} onChange={(e) => setShippingInput(e.target.value)} placeholder="0,00"
+              <input value={shippingDisplay} onChange={handleShippingChange} placeholder="R$ 0,00"
                 className="flex-1 border border-border rounded-md px-3 py-1.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-              <button onClick={() => updateShipping.mutate()} disabled={updateShipping.isPending}
+              <button onClick={() => updateShipping.mutate(shippingCents)} disabled={updateShipping.isPending || shippingCents === o.shipping_cents}
                 className="bg-primary text-white px-4 py-1.5 rounded-md text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
                 {updateShipping.isPending ? "..." : "Aplicar"}
               </button>
