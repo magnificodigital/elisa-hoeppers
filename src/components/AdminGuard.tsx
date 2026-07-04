@@ -28,7 +28,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
     );
   }
 
-  if (profile.role !== "admin" && profile.role !== "instructor") {
+  if (profile.role !== "admin") {
     return (
       <Layout>
         <section className="py-24 text-center">
