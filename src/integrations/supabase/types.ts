@@ -1403,7 +1403,11 @@ export type Database = {
     Enums: {
       appointment_status: "pending" | "confirmed" | "cancelled" | "completed"
       course_level: "iniciante" | "intermediario" | "avancado" | "todos"
-      enrollment_status: "active" | "cancelled" | "completed"
+      enrollment_status:
+        | "active"
+        | "cancelled"
+        | "completed"
+        | "pending_payment"
       order_status:
         | "pending"
         | "confirmed"
@@ -1542,7 +1546,12 @@ export const Constants = {
     Enums: {
       appointment_status: ["pending", "confirmed", "cancelled", "completed"],
       course_level: ["iniciante", "intermediario", "avancado", "todos"],
-      enrollment_status: ["active", "cancelled", "completed"],
+      enrollment_status: [
+        "active",
+        "cancelled",
+        "completed",
+        "pending_payment",
+      ],
       order_status: [
         "pending",
         "confirmed",
