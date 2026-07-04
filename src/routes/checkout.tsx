@@ -549,16 +549,26 @@ function CheckoutPage() {
                   </span>
                 </div>
               </div>
+              {mpEnabled && meEnabled && shippingError && (
+                <p className="text-xs text-red-700 mb-3 text-center">
+                  ⚠️ Não conseguimos calcular o frete. Verifique o CEP ou combine via WhatsApp.
+                </p>
+              )}
               {mpEnabled && (
                 <button
                   type="button"
                   onClick={() => submitOrder("mercadopago")}
-                  disabled={submitting !== null || (meEnabled && !selectedShipping && shippingOpts.length > 0)}
+                  disabled={
+                    submitting !== null ||
+                    (meEnabled && !!shippingError) ||
+                    (meEnabled && !selectedShipping && shippingOpts.length > 0)
+                  }
                   className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60 mb-2"
                 >
                   {submitting === "mercadopago" ? "Indo pro pagamento…" : "Pagar agora com Mercado Pago"}
                 </button>
               )}
+
               <button
                 type="button"
                 onClick={() => submitOrder("whatsapp")}
