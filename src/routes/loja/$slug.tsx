@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import { isVideoUrl } from "@/lib/storage";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
 
@@ -74,11 +75,20 @@ function ProductDetail() {
             <div>
               <div className="relative aspect-square rounded-lg overflow-hidden bg-sand">
                 {product.gallery?.[activeImage] && (
-                  <img
-                    src={product.gallery[activeImage].url}
-                    alt={product.gallery[activeImage].alt ?? product.name}
-                    className="w-full h-full object-cover"
-                  />
+                  isVideoUrl(product.gallery[activeImage].url) ? (
+                    <video
+                      src={product.gallery[activeImage].url}
+                      className="w-full h-full object-cover"
+                      controls
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={product.gallery[activeImage].url}
+                      alt={product.gallery[activeImage].alt ?? product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  )
                 )}
                 {!product.in_stock && (
                   <span className="absolute top-4 right-4 bg-primary-dark text-white text-xs px-3 py-1 rounded-md tracking-wide">
@@ -97,11 +107,15 @@ function ProductDetail() {
                         i === activeImage ? "border-primary" : "border-transparent"
                       }`}
                     >
-                      <img
-                        src={img.url}
-                        alt={img.alt ?? ""}
-                        className="w-full h-full object-cover"
-                      />
+                      {isVideoUrl(img.url) ? (
+                        <video src={img.url} className="w-full h-full object-cover" muted playsInline />
+                      ) : (
+                        <img
+                          src={img.url}
+                          alt={img.alt ?? ""}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </button>
                   ))}
                 </div>

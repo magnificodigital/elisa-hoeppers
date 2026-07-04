@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Upload, Link as LinkIcon, X, Loader2 } from "lucide-react";
-import { uploadImage } from "@/lib/storage";
+import { uploadImage, uploadMedia, isVideoUrl } from "@/lib/storage";
 
 export function ImageUploader({
   value,
@@ -9,6 +9,7 @@ export function ImageUploader({
   aspectRatio = "1/1",
   label,
   allowUrl = true,
+  allowVideo = false,
 }: {
   value: string | null;
   onChange: (url: string | null) => void;
@@ -16,6 +17,7 @@ export function ImageUploader({
   aspectRatio?: string;
   label?: string;
   allowUrl?: boolean;
+  allowVideo?: boolean;
 }) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -28,7 +30,7 @@ export function ImageUploader({
     setError(null);
     setUploading(true);
     try {
-      const url = await uploadImage(file, folder);
+      const url = allowVideo ? await uploadMedia(file, folder) : await uploadImage(file, folder);
       onChange(url);
     } catch (e) {
       setError((e as Error).message);
@@ -44,18 +46,23 @@ export function ImageUploader({
     if (file) handleFile(file);
   }
 
+
   return (
     <div className="space-y-2">
       {label && <p className="text-[10px] uppercase tracking-widest text-primary-dark">{label}</p>}
 
       {value ? (
         <div className="relative inline-block rounded-md overflow-hidden bg-sand border border-border" style={{ aspectRatio, width: "12rem" }}>
-          <img src={value} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+          {allowVideo && isVideoUrl(value) ? (
+            <video src={value} className="w-full h-full object-cover" controls muted playsInline />
+          ) : (
+            <img src={value} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+          )}
           <button
             type="button"
             onClick={() => onChange(null)}
             className="absolute top-1 right-1 w-7 h-7 rounded-full bg-white/90 text-red-700 hover:bg-white flex items-center justify-center shadow"
-            aria-label="Remover imagem"
+            aria-label="Remover mídia"
           >
             <X className="w-4 h-4" />
           </button>
@@ -87,7 +94,7 @@ export function ImageUploader({
             <>
               <Upload className="w-5 h-5 text-primary" />
               <p className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] text-center leading-tight">
-                Clique ou arraste<br />uma imagem
+                Clique ou arraste<br />{allowVideo ? "imagem ou vídeo" : "uma imagem"}
               </p>
             </>
           )}
@@ -97,7 +104,7 @@ export function ImageUploader({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept={allowVideo ? "image/*,video/*" : "image/*"}
         className="hidden"
         onChange={(e) => {
           const f = e.target.files?.[0];

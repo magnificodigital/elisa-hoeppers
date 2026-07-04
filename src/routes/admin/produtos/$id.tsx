@@ -232,13 +232,14 @@ function ProductEditPage() {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Imagens</label>
+              <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Imagens / vídeos (até 3)</label>
               <div className="flex flex-wrap gap-4">
                 {form.gallery.map((img, i) => (
                   <ImageUploader
                     key={i}
                     value={img.url}
                     folder="products"
+                    allowVideo
                     onChange={(url) => {
                       if (url) {
                         const next = [...form.gallery];
@@ -250,16 +251,20 @@ function ProductEditPage() {
                     }}
                   />
                 ))}
-                <ImageUploader
-                  value={null}
-                  folder="products"
-                  label="Adicionar"
-                  onChange={(url) => {
-                    if (url) setForm({ ...form, gallery: [...form.gallery, { url, alt: form.name }] });
-                  }}
-                />
+                {form.gallery.length < 3 && (
+                  <ImageUploader
+                    value={null}
+                    folder="products"
+                    label="Adicionar"
+                    allowVideo
+                    onChange={(url) => {
+                      if (url) setForm({ ...form, gallery: [...form.gallery, { url, alt: form.name }] });
+                    }}
+                  />
+                )}
               </div>
-              <p className="text-[10px] text-[var(--text-muted)] mt-2">Clique ou arraste imagens (máx 8MB cada). Para remover, clique no X da imagem.</p>
+              <p className="text-[10px] text-[var(--text-muted)] mt-2">Até 3 mídias. Imagens (máx 8MB) ou vídeos (máx 50MB). Para remover, clique no X.</p>
+
             </div>
 
             <div className="border-t border-border pt-5">
