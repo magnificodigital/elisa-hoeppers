@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
+import { toast } from "sonner";
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
+import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";
+import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
@@ -29,7 +33,10 @@ const FILTERS = [
 type FilterId = typeof FILTERS[number]["id"];
 
 function AdminOrders() {
+  useNewOrderNotifications();
   const [filter, setFilter] = useState<FilterId>("pending");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const { data: orders, isLoading } = useQuery({
     queryKey: ["admin-orders", filter],
     queryFn: () => listAllOrdersForAdmin(filter === "all" ? {} : { status: filter as Order["status"] }),
@@ -38,6 +45,31 @@ function AdminOrders() {
     queryKey: ["admin-orders-pending-count"],
     queryFn: () => listAllOrdersForAdmin({ status: "pending" }),
   });
+
+  const filteredOrders = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return orders ?? [];
+    return (orders ?? []).filter(
+      (o) =>
+        o.code.toLowerCase().includes(q) ||
+        o.customer_name.toLowerCase().includes(q) ||
+        o.customer_email.toLowerCase().includes(q) ||
+        (o.customer_phone ?? "").toLowerCase().includes(q)
+    );
+  }, [orders, searchQuery]);
+
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function clearSelection() {
+    setSelectedIds(new Set());
+  }
 
   return (
     <Layout>
@@ -68,17 +100,53 @@ function AdminOrders() {
             ))}
           </div>
 
+          <div className="mb-6">
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Buscar por código, nome, email ou telefone..."
+              className="w-full border border-border rounded-full px-5 py-2.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            {searchQuery && (
+              <p className="text-xs text-primary-dark/60 mt-2">
+                {filteredOrders.length} resultado{filteredOrders.length === 1 ? "" : "s"} pra "{searchQuery}"
+              </p>
+            )}
+          </div>
+
+          {selectedIds.size > 0 && (
+            <div className="sticky top-16 z-10 mb-4 bg-primary text-cream rounded-lg px-5 py-3 flex items-center justify-between flex-wrap gap-3 shadow-lg">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">
+                  {selectedIds.size} pedido{selectedIds.size === 1 ? "" : "s"} selecionado{selectedIds.size === 1 ? "" : "s"}
+                </span>
+                <button onClick={clearSelection} className="text-xs uppercase tracking-widest text-cream/80 hover:text-cream">
+                  Limpar
+                </button>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <BulkApproveButton ids={Array.from(selectedIds)} onDone={clearSelection} orders={filteredOrders} />
+                <BulkBuyLabelsButton ids={Array.from(selectedIds)} onDone={clearSelection} orders={filteredOrders} />
+              </div>
+            </div>
+          )}
+
           {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
 
-          {!isLoading && (orders?.length ?? 0) === 0 && (
+          {!isLoading && filteredOrders.length === 0 && (
             <div className="bg-white rounded-lg p-10 text-center">
               <p className="text-[var(--text-muted)]">Nenhum pedido neste filtro.</p>
             </div>
           )}
 
           <div className="space-y-4">
-            {(orders ?? []).map((o) => (
-              <OrderCard key={o.id} order={o} />
+            {filteredOrders.map((o) => (
+              <OrderCard
+                key={o.id}
+                order={o}
+                isSelected={selectedIds.has(o.id)}
+                onToggleSelect={() => toggleSelect(o.id)}
+              />
             ))}
           </div>
         </div>
@@ -87,11 +155,101 @@ function AdminOrders() {
   );
 }
 
-function OrderCard({ order: o }: { order: Order }) {
+function BulkApproveButton({ ids, onDone, orders }: { ids: string[]; onDone: () => void; orders: Order[] }) {
+  const qc = useQueryClient();
+  const eligibleIds = orders.filter((o) => ids.includes(o.id) && o.status === "pending").map((o) => o.id);
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("orders").update({ status: "confirmed" }).in("id", eligibleIds);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success(`${eligibleIds.length} pedido(s) aprovado(s)`);
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+      qc.invalidateQueries({ queryKey: ["admin-orders-pending-count"] });
+      onDone();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  if (eligibleIds.length === 0) return null;
+  return (
+    <button
+      onClick={() => mutation.mutate()}
+      disabled={mutation.isPending}
+      className="inline-flex items-center gap-1.5 bg-cream text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
+    >
+      ✓ Aprovar {eligibleIds.length} pendente(s)
+    </button>
+  );
+}
+
+function BulkBuyLabelsButton({ ids, onDone, orders }: { ids: string[]; onDone: () => void; orders: Order[] }) {
+  const qc = useQueryClient();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const eligible = orders.filter(
+    (o) => ids.includes(o.id) && o.status === "confirmed" && o.shipping_service_id && !o.me_order_id
+  );
+  const totalCents = eligible.reduce((acc, o) => acc + (o.shipping_cents ?? 0), 0);
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const results = await Promise.allSettled(
+        eligible.map((o) => supabase.functions.invoke("me-buy-label", { body: { order_id: o.id } }))
+      );
+      const ok = results.filter((r) => r.status === "fulfilled").length;
+      const fail = results.length - ok;
+      return { ok, fail };
+    },
+    onSuccess: ({ ok, fail }) => {
+      if (fail === 0) {
+        toast.success(`${ok} etiqueta(s) comprada(s) com sucesso`);
+      } else {
+        toast.warning(`${ok} sucesso, ${fail} falha(s). Confira o admin.`);
+      }
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+      onDone();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  if (eligible.length === 0) return null;
+  return (
+    <>
+      <button
+        onClick={() => setConfirmOpen(true)}
+        className="inline-flex items-center gap-1.5 bg-cream text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition"
+      >
+        🏷 Comprar {eligible.length} etiqueta(s)
+      </button>
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title={`Comprar ${eligible.length} etiqueta(s)?`}
+        description={`Vai debitar ${centsToBRL(totalCents)} do saldo Melhor Envio. Etiquetas processadas em paralelo — em caso de falha em alguma, outras continuam.`}
+        confirmLabel="Comprar todas"
+        variant="default"
+        onConfirm={() => mutation.mutate()}
+      />
+    </>
+  );
+}
+
+
+function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isSelected: boolean; onToggleSelect: () => void }) {
   const qc = useQueryClient();
   const [expanded, setExpanded] = useState(false);
-  const [shippingInput, setShippingInput] = useState((o.shipping_cents / 100).toFixed(2).replace(".", ","));
+  const [shippingDisplay, setShippingDisplay] = useState(o.shipping_cents ? centsToBRL(o.shipping_cents) : "");
+  const [shippingCents, setShippingCents] = useState(o.shipping_cents);
   const [trackingInput, setTrackingInput] = useState(o.tracking_code ?? "");
+
+  function handleShippingChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { display, cents } = formatBRLInput(e.target.value);
+    setShippingDisplay(display);
+    setShippingCents(cents);
+  }
 
   const updateTracking = useMutation({
     mutationFn: () => updateOrderTracking(o.id, trackingInput.trim() || null),
@@ -116,10 +274,7 @@ function OrderCard({ order: o }: { order: Order }) {
   });
 
   const updateShipping = useMutation({
-    mutationFn: () => {
-      const cents = Math.round(parseFloat(shippingInput.replace(",", ".")) * 100) || 0;
-      return updateOrderShipping(o.id, cents, o.subtotal_cents);
-    },
+    mutationFn: (cents: number) => updateOrderShipping(o.id, cents, o.subtotal_cents),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
   });
 
@@ -146,8 +301,16 @@ function OrderCard({ order: o }: { order: Order }) {
   );
 
   return (
-    <div className="bg-white rounded-lg p-5 md:p-6 shadow-sm">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
+    <div className={`bg-white rounded-lg p-5 md:p-6 shadow-sm transition ${isSelected ? "ring-2 ring-primary" : ""}`}>
+      <div className="flex items-start gap-3 mb-4">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={onToggleSelect}
+          onClick={(e) => e.stopPropagation()}
+          className="mt-1 shrink-0"
+        />
+      <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-start md:justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
             <span className="font-mono text-sm text-primary-dark">#{o.code}</span>
@@ -168,6 +331,7 @@ function OrderCard({ order: o }: { order: Order }) {
         <div className="text-right shrink-0">
           <p className="font-display text-2xl text-primary-dark">{formatPriceBRL(o.total_cents)}</p>
           <p className="text-[11px] text-[var(--text-muted)]">{o.items.length} {o.items.length === 1 ? "item" : "itens"}</p>
+        </div>
         </div>
       </div>
 
@@ -217,9 +381,9 @@ function OrderCard({ order: o }: { order: Order }) {
           <div>
             <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-1">Frete (R$)</p>
             <div className="flex gap-2">
-              <input value={shippingInput} onChange={(e) => setShippingInput(e.target.value)} placeholder="0,00"
+              <input value={shippingDisplay} onChange={handleShippingChange} placeholder="R$ 0,00"
                 className="flex-1 border border-border rounded-md px-3 py-1.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-              <button onClick={() => updateShipping.mutate()} disabled={updateShipping.isPending}
+              <button onClick={() => updateShipping.mutate(shippingCents)} disabled={updateShipping.isPending || shippingCents === o.shipping_cents}
                 className="bg-primary text-white px-4 py-1.5 rounded-md text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
                 {updateShipping.isPending ? "..." : "Aplicar"}
               </button>
