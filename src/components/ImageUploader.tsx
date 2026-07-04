@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Upload, Link as LinkIcon, X, Loader2 } from "lucide-react";
-import { uploadImage } from "@/lib/storage";
+import { uploadImage, uploadMedia, isVideoUrl } from "@/lib/storage";
 
 export function ImageUploader({
   value,
@@ -9,6 +9,7 @@ export function ImageUploader({
   aspectRatio = "1/1",
   label,
   allowUrl = true,
+  allowVideo = false,
 }: {
   value: string | null;
   onChange: (url: string | null) => void;
@@ -16,6 +17,7 @@ export function ImageUploader({
   aspectRatio?: string;
   label?: string;
   allowUrl?: boolean;
+  allowVideo?: boolean;
 }) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -28,7 +30,7 @@ export function ImageUploader({
     setError(null);
     setUploading(true);
     try {
-      const url = await uploadImage(file, folder);
+      const url = allowVideo ? await uploadMedia(file, folder) : await uploadImage(file, folder);
       onChange(url);
     } catch (e) {
       setError((e as Error).message);
@@ -43,6 +45,7 @@ export function ImageUploader({
     const file = e.dataTransfer.files[0];
     if (file) handleFile(file);
   }
+
 
   return (
     <div className="space-y-2">
