@@ -23,6 +23,9 @@ import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { AdminSearchBar } from "@/components/AdminSearchBar";
 import { getDashboardStats } from "@/lib/analytics";
+import { supabase } from "@/lib/supabase";
+import { getSetting } from "@/lib/settings";
+import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Admin — Elisa Hoeppers" }] }),
