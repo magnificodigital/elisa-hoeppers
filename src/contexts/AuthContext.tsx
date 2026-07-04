@@ -2,6 +2,19 @@ import { createContext, useEffect, useState, useCallback, type ReactNode } from 
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 
+export type SavedAddress = {
+  id: string;
+  label: string;
+  cep: string;
+  street: string;
+  number: string;
+  complement: string;
+  district: string;
+  city: string;
+  state: string;
+  is_default: boolean;
+};
+
 export type Profile = {
   id: string;
   role: "student" | "instructor" | "admin";
@@ -9,6 +22,7 @@ export type Profile = {
   avatar_url: string | null;
   bio: string | null;
   phone: string | null;
+  saved_addresses: SavedAddress[];
 };
 
 export type AuthContextValue = {
@@ -33,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = useCallback(async (uid: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("id, role, full_name, avatar_url, bio, phone")
+      .select("id, role, full_name, avatar_url, bio, phone, saved_addresses")
       .eq("id", uid)
       .maybeSingle();
     setProfile((data as Profile | null) ?? null);

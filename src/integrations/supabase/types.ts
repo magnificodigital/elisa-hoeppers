@@ -1409,6 +1409,8 @@ export type Database = {
               customer_name: string
               id: string
               items: Json
+              payment_installments: number
+              payment_method_type: string
               shipping_cents: number
               status: Database["public"]["Enums"]["order_status"]
               subtotal_cents: number
