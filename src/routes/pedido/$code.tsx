@@ -99,6 +99,16 @@ function OrderPage() {
     },
   });
 
+  // MP diz sucesso mas order ainda pending → webhook pode estar chegando. Re-checa em 30s.
+  useEffect(() => {
+    if (search.status === "success" && order && order.status === "pending") {
+      const timer = setTimeout(() => window.location.reload(), 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [search.status, order]);
+
+
+
   // Pedido de convidado: pede confirmação de email antes de exibir os dados
   if (!order) {
     return (
