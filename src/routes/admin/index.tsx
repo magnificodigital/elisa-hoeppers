@@ -55,12 +55,63 @@ function formatBRL(cents: number): string {
 }
 
 function AdminHome() {
+  useNewOrderNotifications();
   const { data: stats, isLoading } = useQuery({
     queryKey: ["admin-dashboard-stats"],
     queryFn: getDashboardStats,
   });
 
+  const { data: actions } = useQuery({
+    queryKey: ["admin-actions-required"],
+    queryFn: async () => {
+      const [pendingOrders, confirmedNoLabel, pendingAppointments, mePartialFailed] = await Promise.all([
+        supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending"),
+        supabase
+          .from("orders")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "confirmed")
+          .not("shipping_service_id", "is", null)
+          .is("me_order_id", null),
+        supabase.from("appointments").select("id", { count: "exact", head: true }).eq("status", "pending"),
+        supabase.from("orders").select("id", { count: "exact", head: true }).like("me_status", "failed_%"),
+      ]);
+      return {
+        pending_orders: pendingOrders.count ?? 0,
+        confirmed_no_label: confirmedNoLabel.count ?? 0,
+        pending_appointments: pendingAppointments.count ?? 0,
+        me_failed: mePartialFailed.count ?? 0,
+      };
+    },
+    refetchInterval: 60_000,
+  });
+
+  const { data: balance } = useQuery({
+    queryKey: ["me-balance"],
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke("me-balance", { body: {} });
+      if (error) throw error;
+      return data as { balance_cents: number | null; unconfigured?: boolean };
+    },
+    refetchInterval: 5 * 60_000,
+  });
+
+  const { data: threshold } = useQuery({
+    queryKey: ["me-threshold"],
+    queryFn: async () => {
+      const v = await getSetting("me_low_balance_threshold_cents");
+      return Number(v ?? "5000");
+    },
+  });
+
+  const isLow =
+    balance?.balance_cents != null && threshold != null && balance.balance_cents < threshold;
+
   const pendingCount = (stats?.orders_pending ?? 0) + (stats?.appointments_pending ?? 0);
+  const actionsTotal =
+    (actions?.pending_orders ?? 0) +
+    (actions?.confirmed_no_label ?? 0) +
+    (actions?.pending_appointments ?? 0) +
+    (actions?.me_failed ?? 0);
 
   return (
     <Layout>
