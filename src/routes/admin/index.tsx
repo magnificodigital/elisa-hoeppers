@@ -20,16 +20,16 @@ import {
   Truck,
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { AdminSearchBar } from "@/components/AdminSearchBar";
 import { getDashboardStats } from "@/lib/analytics";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Admin — Elisa Hoeppers" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminHome />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

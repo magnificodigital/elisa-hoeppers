@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, Share2, Mail } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 
 export const Route = createFileRoute("/admin/posts")({
   head: () => ({ meta: [{ title: "Posts — Admin" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <PostsHome />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

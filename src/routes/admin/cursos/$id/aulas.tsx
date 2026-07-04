@@ -3,16 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { GripVertical, Plus, Pencil, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { getCourseForAdmin, listLessonsForAdmin, createLesson, updateLesson, deleteLesson, extractYouTubeId, type LessonAdmin } from "@/lib/admin";
 import { listModulesByCourse, createModule, updateModule, deleteModule, type Module } from "@/lib/modules";
 
 export const Route = createFileRoute("/admin/cursos/$id/aulas")({
   head: () => ({ meta: [{ title: "Admin — Aulas" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <CourseLessonsPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

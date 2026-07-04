@@ -2,15 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, ImageOff } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllProductsForAdmin, formatPriceBRL, firstImage, createProduct } from "@/lib/shop";
 
 export const Route = createFileRoute("/admin/produtos/")({
   head: () => ({ meta: [{ title: "Admin — Produtos" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminProductsList />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

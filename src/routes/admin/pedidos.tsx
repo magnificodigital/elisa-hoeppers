@@ -3,16 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/pedidos")({
   head: () => ({ meta: [{ title: "Admin — Pedidos" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminOrders />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

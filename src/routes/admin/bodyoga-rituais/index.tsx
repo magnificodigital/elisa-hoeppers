@@ -2,16 +2,16 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, GripVertical } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllRitualsForAdmin, createRitual } from "@/lib/shop";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/bodyoga-rituais/")({
   head: () => ({ meta: [{ title: "Admin — Rituais BODYOGA" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <RitualsList />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

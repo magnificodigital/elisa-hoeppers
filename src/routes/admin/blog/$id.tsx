@@ -3,16 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Trash2, Eye } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getPostForAdmin, updatePost, deletePost, parseMarkdownBlocks } from "@/lib/blog";
 
 export const Route = createFileRoute("/admin/blog/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar post" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <PostEditPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

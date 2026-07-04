@@ -3,15 +3,15 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Plus, X } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllCourses, createCourse, slugify } from "@/lib/admin";
 
 export const Route = createFileRoute("/admin/cursos/")({
   head: () => ({ meta: [{ title: "Admin — Cursos" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminCursosList />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

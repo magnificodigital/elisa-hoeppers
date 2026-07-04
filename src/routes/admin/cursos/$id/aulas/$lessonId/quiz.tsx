@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Trash2, Save, Plus } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import {
   getQuizByLesson, listQuestionsForAdmin, upsertQuiz, deleteQuiz,
   createQuestion, updateQuestion, deleteQuestion,
@@ -13,9 +13,9 @@ import {
 export const Route = createFileRoute("/admin/cursos/$id/aulas/$lessonId/quiz")({
   head: () => ({ meta: [{ title: "Admin — Quiz da aula" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <QuizEditor />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 
