@@ -9,6 +9,13 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+// CORS aberto apenas para a resposta de OPTIONS (webhooks não são chamados pelo browser)
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-signature, x-request-id, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
 async function getSetting(key: string): Promise<string | null> {
   const { data } = await supabase.from("app_settings").select("value").eq("key", key).maybeSingle();
   return (data?.value as string) ?? null;
@@ -20,19 +27,89 @@ function mapStatus(mpStatus: string): "pending" | "confirmed" | "cancelled" {
   return "pending";
 }
 
-serve(async (req) => {
-  try {
-    const accessToken = await getSetting("mp_access_token");
-    if (!accessToken) return new Response(JSON.stringify({ ok: false, error: "mp not configured" }), { status: 200 });
+async function verifyMpSignature(req: Request, body: string): Promise<boolean> {
+  const secret = await getSetting("mp_webhook_secret");
+  if (!secret) {
+    console.warn("MP webhook secret not configured — allowing (INSECURE)");
+    return true; // não bloqueia enquanto não estiver configurado, mas loga
+  }
 
-    const body = await req.json().catch(() => ({}));
+  const sigHeader = req.headers.get("x-signature") ?? "";
+  const requestId = req.headers.get("x-request-id") ?? "";
+  if (!sigHeader || !requestId) return false;
+
+  // parse: "ts=1234,v1=abc..."
+  const parts = Object.fromEntries(
+    sigHeader.split(",").map((p) => p.trim().split("=")),
+  );
+  const ts = parts.ts;
+  const v1 = parts.v1;
+  if (!ts || !v1) return false;
+
+  // extract data.id do body
+  let dataId = "";
+  try {
+    const parsed = JSON.parse(body);
+    dataId = String(parsed?.data?.id ?? parsed?.id ?? "");
+  } catch {
+    return false;
+  }
+
+  // template: id:<dataId>;request-id:<requestId>;ts:<ts>;
+  const template = `id:${dataId};request-id:${requestId};ts:${ts};`;
+
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(template));
+  const hex = Array.from(new Uint8Array(signature))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return hex === v1;
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+  const jsonHeaders = { "Content-Type": "application/json" };
+
+  try {
+    const rawBody = await req.text();
+
+    const valid = await verifyMpSignature(req, rawBody);
+    if (!valid) {
+      console.error("MP webhook: assinatura inválida");
+      return new Response(JSON.stringify({ error: "invalid signature" }), {
+        status: 401,
+        headers: jsonHeaders,
+      });
+    }
+
+    const accessToken = await getSetting("mp_access_token");
+    if (!accessToken) {
+      return new Response(JSON.stringify({ ok: false, error: "mp not configured" }), {
+        status: 200,
+        headers: jsonHeaders,
+      });
+    }
+
+    const body = JSON.parse(rawBody || "{}");
     console.log("MP webhook:", JSON.stringify(body));
 
     const type = body.type ?? body.topic;
     const paymentId = body.data?.id ?? body.id;
 
     if (type !== "payment" || !paymentId) {
-      return new Response(JSON.stringify({ ok: true, ignored: true }), { status: 200 });
+      return new Response(JSON.stringify({ ok: true, ignored: true }), {
+        status: 200,
+        headers: jsonHeaders,
+      });
     }
 
     const paymentRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
@@ -40,21 +117,31 @@ serve(async (req) => {
     });
     if (!paymentRes.ok) {
       console.error("MP payment fetch failed:", paymentRes.status, await paymentRes.text());
-      return new Response(JSON.stringify({ ok: false }), { status: 200 });
+      return new Response(JSON.stringify({ ok: false }), { status: 200, headers: jsonHeaders });
     }
     const payment = await paymentRes.json();
     const externalRef = String(payment.external_reference ?? "");
 
     if (externalRef.startsWith("enrollment:")) {
       const enrollmentId = externalRef.split(":")[1];
-      if (!enrollmentId) return new Response("missing enrollment_id", { status: 400 });
+      if (!enrollmentId) {
+        return new Response(JSON.stringify({ error: "missing enrollment_id" }), {
+          status: 400,
+          headers: jsonHeaders,
+        });
+      }
 
       const { data: enrollment } = await supabase
         .from("enrollments")
         .select("*, course:courses(id, slug, title)")
         .eq("id", enrollmentId)
         .maybeSingle();
-      if (!enrollment) return new Response("enrollment not found", { status: 404 });
+      if (!enrollment) {
+        return new Response(JSON.stringify({ error: "enrollment not found" }), {
+          status: 404,
+          headers: jsonHeaders,
+        });
+      }
 
       if (payment.status === "approved" && enrollment.status === "pending_payment") {
         await supabase.from("enrollments").update({ status: "active" }).eq("id", enrollmentId);
@@ -65,11 +152,11 @@ serve(async (req) => {
         await supabase.from("enrollments").update({ status: "cancelled" }).eq("id", enrollmentId);
       }
 
-      return new Response("OK", { status: 200 });
+      return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
     }
 
     const orderId: string | undefined = payment.external_reference;
-    if (!orderId) return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    if (!orderId) return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
 
     const newStatus = mapStatus(payment.status);
     const patch: Record<string, unknown> = {
@@ -81,9 +168,12 @@ serve(async (req) => {
     const { error } = await supabase.from("orders").update(patch).eq("id", orderId);
     if (error) console.error("supabase update error:", error);
 
-    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
   } catch (err) {
     console.error(err);
-    return new Response(JSON.stringify({ error: (err as Error).message }), { status: 500 });
+    return new Response(JSON.stringify({ error: (err as Error).message }), {
+      status: 500,
+      headers: jsonHeaders,
+    });
   }
 });
