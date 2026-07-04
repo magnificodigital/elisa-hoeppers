@@ -74,6 +74,23 @@ function ProfilePage() {
     onError: (err: Error) => toast.error(err.message),
   });
 
+  const savedAddresses = Array.isArray(profile?.saved_addresses) ? profile.saved_addresses : [];
+
+  async function setDefaultAddress(id: string) {
+    const updated = savedAddresses.map((a: any) => ({ ...a, is_default: a.id === id }));
+    await supabase.from("profiles").update({ saved_addresses: updated }).eq("id", user!.id);
+    qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    toast.success("Endereço padrão atualizado");
+  }
+
+  async function removeAddress(id: string) {
+    if (!confirm("Remover este endereço?")) return;
+    const updated = savedAddresses.filter((a: any) => a.id !== id);
+    await supabase.from("profiles").update({ saved_addresses: updated }).eq("id", user!.id);
+    qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    toast.success("Endereço removido");
+  }
+
   if (loading || !user) {
     return (
       <Layout>
