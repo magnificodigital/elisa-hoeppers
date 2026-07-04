@@ -476,19 +476,73 @@ function CheckoutPage() {
                 <p className="text-xs text-[var(--text-muted)] -mt-2 mb-2">
                   Pode deixar em branco e combinar frete por WhatsApp.
                 </p>
+
+                {user && savedAddresses.length > 0 && (
+                  <div className="mb-4">
+                    <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1.5">
+                      Usar endereço salvo
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {savedAddresses.map((addr: any) => (
+                        <button
+                          key={addr.id}
+                          type="button"
+                          onClick={() => {
+                            applyAddress(addr);
+                            setSelectedAddressId(addr.id);
+                          }}
+                          className={`text-xs px-3 py-2 rounded-full border transition ${
+                            selectedAddressId === addr.id
+                              ? "border-primary bg-primary/10 text-primary-dark"
+                              : "border-border text-primary-dark/70 hover:border-primary/40"
+                          }`}
+                        >
+                          {addr.label || "Endereço"} · {addr.city}/{addr.state}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedAddressId(null);
+                          setForm((f) => ({
+                            ...f,
+                            cep: "",
+                            street: "",
+                            number: "",
+                            complement: "",
+                            district: "",
+                            cityState: "",
+                          }));
+                        }}
+                        className="text-xs px-3 py-2 rounded-full border border-dashed border-border text-primary-dark/60 hover:border-primary/40 transition"
+                      >
+                        + Novo endereço
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-3">
-                  <Field label={cepLoading ? "CEP (buscando…)" : "CEP"}>
-                    <input
-                      value={form.cep}
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        setForm({ ...form, cep: v });
-                        if (v.replace(/\D/g, "").length === 8) lookupCep(v);
-                      }}
-                      onBlur={(e) => lookupCep(e.target.value)}
-                      placeholder="00000-000"
-                      className={inputCls}
-                    />
+                  <Field label="CEP">
+                    <div className="relative">
+                      <input
+                        value={form.cep}
+                        onChange={(e) => setForm({ ...form, cep: e.target.value })}
+                        placeholder="00000-000"
+                        maxLength={9}
+                        className={inputCls}
+                      />
+                      {cepLoading && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-dark/50">
+                          <div className="w-4 h-4 border-2 border-primary-dark/30 border-t-primary rounded-full animate-spin" />
+                        </div>
+                      )}
+                      {cepFilled && !cepLoading && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-primary text-xs">
+                          ✓
+                        </div>
+                      )}
+                    </div>
                   </Field>
                   <Field label="Rua">
                     <input
@@ -529,7 +583,32 @@ function CheckoutPage() {
                     />
                   </Field>
                 </div>
+
+                {user && !selectedAddressId && form.street && (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={saveThisAddress}
+                        onChange={(e) => setSaveThisAddress(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      <div className="flex-1">
+                        <p className="text-sm text-primary-dark">Salvar este endereço no meu perfil</p>
+                        {saveThisAddress && (
+                          <input
+                            value={addressLabel}
+                            onChange={(e) => setAddressLabel(e.target.value)}
+                            placeholder="Ex: Casa, Trabalho, Sítio..."
+                            className={`${inputCls} mt-2 text-sm`}
+                          />
+                        )}
+                      </div>
+                    </label>
+                  </div>
+                )}
               </Section>
+
 
               <Section title="Observações">
                 <textarea
