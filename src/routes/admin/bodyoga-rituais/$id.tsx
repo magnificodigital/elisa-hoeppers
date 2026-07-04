@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getRitualForAdmin, updateRitual, deleteRitual } from "@/lib/shop";
 import { toast } from "sonner";
@@ -12,9 +12,9 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 export const Route = createFileRoute("/admin/bodyoga-rituais/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar ritual" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <RitualEditPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

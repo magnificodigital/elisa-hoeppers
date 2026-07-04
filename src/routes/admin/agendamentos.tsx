@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Calendar, Phone, Mail, MessageCircle, Check, X, Clock, Video, MapPin, Plus } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import {
   listAppointmentsForAdmin,
   updateAppointmentStatus,
@@ -18,9 +18,9 @@ import {
 export const Route = createFileRoute("/admin/agendamentos")({
   head: () => ({ meta: [{ title: "Admin — Agendamentos" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminAppointments />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

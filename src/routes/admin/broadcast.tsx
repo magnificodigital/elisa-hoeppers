@@ -14,7 +14,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import {
   listBroadcasts,
   countRecipients,
@@ -29,9 +29,9 @@ import { listAllProductsForAdmin } from "@/lib/shop";
 export const Route = createFileRoute("/admin/broadcast")({
   head: () => ({ meta: [{ title: "Admin — Broadcast" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <BroadcastPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

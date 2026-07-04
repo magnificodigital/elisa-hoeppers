@@ -99,6 +99,16 @@ function OrderPage() {
     },
   });
 
+  // MP diz sucesso mas order ainda pending → webhook pode estar chegando. Re-checa em 30s.
+  useEffect(() => {
+    if (search.status === "success" && order && order.status === "pending") {
+      const timer = setTimeout(() => window.location.reload(), 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [search.status, order]);
+
+
+
   // Pedido de convidado: pede confirmação de email antes de exibir os dados
   if (!order) {
     return (
@@ -144,12 +154,12 @@ function OrderPage() {
   }
 
   const banner =
-    search.status === "success"
-      ? { cls: "bg-primary/10 text-primary-dark border-primary/30", text: "✅ Pagamento aprovado! A Elisa vai entrar em contato pra combinar o envio." }
-      : search.status === "pending"
-      ? { cls: "bg-peach/40 text-primary-dark border-peach", text: "⏳ Pagamento em processamento. PIX cai em minutos, boleto pode levar até 2 dias úteis." }
-      : search.status === "failure"
-      ? { cls: "bg-red-50 text-red-700 border-red-200", text: "❌ Pagamento não foi concluído. Tente novamente ou combine via WhatsApp." }
+    order.status === "confirmed" || order.status === "shipped" || order.status === "completed"
+      ? { cls: "bg-primary/10 text-primary-dark border-primary/30", text: "✅ Pagamento confirmado! A Elisa vai processar seu pedido em breve." }
+      : search.status === "pending" || (search.status === "success" && order.status === "pending")
+      ? { cls: "bg-peach/40 text-primary-dark border-peach", text: "⏳ Confirmando pagamento com o Mercado Pago... Isso pode levar até 2 minutos." }
+      : search.status === "failure" || order.status === "cancelled"
+      ? { cls: "bg-red-50 text-red-700 border-red-200", text: "❌ Pagamento não foi concluído ou pedido cancelado. Tente novamente ou combine via WhatsApp." }
       : null;
 
   const wppItems = order.items

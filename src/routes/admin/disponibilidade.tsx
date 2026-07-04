@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Calendar, Plus, Trash2, Clock, Save } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import {
   listAvailabilityRules, updateAvailabilityRule,
   listAvailabilityBlocks, createAvailabilityBlock, deleteAvailabilityBlock,
@@ -13,9 +13,9 @@ import {
 export const Route = createFileRoute("/admin/disponibilidade")({
   head: () => ({ meta: [{ title: "Admin — Disponibilidade" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AvailabilityPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

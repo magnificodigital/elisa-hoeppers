@@ -3,16 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/pedidos")({
   head: () => ({ meta: [{ title: "Admin — Pedidos" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminOrders />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 
@@ -278,7 +278,15 @@ function OrderCard({ order: o }: { order: Order }) {
           </button>
         )}
 
-        {o.status === "confirmed" && !o.me_order_id && o.shipping_service_id && (
+        {o.me_status?.startsWith("failed_") && (
+          <div className="mb-3 bg-red-50 border border-red-200 rounded-md px-3 py-2 text-xs text-red-700">
+            ⚠️ Última tentativa falhou em <strong>{o.me_status.replace("failed_at_", "")}</strong>.
+            {o.me_order_id && ` Order ID no ME: ${o.me_order_id}.`} Você pode tentar de novo,
+            ou verificar no painel ME manualmente.
+          </div>
+        )}
+
+        {o.status === "confirmed" && o.shipping_service_id && (!o.me_order_id || o.me_status?.startsWith("failed_")) && (
           <button
             onClick={() => {
               if (confirm(`Comprar etiqueta? Vai debitar ${formatPriceBRL(o.shipping_cents)} do saldo Melhor Envio.`)) buyLabel.mutate();
@@ -287,9 +295,14 @@ function OrderCard({ order: o }: { order: Order }) {
             className="inline-flex items-center gap-1.5 bg-primary-dark text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
           >
             <Truck className="w-3.5 h-3.5" />
-            {buyLabel.isPending ? "Comprando..." : "Comprar etiqueta ME"}
+            {buyLabel.isPending
+              ? "Comprando..."
+              : o.me_status?.startsWith("failed_")
+              ? "Tentar etiqueta ME de novo"
+              : "Comprar etiqueta ME"}
           </button>
         )}
+
 
         {o.me_label_url && (
           <a href={o.me_label_url} target="_blank" rel="noreferrer"

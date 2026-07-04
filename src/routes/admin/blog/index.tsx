@@ -2,15 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, FileText, ArrowLeft } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
 
 export const Route = createFileRoute("/admin/blog/")({
   head: () => ({ meta: [{ title: "Admin — Blog" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <AdminBlogList />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

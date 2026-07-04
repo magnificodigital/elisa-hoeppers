@@ -58,7 +58,10 @@ serve(async (req) => {
     const { data: order, error } = await supabase.from("orders").select("*").eq("id", order_id).maybeSingle();
     if (error || !order) throw new Error("pedido não encontrado");
     if (!order.shipping_service_id) throw new Error("pedido sem serviço de frete escolhido");
-    if (order.me_order_id) throw new Error("etiqueta já comprada pra esse pedido");
+    // Permite nova tentativa se a anterior falhou (me_status começa com "failed_")
+    if (order.me_order_id && !String(order.me_status ?? "").startsWith("failed_")) {
+      throw new Error("etiqueta já comprada pra esse pedido");
+    }
 
     const senderName = await getSetting("me_sender_name");
     const senderDoc = await getSetting("me_sender_document");
@@ -152,48 +155,93 @@ serve(async (req) => {
       },
     };
 
-    // 1) add to cart
-    const cartRes = await meCall("/me/cart", env, token, cartPayload);
-    const meOrderId = cartRes.id ?? cartRes.order_id;
-    if (!meOrderId) throw new Error("ME não devolveu order_id");
+    let meOrderId: string | null = null;
+    let labelUrl: string | null = null;
+    let trackingCode: string | null = null;
+    let failedStep: string | null = null;
 
-    // 2) checkout (paga com saldo da carteira)
-    await meCall("/me/shipment/checkout", env, token, { orders: [meOrderId] });
+    try {
+      // Step 1 — add to cart
+      const cartRes = await meCall("/me/cart", env, token, cartPayload);
+      meOrderId = cartRes.id ?? cartRes.order_id;
+      if (!meOrderId) throw new Error("ME não devolveu order_id");
+      trackingCode = cartRes.self_tracking ?? cartRes.tracking ?? null;
 
-    // 3) generate (gera etiqueta)
-    await meCall("/me/shipment/generate", env, token, { orders: [meOrderId] });
+      // salva parcial imediatamente (cart existe mesmo se próximos passos falharem)
+      await supabase.from("orders").update({
+        me_order_id: meOrderId,
+        me_status: "in_cart",
+      }).eq("id", order.id);
 
-    // 4) print (pega URL do PDF)
-    const printRes = await meCall("/me/shipment/print", env, token, {
-      mode: "private",
-      orders: [meOrderId],
-    });
-    const labelUrl = (printRes as any)?.url ?? null;
+      // Step 2 — checkout (debita saldo)
+      try {
+        await meCall("/me/shipment/checkout", env, token, { orders: [meOrderId] });
+        await supabase.from("orders").update({ me_status: "checkout_paid" }).eq("id", order.id);
+      } catch (e) {
+        failedStep = "checkout";
+        throw e;
+      }
 
-    // 5) tracking
-    const trackingCode = cartRes.self_tracking ?? cartRes.tracking ?? null;
+      // Step 3 — generate (gera etiqueta)
+      try {
+        await meCall("/me/shipment/generate", env, token, { orders: [meOrderId] });
+        await supabase.from("orders").update({ me_status: "label_generated" }).eq("id", order.id);
+      } catch (e) {
+        failedStep = "generate";
+        throw e;
+      }
 
-    await supabase.from("orders").update({
-      me_order_id: meOrderId,
-      me_label_url: labelUrl,
-      me_status: "label_purchased",
-      tracking_code: trackingCode,
-      status: "shipped",
-    }).eq("id", order.id);
+      // Step 4 — print (pega URL do PDF). Falhar aqui não é catastrófico.
+      try {
+        const printRes = await meCall("/me/shipment/print", env, token, {
+          mode: "private",
+          orders: [meOrderId],
+        });
+        labelUrl = (printRes as any)?.url ?? null;
+      } catch (e) {
+        console.warn("me-buy-label: print falhou, PDF será buscado depois", (e as Error).message);
+      }
 
-    supabase.functions.invoke("send-notification", {
-      body: { type: "order_shipped", record_id: order.id },
-    }).catch((e) => console.error("shipped email failed:", e));
+      // TUDO OK → marca order como shipped
+      await supabase.from("orders").update({
+        me_label_url: labelUrl,
+        me_status: "label_purchased",
+        tracking_code: trackingCode,
+        status: "shipped",
+      }).eq("id", order.id);
 
-    return new Response(JSON.stringify({
-      ok: true,
-      me_order_id: meOrderId,
-      label_url: labelUrl,
-      tracking_code: trackingCode,
-    }), {
-      status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+      supabase.functions.invoke("send-notification", {
+        body: { type: "order_shipped", record_id: order.id },
+      }).catch((e) => console.error("shipped email failed:", e));
+
+      return new Response(JSON.stringify({
+        ok: true,
+        me_order_id: meOrderId,
+        label_url: labelUrl,
+        tracking_code: trackingCode,
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    } catch (err) {
+      // Falha em algum step — order NÃO vira shipped
+      const errorMsg = (err as Error).message;
+      console.error(`me-buy-label failed at step ${failedStep}:`, errorMsg);
+
+      await supabase.from("orders").update({
+        me_status: `failed_at_${failedStep ?? "unknown"}`,
+      }).eq("id", order.id);
+
+      return new Response(JSON.stringify({
+        error: `Falha ao comprar etiqueta (etapa: ${failedStep ?? "desconhecida"}). ${errorMsg}`,
+        step: failedStep,
+        me_order_id: meOrderId,
+        partial: true,
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
   } catch (err) {
     console.error(err);
     return new Response(JSON.stringify({ error: (err as Error).message }), {

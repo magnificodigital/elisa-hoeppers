@@ -2,16 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getCourseForAdmin, updateCourse, type CourseUpdate } from "@/lib/admin";
 
 export const Route = createFileRoute("/admin/cursos/$id/editar")({
   head: () => ({ meta: [{ title: "Admin — Editar curso" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <CourseEditPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

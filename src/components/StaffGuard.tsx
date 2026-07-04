@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 
-export function AdminGuard({ children }: { children: ReactNode }) {
+export function StaffGuard({ children }: { children: ReactNode }) {
   const { user, profile, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
       navigate({ to: "/login" });
       return;
     }
-    if (profile && profile.role !== "admin") {
+    if (profile && profile.role !== "admin" && profile.role !== "instructor") {
       navigate({ to: "/painel" });
     }
   }, [loading, user, profile, navigate]);
@@ -28,7 +28,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
     );
   }
 
-  if (profile.role !== "admin") {
+  if (profile.role !== "admin" && profile.role !== "instructor") {
     return (
       <Layout>
         <section className="py-24 text-center">

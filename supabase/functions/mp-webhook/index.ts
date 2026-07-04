@@ -122,6 +122,27 @@ serve(async (req) => {
     const payment = await paymentRes.json();
     const externalRef = String(payment.external_reference ?? "");
 
+    // Idempotência: grava payment_id como processado. Se já existir, é retry → ignora.
+    const { error: dedupErr } = await supabase
+      .from("processed_mp_payments")
+      .insert({
+        payment_id: String(payment.id),
+        status: payment.status,
+        raw: payment,
+      });
+    if (dedupErr) {
+      if (dedupErr.code === "23505") {
+        console.log(`MP webhook: payment ${payment.id} já processado, ignorando retry`);
+        return new Response(JSON.stringify({ ok: true, already_processed: true }), {
+          status: 200,
+          headers: jsonHeaders,
+        });
+      }
+      // Outro erro (falha de DB) — não bloqueia processamento por causa da tabela de dedup
+      console.error("MP webhook dedup insert failed:", dedupErr);
+    }
+
+
     if (externalRef.startsWith("enrollment:")) {
       const enrollmentId = externalRef.split(":")[1];
       if (!enrollmentId) {
@@ -152,8 +173,14 @@ serve(async (req) => {
         await supabase.from("enrollments").update({ status: "cancelled" }).eq("id", enrollmentId);
       }
 
+      await supabase
+        .from("processed_mp_payments")
+        .update({ enrollment_id: enrollmentId })
+        .eq("payment_id", String(payment.id));
+
       return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
     }
+
 
     const orderId: string | undefined = payment.external_reference;
     if (!orderId) return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
@@ -167,6 +194,11 @@ serve(async (req) => {
 
     const { error } = await supabase.from("orders").update(patch).eq("id", orderId);
     if (error) console.error("supabase update error:", error);
+
+    await supabase
+      .from("processed_mp_payments")
+      .update({ order_id: orderId })
+      .eq("payment_id", String(payment.id));
 
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
   } catch (err) {

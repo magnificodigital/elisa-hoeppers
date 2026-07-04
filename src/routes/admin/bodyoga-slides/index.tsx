@@ -2,16 +2,16 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, GripVertical } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { listAllSlidesForAdmin, createSlide } from "@/lib/shop";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/bodyoga-slides/")({
   head: () => ({ meta: [{ title: "Admin — Slides" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <SlidesList />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 

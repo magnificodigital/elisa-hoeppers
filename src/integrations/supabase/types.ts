@@ -867,6 +867,48 @@ export type Database = {
         }
         Relationships: []
       }
+      processed_mp_payments: {
+        Row: {
+          enrollment_id: string | null
+          order_id: string | null
+          payment_id: string
+          processed_at: string
+          raw: Json | null
+          status: string | null
+        }
+        Insert: {
+          enrollment_id?: string | null
+          order_id?: string | null
+          payment_id: string
+          processed_at?: string
+          raw?: Json | null
+          status?: string | null
+        }
+        Update: {
+          enrollment_id?: string | null
+          order_id?: string | null
+          payment_id?: string
+          processed_at?: string
+          raw?: Json | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "processed_mp_payments_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processed_mp_payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           brand: string | null

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Mail, Download } from "lucide-react";
 import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
+import { StaffGuard } from "@/components/StaffGuard";
 import { supabase } from "@/lib/supabase";
 
 type Subscriber = {
@@ -33,9 +33,9 @@ function csvEscape(v: string | null): string {
 export const Route = createFileRoute("/admin/inscritos")({
   head: () => ({ meta: [{ title: "Admin — Inscritos" }] }),
   component: () => (
-    <AdminGuard>
+    <StaffGuard>
       <SubscribersPage />
-    </AdminGuard>
+    </StaffGuard>
   ),
 });
 
