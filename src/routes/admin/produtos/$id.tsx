@@ -87,25 +87,29 @@ function ProductEditPage() {
   }, [product]);
 
   const save = useMutation({
-    mutationFn: () => updateProduct(id, {
-      name: form.name,
-      slug: form.slug,
-      short_description: form.short_description || null,
-      description: form.description || null,
-      price_cents: form.price_cents,
-      compare_at_price_cents: form.compare_at_price_cents === "" ? null : Number(form.compare_at_price_cents),
-      in_stock: form.in_stock,
-      is_active: form.is_active,
-      is_featured: form.is_featured,
-      category: form.category || null,
-      ritual_id: form.ritual_id || null,
-      display_order: form.display_order,
-      gallery: form.gallery,
-      weight_g: form.weight_g === "" ? null : Number(form.weight_g),
-      length_cm: form.length_cm === "" ? null : Number(form.length_cm),
-      width_cm: form.width_cm === "" ? null : Number(form.width_cm),
-      height_cm: form.height_cm === "" ? null : Number(form.height_cm),
-    }),
+    mutationFn: () => {
+      const pct = discountPct === "" ? 0 : Math.min(99, Math.max(0, Number(discountPct)));
+      const compareAt = pct > 0 ? Math.round(form.price_cents / (1 - pct / 100)) : null;
+      return updateProduct(id, {
+        name: form.name,
+        slug: form.slug,
+        short_description: form.short_description || null,
+        description: form.description || null,
+        price_cents: form.price_cents,
+        compare_at_price_cents: compareAt,
+        in_stock: form.in_stock,
+        is_active: form.is_active,
+        is_featured: form.is_featured,
+        category: null,
+        ritual_id: form.ritual_id || null,
+        display_order: form.display_order,
+        gallery: form.gallery,
+        weight_g: form.weight_g === "" ? null : Number(form.weight_g),
+        length_cm: form.length_cm === "" ? null : Number(form.length_cm),
+        width_cm: form.width_cm === "" ? null : Number(form.width_cm),
+        height_cm: form.height_cm === "" ? null : Number(form.height_cm),
+      });
+    },
     onSuccess: () => {
       toast.success("Produto atualizado");
       qc.invalidateQueries({ queryKey: ["admin-products"] });
