@@ -204,8 +204,15 @@ function CheckoutPage() {
     setSubmitError(null);
     setAccountError(null);
 
+    // Não deixa MP prosseguir se ME está ativo mas o frete não foi calculado/selecionado
+    if (method === "mercadopago" && meEnabled && (shippingError || !selectedShipping)) {
+      setSubmitError("Selecione uma opção de frete válida antes de pagar.");
+      return;
+    }
+
     const accountOk = await maybeCreateAccount();
     if (!accountOk) return;
+
 
     try {
       setSubmitting(method);
