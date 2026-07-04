@@ -13,7 +13,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
       navigate({ to: "/login" });
       return;
     }
-    if (profile && profile.role !== "admin" && profile.role !== "instructor") {
+    if (profile && profile.role !== "admin") {
       navigate({ to: "/painel" });
     }
   }, [loading, user, profile, navigate]);
