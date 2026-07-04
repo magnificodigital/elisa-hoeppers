@@ -8,6 +8,7 @@ import { listMyOrders, formatPriceBRL, cancelMyOrder, type Order } from "@/lib/s
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
 
 export const Route = createFileRoute("/painel/pedidos")({
   validateSearch: (s: Record<string, unknown>) => ({
