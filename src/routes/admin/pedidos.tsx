@@ -332,6 +332,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
           <p className="font-display text-2xl text-primary-dark">{formatPriceBRL(o.total_cents)}</p>
           <p className="text-[11px] text-[var(--text-muted)]">{o.items.length} {o.items.length === 1 ? "item" : "itens"}</p>
         </div>
+        </div>
       </div>
 
       <div className="bg-cream/60 rounded-md p-3 mb-3 text-sm">
