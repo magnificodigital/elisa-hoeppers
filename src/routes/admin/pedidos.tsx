@@ -274,10 +274,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
   });
 
   const updateShipping = useMutation({
-    mutationFn: () => {
-      const cents = Math.round(parseFloat(shippingInput.replace(",", ".")) * 100) || 0;
-      return updateOrderShipping(o.id, cents, o.subtotal_cents);
-    },
+    mutationFn: (cents: number) => updateOrderShipping(o.id, cents, o.subtotal_cents),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-orders"] }),
   });
 
