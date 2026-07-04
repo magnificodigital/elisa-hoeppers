@@ -173,8 +173,14 @@ serve(async (req) => {
         await supabase.from("enrollments").update({ status: "cancelled" }).eq("id", enrollmentId);
       }
 
+      await supabase
+        .from("processed_mp_payments")
+        .update({ enrollment_id: enrollmentId })
+        .eq("payment_id", String(payment.id));
+
       return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
     }
+
 
     const orderId: string | undefined = payment.external_reference;
     if (!orderId) return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
