@@ -19,7 +19,7 @@ export const Route = createFileRoute("/admin/produtos/$id")({
   ),
 });
 
-const CATEGORIES = ["oleos", "ambiente", "cuidados", "bodyoga"];
+
 
 function ProductEditPage() {
   const { id } = Route.useParams();
