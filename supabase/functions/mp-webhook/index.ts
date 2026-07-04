@@ -122,6 +122,27 @@ serve(async (req) => {
     const payment = await paymentRes.json();
     const externalRef = String(payment.external_reference ?? "");
 
+    // Idempotência: grava payment_id como processado. Se já existir, é retry → ignora.
+    const { error: dedupErr } = await supabase
+      .from("processed_mp_payments")
+      .insert({
+        payment_id: String(payment.id),
+        status: payment.status,
+        raw: payment,
+      });
+    if (dedupErr) {
+      if (dedupErr.code === "23505") {
+        console.log(`MP webhook: payment ${payment.id} já processado, ignorando retry`);
+        return new Response(JSON.stringify({ ok: true, already_processed: true }), {
+          status: 200,
+          headers: jsonHeaders,
+        });
+      }
+      // Outro erro (falha de DB) — não bloqueia processamento por causa da tabela de dedup
+      console.error("MP webhook dedup insert failed:", dedupErr);
+    }
+
+
     if (externalRef.startsWith("enrollment:")) {
       const enrollmentId = externalRef.split(":")[1];
       if (!enrollmentId) {
