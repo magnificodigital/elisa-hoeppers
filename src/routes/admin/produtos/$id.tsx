@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
+import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/admin/produtos/$id")({
   ),
 });
 
-const CATEGORIES = ["oleos", "ambiente", "cuidados", "bodyoga"];
+
 
 function ProductEditPage() {
   const { id } = Route.useParams();
@@ -41,11 +42,9 @@ function ProductEditPage() {
     short_description: "",
     description: "",
     price_cents: 0,
-    compare_at_price_cents: "" as string | number,
     in_stock: true,
     is_active: true,
     is_featured: false,
-    category: "",
     ritual_id: "" as string,
     display_order: 0,
     gallery: [] as ProductImage[],
@@ -55,6 +54,8 @@ function ProductEditPage() {
     height_cm: "" as string | number,
   });
   const [delOpen, setDelOpen] = useState(false);
+  const [priceDisplay, setPriceDisplay] = useState("");
+  const [discountPct, setDiscountPct] = useState<string>("");
 
   useEffect(() => {
     if (product) {
@@ -64,11 +65,9 @@ function ProductEditPage() {
         short_description: product.short_description ?? "",
         description: product.description ?? "",
         price_cents: product.price_cents,
-        compare_at_price_cents: product.compare_at_price_cents ?? "",
         in_stock: product.in_stock,
         is_active: product.is_active,
         is_featured: product.is_featured,
-        category: product.category ?? "",
         ritual_id: product.ritual_id ?? "",
         display_order: product.display_order,
         gallery: product.gallery,
@@ -77,29 +76,40 @@ function ProductEditPage() {
         width_cm: product.width_cm ?? "",
         height_cm: product.height_cm ?? "",
       });
+      setPriceDisplay(product.price_cents ? centsToBRL(product.price_cents) : "");
+      const compare = product.compare_at_price_cents ?? 0;
+      if (compare > product.price_cents && compare > 0) {
+        setDiscountPct(String(Math.round(((compare - product.price_cents) / compare) * 100)));
+      } else {
+        setDiscountPct("");
+      }
     }
   }, [product]);
 
   const save = useMutation({
-    mutationFn: () => updateProduct(id, {
-      name: form.name,
-      slug: form.slug,
-      short_description: form.short_description || null,
-      description: form.description || null,
-      price_cents: form.price_cents,
-      compare_at_price_cents: form.compare_at_price_cents === "" ? null : Number(form.compare_at_price_cents),
-      in_stock: form.in_stock,
-      is_active: form.is_active,
-      is_featured: form.is_featured,
-      category: form.category || null,
-      ritual_id: form.ritual_id || null,
-      display_order: form.display_order,
-      gallery: form.gallery,
-      weight_g: form.weight_g === "" ? null : Number(form.weight_g),
-      length_cm: form.length_cm === "" ? null : Number(form.length_cm),
-      width_cm: form.width_cm === "" ? null : Number(form.width_cm),
-      height_cm: form.height_cm === "" ? null : Number(form.height_cm),
-    }),
+    mutationFn: () => {
+      const pct = discountPct === "" ? 0 : Math.min(99, Math.max(0, Number(discountPct)));
+      const compareAt = pct > 0 ? Math.round(form.price_cents / (1 - pct / 100)) : null;
+      return updateProduct(id, {
+        name: form.name,
+        slug: form.slug,
+        short_description: form.short_description || null,
+        description: form.description || null,
+        price_cents: form.price_cents,
+        compare_at_price_cents: compareAt,
+        in_stock: form.in_stock,
+        is_active: form.is_active,
+        is_featured: form.is_featured,
+        category: null,
+        ritual_id: form.ritual_id || null,
+        display_order: form.display_order,
+        gallery: form.gallery,
+        weight_g: form.weight_g === "" ? null : Number(form.weight_g),
+        length_cm: form.length_cm === "" ? null : Number(form.length_cm),
+        width_cm: form.width_cm === "" ? null : Number(form.width_cm),
+        height_cm: form.height_cm === "" ? null : Number(form.height_cm),
+      });
+    },
     onSuccess: () => {
       toast.success("Produto atualizado");
       qc.invalidateQueries({ queryKey: ["admin-products"] });
@@ -164,26 +174,39 @@ function ProductEditPage() {
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Preço (em centavos)">
-                <input required type="number" value={form.price_cents} onChange={(e) => setForm({ ...form, price_cents: parseInt(e.target.value) || 0 })} className={inputCls} />
-                <p className="text-[10px] text-[var(--text-muted)] mt-1">Ex.: 7100 = R$ 71,00</p>
+              <Field label="Preço">
+                <input
+                  required
+                  inputMode="numeric"
+                  value={priceDisplay}
+                  onChange={(e) => {
+                    const { display, cents } = formatBRLInput(e.target.value);
+                    setPriceDisplay(display);
+                    setForm({ ...form, price_cents: cents });
+                  }}
+                  placeholder="R$ 71,00"
+                  className={inputCls}
+                />
               </Field>
-              <Field label="Preço 'de' (vazio = sem desconto)">
-                <input type="number" value={form.compare_at_price_cents} onChange={(e) => setForm({ ...form, compare_at_price_cents: e.target.value })} className={inputCls} />
+              <Field label="Desconto % (vazio = sem desconto)">
+                <input
+                  type="number"
+                  min="0"
+                  max="99"
+                  value={discountPct}
+                  onChange={(e) => setDiscountPct(e.target.value)}
+                  placeholder="ex: 10"
+                  className={inputCls}
+                />
               </Field>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Categoria">
-                <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className={inputCls}>
-                  <option value="">— sem categoria —</option>
-                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </Field>
               <Field label="Ordem">
                 <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) || 0 })} className={inputCls} />
               </Field>
             </div>
+
 
             <Field label="Ritual BODYOGA (em qual ritual este produto aparece)">
               <select value={form.ritual_id} onChange={(e) => setForm({ ...form, ritual_id: e.target.value })} className={inputCls}>
