@@ -234,6 +234,7 @@ function OrderPage() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[720px] mx-auto px-4 md:px-6">
+          {order.status === "pending" && <PaymentCountdown order={order} />}
           {banner && (
             <div className={`mb-6 rounded-lg border px-4 py-3 text-sm ${banner.cls}`}>
               {banner.text}
