@@ -174,26 +174,39 @@ function ProductEditPage() {
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Preço (em centavos)">
-                <input required type="number" value={form.price_cents} onChange={(e) => setForm({ ...form, price_cents: parseInt(e.target.value) || 0 })} className={inputCls} />
-                <p className="text-[10px] text-[var(--text-muted)] mt-1">Ex.: 7100 = R$ 71,00</p>
+              <Field label="Preço">
+                <input
+                  required
+                  inputMode="numeric"
+                  value={priceDisplay}
+                  onChange={(e) => {
+                    const { display, cents } = formatBRLInput(e.target.value);
+                    setPriceDisplay(display);
+                    setForm({ ...form, price_cents: cents });
+                  }}
+                  placeholder="R$ 71,00"
+                  className={inputCls}
+                />
               </Field>
-              <Field label="Preço 'de' (vazio = sem desconto)">
-                <input type="number" value={form.compare_at_price_cents} onChange={(e) => setForm({ ...form, compare_at_price_cents: e.target.value })} className={inputCls} />
+              <Field label="Desconto % (vazio = sem desconto)">
+                <input
+                  type="number"
+                  min="0"
+                  max="99"
+                  value={discountPct}
+                  onChange={(e) => setDiscountPct(e.target.value)}
+                  placeholder="ex: 10"
+                  className={inputCls}
+                />
               </Field>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Categoria">
-                <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className={inputCls}>
-                  <option value="">— sem categoria —</option>
-                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </Field>
               <Field label="Ordem">
                 <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) || 0 })} className={inputCls} />
               </Field>
             </div>
+
 
             <Field label="Ritual BODYOGA (em qual ritual este produto aparece)">
               <select value={form.ritual_id} onChange={(e) => setForm({ ...form, ritual_id: e.target.value })} className={inputCls}>
