@@ -54,6 +54,8 @@ function ProductEditPage() {
     height_cm: "" as string | number,
   });
   const [delOpen, setDelOpen] = useState(false);
+  const [priceDisplay, setPriceDisplay] = useState("");
+  const [discountPct, setDiscountPct] = useState<string>("");
 
   useEffect(() => {
     if (product) {
@@ -63,11 +65,9 @@ function ProductEditPage() {
         short_description: product.short_description ?? "",
         description: product.description ?? "",
         price_cents: product.price_cents,
-        compare_at_price_cents: product.compare_at_price_cents ?? "",
         in_stock: product.in_stock,
         is_active: product.is_active,
         is_featured: product.is_featured,
-        category: product.category ?? "",
         ritual_id: product.ritual_id ?? "",
         display_order: product.display_order,
         gallery: product.gallery,
@@ -76,6 +76,13 @@ function ProductEditPage() {
         width_cm: product.width_cm ?? "",
         height_cm: product.height_cm ?? "",
       });
+      setPriceDisplay(product.price_cents ? centsToBRL(product.price_cents) : "");
+      const compare = product.compare_at_price_cents ?? 0;
+      if (compare > product.price_cents && compare > 0) {
+        setDiscountPct(String(Math.round(((compare - product.price_cents) / compare) * 100)));
+      } else {
+        setDiscountPct("");
+      }
     }
   }, [product]);
 
