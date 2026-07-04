@@ -94,7 +94,7 @@ export function ImageUploader({
             <>
               <Upload className="w-5 h-5 text-primary" />
               <p className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] text-center leading-tight">
-                Clique ou arraste<br />uma imagem
+                Clique ou arraste<br />{allowVideo ? "imagem ou vídeo" : "uma imagem"}
               </p>
             </>
           )}
@@ -104,7 +104,7 @@ export function ImageUploader({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept={allowVideo ? "image/*,video/*" : "image/*"}
         className="hidden"
         onChange={(e) => {
           const f = e.target.files?.[0];
