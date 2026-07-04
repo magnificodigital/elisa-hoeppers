@@ -302,6 +302,31 @@ function CheckoutPage() {
       const row = Array.isArray(data) ? data[0] : data;
       const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
 
+      // Salva o endereço no perfil se a cliente marcou o checkbox
+      if (user && saveThisAddress && form.street) {
+        const [aCity, aState] = form.cityState.split("/").map((s) => s.trim());
+        const newAddr = {
+          id: crypto.randomUUID(),
+          label: addressLabel || "Endereço",
+          cep: form.cep.replace(/\D/g, ""),
+          street: form.street,
+          number: form.number,
+          complement: form.complement,
+          district: form.district,
+          city: aCity ?? "",
+          state: aState ?? "",
+          is_default: savedAddresses.length === 0,
+        };
+        const updated = [...savedAddresses, newAddr];
+        supabase
+          .from("profiles")
+          .update({ saved_addresses: updated })
+          .eq("id", user.id)
+          .then(() => qc.invalidateQueries({ queryKey: ["profile", user.id] }));
+      }
+
+
+
       track("order_created", {
         order_code: orderResult.code,
         total_brl: Number((orderResult.total_cents / 100).toFixed(2)),
