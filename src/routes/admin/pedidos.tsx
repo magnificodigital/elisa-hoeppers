@@ -152,6 +152,8 @@ function OrderCard({ order: o }: { order: Order }) {
           <div className="flex items-center gap-2 flex-wrap mb-1">
             <span className="font-mono text-sm text-primary-dark">#{o.code}</span>
             <StatusPill status={o.status} />
+            <PaymentMethodBadge type={o.payment_method_type} installments={o.payment_installments} />
+
             <span className="text-[11px] text-[var(--text-muted)] inline-flex items-center gap-1">
               <Calendar className="w-3 h-3" />
               {new Date(o.created_at).toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
