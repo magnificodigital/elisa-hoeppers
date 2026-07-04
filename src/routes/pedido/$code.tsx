@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Check, MessageCircle } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
@@ -26,8 +26,63 @@ type Order = {
   total_cents: number;
   status: string;
   tracking_code: string | null;
+  payment_method_type: string | null;
+  payment_installments: number | null;
   created_at: string;
 };
+
+function PaymentCountdown({ order }: { order: Order }) {
+  const [remaining, setRemaining] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (order.status !== "pending" || !order.payment_method_type) return;
+
+    const createdAt = new Date(order.created_at).getTime();
+    let expiresAt: number;
+
+    if (order.payment_method_type === "pix") {
+      expiresAt = createdAt + 30 * 60 * 1000;
+    } else if (order.payment_method_type === "ticket") {
+      expiresAt = createdAt + 48 * 60 * 60 * 1000;
+    } else {
+      return;
+    }
+
+    const update = () => {
+      const rem = Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
+      setRemaining(rem);
+    };
+
+    update();
+    const t = setInterval(update, 1000);
+    return () => clearInterval(t);
+  }, [order.status, order.payment_method_type, order.created_at]);
+
+  if (remaining === null) return null;
+  if (remaining === 0) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-md px-4 py-3 mb-4 text-sm text-red-700">
+        ⏰ Pagamento expirou. Refaça o pedido pra tentar de novo.
+      </div>
+    );
+  }
+
+  const isPix = order.payment_method_type === "pix";
+  const hrs = Math.floor(remaining / 3600);
+  const mins = Math.floor((remaining % 3600) / 60);
+  const secs = remaining % 60;
+
+  return (
+    <div className="bg-peach/30 border border-peach rounded-md px-4 py-3 mb-4 text-sm text-primary-dark">
+      ⏳ {isPix ? "PIX expira em" : "Boleto vence em"}{" "}
+      <span className="font-mono font-bold">
+        {isPix
+          ? `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`
+          : `${hrs}h ${mins}min`}
+      </span>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/pedido/$code")({
   validateSearch: (s: Record<string, unknown>) => ({
@@ -179,6 +234,7 @@ function OrderPage() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[720px] mx-auto px-4 md:px-6">
+          {order.status === "pending" && <PaymentCountdown order={order} />}
           {banner && (
             <div className={`mb-6 rounded-lg border px-4 py-3 text-sm ${banner.cls}`}>
               {banner.text}

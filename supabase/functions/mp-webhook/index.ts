@@ -189,6 +189,8 @@ serve(async (req) => {
     const patch: Record<string, unknown> = {
       payment_id: String(payment.id),
       status: newStatus,
+      payment_method_type: payment.payment_type_id ?? null,
+      payment_installments: payment.installments ?? null,
     };
     if (newStatus === "confirmed") patch.paid_at = new Date().toISOString();
 

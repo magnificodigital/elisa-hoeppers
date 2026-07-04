@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, Truck } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
@@ -8,6 +9,7 @@ import { formatPriceBRL, calculateShipping, type ShippingOption } from "@/lib/sh
 import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
@@ -53,6 +55,7 @@ function CheckoutPage() {
   const { items, subtotalCents, totalItems, clear, loaded } = useCart();
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const qc = useQueryClient();
 
   const [form, setForm] = useState({
     name: "",
@@ -87,6 +90,12 @@ function CheckoutPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
+  const [cepFilled, setCepFilled] = useState(false);
+
+  const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+  const [saveThisAddress, setSaveThisAddress] = useState(false);
+  const [addressLabel, setAddressLabel] = useState("");
 
   const [meEnabled, setMeEnabled] = useState(false);
   const [shippingOpts, setShippingOpts] = useState<ShippingOption[]>([]);
@@ -140,25 +149,72 @@ function CheckoutPage() {
   async function lookupCep(rawCep: string) {
     const cep = rawCep.replace(/\D/g, "");
     if (cep.length !== 8) return;
+
+    setCepLoading(true);
+    setCepFilled(false);
     try {
-      setCepLoading(true);
       const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      if (!res.ok) return;
       const data = await res.json();
       if (data.erro) return;
+
+      // Auto-preenche só campos vazios (não sobrescreve o que a cliente já digitou)
       setForm((f) => ({
         ...f,
-        street: data.logradouro || f.street,
-        district: data.bairro || f.district,
+        street: f.street || data.logradouro || "",
+        district: f.district || data.bairro || "",
         cityState:
-          data.localidade && data.uf ? `${data.localidade}/${data.uf}` : f.cityState,
-        complement: data.complemento || f.complement,
+          f.cityState || (data.localidade && data.uf ? `${data.localidade}/${data.uf}` : ""),
       }));
-    } catch {
-      // silenciosamente ignora falha de consulta de CEP
+      setCepFilled(true);
+      toast.success("Endereço preenchido pelo CEP");
+    } catch (e) {
+      console.warn("ViaCEP lookup falhou:", e);
+      // Silencia — cliente pode digitar manual
     } finally {
       setCepLoading(false);
     }
   }
+
+  // Debounce: dispara só quando o CEP chega a 8 dígitos
+  useEffect(() => {
+    const clean = form.cep.replace(/\D/g, "");
+    if (clean.length !== 8) {
+      setCepFilled(false);
+      return;
+    }
+    const t = setTimeout(() => lookupCep(form.cep), 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.cep]);
+
+  function applyAddress(addr: any) {
+    setForm((f) => ({
+      ...f,
+      cep: addr.cep ?? "",
+      street: addr.street ?? "",
+      number: addr.number ?? "",
+      complement: addr.complement ?? "",
+      district: addr.district ?? "",
+      cityState: addr.city && addr.state ? `${addr.city}/${addr.state}` : "",
+    }));
+  }
+
+  // Carrega endereços salvos do perfil
+  useEffect(() => {
+    if (!user || !profile?.saved_addresses) {
+      setSavedAddresses([]);
+      return;
+    }
+    const list = Array.isArray(profile.saved_addresses) ? profile.saved_addresses : [];
+    setSavedAddresses(list);
+    const def = list.find((a: any) => a.is_default);
+    if (def && !form.street) {
+      applyAddress(def);
+      setSelectedAddressId(def.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, profile?.saved_addresses]);
 
 
   async function maybeCreateAccount(): Promise<boolean> {
@@ -245,6 +301,31 @@ function CheckoutPage() {
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
       const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
+
+      // Salva o endereço no perfil se a cliente marcou o checkbox
+      if (user && saveThisAddress && form.street) {
+        const [aCity, aState] = form.cityState.split("/").map((s) => s.trim());
+        const newAddr = {
+          id: crypto.randomUUID(),
+          label: addressLabel || "Endereço",
+          cep: form.cep.replace(/\D/g, ""),
+          street: form.street,
+          number: form.number,
+          complement: form.complement,
+          district: form.district,
+          city: aCity ?? "",
+          state: aState ?? "",
+          is_default: savedAddresses.length === 0,
+        };
+        const updated = [...savedAddresses, newAddr];
+        supabase
+          .from("profiles")
+          .update({ saved_addresses: updated })
+          .eq("id", user.id)
+          .then(() => qc.invalidateQueries({ queryKey: ["profile", user.id] }));
+      }
+
+
 
       track("order_created", {
         order_code: orderResult.code,
@@ -395,19 +476,73 @@ function CheckoutPage() {
                 <p className="text-xs text-[var(--text-muted)] -mt-2 mb-2">
                   Pode deixar em branco e combinar frete por WhatsApp.
                 </p>
+
+                {user && savedAddresses.length > 0 && (
+                  <div className="mb-4">
+                    <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1.5">
+                      Usar endereço salvo
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {savedAddresses.map((addr: any) => (
+                        <button
+                          key={addr.id}
+                          type="button"
+                          onClick={() => {
+                            applyAddress(addr);
+                            setSelectedAddressId(addr.id);
+                          }}
+                          className={`text-xs px-3 py-2 rounded-full border transition ${
+                            selectedAddressId === addr.id
+                              ? "border-primary bg-primary/10 text-primary-dark"
+                              : "border-border text-primary-dark/70 hover:border-primary/40"
+                          }`}
+                        >
+                          {addr.label || "Endereço"} · {addr.city}/{addr.state}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedAddressId(null);
+                          setForm((f) => ({
+                            ...f,
+                            cep: "",
+                            street: "",
+                            number: "",
+                            complement: "",
+                            district: "",
+                            cityState: "",
+                          }));
+                        }}
+                        className="text-xs px-3 py-2 rounded-full border border-dashed border-border text-primary-dark/60 hover:border-primary/40 transition"
+                      >
+                        + Novo endereço
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-3">
-                  <Field label={cepLoading ? "CEP (buscando…)" : "CEP"}>
-                    <input
-                      value={form.cep}
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        setForm({ ...form, cep: v });
-                        if (v.replace(/\D/g, "").length === 8) lookupCep(v);
-                      }}
-                      onBlur={(e) => lookupCep(e.target.value)}
-                      placeholder="00000-000"
-                      className={inputCls}
-                    />
+                  <Field label="CEP">
+                    <div className="relative">
+                      <input
+                        value={form.cep}
+                        onChange={(e) => setForm({ ...form, cep: e.target.value })}
+                        placeholder="00000-000"
+                        maxLength={9}
+                        className={inputCls}
+                      />
+                      {cepLoading && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-dark/50">
+                          <div className="w-4 h-4 border-2 border-primary-dark/30 border-t-primary rounded-full animate-spin" />
+                        </div>
+                      )}
+                      {cepFilled && !cepLoading && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-primary text-xs">
+                          ✓
+                        </div>
+                      )}
+                    </div>
                   </Field>
                   <Field label="Rua">
                     <input
@@ -448,7 +583,32 @@ function CheckoutPage() {
                     />
                   </Field>
                 </div>
+
+                {user && !selectedAddressId && form.street && (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={saveThisAddress}
+                        onChange={(e) => setSaveThisAddress(e.target.checked)}
+                        className="mt-0.5"
+                      />
+                      <div className="flex-1">
+                        <p className="text-sm text-primary-dark">Salvar este endereço no meu perfil</p>
+                        {saveThisAddress && (
+                          <input
+                            value={addressLabel}
+                            onChange={(e) => setAddressLabel(e.target.value)}
+                            placeholder="Ex: Casa, Trabalho, Sítio..."
+                            className={`${inputCls} mt-2 text-sm`}
+                          />
+                        )}
+                      </div>
+                    </label>
+                  </div>
+                )}
               </Section>
+
 
               <Section title="Observações">
                 <textarea

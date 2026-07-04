@@ -74,6 +74,23 @@ function ProfilePage() {
     onError: (err: Error) => toast.error(err.message),
   });
 
+  const savedAddresses = Array.isArray(profile?.saved_addresses) ? profile.saved_addresses : [];
+
+  async function setDefaultAddress(id: string) {
+    const updated = savedAddresses.map((a: any) => ({ ...a, is_default: a.id === id }));
+    await supabase.from("profiles").update({ saved_addresses: updated }).eq("id", user!.id);
+    qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    toast.success("Endereço padrão atualizado");
+  }
+
+  async function removeAddress(id: string) {
+    if (!confirm("Remover este endereço?")) return;
+    const updated = savedAddresses.filter((a: any) => a.id !== id);
+    await supabase.from("profiles").update({ saved_addresses: updated }).eq("id", user!.id);
+    qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    toast.success("Endereço removido");
+  }
+
   if (loading || !user) {
     return (
       <Layout>
@@ -153,7 +170,60 @@ function ProfilePage() {
             </div>
           </div>
 
+          {/* ENDEREÇOS SALVOS */}
+          <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 className="font-display text-xl text-primary-dark mb-4">Endereços salvos</h2>
+            {savedAddresses.length === 0 ? (
+              <p className="text-sm text-primary-dark/60">
+                Nenhum endereço salvo ainda. Você pode salvar durante o checkout.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {savedAddresses.map((addr: any) => (
+                  <div
+                    key={addr.id}
+                    className="border border-border rounded-lg p-4 flex items-start justify-between gap-3"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="font-medium text-sm text-primary-dark">{addr.label}</p>
+                        {addr.is_default && (
+                          <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                            Padrão
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-primary-dark/60 leading-relaxed">
+                        {addr.street}, {addr.number}
+                        {addr.complement ? `, ${addr.complement}` : ""}
+                        <br />
+                        {addr.district}, {addr.city}/{addr.state} · CEP {addr.cep}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      {!addr.is_default && (
+                        <button
+                          onClick={() => setDefaultAddress(addr.id)}
+                          className="text-xs text-primary hover:opacity-70"
+                        >
+                          Tornar padrão
+                        </button>
+                      )}
+                      <button
+                        onClick={() => removeAddress(addr.id)}
+                        className="text-xs text-red-700 hover:opacity-70"
+                      >
+                        Remover
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* SENHA */}
+
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
             <div className="flex items-center gap-2 mb-4">
               <Lock className="w-5 h-5 text-primary" />
