@@ -69,8 +69,80 @@ export const Route = createFileRoute("/pedido/$code")({
 });
 
 function OrderPage() {
-  const { order } = Route.useLoaderData();
+  const { order, needsEmail } = Route.useLoaderData();
+  const { code } = Route.useParams();
   const search = Route.useSearch();
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Logado E dona do pedido E pedido criado nos últimos 5 minutos → vai pra lista
+    if (order && user && order.user_id && user.id === order.user_id) {
+      const createdRecently = new Date(order.created_at).getTime() > Date.now() - 5 * 60 * 1000;
+      if (createdRecently && (search.status === "success" || !search.status)) {
+        navigate({ to: "/painel/pedidos", search: { highlight: order.code } });
+      }
+    }
+  }, [user, order, search.status, navigate]);
+
+  const cancel = useMutation({
+    mutationFn: () => cancelMyOrder(order!.id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["my-orders"] });
+      supabase.functions
+        .invoke("send-notification", {
+          body: { type: "order_cancelled", record_id: order!.id },
+        })
+        .catch((e) => console.error("cancel email failed:", e));
+      window.location.reload();
+    },
+  });
+
+  // Pedido de convidado: pede confirmação de email antes de exibir os dados
+  if (!order) {
+    return (
+      <Layout>
+        <section className="py-24 max-w-md mx-auto px-4 text-center">
+          <h1 className="font-display text-2xl text-primary-dark mb-4">
+            Confirme seu email pra ver o pedido
+          </h1>
+          <p className="text-[var(--text-muted)] mb-6 text-sm">
+            Pra proteger seus dados, confirme o email usado na compra.
+          </p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement).value;
+              navigate({ to: "/pedido/$code", params: { code }, search: { email } });
+            }}
+          >
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="seu@email.com"
+              className="w-full border border-border rounded-md px-3 py-2 mb-3"
+            />
+            <button
+              type="submit"
+              className="bg-primary text-white px-6 py-2 rounded-full uppercase text-xs tracking-widest hover:bg-primary-dark transition"
+            >
+              Ver pedido
+            </button>
+          </form>
+          <p className="text-xs text-[var(--text-muted)] mt-6">
+            Se você é a dona da conta,{" "}
+            <Link to="/login" className="text-primary underline">
+              faça login
+            </Link>{" "}
+            pra pular esse passo.
+          </p>
+        </section>
+      </Layout>
+    );
+  }
+
   const banner =
     search.status === "success"
       ? { cls: "bg-primary/10 text-primary-dark border-primary/30", text: "✅ Pagamento aprovado! A Elisa vai entrar em contato pra combinar o envio." }
@@ -86,37 +158,10 @@ function OrderPage() {
   const wppMsg = `Oi Elisa! Acabei de fazer o pedido %23${order.code}.%0A%0A${wppItems}%0A%0ATotal: ${formatPriceBRL(order.total_cents)}%0A%0AMe avisa como combinamos frete e pagamento, por favor!`;
   const wppLink = `https://wa.me/5511994061178?text=${wppMsg}`;
 
-  const { user } = useAuth();
-  const qc = useQueryClient();
-  const navigate = useNavigate();
   const isOwner = !!user && !!order.user_id && user.id === order.user_id;
   const isGuestOrder = !order.user_id && !user;
 
-  useEffect(() => {
-    // Logado E dona do pedido E pedido criado nos últimos 5 minutos → vai pra lista
-    if (user && order.user_id && user.id === order.user_id) {
-      const createdRecently = new Date(order.created_at).getTime() > Date.now() - 5 * 60 * 1000;
-      if (createdRecently && (search.status === "success" || !search.status)) {
-        navigate({ to: "/painel/pedidos", search: { highlight: order.code } });
-      }
-    }
-  }, [user, order.user_id, order.created_at, order.code, search.status, navigate]);
 
-
-
-
-  const cancel = useMutation({
-    mutationFn: () => cancelMyOrder(order.id),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["my-orders"] });
-      supabase.functions
-        .invoke("send-notification", {
-          body: { type: "order_cancelled", record_id: order.id },
-        })
-        .catch((e) => console.error("cancel email failed:", e));
-      window.location.reload();
-    },
-  });
 
 
 
