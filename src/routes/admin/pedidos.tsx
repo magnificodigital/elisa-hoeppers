@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
+import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
 import { listAllOrdersForAdmin, updateOrderStatus, updateOrderShipping, updateOrderTracking, formatPriceBRL, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
