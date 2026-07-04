@@ -58,7 +58,10 @@ serve(async (req) => {
     const { data: order, error } = await supabase.from("orders").select("*").eq("id", order_id).maybeSingle();
     if (error || !order) throw new Error("pedido não encontrado");
     if (!order.shipping_service_id) throw new Error("pedido sem serviço de frete escolhido");
-    if (order.me_order_id) throw new Error("etiqueta já comprada pra esse pedido");
+    // Permite nova tentativa se a anterior falhou (me_status começa com "failed_")
+    if (order.me_order_id && !String(order.me_status ?? "").startsWith("failed_")) {
+      throw new Error("etiqueta já comprada pra esse pedido");
+    }
 
     const senderName = await getSetting("me_sender_name");
     const senderDoc = await getSetting("me_sender_document");
