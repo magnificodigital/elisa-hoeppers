@@ -714,36 +714,30 @@ function CheckoutPage() {
                   ⚠️ Não conseguimos calcular o frete. Verifique o CEP ou combine via WhatsApp.
                 </p>
               )}
-              {mpEnabled && (
-                <button
-                  type="button"
-                  onClick={() => submitOrder("mercadopago")}
-                  disabled={
-                    submitting !== null ||
-                    (meEnabled && !!shippingError) ||
-                    (meEnabled && !selectedShipping && shippingOpts.length > 0)
-                  }
-                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60 mb-2"
-                >
-                  {submitting === "mercadopago" ? "Indo pro pagamento…" : "Pagar agora com Mercado Pago"}
-                </button>
-              )}
-
               <button
                 type="button"
-                onClick={() => submitOrder("whatsapp")}
-                disabled={submitting !== null}
-                className={`block w-full text-center ${mpEnabled ? "border border-primary text-primary hover:bg-primary hover:text-white" : "bg-primary text-white hover:bg-primary-dark"} py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold transition disabled:opacity-60`}
+                onClick={() => submitOrder("mercadopago")}
+                disabled={
+                  submitting !== null ||
+                  !mpEnabled ||
+                  (meEnabled && !!shippingError) ||
+                  (meEnabled && !selectedShipping && shippingOpts.length > 0)
+                }
+                className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
               >
-                {submitting === "whatsapp" ? "Enviando…" : (mpEnabled ? "Combinar por WhatsApp" : "Enviar pedido")}
+                {submitting === "mercadopago" ? "Indo pro pagamento…" : "Finalizar Compra"}
               </button>
+
+              {!mpEnabled && (
+                <p className="text-xs text-red-700 mt-2 text-center">
+                  Pagamento online indisponível no momento. Entre em contato pelo WhatsApp.
+                </p>
+              )}
               {submitError && (
                 <p className="text-red-700 text-sm mt-3">{submitError}</p>
               )}
               <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                {mpEnabled
-                  ? "Pague online com cartão, PIX ou boleto, ou combine pagamento e frete diretamente com a Elisa via WhatsApp."
-                  : "Elisa entra em contato em até 24h pelo WhatsApp para tirar qualquer duvida."}
+                Pague online com cartão, PIX ou boleto pelo Mercado Pago.
               </p>
             </aside>
           </form>
