@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, ImageOff } from "lucide-react";
+import { useState } from "react";
+import { Plus, ImageOff, Instagram, Copy, Check } from "lucide-react";
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { listAllProductsForAdmin, formatPriceBRL, firstImage, createProduct } from "@/lib/shop";
