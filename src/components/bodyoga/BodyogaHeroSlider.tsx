@@ -32,7 +32,11 @@ function DefaultHero() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a
-                href="#produtos"
+                href="#rituais"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("rituais")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
               >
                 Conhecer rituais
