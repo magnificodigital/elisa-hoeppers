@@ -26,7 +26,6 @@ const CATEGORIES = [
   { id: "oleos", label: "Rituais da Mente" },
   { id: "ambiente", label: "Rituais da Ambiente" },
   { id: "cuidados", label: "Rituais da Corpo" },
-  { id: "bodyoga", label: "BODYOGA" },
 ];
 
 function ShopListing() {
