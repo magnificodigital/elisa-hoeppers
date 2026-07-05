@@ -107,9 +107,9 @@ export function BodyogaLanding() {
               <div>
                 <Link
                   to="/sobre"
-                  className="inline-block px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green/5 transition-colors"
+                  className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
                 >
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green font-semibold">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
                     Harmonia &amp; Equilíbrio
                   </span>
                 </Link>
