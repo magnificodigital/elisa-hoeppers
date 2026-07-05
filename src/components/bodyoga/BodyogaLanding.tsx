@@ -171,7 +171,7 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
   const [active, setActive] = useState<string | null>(null);
 
   return (
-    <section className="bg-bodyoga-cream">
+    <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
       <div
         className="flex flex-col md:flex-row md:h-[640px]"
         onMouseLeave={() => setActive(null)}
