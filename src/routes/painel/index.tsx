@@ -20,12 +20,12 @@ export const Route = createFileRoute("/painel/")({
 const navItems = [
   { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
   { id: "perfil", icon: User, label: "Meu perfil", enabled: true },
-  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true },
-  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
-  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
-  { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
   { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: true },
-  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: true },
+  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
+  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true, courseOnly: true },
+  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true, courseOnly: true },
+  { id: "certificados", icon: Award, label: "Meus certificados", enabled: true, courseOnly: true },
+  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: true, courseOnly: true },
   { id: "config", icon: Settings, label: "Configurações", enabled: false },
 ];
 
