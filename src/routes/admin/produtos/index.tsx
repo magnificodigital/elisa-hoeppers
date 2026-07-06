@@ -28,6 +28,7 @@ function AdminProductsList() {
       return createProduct({
         slug: `produto-${Date.now().toString(36)}`,
         name: "Novo produto",
+        sku: `BOD-${Date.now().toString(36).toUpperCase()}`,
         short_description: null,
         description: null,
         price_cents: 0,
