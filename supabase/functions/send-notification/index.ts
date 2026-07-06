@@ -59,6 +59,18 @@ async function sendEmail(to: string, subject: string, html: string) {
   }
 }
 
+// Verifica se a cliente (com conta) desativou "Avisos de pedido".
+// Pedidos de convidado (sem user_id) sempre recebem — são transacionais.
+async function wantsOrderUpdates(userId: string | null): Promise<boolean> {
+  if (!userId) return true;
+  const { data } = await supabase
+    .from("profiles")
+    .select("notify_order_updates")
+    .eq("id", userId)
+    .maybeSingle();
+  return data?.notify_order_updates !== false;
+}
+
 const baseStyles = `
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #F5EBE2; color: #334C31; margin: 0; padding: 0; }
   .container { max-width: 560px; margin: 0 auto; padding: 24px; }
