@@ -23,9 +23,9 @@ const HomeInstagram = () => {
   const hasLive = posts.length > 0;
 
   return (
-    <section className="py-20 md:py-24 bg-cream">
+    <section className="py-14 md:py-24 bg-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-        <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
+        <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-6 md:mb-8">
           Acompanhe{" "}
           <a
             href={PROFILE_URL}
@@ -37,13 +37,13 @@ const HomeInstagram = () => {
           </a>{" "}
           no Instagram
         </h3>
-        <div className="flex items-center justify-center gap-4 mb-10">
+        <div className="flex items-center justify-center gap-3 md:gap-4 mb-8 md:mb-10">
           <img
             src="/images/home/instagram/round-2.png"
             alt="Foto de perfil de Bodyoga"
-            className="w-14 h-14 rounded-full object-cover flex-shrink-0"
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover shrink-0"
            loading="lazy" decoding="async" />
-          <div className="max-w-md">
+          <div className="min-w-0 max-w-md">
             <p className="text-primary-dark font-semibold text-sm">bodyoga.oficial</p>
             <p className="text-[var(--text-muted)] text-xs leading-relaxed">
               Fundadora do @bodyoga__ ® · Professora de YOGA · Alquimia Olfativa ·
@@ -51,6 +51,7 @@ const HomeInstagram = () => {
             </p>
           </div>
         </div>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
           {hasLive
             ? posts.map((post, i) => (
