@@ -13,7 +13,7 @@ const ELISA_EMAIL = Deno.env.get("ELISA_EMAIL") ?? "elisa.hoeppers@gmail.com";
 // @ts-ignore
 const SITE_URL = Deno.env.get("SITE_URL") ?? "https://hoepppers.lovable.app";
 
-const FROM = "BODYOGA <contato@send.bodyogaoficial.com.br>";
+const FROM = "BODYOGA <contato@bodyogaoficial.com.br>";
 const REPLY_TO = ELISA_EMAIL;
 
 const corsHeaders = {
