@@ -211,7 +211,7 @@ export async function listProducts(filter?: {
   if (filter?.featured) q = q.eq("is_featured", true);
   const { data, error } = await q;
   if (error) throw error;
-  return (data ?? []) as Product[];
+  return attachRituals((data ?? []) as Product[]);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
