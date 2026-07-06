@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Package, ChevronRight, ShoppingBag, X, CheckCircle, Circle, Truck, XCircle, ExternalLink } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyOrders, formatPriceBRL, cancelMyOrder, type Order } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
