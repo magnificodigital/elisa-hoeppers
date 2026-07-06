@@ -113,7 +113,14 @@ const baseStyles = `
 `;
 
 function wrap(body: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${baseStyles}</style></head><body><div class="container">${body}<p class="muted" style="text-align:center;margin-top:24px;">bodyogaoficial.com.br</p></div></body></html>`;
+  const header = emailBranding.logo_url
+    ? `<div style="text-align:center;padding:8px 0 4px;"><img src="${emailBranding.logo_url}" alt="BODYOGA" style="max-height:56px;max-width:200px;height:auto;" /></div>`
+    : "";
+  const signature = emailBranding.signature
+    ? `<p class="muted" style="text-align:center;margin-top:20px;color:${emailBranding.brand_color};">${emailBranding.signature}</p>`
+    : "";
+  const footer = emailBranding.footer_note || "bodyogaoficial.com.br";
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${baseStyles}</style></head><body><div class="container">${header}${body}${signature}<p class="muted" style="text-align:center;margin-top:24px;">${footer}</p></div></body></html>`;
 }
 
 async function handleBooking(recordId: string) {
