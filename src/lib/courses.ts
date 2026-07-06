@@ -1,4 +1,9 @@
 import { supabase, type Course, type Lesson } from "./supabase";
+import { mediaUrl } from "./storage";
+
+function withCourseMedia(course: Course): Course {
+  return { ...course, cover_image: mediaUrl(course.cover_image) };
+}
 
 export async function listPublishedCourses(): Promise<Course[]> {
   const { data, error } = await supabase
@@ -7,7 +12,7 @@ export async function listPublishedCourses(): Promise<Course[]> {
     .eq("is_published", true)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return data ?? [];
+  return (data ?? []).map(withCourseMedia);
 }
 
 export async function getCourseBySlug(slug: string): Promise<Course | null> {
@@ -18,7 +23,7 @@ export async function getCourseBySlug(slug: string): Promise<Course | null> {
     .eq("is_published", true)
     .maybeSingle();
   if (error) throw error;
-  return data;
+  return data ? withCourseMedia(data) : null;
 }
 
 export async function listLessonsByCourse(courseId: string): Promise<Lesson[]> {

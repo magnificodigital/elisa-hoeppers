@@ -58,6 +58,7 @@ import { Route as AdminBodyogaSlidesIndexRouteImport } from './routes/admin/body
 import { Route as AdminBodyogaRituaisIndexRouteImport } from './routes/admin/bodyoga-rituais/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
+import { Route as ApiPublicMediaRouteImport } from './routes/api/public/media'
 import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/public/instagram-feed[.]xml'
 import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
@@ -320,6 +321,11 @@ const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
   path: '/painel/aula/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicMediaRoute = ApiPublicMediaRouteImport.update({
+  id: '/api/public/media',
+  path: '/api/public/media',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicInstagramFeedDotxmlRoute =
   ApiPublicInstagramFeedDotxmlRouteImport.update({
     id: '/api/public/instagram-feed.xml',
@@ -451,6 +457,7 @@ export interface FileRoutesByFullPath {
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
+  '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/bodyoga-rituais/': typeof AdminBodyogaRituaisIndexRoute
@@ -515,6 +522,7 @@ export interface FileRoutesByTo {
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
+  '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/bodyoga-rituais': typeof AdminBodyogaRituaisIndexRoute
@@ -581,6 +589,7 @@ export interface FileRoutesById {
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
+  '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/bodyoga-rituais/': typeof AdminBodyogaRituaisIndexRoute
@@ -648,6 +657,7 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/admin/site/menu'
     | '/api/public/instagram-feed.xml'
+    | '/api/public/media'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
     | '/admin/bodyoga-rituais/'
@@ -712,6 +722,7 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/admin/site/menu'
     | '/api/public/instagram-feed.xml'
+    | '/api/public/media'
     | '/painel/aula/$lessonId'
     | '/admin/blog'
     | '/admin/bodyoga-rituais'
@@ -777,6 +788,7 @@ export interface FileRouteTypes {
     | '/admin/produtos/$id'
     | '/admin/site/menu'
     | '/api/public/instagram-feed.xml'
+    | '/api/public/media'
     | '/painel/aula/$lessonId'
     | '/admin/blog/'
     | '/admin/bodyoga-rituais/'
@@ -842,6 +854,7 @@ export interface RootRouteChildren {
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   AdminSiteMenuRoute: typeof AdminSiteMenuRoute
   ApiPublicInstagramFeedDotxmlRoute: typeof ApiPublicInstagramFeedDotxmlRoute
+  ApiPublicMediaRoute: typeof ApiPublicMediaRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminBodyogaRituaisIndexRoute: typeof AdminBodyogaRituaisIndexRoute
@@ -1199,6 +1212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelAulaLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/media': {
+      id: '/api/public/media'
+      path: '/api/public/media'
+      fullPath: '/api/public/media'
+      preLoaderRoute: typeof ApiPublicMediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/instagram-feed.xml': {
       id: '/api/public/instagram-feed.xml'
       path: '/api/public/instagram-feed.xml'
@@ -1374,6 +1394,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   AdminSiteMenuRoute: AdminSiteMenuRoute,
   ApiPublicInstagramFeedDotxmlRoute: ApiPublicInstagramFeedDotxmlRoute,
+  ApiPublicMediaRoute: ApiPublicMediaRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminBodyogaRituaisIndexRoute: AdminBodyogaRituaisIndexRoute,

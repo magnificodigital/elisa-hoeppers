@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 
 const BUCKET = "media";
+const MEDIA_PROXY_PATH = "/api/public/media";
 
 export async function uploadImage(file: File, folder: string): Promise<string> {
   if (!file.type.startsWith("image/")) {
@@ -42,18 +43,57 @@ async function uploadToBucket(file: File, folder: string): Promise<string> {
   });
   if (error) throw error;
 
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
-  return data.publicUrl;
+  return mediaUrlFromPath(path);
 }
 
 export function isVideoUrl(url: string): boolean {
-  return /\.(mp4|webm|mov|ogg|m4v)(\?|$)/i.test(url);
+  const path = mediaPathFromUrl(url) ?? url;
+  return /\.(mp4|webm|mov|ogg|m4v)(\?|$)/i.test(path);
+}
+
+export function mediaUrl(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const path = mediaPathFromUrl(value);
+  return path ? mediaUrlFromPath(path) : value;
+}
+
+export function mediaUrlFromPath(path: string): string {
+  return `${MEDIA_PROXY_PATH}?path=${encodeURIComponent(path.replace(/^\/+/, ""))}`;
+}
+
+export function mediaPathFromUrl(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const raw = value.trim();
+  if (!raw) return null;
+  if (raw.startsWith("media://")) return raw.slice("media://".length).replace(/^\/+/, "") || null;
+
+  try {
+    const url = new URL(raw, "https://local.invalid");
+    if (url.pathname === MEDIA_PROXY_PATH) {
+      return url.searchParams.get("path")?.replace(/^\/+/, "") || null;
+    }
+
+    const markers = [
+      `/storage/v1/object/public/${BUCKET}/`,
+      `/storage/v1/object/sign/${BUCKET}/`,
+      `/storage/v1/object/${BUCKET}/`,
+    ];
+    for (const marker of markers) {
+      const idx = url.pathname.indexOf(marker);
+      if (idx >= 0) {
+        return decodeURIComponent(url.pathname.slice(idx + marker.length)).replace(/^\/+/, "") || null;
+      }
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
 }
 
 
 export async function deleteImage(publicUrl: string): Promise<void> {
-  const m = publicUrl.match(/\/storage\/v1\/object\/public\/media\/(.+)$/);
-  if (!m) return;
-  const path = decodeURIComponent(m[1]);
+  const path = mediaPathFromUrl(publicUrl);
+  if (!path) return;
   await supabase.storage.from(BUCKET).remove([path]);
 }
