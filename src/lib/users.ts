@@ -38,6 +38,16 @@ export async function inviteUser(
   return data?.user_id ?? "";
 }
 
+export async function createUser(
+  email: string,
+  password: string,
+  full_name: string,
+  role: UserRow["role"],
+): Promise<string> {
+  const data = await call("create", { email, password, full_name, role });
+  return data?.user_id ?? "";
+}
+
 export async function deleteUser(userId: string): Promise<void> {
   await call("delete", { user_id: userId });
 }
