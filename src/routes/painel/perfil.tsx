@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User, Save, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
