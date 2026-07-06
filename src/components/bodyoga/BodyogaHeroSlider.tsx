@@ -79,6 +79,7 @@ function VideoSlide({ slide }: { slide: Slide }) {
         {slide.cta_label && (
           <a
             href={slide.cta_href || "/agendar"}
+            onClick={(e) => handleAnchorClick(e, slide.cta_href)}
             className="px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
           >
             {slide.cta_label}
