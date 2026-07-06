@@ -28,7 +28,7 @@ const HomeInstagram = () => {
             className="w-14 h-14 rounded-full object-cover flex-shrink-0"
            loading="lazy" decoding="async" />
           <div className="max-w-md">
-            <p className="text-primary-dark font-semibold text-sm">elisahoepperscasas</p>
+            <p className="text-primary-dark font-semibold text-sm">bodyoga.oficial</p>
             <p className="text-[var(--text-muted)] text-xs leading-relaxed">
               Fundadora do @bodyoga__ ® · Professora de YOGA · Alquimia Olfativa ·
               Aromaterapia com Óleos Essenciais: Elisa Hoeppers Casas
