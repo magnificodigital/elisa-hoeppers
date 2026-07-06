@@ -66,6 +66,7 @@ import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/c
 import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin/configuracoes/newsletter'
 import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
 import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
+import { Route as AdminConfiguracoesIntegracoesRouteImport } from './routes/admin/configuracoes/integracoes'
 import { Route as AdminConfiguracoesEmailsRouteImport } from './routes/admin/configuracoes/emails'
 import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
@@ -367,6 +368,12 @@ const AdminConfiguracoesMelhorEnvioRoute =
     path: '/admin/configuracoes/melhor-envio',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminConfiguracoesIntegracoesRoute =
+  AdminConfiguracoesIntegracoesRouteImport.update({
+    id: '/admin/configuracoes/integracoes',
+    path: '/admin/configuracoes/integracoes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminConfiguracoesEmailsRoute =
   AdminConfiguracoesEmailsRouteImport.update({
     id: '/admin/configuracoes/emails',
@@ -458,6 +465,7 @@ export interface FileRoutesByFullPath {
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
+  '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
@@ -524,6 +532,7 @@ export interface FileRoutesByTo {
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
+  '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
@@ -592,6 +601,7 @@ export interface FileRoutesById {
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
+  '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
@@ -661,6 +671,7 @@ export interface FileRouteTypes {
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
+    | '/admin/configuracoes/integracoes'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
@@ -727,6 +738,7 @@ export interface FileRouteTypes {
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
+    | '/admin/configuracoes/integracoes'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
@@ -794,6 +806,7 @@ export interface FileRouteTypes {
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
+    | '/admin/configuracoes/integracoes'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
@@ -861,6 +874,7 @@ export interface RootRouteChildren {
   AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
   AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
   AdminConfiguracoesEmailsRoute: typeof AdminConfiguracoesEmailsRoute
+  AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
   AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
   AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
   AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
@@ -1282,6 +1296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesMelhorEnvioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/integracoes': {
+      id: '/admin/configuracoes/integracoes'
+      path: '/admin/configuracoes/integracoes'
+      fullPath: '/admin/configuracoes/integracoes'
+      preLoaderRoute: typeof AdminConfiguracoesIntegracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes/emails': {
       id: '/admin/configuracoes/emails'
       path: '/admin/configuracoes/emails'
@@ -1409,6 +1430,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminBodyogaSlidesIdRoute: AdminBodyogaSlidesIdRoute,
   AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
   AdminConfiguracoesEmailsRoute: AdminConfiguracoesEmailsRoute,
+  AdminConfiguracoesIntegracoesRoute: AdminConfiguracoesIntegracoesRoute,
   AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
   AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
   AdminConfiguracoesNewsletterRoute: AdminConfiguracoesNewsletterRoute,
@@ -1431,13 +1453,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
