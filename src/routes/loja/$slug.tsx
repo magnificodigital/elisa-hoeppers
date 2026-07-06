@@ -181,11 +181,34 @@ function ProductDetail() {
                 <WishlistButton itemType="product" itemId={product.id} />
               </div>
 
-              <div className="mt-8 space-y-2 text-sm text-[var(--text-muted)]">
+              <div className="mt-8 space-y-3 text-sm text-[var(--text-muted)]">
                 <p className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4" /> Pagamento via PIX ou cartão
                 </p>
+                <div className="flex items-center gap-2">
+                  {/* Visa */}
+                  <span className="inline-flex items-center justify-center h-7 w-11 rounded border border-border bg-white">
+                    <svg viewBox="0 0 48 16" className="h-3" aria-label="Visa" role="img">
+                      <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fontStyle="italic" fill="#1A1F71">VISA</text>
+                    </svg>
+                  </span>
+                  {/* Mastercard */}
+                  <span className="inline-flex items-center justify-center h-7 w-11 rounded border border-border bg-white">
+                    <svg viewBox="0 0 40 24" className="h-5" aria-label="Mastercard" role="img">
+                      <circle cx="16" cy="12" r="9" fill="#EB001B" />
+                      <circle cx="24" cy="12" r="9" fill="#F79E1B" />
+                      <path d="M20 5a9 9 0 000 14 9 9 0 000-14z" fill="#FF5F00" />
+                    </svg>
+                  </span>
+                  {/* PIX */}
+                  <span className="inline-flex items-center justify-center h-7 w-11 rounded border border-border bg-white">
+                    <svg viewBox="0 0 48 16" className="h-3" aria-label="Pix" role="img">
+                      <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fill="#32BCAD">Pix</text>
+                    </svg>
+                  </span>
+                </div>
               </div>
+
 
               {product.description && (
                 <div className="mt-10 pt-8 border-t border-border">
