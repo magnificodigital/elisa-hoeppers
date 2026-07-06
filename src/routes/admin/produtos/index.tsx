@@ -85,6 +85,7 @@ function AdminProductsList() {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-primary-dark break-words">{p.name}</h3>
                   <p className="text-[11px] text-[var(--text-muted)] truncate">/loja/{p.slug} · {p.category ?? "sem categoria"}</p>
+                  <p className="text-[11px] text-[var(--text-muted)] truncate">SKU: {p.sku || "—"}</p>
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
                     {p.is_active ? (
                       <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/10 text-primary whitespace-nowrap">Ativo</span>
