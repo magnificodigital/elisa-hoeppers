@@ -84,7 +84,22 @@ function ProfilePage() {
     onError: (err: Error) => toast.error(err.message),
   });
 
-  const savedAddresses = Array.isArray(profile?.saved_addresses) ? profile.saved_addresses : [];
+  const saveNotifications = useMutation({
+    mutationFn: async (next: { notify_order_updates: boolean; notify_marketing: boolean }) => {
+      const { error } = await supabase
+        .from("profiles")
+        .update(next)
+        .eq("id", user!.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Preferências salvas");
+      qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    },
+    onError: (err: Error) => toast.error(err.message),
+  });
+
+
 
   async function setDefaultAddress(id: string) {
     const updated = savedAddresses.map((a: any) => ({ ...a, is_default: a.id === id }));
