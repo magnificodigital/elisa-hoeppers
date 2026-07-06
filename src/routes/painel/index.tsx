@@ -20,12 +20,12 @@ export const Route = createFileRoute("/painel/")({
 const navItems = [
   { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
   { id: "perfil", icon: User, label: "Meu perfil", enabled: true },
-  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true },
-  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
-  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true },
-  { id: "certificados", icon: Award, label: "Meus certificados", enabled: true },
   { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: true },
-  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: true },
+  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
+  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true, courseOnly: true },
+  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true, courseOnly: true },
+  { id: "certificados", icon: Award, label: "Meus certificados", enabled: true, courseOnly: true },
+  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: true, courseOnly: true },
   { id: "config", icon: Settings, label: "Configurações", enabled: false },
 ];
 
@@ -110,7 +110,7 @@ function PainelPage() {
             <aside className="hidden md:block w-64 shrink-0">
               <div className="bg-white rounded-xl p-4 shadow-sm sticky top-24">
                 <nav className="space-y-1">
-                  {navItems.map((item) => {
+                  {navItems.filter((item) => !("courseOnly" in item && item.courseOnly) || hasCourses).map((item) => {
                     const Icon = item.icon;
                     const isActive = item.active;
                     const baseCls = "flex items-center gap-3 px-4 py-3 rounded-md text-sm transition-colors";
@@ -231,14 +231,18 @@ function PainelPage() {
 
               {/* Stat cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-                <StatCard icon={<BookOpen size={20} className="text-primary" />} value={totalEnrolled} label="Cursos matriculados" />
-                <StatCard icon={<Activity size={20} className="text-primary" />} value={totalActive} label="Cursos ativos" />
-                <StatCard icon={<Award size={20} className="text-primary" />} value={totalCompleted} label="Cursos completos" />
                 <StatCard
                   icon={<Package size={20} className="text-primary" />}
                   value={totalOrders}
                   label={pendingOrders > 0 ? `Pedidos · ${pendingOrders} pendente${pendingOrders === 1 ? "" : "s"}` : "Pedidos"}
                 />
+                {hasCourses && (
+                  <>
+                    <StatCard icon={<BookOpen size={20} className="text-primary" />} value={totalEnrolled} label="Cursos matriculados" />
+                    <StatCard icon={<Activity size={20} className="text-primary" />} value={totalActive} label="Cursos ativos" />
+                    <StatCard icon={<Award size={20} className="text-primary" />} value={totalCompleted} label="Cursos completos" />
+                  </>
+                )}
               </div>
 
 
@@ -246,46 +250,61 @@ function PainelPage() {
               {!isLoading && !hasCourses && !hasOrders && (
                 <div className="bg-white rounded-lg p-8 text-center">
                   <h3 className="font-display text-xl text-primary-dark mb-2">Bem-vinda! Por onde quer começar?</h3>
-                  <p className="text-primary-dark/70 mb-6">Você ainda não tem cursos nem pedidos.</p>
+                  <p className="text-primary-dark/70 mb-6">Você ainda não tem pedidos nem cursos.</p>
                   <div className="flex flex-wrap gap-3 justify-center">
                     <Link
-                      to="/cursos"
+                      to="/loja"
                       className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
                     >
-                      Ver aulas
+                      Ver loja
                     </Link>
                     <Link
-                      to="/loja"
+                      to="/cursos"
                       className="inline-block border border-primary text-primary px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary hover:text-white transition"
                     >
-                      Ver loja
+                      Ver aulas
                     </Link>
                   </div>
                 </div>
               )}
 
-              {/* Seção cursos */}
-              {(hasCourses || (!hasOrders && !isLoading)) && (
+              {/* Seção pedidos (destaque principal) */}
+              {hasOrders && (
+                <div className="mb-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-display text-lg text-primary-dark">Meus pedidos</h3>
+                    <Link to="/painel/pedidos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                      Ver todos →
+                    </Link>
+                  </div>
+
+                  <div className="space-y-3">
+                    {(orders ?? []).slice(0, 5).map((o) => (
+                      <CompactOrderRow key={o.id} order={o} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* CTA loja quando não há pedidos mas há cursos */}
+              {!hasOrders && hasCourses && !isLoading && (
+                <div className="bg-white rounded-lg p-6 text-center mb-10">
+                  <p className="text-primary-dark mb-3">Você ainda não fez nenhum pedido na loja.</p>
+                  <Link to="/loja" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                    Explorar a loja →
+                  </Link>
+                </div>
+              )}
+
+              {/* Seção cursos — só aparece se possui algum curso */}
+              {hasCourses && (
                 <div className="mb-10">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-lg text-primary-dark">Cursos em progresso</h3>
-                    {hasCourses && (
-                      <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
-                        Ver todos →
-                      </Link>
-                    )}
+                    <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
+                      Ver todos →
+                    </Link>
                   </div>
-
-                  {isLoading && <p className="text-primary-dark/70">Carregando seus cursos…</p>}
-
-                  {!isLoading && enrolled.length === 0 && hasOrders && (
-                    <div className="bg-white rounded-lg p-6 text-center">
-                      <p className="text-primary-dark mb-3">Você ainda não está matriculada em nenhum curso.</p>
-                      <Link to="/cursos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
-                        Explorar aulas →
-                      </Link>
-                    </div>
-                  )}
 
                   <div className="space-y-4">
                     {enrolled.map((c) => {
@@ -353,23 +372,6 @@ function PainelPage() {
                 </div>
               )}
 
-              {/* Seção pedidos */}
-              {hasOrders && (
-                <div className="mb-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-display text-lg text-primary-dark">Pedidos recentes</h3>
-                    <Link to="/painel/pedidos" className="text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition">
-                      Ver todos →
-                    </Link>
-                  </div>
-
-                  <div className="space-y-3">
-                    {(orders ?? []).slice(0, 3).map((o) => (
-                      <CompactOrderRow key={o.id} order={o} />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
