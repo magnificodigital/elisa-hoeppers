@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { mediaUrl } from "./storage";
 
 export type ProductImage = { url: string; alt?: string };
 
@@ -27,6 +28,24 @@ export type Product = {
 
 const COLS =
   "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
+
+function withProductMedia(product: Product): Product {
+  return {
+    ...product,
+    gallery: (product.gallery ?? []).map((image) => ({
+      ...image,
+      url: mediaUrl(image.url) ?? image.url,
+    })),
+  };
+}
+
+function withRitualMedia(ritual: Ritual): Ritual {
+  return { ...ritual, image_url: mediaUrl(ritual.image_url) };
+}
+
+function withSlideMedia(slide: Slide): Slide {
+  return { ...slide, image_url: mediaUrl(slide.image_url) };
+}
 
 async function attachRituals<T extends { id: string; ritual_id: string | null }>(
   rows: T[],
@@ -84,7 +103,7 @@ export async function listActiveRituals(): Promise<Ritual[]> {
     .eq("is_active", true)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Ritual[];
+  return ((data ?? []) as Ritual[]).map(withRitualMedia);
 }
 
 export async function listAllRitualsForAdmin(): Promise<Ritual[]> {
@@ -93,7 +112,7 @@ export async function listAllRitualsForAdmin(): Promise<Ritual[]> {
     .select(RITUAL_COLS)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Ritual[];
+  return ((data ?? []) as Ritual[]).map(withRitualMedia);
 }
 
 export async function getRitualForAdmin(id: string): Promise<Ritual | null> {
@@ -103,7 +122,7 @@ export async function getRitualForAdmin(id: string): Promise<Ritual | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Ritual | null;
+  return data ? withRitualMedia(data as Ritual) : null;
 }
 
 export type RitualInsert = Omit<Ritual, "id">;
@@ -153,7 +172,7 @@ export async function listActiveSlides(): Promise<Slide[]> {
     .eq("is_active", true)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Slide[];
+  return ((data ?? []) as Slide[]).map(withSlideMedia);
 }
 
 export async function listAllSlidesForAdmin(): Promise<Slide[]> {
@@ -162,7 +181,7 @@ export async function listAllSlidesForAdmin(): Promise<Slide[]> {
     .select(SLIDE_COLS)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Slide[];
+  return ((data ?? []) as Slide[]).map(withSlideMedia);
 }
 
 export async function getSlideForAdmin(id: string): Promise<Slide | null> {
@@ -172,7 +191,7 @@ export async function getSlideForAdmin(id: string): Promise<Slide | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Slide | null;
+  return data ? withSlideMedia(data as Slide) : null;
 }
 
 export type SlideInsert = Omit<Slide, "id">;
@@ -211,7 +230,7 @@ export async function listProducts(filter?: {
   if (filter?.featured) q = q.eq("is_featured", true);
   const { data, error } = await q;
   if (error) throw error;
-  return attachRituals((data ?? []) as Product[]);
+  return attachRituals(((data ?? []) as Product[]).map(withProductMedia));
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -223,7 +242,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;
-  return (await attachRituals([data as Product]))[0];
+  return (await attachRituals([withProductMedia(data as Product)]))[0];
 }
 
 export function formatPriceBRL(cents: number): string {
@@ -234,7 +253,7 @@ export function formatPriceBRL(cents: number): string {
 }
 
 export function firstImage(p: Product): string | null {
-  return p.gallery?.[0]?.url ?? null;
+  return mediaUrl(p.gallery?.[0]?.url) ?? null;
 }
 
 // =================== ADMIN: PRODUCTS ===================
@@ -244,7 +263,7 @@ export async function listAllProductsForAdmin(): Promise<Product[]> {
     .select(COLS)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return attachRituals((data ?? []) as Product[]);
+  return attachRituals(((data ?? []) as Product[]).map(withProductMedia));
 }
 
 export async function getProductForAdmin(id: string): Promise<Product | null> {
@@ -255,7 +274,7 @@ export async function getProductForAdmin(id: string): Promise<Product | null> {
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;
-  return (await attachRituals([data as Product]))[0];
+  return (await attachRituals([withProductMedia(data as Product)]))[0];
 }
 
 export type ProductUpdate = Partial<Omit<Product, "id">>;

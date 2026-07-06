@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { mediaUrl } from "./storage";
 
 export type Post = {
   id: string;
@@ -14,6 +15,10 @@ export type Post = {
   created_at: string;
 };
 
+function withPostMedia(post: Post): Post {
+  return { ...post, cover_image: mediaUrl(post.cover_image) };
+}
+
 export async function listPublishedPosts(): Promise<Post[]> {
   const { data, error } = await supabase
     .from("posts")
@@ -21,7 +26,7 @@ export async function listPublishedPosts(): Promise<Post[]> {
     .eq("is_published", true)
     .order("published_at", { ascending: false });
   if (error) throw error;
-  return (data ?? []) as Post[];
+  return ((data ?? []) as Post[]).map(withPostMedia);
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -32,7 +37,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     .eq("is_published", true)
     .maybeSingle();
   if (error) throw error;
-  return data as Post | null;
+  return data ? withPostMedia(data as Post) : null;
 }
 
 export async function listAllPostsForAdmin(): Promise<Post[]> {
@@ -41,7 +46,7 @@ export async function listAllPostsForAdmin(): Promise<Post[]> {
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return (data ?? []) as Post[];
+  return ((data ?? []) as Post[]).map(withPostMedia);
 }
 
 export async function getPostForAdmin(id: string): Promise<Post | null> {
@@ -51,7 +56,7 @@ export async function getPostForAdmin(id: string): Promise<Post | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Post | null;
+  return data ? withPostMedia(data as Post) : null;
 }
 
 export type PostUpdate = Partial<Omit<Post, "id" | "created_at">>;

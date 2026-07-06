@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/lib/supabase";
+import { mediaUrl } from "@/lib/storage";
 
 // Loja pública (usada nos links do catálogo)
 const SITE_URL = "https://elisahoeppers.com.br";
@@ -32,11 +33,16 @@ function isImage(url: string): boolean {
   return /\.(jpe?g|png|webp|gif|avif)(\?|$)/i.test(url);
 }
 
-function buildFeed(products: FeedProduct[]): string {
+function absoluteUrl(url: string, origin: string): string {
+  return url.startsWith("http://") || url.startsWith("https://") ? url : new URL(url, origin).toString();
+}
+
+function buildFeed(products: FeedProduct[], origin: string): string {
   const items = products
     .map((p) => {
       const link = `${SITE_URL}/loja/${p.slug}`;
-      const image = (p.gallery ?? []).find((g) => isImage(g.url))?.url ?? "";
+      const imageUrl = (p.gallery ?? []).find((g) => isImage(g.url))?.url ?? "";
+      const image = imageUrl ? absoluteUrl(mediaUrl(imageUrl) ?? imageUrl, origin) : "";
       if (!image) return ""; // Meta exige imagem por item
       const desc = p.short_description || p.description || p.name;
       return `    <item>
@@ -68,14 +74,14 @@ ${items}
 export const Route = createFileRoute("/api/public/instagram-feed.xml")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
         const { data } = await supabase
           .from("products")
           .select("slug, name, short_description, description, price_cents, in_stock, brand, gallery")
           .eq("is_active", true)
           .order("display_order", { ascending: true });
 
-        const xml = buildFeed((data ?? []) as FeedProduct[]);
+        const xml = buildFeed((data ?? []) as FeedProduct[], new URL(request.url).origin);
 
         return new Response(xml, {
           status: 200,

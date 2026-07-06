@@ -1,4 +1,9 @@
 import { supabase, type Course } from "./supabase";
+import { mediaUrl } from "./storage";
+
+function withCourseMedia(course: Course): Course {
+  return { ...course, cover_image: mediaUrl(course.cover_image) };
+}
 
 // ============== COURSES ==============
 export async function listAllCourses(): Promise<Course[]> {
@@ -7,7 +12,7 @@ export async function listAllCourses(): Promise<Course[]> {
     .select("id, slug, title, subtitle, description, cover_image, overlay_label, level, duration_total_min, price_cents, is_published, display_order")
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Course[];
+  return ((data ?? []) as Course[]).map(withCourseMedia);
 }
 
 export async function getCourseForAdmin(id: string): Promise<Course | null> {
@@ -17,7 +22,7 @@ export async function getCourseForAdmin(id: string): Promise<Course | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Course | null;
+  return data ? withCourseMedia(data as Course) : null;
 }
 
 export type CourseUpdate = Partial<Omit<Course, "id">>;
