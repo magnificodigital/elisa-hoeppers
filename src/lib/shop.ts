@@ -222,7 +222,8 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     .eq("is_active", true)
     .maybeSingle();
   if (error) throw error;
-  return data as Product | null;
+  if (!data) return null;
+  return (await attachRituals([data as Product]))[0];
 }
 
 export function formatPriceBRL(cents: number): string {
