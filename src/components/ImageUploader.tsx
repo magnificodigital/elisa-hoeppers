@@ -33,11 +33,7 @@ export function ImageUploader({
       let toUpload = file;
       // Adapta imagens ao formato usado no site (recorte central conforme aspectRatio)
       if (file.type.startsWith("image/")) {
-        try {
-          toUpload = await cropToAspect(file, aspectRatio);
-        } catch {
-          toUpload = file;
-        }
+        toUpload = await cropToAspect(file, aspectRatio);
       }
       const url = allowVideo ? await uploadMedia(toUpload, folder) : await uploadImage(toUpload, folder);
       onChange(url);
