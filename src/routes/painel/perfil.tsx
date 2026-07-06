@@ -44,6 +44,8 @@ function ProfilePage() {
       setPhone(profile.phone ?? "");
       setBio(profile.bio ?? "");
       setAvatarUrl(profile.avatar_url ?? "");
+      setNotifyOrders(profile.notify_order_updates ?? true);
+      setNotifyMarketing(profile.notify_marketing ?? true);
     }
   }, [profile]);
 
