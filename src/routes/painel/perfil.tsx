@@ -26,6 +26,9 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [notifyOrders, setNotifyOrders] = useState(true);
+  const [notifyMarketing, setNotifyMarketing] = useState(true);
+
   const emptyAddr = { label: "", cep: "", street: "", number: "", complement: "", district: "", city: "", state: "" };
   const [showAddrForm, setShowAddrForm] = useState(false);
   const [addrForm, setAddrForm] = useState(emptyAddr);
