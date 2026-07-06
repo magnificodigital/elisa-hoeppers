@@ -739,6 +739,38 @@ function CheckoutPage() {
               <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
                 Pague online com cartão, PIX ou boleto pelo Mercado Pago.
               </p>
+              <div className="flex items-center justify-center gap-2 mt-2 flex-wrap">
+                {/* Visa */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 48 16" className="h-3" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="13" fontFamily="Arial, sans-serif" fontWeight="bold" fontStyle="italic" fontSize="15" fill="#1A1F71">VISA</text>
+                  </svg>
+                </span>
+                {/* Mastercard */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 40 24" className="h-4" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="12" r="9" fill="#EB001B" />
+                    <circle cx="25" cy="12" r="9" fill="#F79E1B" />
+                    <path d="M20 5a9 9 0 0 1 0 14 9 9 0 0 1 0-14z" fill="#FF5F00" />
+                  </svg>
+                </span>
+                {/* Elo */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 48 16" className="h-3" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="13" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="14" fill="#000">elo</text>
+                  </svg>
+                </span>
+                {/* Pix */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white gap-1">
+                  <svg viewBox="0 0 512 512" className="h-4" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#32BCAD" d="M112 168l144-112 144 112h-52l-92-72-92 72zM112 344l144 112 144-112h-52l-92 72-92-72z"/>
+                    <path fill="#32BCAD" d="M256 176l80 80-80 80-80-80z"/>
+                  </svg>
+                  <span className="text-[8px] font-bold text-[#32BCAD]">pix</span>
+                </span>
+              </div>
+
+
             </aside>
           </form>
         </div>
