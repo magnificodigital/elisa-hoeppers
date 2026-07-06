@@ -96,6 +96,36 @@ function ProfilePage() {
     toast.success("Endereço removido");
   }
 
+  async function addAddress() {
+    if (!addrForm.street.trim() || !addrForm.city.trim()) {
+      toast.error("Preencha ao menos rua e cidade.");
+      return;
+    }
+    const newAddr = {
+      id: crypto.randomUUID(),
+      label: addrForm.label || "Endereço",
+      cep: addrForm.cep.replace(/\D/g, ""),
+      street: addrForm.street,
+      number: addrForm.number,
+      complement: addrForm.complement,
+      district: addrForm.district,
+      city: addrForm.city,
+      state: addrForm.state,
+      is_default: savedAddresses.length === 0,
+    };
+    const updated = [...savedAddresses, newAddr];
+    const { error } = await supabase.from("profiles").update({ saved_addresses: updated }).eq("id", user!.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    setAddrForm(emptyAddr);
+    setShowAddrForm(false);
+    toast.success("Endereço adicionado");
+  }
+
+
   if (loading || !user) {
     return (
       <Layout>
