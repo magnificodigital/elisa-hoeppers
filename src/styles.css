@@ -157,6 +157,9 @@
 .hover\:text-bodyoga-green:hover { color: var(--bodyoga-green); }
 .hover\:text-bodyoga-brown:hover { color: var(--bodyoga-brown); }
 .hover\:text-bodyoga-cream:hover { color: var(--bodyoga-cream); }
+.group:hover .group-hover\:text-bodyoga-cream { color: var(--bodyoga-cream); }
+.group:hover .group-hover\:text-bodyoga-green { color: var(--bodyoga-green); }
+.group:hover .group-hover\:text-bodyoga-brown { color: var(--bodyoga-brown); }
 
 /* Tipografia BODYOGA — Montserrat Thin/Light pra parecer com Garet Book */
 .bodyoga-scope {
