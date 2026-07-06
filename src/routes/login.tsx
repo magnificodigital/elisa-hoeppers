@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-r
 import { useState } from "react";
 import { z } from "zod";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/lib/supabase";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import loginBg from "@/assets/bodyoga/login-leaves.png.asset.json";
 
