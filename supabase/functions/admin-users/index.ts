@@ -79,6 +79,32 @@ serve(async (req) => {
       });
     }
 
+    if (action === "create") {
+      const { email, password, full_name, role } = payload;
+      if (!email || !String(email).includes("@")) throw new Error("Email inválido");
+      if (!password || String(password).length < 6) throw new Error("A senha precisa ter ao menos 6 caracteres");
+      if (!["student", "instructor", "admin"].includes(role || "student")) throw new Error("Papel inválido");
+      const { data, error } = await supabase.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: { full_name: full_name || null },
+      });
+      if (error) throw error;
+      const newUserId = data.user?.id;
+      if (newUserId) {
+        await supabase.from("profiles").upsert({
+          id: newUserId,
+          full_name: full_name || null,
+          role: role || "student",
+        });
+      }
+      return new Response(JSON.stringify({ ok: true, user_id: newUserId }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (action === "invite") {
       const { email, full_name, role } = payload;
       const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
