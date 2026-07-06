@@ -99,6 +99,9 @@ function ProfilePage() {
     onError: (err: Error) => toast.error(err.message),
   });
 
+  const savedAddresses = Array.isArray(profile?.saved_addresses) ? profile.saved_addresses : [];
+
+
 
 
   async function setDefaultAddress(id: string) {
