@@ -761,13 +761,15 @@ function CheckoutPage() {
                   </svg>
                 </span>
                 {/* Pix */}
-                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white gap-1">
                   <svg viewBox="0 0 512 512" className="h-4" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#32BCAD" d="M242.4 292.5a24.6 24.6 0 0 1 34.7 0l45.7 45.7a58.9 58.9 0 0 0 41.7 17.3h9l-57.7 57.7a48 48 0 0 1-67.9 0l-57.9-57.9h5.6a58.9 58.9 0 0 0 41.7-17.3zm34.7-73a24.6 24.6 0 0 1-34.7 0l-40.5-40.5a58.9 58.9 0 0 0-41.7-17.3h-5.6l57.9-57.9a48 48 0 0 1 67.9 0l57.7 57.7h-9a58.9 58.9 0 0 0-41.7 17.3z"/>
-                    <path fill="#32BCAD" d="M119.3 161.3a48 48 0 0 0-14.1 3.2l-73.6 73.6a48 48 0 0 0 0 67.9l73.6 73.6a48 48 0 0 0 14.1 3.2h20.9a41 41 0 0 0 29-12l45.7-45.7a17.1 17.1 0 0 1 24.1 0m0-101.9a17.1 17.1 0 0 1-24.1 0l-45.7-45.7a41 41 0 0 0-29-12zM392.7 350.7a48 48 0 0 0 14.1-3.2l73.6-73.6a48 48 0 0 0 0-67.9l-73.6-73.6a48 48 0 0 0-14.1-3.2h-20.9a41 41 0 0 0-29 12"/>
+                    <path fill="#32BCAD" d="M112 168l144-112 144 112h-52l-92-72-92 72zM112 344l144 112 144-112h-52l-92 72-92-72z"/>
+                    <path fill="#32BCAD" d="M256 176l80 80-80 80-80-80z"/>
                   </svg>
+                  <span className="text-[8px] font-bold text-[#32BCAD]">pix</span>
                 </span>
               </div>
+
 
             </aside>
           </form>
