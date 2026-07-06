@@ -19,6 +19,31 @@ const corsHeaders = {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+// Branding editável dos emails (Admin → Configurações → Emails)
+const emailBranding = {
+  logo_url: "",
+  brand_color: "#3B4F30",
+  signature: "",
+  footer_note: "bodyogaoficial.com.br",
+};
+
+async function loadEmailBranding() {
+  try {
+    const { data } = await supabase
+      .from("app_settings")
+      .select("key, value")
+      .eq("category", "emails");
+    for (const row of data ?? []) {
+      if (row.key === "email_logo_url") emailBranding.logo_url = row.value ?? "";
+      else if (row.key === "email_brand_color" && row.value) emailBranding.brand_color = row.value;
+      else if (row.key === "email_signature") emailBranding.signature = row.value ?? "";
+      else if (row.key === "email_footer_note") emailBranding.footer_note = row.value ?? "";
+    }
+  } catch (e) {
+    console.error("loadEmailBranding failed:", e);
+  }
+}
+
 const baseStyles = `
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #F5EBE2; color: #334C31; margin: 0; padding: 0; }
   .container { max-width: 560px; margin: 0 auto; padding: 24px; }
@@ -31,17 +56,26 @@ const baseStyles = `
 `;
 
 function wrap(body: string, unsubLink?: string): string {
+  const header = emailBranding.logo_url
+    ? `<div style="text-align:center;padding:8px 0 4px;"><img src="${emailBranding.logo_url}" alt="BODYOGA" style="max-height:56px;max-width:200px;height:auto;" /></div>`
+    : "";
+  const signature = emailBranding.signature
+    ? `<p class="muted" style="text-align:center;margin-top:20px;color:${emailBranding.brand_color};">${emailBranding.signature}</p>`
+    : "";
+  const footer = emailBranding.footer_note || "bodyogaoficial.com.br";
   return `<!DOCTYPE html>
 <html>
   <head><meta charset="utf-8" /><style>${baseStyles}</style></head>
   <body>
     <div class="container">
+      ${header}
       <div class="card">
         ${body}
       </div>
+      ${signature}
       <p class="muted" style="text-align:center;margin-top:16px;">
         ${unsubLink ? `Quer parar de receber? <a href="${unsubLink}">Descadastrar</a><br/>` : ""}
-        <a href="https://bodyogaoficial.com.br">bodyogaoficial.com.br</a>
+        <a href="https://bodyogaoficial.com.br">${footer}</a>
       </p>
     </div>
   </body>
@@ -171,6 +205,7 @@ serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    await loadEmailBranding();
     const { broadcast_id, test_email } = await req.json();
     if (!broadcast_id) {
       return new Response(JSON.stringify({ error: "broadcast_id required" }), {

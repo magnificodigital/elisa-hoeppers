@@ -39,6 +39,7 @@ function ProductEditPage() {
   const [form, setForm] = useState({
     name: "",
     slug: "",
+    sku: "",
     short_description: "",
     description: "",
     price_cents: 0,
@@ -62,6 +63,7 @@ function ProductEditPage() {
       setForm({
         name: product.name,
         slug: product.slug,
+        sku: product.sku ?? "",
         short_description: product.short_description ?? "",
         description: product.description ?? "",
         price_cents: product.price_cents,
@@ -93,6 +95,7 @@ function ProductEditPage() {
       return updateProduct(id, {
         name: form.name,
         slug: form.slug,
+        sku: form.sku.trim() || null,
         short_description: form.short_description || null,
         description: form.description || null,
         price_cents: form.price_cents,
@@ -164,6 +167,11 @@ function ProductEditPage() {
             </Field>
             <Field label="Slug (URL)">
               <input required value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} className={inputCls} />
+            </Field>
+
+            <Field label="SKU (código do produto)">
+              <input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} placeholder="ex: BOD-TAPETE-01" className={inputCls} />
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Código único para controle de estoque e catálogos (Instagram/Meta). Deixe em branco se não usar.</p>
             </Field>
 
             <Field label="Descrição curta (card)">
