@@ -244,7 +244,7 @@ export async function listAllProductsForAdmin(): Promise<Product[]> {
     .select(COLS)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Product[];
+  return attachRituals((data ?? []) as Product[]);
 }
 
 export async function getProductForAdmin(id: string): Promise<Product | null> {
