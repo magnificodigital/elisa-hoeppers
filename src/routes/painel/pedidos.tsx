@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
+import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/painel/pedidos")({
   validateSearch: (s: Record<string, unknown>) => ({
