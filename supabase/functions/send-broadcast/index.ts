@@ -205,6 +205,7 @@ serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    await loadEmailBranding();
     const { broadcast_id, test_email } = await req.json();
     if (!broadcast_id) {
       return new Response(JSON.stringify({ error: "broadcast_id required" }), {
