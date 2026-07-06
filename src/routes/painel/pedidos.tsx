@@ -235,6 +235,18 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
           />
         </div>
       )}
+
+      {o.items.length > 0 && (
+        <div className="mt-3 pt-3 border-t border-border">
+          <button
+            onClick={buyAgain}
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Comprar novamente
+          </button>
+        </div>
+      )}
     </div>
   );
 }
