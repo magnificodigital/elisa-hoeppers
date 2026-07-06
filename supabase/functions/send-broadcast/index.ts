@@ -9,7 +9,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 // @ts-ignore
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
-const FROM = "BODYOGA <contato@send.bodyogaoficial.com.br>";
+const FROM = "BODYOGA <contato@bodyogaoficial.com.br>";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
