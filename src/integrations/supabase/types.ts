@@ -1082,6 +1082,8 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          notify_marketing: boolean
+          notify_order_updates: boolean
           phone: string | null
           role: Database["public"]["Enums"]["user_role"]
           saved_addresses: Json
@@ -1093,6 +1095,8 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          notify_marketing?: boolean
+          notify_order_updates?: boolean
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           saved_addresses?: Json
@@ -1104,6 +1108,8 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          notify_marketing?: boolean
+          notify_order_updates?: boolean
           phone?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           saved_addresses?: Json
