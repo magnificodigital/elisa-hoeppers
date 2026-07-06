@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/lib/supabase";
-import { mediaUrl } from "@/lib/storage";
+import { mediaPathFromUrl, mediaUrl } from "@/lib/storage";
 
 // Loja pública (usada nos links do catálogo)
 const SITE_URL = "https://elisahoeppers.com.br";
@@ -30,7 +30,7 @@ function priceBRL(cents: number): string {
 }
 
 function isImage(url: string): boolean {
-  return /\.(jpe?g|png|webp|gif|avif)(\?|$)/i.test(url);
+  return /\.(jpe?g|png|webp|gif|avif)(\?|$)/i.test(mediaPathFromUrl(url) ?? url);
 }
 
 function absoluteUrl(url: string, origin: string): string {
