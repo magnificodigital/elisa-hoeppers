@@ -158,13 +158,14 @@ function ProductDetail() {
                   <AddToCartButton product={product} />
                 </div>
               ) : (
-                <button
-                  disabled
-                  className="mt-6 block w-full text-center bg-sand text-[var(--text-muted)] py-4 rounded-full uppercase tracking-[0.2em] text-xs font-semibold cursor-not-allowed"
-                >
-                  Fora de estoque
-                </button>
+                <div className="mt-6">
+                  <div className="mb-4 text-center bg-sand text-[var(--text-muted)] py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold">
+                    Fora de estoque
+                  </div>
+                  <ReservationForm product={product} />
+                </div>
               )}
+
 
               <a
                 href={wppLink}
