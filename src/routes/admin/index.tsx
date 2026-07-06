@@ -41,6 +41,7 @@ const sections = [
   { to: "/admin/agendamentos", icon: Calendar, title: "Agendamentos", desc: "Confirme reservas de aulas." },
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
+  { to: "/admin/reservas", icon: Bell, title: "Reservas", desc: "Reservas de produtos fora de estoque." },
   { to: "/admin/clientes", icon: Users, title: "Clientes", desc: "Veja seus clientes e quem está inscrito." },
   { to: "/admin/blog", icon: FileText, title: "Blog Posts", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/social", icon: Share2, title: "Social Posts", desc: "Posts para as redes sociais." },
