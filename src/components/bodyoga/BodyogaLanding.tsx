@@ -235,11 +235,6 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className={`absolute inset-0 transition-colors ${isActive ? "bg-black/15" : "bg-black/0 group-hover:bg-black/15"}`} />
-                {!isActive && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <h3 className="font-display text-2xl lg:text-3xl text-bodyoga-cream drop-shadow">{c.title}</h3>
-                  </div>
-                )}
               </div>
 
               {/* Produtos do ritual (abre ao passar o mouse) */}
