@@ -411,6 +411,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    await loadEmailBranding();
     const { type, record_id } = await req.json();
     if (!type || !record_id) {
       return new Response(JSON.stringify({ error: "type and record_id required" }), {
