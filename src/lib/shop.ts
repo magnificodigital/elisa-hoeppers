@@ -22,7 +22,7 @@ export type Product = {
   height_cm: number | null;
   brand: string | null;
   ritual_id: string | null;
-  ritual_ids: string[];
+  ritual_ids?: string[];
 };
 
 const COLS =
