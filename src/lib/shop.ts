@@ -22,10 +22,47 @@ export type Product = {
   height_cm: number | null;
   brand: string | null;
   ritual_id: string | null;
+  ritual_ids: string[];
 };
 
 const COLS =
   "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
+
+async function attachRituals<T extends { id: string; ritual_id: string | null }>(
+  rows: T[],
+): Promise<(T & { ritual_ids: string[] })[]> {
+  if (rows.length === 0) return [];
+  const ids = rows.map((r) => r.id);
+  const { data, error } = await supabase
+    .from("product_rituals")
+    .select("product_id, ritual_id")
+    .in("product_id", ids);
+  if (error) throw error;
+  const map = new Map<string, string[]>();
+  for (const link of data ?? []) {
+    const arr = map.get(link.product_id) ?? [];
+    arr.push(link.ritual_id);
+    map.set(link.product_id, arr);
+  }
+  return rows.map((r) => {
+    const list = map.get(r.id) ?? (r.ritual_id ? [r.ritual_id] : []);
+    return { ...r, ritual_ids: list };
+  });
+}
+
+export async function setProductRituals(productId: string, ritualIds: string[]): Promise<void> {
+  const { error: delErr } = await supabase
+    .from("product_rituals")
+    .delete()
+    .eq("product_id", productId);
+  if (delErr) throw delErr;
+  if (ritualIds.length > 0) {
+    const { error: insErr } = await supabase
+      .from("product_rituals")
+      .insert(ritualIds.map((rid) => ({ product_id: productId, ritual_id: rid })));
+    if (insErr) throw insErr;
+  }
+}
 
 // =================== BODYOGA RITUALS ===================
 export type Ritual = {

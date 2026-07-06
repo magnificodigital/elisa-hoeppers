@@ -915,6 +915,39 @@ export type Database = {
           },
         ]
       }
+      product_rituals: {
+        Row: {
+          created_at: string
+          product_id: string
+          ritual_id: string
+        }
+        Insert: {
+          created_at?: string
+          product_id: string
+          ritual_id: string
+        }
+        Update: {
+          created_at?: string
+          product_id?: string
+          ritual_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_rituals_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_rituals_ritual_id_fkey"
+            columns: ["ritual_id"]
+            isOneToOne: false
+            referencedRelation: "bodyoga_rituals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           brand: string | null
