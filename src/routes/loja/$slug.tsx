@@ -271,3 +271,93 @@ function AddToCartButton({ product }: { product: Product }) {
     </div>
   );
 }
+
+function ReservationForm({ product }: { product: Product }) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [qty, setQty] = useState(1);
+  const [notes, setNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (!name.trim()) return setError("Informe seu nome.");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setError("Informe um e-mail válido.");
+    setSubmitting(true);
+    try {
+      await createReservation({
+        product_id: product.id,
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        quantity: qty,
+        notes,
+      });
+      setDone(true);
+    } catch (err) {
+      setError((err as Error).message ?? "Erro ao enviar reserva.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (done) {
+    return (
+      <div className="text-center bg-cream/60 border border-border rounded-2xl px-5 py-6">
+        <p className="text-primary-dark font-medium">Reserva enviada! 🌿</p>
+        <p className="text-sm text-[var(--text-muted)] mt-1">
+          Avisaremos você por e-mail assim que este produto voltar ao estoque.
+        </p>
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+      >
+        Fazer reserva
+      </button>
+    );
+  }
+
+  const inputCls =
+    "w-full border border-border rounded-xl px-4 py-2.5 text-sm text-primary-dark focus:outline-none focus:border-primary";
+
+  return (
+    <form onSubmit={submit} className="space-y-3 text-left bg-cream/40 border border-border rounded-2xl p-5">
+      <p className="text-sm text-[var(--text-muted)]">
+        Deixe seus dados e avisamos assim que <strong>{product.name}</strong> voltar ao estoque.
+      </p>
+      <input className={inputCls} placeholder="Seu nome" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} />
+      <input className={inputCls} type="email" placeholder="Seu e-mail" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} />
+      <input className={inputCls} placeholder="WhatsApp (opcional)" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={30} />
+      <div className="flex items-center gap-3">
+        <span className="text-xs uppercase tracking-widest text-primary-dark">Qtd</span>
+        <div className="inline-flex items-center border border-border rounded-full overflow-hidden bg-white">
+          <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} className="w-8 h-8 text-primary-dark">−</button>
+          <span className="w-8 text-center text-sm text-primary-dark">{qty}</span>
+          <button type="button" onClick={() => setQty(qty + 1)} className="w-8 h-8 text-primary-dark">+</button>
+        </div>
+      </div>
+      <textarea className={inputCls} placeholder="Observações (opcional)" value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={500} rows={2} />
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      <button
+        type="submit"
+        disabled={submitting}
+        className="block w-full text-center bg-primary text-white py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+      >
+        {submitting ? "Enviando…" : "Enviar reserva"}
+      </button>
+    </form>
+  );
+}
+
