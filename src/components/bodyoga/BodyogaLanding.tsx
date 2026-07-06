@@ -163,20 +163,54 @@ export function BodyogaLanding() {
 function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: Product[] }) {
   const [active, setActive] = useState<string | null>(null);
 
+  const productsFor = (c: Ritual) =>
+    products.filter((p) =>
+      p.ritual_ids && p.ritual_ids.length > 0
+        ? p.ritual_ids.includes(c.id)
+        : p.ritual_id === c.id,
+    );
+
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
+      {/* MOBILE: cartões empilhados */}
+      <div className="md:hidden">
+        {rituals.map((c) => {
+          const catProducts = productsFor(c);
+          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
+          return (
+            <div key={c.id} className="border-b border-bodyoga-brown/10">
+              <div className="relative h-64 overflow-hidden">
+                <img
+                  src={image}
+                  alt={c.title}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                  <h3 className="font-display text-2xl text-bodyoga-cream drop-shadow">{c.title}</h3>
+                  {c.description && (
+                    <p className="mt-2 text-sm text-bodyoga-cream/90 max-w-xs line-clamp-2">
+                      {c.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <RitualProductsSlider category={c} products={catProducts} hideHeader />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* DESKTOP: animação horizontal com hover */}
       <div
-        className="flex flex-col md:flex-row md:h-[640px]"
+        className="hidden md:flex md:h-[640px]"
         onMouseLeave={() => setActive(null)}
       >
         {rituals.map((c) => {
           const isActive = c.id === active;
           const hidden = active !== null && !isActive;
-          const catProducts = products.filter((p) =>
-            (p.ritual_ids && p.ritual_ids.length > 0
-              ? p.ritual_ids.includes(c.id)
-              : p.ritual_id === c.id),
-          );
+          const catProducts = productsFor(c);
           const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
           return (
             <div
@@ -192,7 +226,7 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
             >
               {/* Imagem + título do ritual */}
               <div
-                className="group relative h-[420px] md:h-full overflow-hidden text-center shrink-0 transition-all duration-700 ease-out"
+                className="group relative h-full overflow-hidden text-center shrink-0 transition-all duration-700 ease-out"
                 style={{
                   width: isActive ? "clamp(260px, 32%, 420px)" : "100%",
                   flexBasis: isActive ? "clamp(260px, 32%, 420px)" : "auto",
@@ -208,8 +242,12 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className={`absolute inset-0 transition-colors ${isActive ? "bg-black/15" : "bg-black/0 group-hover:bg-black/15"}`} />
+                {!isActive && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <h3 className="font-display text-2xl lg:text-3xl text-bodyoga-cream drop-shadow">{c.title}</h3>
+                  </div>
+                )}
               </div>
-
 
               {/* Produtos do ritual (abre ao passar o mouse) */}
               {isActive && (
@@ -224,6 +262,7 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
     </section>
   );
 }
+
 
 function RitualProductsSlider({
   category,
