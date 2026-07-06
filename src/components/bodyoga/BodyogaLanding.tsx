@@ -267,9 +267,11 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
 function RitualProductsSlider({
   category,
   products,
+  hideHeader = false,
 }: {
   category: Ritual;
   products: Product[];
+  hideHeader?: boolean;
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -279,13 +281,14 @@ function RitualProductsSlider({
 
   return (
     <div className="h-full flex flex-col px-5 md:px-8 py-8 md:py-10">
-      <div className="flex items-center justify-between mb-5">
+      <div className={`items-center justify-between mb-5 ${hideHeader ? "hidden" : "flex"}`}>
         <div className="min-w-0">
           <h3 className="font-display text-xl md:text-2xl text-bodyoga-green truncate">
             {category.title}
           </h3>
           <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.description}</p>
         </div>
+
         {products.length > 0 && (
           <div className="hidden md:flex gap-2 shrink-0 ml-4">
             <button
