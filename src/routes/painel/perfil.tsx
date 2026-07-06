@@ -106,18 +106,13 @@ function ProfilePage() {
     "w-full border border-border rounded-md px-3 py-2.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
-    <Layout>
-      <section className="py-10 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-2xl mx-auto px-4">
-          <Link to="/painel" className="text-xs uppercase tracking-widest text-primary-dark/60 hover:text-primary-dark mb-4 inline-block">
-            ← Voltar ao painel
-          </Link>
+    <PainelLayout active="perfil">
+      <div className="flex items-center gap-3 mb-2">
+        <User className="text-primary" size={28} />
+        <h1 className="font-display text-3xl text-primary-dark">Meu perfil</h1>
+      </div>
+      <p className="text-primary-dark/60 mb-8">Edite suas informações e mantenha tudo atualizado.</p>
 
-          <div className="flex items-center gap-3 mb-2">
-            <User className="text-primary" size={28} />
-            <h1 className="font-display text-3xl text-primary-dark">Meu perfil</h1>
-          </div>
-          <p className="text-primary-dark/60 mb-8">Edite suas informações e mantenha tudo atualizado.</p>
 
           {/* DADOS PESSOAIS */}
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
