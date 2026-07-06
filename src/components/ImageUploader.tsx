@@ -164,3 +164,58 @@ export function ImageUploader({
     </div>
   );
 }
+
+// Recorta a imagem (recorte central) para o aspect ratio usado no site e reduz o tamanho.
+async function cropToAspect(file: File, aspectRatio: string): Promise<File> {
+  const [aw, ah] = aspectRatio.split("/").map((n) => parseFloat(n.trim()));
+  const ratio = aw && ah ? aw / ah : 1;
+  if (!isFinite(ratio) || ratio <= 0) return file;
+
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const el = new Image();
+    el.onload = () => resolve(el);
+    el.onerror = reject;
+    el.src = dataUrl;
+  });
+
+  const srcRatio = img.width / img.height;
+  let sw = img.width;
+  let sh = img.height;
+  if (srcRatio > ratio) {
+    sw = img.height * ratio;
+  } else {
+    sh = img.width / ratio;
+  }
+  const sx = (img.width - sw) / 2;
+  const sy = (img.height - sh) / 2;
+
+  // Limita a largura máxima de saída para arquivos mais leves.
+  const maxW = 2000;
+  const outW = Math.min(sw, maxW);
+  const outH = outW / ratio;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(outW);
+  canvas.height = Math.round(outH);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return file;
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+  const isPng = file.type === "image/png";
+  const mime = isPng ? "image/png" : "image/jpeg";
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, mime, isPng ? undefined : 0.9)
+  );
+  if (!blob) return file;
+
+  const ext = isPng ? "png" : "jpg";
+  const baseName = file.name.replace(/\.[^/.]+$/, "") || "image";
+  return new File([blob], `${baseName}.${ext}`, { type: mime });
+}
