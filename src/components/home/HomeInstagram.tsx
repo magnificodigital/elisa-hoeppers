@@ -39,7 +39,7 @@ const HomeInstagram = () => {
           {igImages.map((src, i) => (
             <a
               key={i}
-              href="https://instagram.com/elisahoepperscasas"
+              href="https://www.instagram.com/bodyoga.oficial/"
               target="_blank"
               rel="noreferrer"
               className="aspect-square overflow-hidden rounded-md"
