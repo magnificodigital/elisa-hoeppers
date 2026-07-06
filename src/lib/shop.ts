@@ -7,6 +7,7 @@ export type Product = {
   id: string;
   slug: string;
   name: string;
+  sku: string | null;
   short_description: string | null;
   description: string | null;
   price_cents: number;
@@ -27,7 +28,7 @@ export type Product = {
 };
 
 const COLS =
-  "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
+  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
 
 function withProductMedia(product: Product): Product {
   return {
