@@ -43,7 +43,7 @@ export const Route = createFileRoute("/admin/configuracoes/usuarios")({
 function Page() {
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
-  const [showInvite, setShowInvite] = useState(false);
+  const [panel, setPanel] = useState<"invite" | "create" | null>(null);
 
   const { data: users, isLoading, error } = useQuery({
     queryKey: ["admin-users"],
