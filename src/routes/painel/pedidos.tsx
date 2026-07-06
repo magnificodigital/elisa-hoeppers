@@ -81,8 +81,25 @@ function MyOrdersPage() {
 
 function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlighted?: boolean }) {
   const qc = useQueryClient();
+  const navigate = useNavigate();
+  const { addItem } = useCart();
   const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  function buyAgain() {
+    o.items.forEach((it) => {
+      addItem({
+        product_id: it.product_id,
+        slug: it.slug,
+        name: it.name,
+        image: null,
+        unit_price_cents: it.unit_price_cents,
+        qty: it.qty,
+      });
+    });
+    toast.success("Itens adicionados ao carrinho");
+    navigate({ to: "/carrinho" });
+  }
 
   const cancel = useMutation({
     mutationFn: () => cancelMyOrder(o.id),
