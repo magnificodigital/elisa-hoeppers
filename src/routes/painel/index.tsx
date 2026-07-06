@@ -2,11 +2,10 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
-  LayoutDashboard, User, GraduationCap, Bookmark, ClipboardList,
-  ShoppingBag, MessageCircleQuestion, Settings, LogOut,
   BookOpen, Activity, Award, Package,
 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelSidebar } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
 import { listLessonsWithProgress } from "@/lib/lessons";
