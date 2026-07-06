@@ -343,6 +343,7 @@ async function handleOrderShipped(orderId: string) {
       <p class="muted">Qualquer dúvida, é só responder este email ou chamar no WhatsApp.</p>
     </div>
   `);
+  if (!(await wantsOrderUpdates(order.user_id))) return;
   await sendEmail(order.customer_email, `Seu pedido #${order.code} foi enviado 📦`, customerHtml)
     .catch((e) => console.error("shipped customer email failed:", e));
 }
