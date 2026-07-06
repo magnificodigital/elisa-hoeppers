@@ -39,6 +39,7 @@ function ProductEditPage() {
   const [form, setForm] = useState({
     name: "",
     slug: "",
+    sku: "",
     short_description: "",
     description: "",
     price_cents: 0,
@@ -62,6 +63,7 @@ function ProductEditPage() {
       setForm({
         name: product.name,
         slug: product.slug,
+        sku: product.sku ?? "",
         short_description: product.short_description ?? "",
         description: product.description ?? "",
         price_cents: product.price_cents,
@@ -93,6 +95,7 @@ function ProductEditPage() {
       return updateProduct(id, {
         name: form.name,
         slug: form.slug,
+        sku: form.sku.trim() || null,
         short_description: form.short_description || null,
         description: form.description || null,
         price_cents: form.price_cents,
