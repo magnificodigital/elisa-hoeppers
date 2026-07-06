@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ChevronLeft, Users, UserPlus, Trash2, Key } from "lucide-react";
+import { ChevronLeft, Users, UserPlus, Trash2, Key, UserCog, ShieldCheck, Eye, EyeOff } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
@@ -10,10 +10,26 @@ import {
   listUsers,
   updateUserRole,
   inviteUser,
+  createUser,
   deleteUser,
   sendPasswordResetForUser,
   type UserRow,
 } from "@/lib/users";
+
+const ROLE_INFO: Record<UserRow["role"], { label: string; desc: string }> = {
+  student: {
+    label: "Aluna",
+    desc: "Acesso à área da cliente: cursos matriculados, pedidos, lista de desejos e perfil.",
+  },
+  instructor: {
+    label: "Instrutora",
+    desc: "Tudo da aluna + gerenciar cursos, aulas, quizzes e ver matrículas dos alunos.",
+  },
+  admin: {
+    label: "Admin",
+    desc: "Controle total: produtos, pedidos, agendamentos, usuários, configurações e envio de emails.",
+  },
+};
 
 export const Route = createFileRoute("/admin/configuracoes/usuarios")({
   head: () => ({ meta: [{ title: "Admin — Usuários" }] }),
