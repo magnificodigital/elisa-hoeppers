@@ -110,7 +110,7 @@ function PainelPage() {
             <aside className="hidden md:block w-64 shrink-0">
               <div className="bg-white rounded-xl p-4 shadow-sm sticky top-24">
                 <nav className="space-y-1">
-                  {navItems.map((item) => {
+                  {navItems.filter((item) => !("courseOnly" in item && item.courseOnly) || hasCourses).map((item) => {
                     const Icon = item.icon;
                     const isActive = item.active;
                     const baseCls = "flex items-center gap-3 px-4 py-3 rounded-md text-sm transition-colors";
