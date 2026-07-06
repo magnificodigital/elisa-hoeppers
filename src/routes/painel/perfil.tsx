@@ -26,6 +26,10 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const emptyAddr = { label: "", cep: "", street: "", number: "", complement: "", district: "", city: "", state: "" };
+  const [showAddrForm, setShowAddrForm] = useState(false);
+  const [addrForm, setAddrForm] = useState(emptyAddr);
+
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login", search: { next: "/painel/perfil" } });
