@@ -49,6 +49,14 @@ function DefaultHero() {
   );
 }
 
+/** Smooth-scrolls to an in-page anchor (href starting with "#"); otherwise lets the link navigate. */
+function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string | null) {
+  if (href && href.startsWith("#")) {
+    e.preventDefault();
+    document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 /** Video slide — renders a background video (e.g. YouTube embed) from a slide. */
 function VideoSlide({ slide }: { slide: Slide }) {
   const videoUrl = slide.video_url!;
