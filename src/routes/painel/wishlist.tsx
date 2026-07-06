@@ -224,8 +224,6 @@ function WishlistPage() {
               </div>
             </div>
           )}
-        </div>
-      </section>
-    </Layout>
+    </PainelLayout>
   );
 }
