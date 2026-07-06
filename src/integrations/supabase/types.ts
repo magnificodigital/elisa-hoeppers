@@ -1014,6 +1014,7 @@ export type Database = {
           price_cents: number
           ritual_id: string | null
           short_description: string | null
+          sku: string | null
           slug: string
           updated_at: string
           weight_g: number | null
@@ -1037,6 +1038,7 @@ export type Database = {
           price_cents: number
           ritual_id?: string | null
           short_description?: string | null
+          sku?: string | null
           slug: string
           updated_at?: string
           weight_g?: number | null
@@ -1060,6 +1062,7 @@ export type Database = {
           price_cents?: number
           ritual_id?: string | null
           short_description?: string | null
+          sku?: string | null
           slug?: string
           updated_at?: string
           weight_g?: number | null
