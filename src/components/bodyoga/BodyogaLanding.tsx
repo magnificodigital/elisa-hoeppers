@@ -72,6 +72,38 @@ export function BodyogaLanding() {
       {/* HERO SLIDER */}
       <BodyogaHeroSlider />
 
+      {/* BENEFÍCIOS */}
+      <section className="bg-bodyoga-cream text-bodyoga-green">
+        <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
+          <div className="text-center max-w-2xl mx-auto">
+            
+            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
+              Cuidado natural em cada detalhe
+            </h2>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-12 mt-16">
+            {beneficios.map((b) => {
+              const Icon = b.icon;
+              return (
+                <div key={b.title} className="text-center px-2 w-40 md:w-56">
+                  <div className="w-16 h-16 mx-auto rounded-full border border-bodyoga-green/40 flex items-center justify-center mb-5">
+                    <Icon className="w-7 h-7 text-bodyoga-green" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-display text-base md:text-lg text-bodyoga-green">{b.title}</h3>
+                  <p className="mt-2 text-sm text-bodyoga-green/70 leading-relaxed">{b.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* RITUAIS POR CATEGORIA */}
+      {(rituals ?? []).length > 0 && (
+        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
+      )}
+
       {/* INTRO ELISA HOEPPERS */}
       <section className="bg-bodyoga-cream overflow-hidden">
         <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
@@ -119,48 +151,9 @@ export function BodyogaLanding() {
         </div>
       </section>
 
-
-      {/* RITUAIS POR CATEGORIA */}
-      {(rituals ?? []).length > 0 && (
-        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
-      )}
-
-
-
-
-
-
-      {/* BENEFÍCIOS */}
-      <section className="bg-bodyoga-cream text-bodyoga-green">
-        <div className="max-w-[1170px] mx-auto px-4 md:px-6 py-20 md:py-28">
-          <div className="text-center max-w-2xl mx-auto">
-            
-            <h2 className="font-display text-3xl md:text-4xl mt-4 text-bodyoga-green">
-              Cuidado natural em cada detalhe
-            </h2>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-12 mt-16">
-            {beneficios.map((b) => {
-              const Icon = b.icon;
-              return (
-                <div key={b.title} className="text-center px-2 w-40 md:w-56">
-                  <div className="w-16 h-16 mx-auto rounded-full border border-bodyoga-green/40 flex items-center justify-center mb-5">
-                    <Icon className="w-7 h-7 text-bodyoga-green" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-display text-base md:text-lg text-bodyoga-green">{b.title}</h3>
-                  <p className="mt-2 text-sm text-bodyoga-green/70 leading-relaxed">{b.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-
-
       <HomeBlog />
       <HomeInstagram />
+
 
       <Footer />
     </div>
