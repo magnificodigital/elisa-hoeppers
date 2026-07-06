@@ -71,15 +71,26 @@ function Page() {
               </div>
               <h1 className="font-display text-3xl text-primary-dark">Usuários</h1>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowInvite(true)}
-              className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
-            >
-              <UserPlus size={14} /> Convidar
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setPanel(panel === "create" ? null : "create")}
+                className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
+              >
+                <UserCog size={14} /> Criar usuário
+              </button>
+              <button
+                type="button"
+                onClick={() => setPanel(panel === "invite" ? null : "invite")}
+                className="inline-flex items-center gap-2 border border-primary text-primary px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary/5 transition"
+              >
+                <UserPlus size={14} /> Convidar
+              </button>
+            </div>
           </div>
-          <p className="text-sm text-primary-dark/60 mb-6">Veja, convide, troque permissão e remova usuárias do sistema.</p>
+          <p className="text-sm text-primary-dark/60 mb-6">Crie, convide, delegue permissões e remova usuárias do sistema.</p>
+
+          <RoleLegend />
 
           <input
             value={search}
@@ -88,9 +99,15 @@ function Page() {
             className="w-full border border-border rounded-full px-5 py-2.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary mb-4"
           />
 
-          {showInvite && (
+          {panel === "create" && (
+            <CreateForm
+              onClose={() => setPanel(null)}
+              onSuccess={() => qc.invalidateQueries({ queryKey: ["admin-users"] })}
+            />
+          )}
+          {panel === "invite" && (
             <InviteForm
-              onClose={() => setShowInvite(false)}
+              onClose={() => setPanel(null)}
               onSuccess={() => qc.invalidateQueries({ queryKey: ["admin-users"] })}
             />
           )}
