@@ -61,9 +61,7 @@ export function BodyogaLanding() {
     queryFn: listActiveRituals,
   });
 
-  const bodyogaProducts = (products ?? []).filter(
-    (p) => (p.brand ?? "").toLowerCase() === "bodyoga",
-  );
+  const ritualProducts = products ?? [];
 
   return (
     <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
@@ -101,7 +99,7 @@ export function BodyogaLanding() {
 
       {/* RITUAIS POR CATEGORIA */}
       {(rituals ?? []).length > 0 && (
-        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
+        <RitualCategories rituals={rituals ?? []} products={ritualProducts} />
       )}
 
       {/* INTRO ELISA HOEPPERS */}
