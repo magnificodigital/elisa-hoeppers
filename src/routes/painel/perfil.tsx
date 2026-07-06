@@ -1,8 +1,9 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User, Save, Lock } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -24,6 +25,10 @@ function ProfilePage() {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const emptyAddr = { label: "", cep: "", street: "", number: "", complement: "", district: "", city: "", state: "" };
+  const [showAddrForm, setShowAddrForm] = useState(false);
+  const [addrForm, setAddrForm] = useState(emptyAddr);
 
 
   useEffect(() => {
@@ -91,6 +96,36 @@ function ProfilePage() {
     toast.success("Endereço removido");
   }
 
+  async function addAddress() {
+    if (!addrForm.street.trim() || !addrForm.city.trim()) {
+      toast.error("Preencha ao menos rua e cidade.");
+      return;
+    }
+    const newAddr = {
+      id: crypto.randomUUID(),
+      label: addrForm.label || "Endereço",
+      cep: addrForm.cep.replace(/\D/g, ""),
+      street: addrForm.street,
+      number: addrForm.number,
+      complement: addrForm.complement,
+      district: addrForm.district,
+      city: addrForm.city,
+      state: addrForm.state,
+      is_default: savedAddresses.length === 0,
+    };
+    const updated = [...savedAddresses, newAddr];
+    const { error } = await supabase.from("profiles").update({ saved_addresses: updated }).eq("id", user!.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    setAddrForm(emptyAddr);
+    setShowAddrForm(false);
+    toast.success("Endereço adicionado");
+  }
+
+
   if (loading || !user) {
     return (
       <Layout>
@@ -105,18 +140,13 @@ function ProfilePage() {
     "w-full border border-border rounded-md px-3 py-2.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
-    <Layout>
-      <section className="py-10 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-2xl mx-auto px-4">
-          <Link to="/painel" className="text-xs uppercase tracking-widest text-primary-dark/60 hover:text-primary-dark mb-4 inline-block">
-            ← Voltar ao painel
-          </Link>
+    <PainelLayout active="perfil">
+      <div className="flex items-center gap-3 mb-2">
+        <User className="text-primary" size={28} />
+        <h1 className="font-display text-3xl text-primary-dark">Meu perfil</h1>
+      </div>
+      <p className="text-primary-dark/60 mb-8">Edite suas informações e mantenha tudo atualizado.</p>
 
-          <div className="flex items-center gap-3 mb-2">
-            <User className="text-primary" size={28} />
-            <h1 className="font-display text-3xl text-primary-dark">Meu perfil</h1>
-          </div>
-          <p className="text-primary-dark/60 mb-8">Edite suas informações e mantenha tudo atualizado.</p>
 
           {/* DADOS PESSOAIS */}
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
@@ -175,7 +205,7 @@ function ProfilePage() {
             <h2 className="font-display text-xl text-primary-dark mb-4">Endereços salvos</h2>
             {savedAddresses.length === 0 ? (
               <p className="text-sm text-primary-dark/60">
-                Nenhum endereço salvo ainda. Você pode salvar durante o checkout.
+                Nenhum endereço salvo ainda. Adicione um abaixo ou salve durante o checkout.
               </p>
             ) : (
               <div className="space-y-3">
@@ -220,7 +250,42 @@ function ProfilePage() {
                 ))}
               </div>
             )}
+
+            {showAddrForm ? (
+              <div className="mt-5 border-t border-border pt-5 space-y-3">
+                <input value={addrForm.label} onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })} placeholder="Rótulo (Ex: Casa, Trabalho)" className={inputCls} />
+                <div className="grid grid-cols-2 gap-3">
+                  <input value={addrForm.cep} onChange={(e) => setAddrForm({ ...addrForm, cep: e.target.value })} placeholder="CEP" className={inputCls} />
+                  <input value={addrForm.district} onChange={(e) => setAddrForm({ ...addrForm, district: e.target.value })} placeholder="Bairro" className={inputCls} />
+                </div>
+                <input value={addrForm.street} onChange={(e) => setAddrForm({ ...addrForm, street: e.target.value })} placeholder="Rua / Logradouro" className={inputCls} />
+                <div className="grid grid-cols-2 gap-3">
+                  <input value={addrForm.number} onChange={(e) => setAddrForm({ ...addrForm, number: e.target.value })} placeholder="Número" className={inputCls} />
+                  <input value={addrForm.complement} onChange={(e) => setAddrForm({ ...addrForm, complement: e.target.value })} placeholder="Complemento" className={inputCls} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <input value={addrForm.city} onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })} placeholder="Cidade" className={inputCls} />
+                  <input value={addrForm.state} onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })} placeholder="UF" className={inputCls} />
+                </div>
+                <div className="flex gap-3 pt-1">
+                  <button onClick={addAddress} className="bg-primary text-white px-5 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition">
+                    Salvar endereço
+                  </button>
+                  <button onClick={() => { setShowAddrForm(false); setAddrForm(emptyAddr); }} className="text-xs text-primary-dark/60 hover:text-primary-dark">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAddrForm(true)}
+                className="mt-5 text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition"
+              >
+                + Adicionar endereço
+              </button>
+            )}
           </div>
+
 
           {/* SENHA */}
 
@@ -252,8 +317,6 @@ function ProfilePage() {
               </button>
             </div>
           </div>
-        </div>
-      </section>
-    </Layout>
+    </PainelLayout>
   );
 }

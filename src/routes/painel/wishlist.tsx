@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Bookmark, GraduationCap, ShoppingBag, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyWishlist, removeFromWishlist } from "@/lib/wishlist";
 import { formatPriceBRL } from "@/lib/shop";
@@ -49,15 +50,8 @@ function WishlistPage() {
   const products = (items ?? []).filter((i) => i.item_type === "product");
 
   return (
-    <Layout>
-      <section className="py-10 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-5xl mx-auto px-4">
-          <Link
-            to="/painel"
-            className="text-sm text-primary-dark/70 hover:text-primary-dark"
-          >
-            ← Voltar ao painel
-          </Link>
+    <PainelLayout active="wishlist">
+
           <div className="flex items-center gap-3 mt-4 mb-2">
             <Bookmark className="w-6 h-6 text-primary" />
             <h1 className="font-display text-3xl text-primary-dark">
@@ -224,8 +218,6 @@ function WishlistPage() {
               </div>
             </div>
           )}
-        </div>
-      </section>
-    </Layout>
+    </PainelLayout>
   );
 }

@@ -2,11 +2,10 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
-  LayoutDashboard, User, GraduationCap, Bookmark, ClipboardList,
-  ShoppingBag, MessageCircleQuestion, Settings, LogOut,
   BookOpen, Activity, Award, Package,
 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelSidebar } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyCourseProgress } from "@/lib/enrollments";
 import { listLessonsWithProgress } from "@/lib/lessons";
@@ -17,17 +16,8 @@ export const Route = createFileRoute("/painel/")({
   component: PainelPage,
 });
 
-const navItems = [
-  { id: "painel", icon: LayoutDashboard, label: "Painel", active: true, enabled: true },
-  { id: "perfil", icon: User, label: "Meu perfil", enabled: true },
-  { id: "pedidos", icon: ShoppingBag, label: "Histórico de Pedidos", enabled: true },
-  { id: "wishlist", icon: Bookmark, label: "Lista de desejos", enabled: true },
-  { id: "cursos", icon: GraduationCap, label: "Cursos matriculados", enabled: true, courseOnly: true },
-  { id: "quizzes", icon: ClipboardList, label: "Tentativas de questionários", enabled: true, courseOnly: true },
-  { id: "certificados", icon: Award, label: "Meus certificados", enabled: true, courseOnly: true },
-  { id: "qa", icon: MessageCircleQuestion, label: "Perguntas & Respostas", enabled: true, courseOnly: true },
-  { id: "config", icon: Settings, label: "Configurações", enabled: false },
-];
+
+
 
 function getInitials(name?: string | null, fallbackEmail?: string | null): string {
   const source = name?.trim() || fallbackEmail?.trim() || "";
@@ -107,78 +97,8 @@ function PainelPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Sidebar */}
-            <aside className="hidden md:block w-64 shrink-0">
-              <div className="bg-white rounded-xl p-4 shadow-sm sticky top-24">
-                <nav className="space-y-1">
-                  {navItems.filter((item) => !("courseOnly" in item && item.courseOnly) || hasCourses).map((item) => {
-                    const Icon = item.icon;
-                    const isActive = item.active;
-                    const baseCls = "flex items-center gap-3 px-4 py-3 rounded-md text-sm transition-colors";
-                    const stateCls = isActive
-                      ? "bg-primary text-cream font-medium"
-                      : item.enabled
-                      ? "text-primary-dark hover:bg-cream/60"
-                      : "text-primary-dark/40 cursor-not-allowed";
-                    return (
-                      <div key={item.id} className={`${baseCls} ${stateCls}`}>
-                        <Icon size={18} />
-                        {item.enabled && !isActive ? (
-                          item.id === "quizzes" ? (
-                            <Link to="/painel/tentativas" className="flex-1">
-                              {item.label}
-                            </Link>
-                          ) : item.id === "certificados" ? (
-                            <Link to="/painel/certificados" className="flex-1">
-                              {item.label}
-                            </Link>
-                          ) : item.id === "pedidos" ? (
-                            <Link to="/painel/pedidos" className="flex-1">
-                              {item.label}
-                            </Link>
-                          ) : item.id === "wishlist" ? (
-                            <Link to="/painel/wishlist" className="flex-1">
-                              {item.label}
-                            </Link>
-                          ) : item.id === "qa" ? (
-                            <Link to="/painel/perguntas" className="flex-1">
-                              {item.label}
-                            </Link>
-                          ) : item.id === "perfil" ? (
-                            <Link to="/painel/perfil" className="flex-1">
-                              {item.label}
-                            </Link>
-                          ) : (
-                            <Link to={`/painel/${item.id}`} className="flex-1">
-                              {item.label}
-                            </Link>
-                          )
-                        ) : isActive ? (
-                          <span className="flex items-center gap-2 flex-1">
-                            {item.label}
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-2 flex-1">
-                            {item.label}
-                            <span className="ml-auto text-[10px] uppercase tracking-wider bg-cream text-primary-dark/50 px-2 py-0.5 rounded-full">
-                              Em breve
-                            </span>
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <div className="pt-2 mt-2 border-t border-cream">
-                    <button
-                      onClick={() => signOut().then(() => navigate({ to: "/" }))}
-                      className="flex items-center gap-3 px-4 py-3 rounded-md text-sm w-full text-left text-primary-dark hover:bg-cream/60 transition-colors"
-                    >
-                      <LogOut size={18} />
-                      Sair
-                    </button>
-                  </div>
-                </nav>
-              </div>
-            </aside>
+            <PainelSidebar active="painel" />
+
 
             {/* Main content */}
             <div className="flex-1 min-w-0">
