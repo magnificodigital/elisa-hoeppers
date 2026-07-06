@@ -30,7 +30,21 @@ function LoginPage() {
     setLoading(true);
     try {
       await signIn({ email, password });
-      navigate({ to: next ?? "/painel" });
+      if (next) {
+        navigate({ to: next });
+      } else {
+        const { data: sess } = await supabase.auth.getUser();
+        let dest = "/painel";
+        if (sess.user) {
+          const { data: prof } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", sess.user.id)
+            .maybeSingle();
+          if (prof?.role === "admin" || prof?.role === "instructor") dest = "/admin";
+        }
+        navigate({ to: dest });
+      }
     } catch (err: any) {
       setError(err.message ?? "Não foi possível entrar.");
     } finally {
