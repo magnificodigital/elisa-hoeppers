@@ -367,6 +367,7 @@ async function handleOrderCompleted(orderId: string) {
       <p class="muted">Com carinho,<br/>Elisa</p>
     </div>
   `);
+  if (!(await wantsOrderUpdates(order.user_id))) return;
   await sendEmail(order.customer_email, `Pedido #${order.code} concluído · obrigada 🌿`, customerHtml)
     .catch((e) => console.error("completed customer email failed:", e));
 }
