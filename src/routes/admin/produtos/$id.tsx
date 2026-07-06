@@ -169,6 +169,11 @@ function ProductEditPage() {
               <input required value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} className={inputCls} />
             </Field>
 
+            <Field label="SKU (código do produto)">
+              <input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} placeholder="ex: BOD-TAPETE-01" className={inputCls} />
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Código único para controle de estoque e catálogos (Instagram/Meta). Deixe em branco se não usar.</p>
+            </Field>
+
             <Field label="Descrição curta (card)">
               <textarea value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} rows={2} className={inputCls} />
             </Field>
