@@ -1,0 +1,1 @@
+UPDATE public.bodyoga_slides SET cta_href = '#rituais' WHERE cta_href = '#produtos';

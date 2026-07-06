@@ -49,6 +49,14 @@ function DefaultHero() {
   );
 }
 
+/** Smooth-scrolls to an in-page anchor (href starting with "#"); otherwise lets the link navigate. */
+function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string | null) {
+  if (href && href.startsWith("#")) {
+    e.preventDefault();
+    document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 /** Video slide — renders a background video (e.g. YouTube embed) from a slide. */
 function VideoSlide({ slide }: { slide: Slide }) {
   const videoUrl = slide.video_url!;
@@ -71,6 +79,7 @@ function VideoSlide({ slide }: { slide: Slide }) {
         {slide.cta_label && (
           <a
             href={slide.cta_href || "/agendar"}
+            onClick={(e) => handleAnchorClick(e, slide.cta_href)}
             className="px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
           >
             {slide.cta_label}
@@ -114,7 +123,8 @@ function CustomSlide({ slide }: { slide: Slide }) {
             {slide.cta_label && (
               <div className="mt-8 flex flex-wrap gap-4">
                 <a
-                  href={slide.cta_href || "#produtos"}
+                  href={slide.cta_href || "#rituais"}
+                  onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
                   className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
                 >
                   {slide.cta_label}
