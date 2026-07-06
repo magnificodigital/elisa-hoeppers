@@ -45,7 +45,7 @@ function ProductEditPage() {
     in_stock: true,
     is_active: true,
     is_featured: false,
-    ritual_id: "" as string,
+    ritual_ids: [] as string[],
     display_order: 0,
     gallery: [] as ProductImage[],
     weight_g: "" as string | number,
