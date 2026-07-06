@@ -12,12 +12,12 @@ const HomeInstagram = () => {
         <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
           Acompanhe{" "}
           <a
-            href="https://instagram.com/elisahoepperscasas"
+            href="https://www.instagram.com/bodyoga.oficial/"
             target="_blank"
             rel="noreferrer"
             className="underline underline-offset-4 hover:text-primary"
           >
-            @elisahoepperscasas
+            @bodyoga.oficial
           </a>{" "}
           no Instagram
         </h3>
@@ -28,7 +28,7 @@ const HomeInstagram = () => {
             className="w-14 h-14 rounded-full object-cover flex-shrink-0"
            loading="lazy" decoding="async" />
           <div className="max-w-md">
-            <p className="text-primary-dark font-semibold text-sm">elisahoepperscasas</p>
+            <p className="text-primary-dark font-semibold text-sm">bodyoga.oficial</p>
             <p className="text-[var(--text-muted)] text-xs leading-relaxed">
               Fundadora do @bodyoga__ ® · Professora de YOGA · Alquimia Olfativa ·
               Aromaterapia com Óleos Essenciais: Elisa Hoeppers Casas
@@ -39,7 +39,7 @@ const HomeInstagram = () => {
           {igImages.map((src, i) => (
             <a
               key={i}
-              href="https://instagram.com/elisahoepperscasas"
+              href="https://www.instagram.com/bodyoga.oficial/"
               target="_blank"
               rel="noreferrer"
               className="aspect-square overflow-hidden rounded-md"
