@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Bookmark, GraduationCap, ShoppingBag, Trash2 } from "lucide-react";
 import Layout from "@/components/Layout";
+import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { listMyWishlist, removeFromWishlist } from "@/lib/wishlist";
 import { formatPriceBRL } from "@/lib/shop";
