@@ -41,7 +41,7 @@ function wrap(body: string, unsubLink?: string): string {
       </div>
       <p class="muted" style="text-align:center;margin-top:16px;">
         ${unsubLink ? `Quer parar de receber? <a href="${unsubLink}">Descadastrar</a><br/>` : ""}
-        <a href="https://elisahoeppers.com.br">elisahoeppers.com.br</a>
+        <a href="https://bodyogaoficial.com.br">bodyogaoficial.com.br</a>
       </p>
     </div>
   </body>
