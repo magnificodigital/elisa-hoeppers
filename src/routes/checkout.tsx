@@ -739,6 +739,36 @@ function CheckoutPage() {
               <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
                 Pague online com cartão, PIX ou boleto pelo Mercado Pago.
               </p>
+              <div className="flex items-center justify-center gap-2 mt-2 flex-wrap">
+                {/* Visa */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 48 16" className="h-3" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="13" fontFamily="Arial, sans-serif" fontWeight="bold" fontStyle="italic" fontSize="15" fill="#1A1F71">VISA</text>
+                  </svg>
+                </span>
+                {/* Mastercard */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 40 24" className="h-4" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="12" r="9" fill="#EB001B" />
+                    <circle cx="25" cy="12" r="9" fill="#F79E1B" />
+                    <path d="M20 5a9 9 0 0 1 0 14 9 9 0 0 1 0-14z" fill="#FF5F00" />
+                  </svg>
+                </span>
+                {/* Elo */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 48 16" className="h-3" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="13" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="14" fill="#000">elo</text>
+                  </svg>
+                </span>
+                {/* Pix */}
+                <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
+                  <svg viewBox="0 0 512 512" className="h-4" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#32BCAD" d="M242.4 292.5a24.6 24.6 0 0 1 34.7 0l45.7 45.7a58.9 58.9 0 0 0 41.7 17.3h9l-57.7 57.7a48 48 0 0 1-67.9 0l-57.9-57.9h5.6a58.9 58.9 0 0 0 41.7-17.3zm34.7-73a24.6 24.6 0 0 1-34.7 0l-40.5-40.5a58.9 58.9 0 0 0-41.7-17.3h-5.6l57.9-57.9a48 48 0 0 1 67.9 0l57.7 57.7h-9a58.9 58.9 0 0 0-41.7 17.3z"/>
+                    <path fill="#32BCAD" d="M119.3 161.3a48 48 0 0 0-14.1 3.2l-73.6 73.6a48 48 0 0 0 0 67.9l73.6 73.6a48 48 0 0 0 14.1 3.2h20.9a41 41 0 0 0 29-12l45.7-45.7a17.1 17.1 0 0 1 24.1 0m0-101.9a17.1 17.1 0 0 1-24.1 0l-45.7-45.7a41 41 0 0 0-29-12zM392.7 350.7a48 48 0 0 0 14.1-3.2l73.6-73.6a48 48 0 0 0 0-67.9l-73.6-73.6a48 48 0 0 0-14.1-3.2h-20.9a41 41 0 0 0-29 12"/>
+                  </svg>
+                </span>
+              </div>
+
             </aside>
           </form>
         </div>
