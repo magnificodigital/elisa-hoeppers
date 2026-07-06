@@ -13,7 +13,7 @@ const ELISA_EMAIL = Deno.env.get("ELISA_EMAIL") ?? "elisa.hoeppers@gmail.com";
 // @ts-ignore
 const SITE_URL = Deno.env.get("SITE_URL") ?? "https://hoepppers.lovable.app";
 
-const FROM = "Elisa Hoeppers <agendamento@sendmail.elisahoeppers.com.br>";
+const FROM = "BODYOGA <contato@send.bodyogaoficial.com.br>";
 const REPLY_TO = ELISA_EMAIL;
 
 const corsHeaders = {
@@ -76,7 +76,7 @@ const baseStyles = `
 `;
 
 function wrap(body: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${baseStyles}</style></head><body><div class="container">${body}<p class="muted" style="text-align:center;margin-top:24px;">elisahoeppers.com.br</p></div></body></html>`;
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${baseStyles}</style></head><body><div class="container">${body}<p class="muted" style="text-align:center;margin-top:24px;">bodyogaoficial.com.br</p></div></body></html>`;
 }
 
 async function handleBooking(recordId: string) {
