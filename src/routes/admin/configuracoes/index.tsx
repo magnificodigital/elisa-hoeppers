@@ -17,6 +17,7 @@ const sections = [
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/newsletter", icon: Mail, title: "Newsletter", desc: "Audience do Resend e captura de email." },
   { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Emails", desc: "Logotipo, cor, assinatura e rodapé dos emails enviados." },
+  { to: "/admin/configuracoes/integracoes", icon: Plug, title: "Integrações", desc: "Tokens e APIs de serviços externos (Instagram, etc)." },
   { to: "/admin/configuracoes/usuarios", icon: Users, title: "Usuários", desc: "Lista de alunas e admins, convites e troca de role." },
   { to: "/admin/configuracoes/diagnosticos", icon: Stethoscope, title: "Diagnósticos", desc: "Auto-check do MP e do Melhor Envio." },
   { to: "/admin/disponibilidade", icon: CalendarClock, title: "Disponibilidade", desc: "Horários da semana e períodos bloqueados." },
