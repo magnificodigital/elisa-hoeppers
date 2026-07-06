@@ -309,8 +309,54 @@ function ProfilePage() {
             )}
           </div>
 
+          {/* NOTIFICAÇÕES */}
+          <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Bell className="w-5 h-5 text-primary" />
+              <h2 className="font-display text-xl text-primary-dark">Notificações por email</h2>
+            </div>
+
+            <div className="space-y-3">
+              <label className="flex items-start justify-between gap-4 border border-border rounded-lg p-4 cursor-pointer">
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-primary-dark">Avisos de pedido</span>
+                  <span className="block text-xs text-primary-dark/60 mt-0.5">
+                    Confirmação, envio e código de rastreio das suas compras.
+                  </span>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={notifyOrders}
+                  onChange={(e) => {
+                    setNotifyOrders(e.target.checked);
+                    saveNotifications.mutate({ notify_order_updates: e.target.checked, notify_marketing: notifyMarketing });
+                  }}
+                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3B4F30)] shrink-0"
+                />
+              </label>
+
+              <label className="flex items-start justify-between gap-4 border border-border rounded-lg p-4 cursor-pointer">
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-primary-dark">Novidades e promoções</span>
+                  <span className="block text-xs text-primary-dark/60 mt-0.5">
+                    Lançamentos, dicas e ofertas especiais da BODYOGA.
+                  </span>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={notifyMarketing}
+                  onChange={(e) => {
+                    setNotifyMarketing(e.target.checked);
+                    saveNotifications.mutate({ notify_order_updates: notifyOrders, notify_marketing: e.target.checked });
+                  }}
+                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3B4F30)] shrink-0"
+                />
+              </label>
+            </div>
+          </div>
 
           {/* SENHA */}
+
 
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
             <div className="flex items-center gap-2 mb-4">
