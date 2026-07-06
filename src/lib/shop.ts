@@ -261,16 +261,21 @@ export async function getProductForAdmin(id: string): Promise<Product | null> {
 export type ProductUpdate = Partial<Omit<Product, "id">>;
 
 export async function updateProduct(id: string, patch: ProductUpdate): Promise<void> {
-  const { error } = await supabase.from("products").update(patch).eq("id", id);
+  const { ritual_ids, ...rest } = patch;
+  const { error } = await supabase.from("products").update(rest).eq("id", id);
   if (error) throw error;
+  if (ritual_ids !== undefined) await setProductRituals(id, ritual_ids);
 }
 
 export type ProductInsert = Omit<Product, "id">;
 
 export async function createProduct(input: ProductInsert): Promise<Product> {
-  const { data, error } = await supabase.from("products").insert(input).select().single();
+  const { ritual_ids, ...rest } = input;
+  const { data, error } = await supabase.from("products").insert(rest).select().single();
   if (error) throw error;
-  return data as Product;
+  const product = data as Product;
+  if (ritual_ids && ritual_ids.length > 0) await setProductRituals(product.id, ritual_ids);
+  return product;
 }
 
 export async function deleteProduct(id: string): Promise<void> {
