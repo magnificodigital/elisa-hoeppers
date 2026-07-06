@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Package, ChevronRight, ShoppingBag, X, CheckCircle, Circle, Truck, XCircle, ExternalLink } from "lucide-react";
+import { Package, ChevronRight, ShoppingBag, X, CheckCircle, Circle, Truck, XCircle, ExternalLink, RotateCcw } from "lucide-react";
 import Layout from "@/components/Layout";
 import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
+import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/painel/pedidos")({
   validateSearch: (s: Record<string, unknown>) => ({
@@ -80,8 +81,25 @@ function MyOrdersPage() {
 
 function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlighted?: boolean }) {
   const qc = useQueryClient();
+  const navigate = useNavigate();
+  const { addItem } = useCart();
   const totalQty = o.items.reduce((acc, i) => acc + i.qty, 0);
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  function buyAgain() {
+    o.items.forEach((it) => {
+      addItem({
+        product_id: it.product_id,
+        slug: it.slug,
+        name: it.name,
+        image: null,
+        unit_price_cents: it.unit_price_cents,
+        qty: it.qty,
+      });
+    });
+    toast.success("Itens adicionados ao carrinho");
+    navigate({ to: "/carrinho" });
+  }
 
   const cancel = useMutation({
     mutationFn: () => cancelMyOrder(o.id),
@@ -215,6 +233,18 @@ function OrderRow({ order: o, isHighlighted = false }: { order: Order; isHighlig
             variant="destructive"
             onConfirm={() => cancel.mutate()}
           />
+        </div>
+      )}
+
+      {o.items.length > 0 && (
+        <div className="mt-3 pt-3 border-t border-border">
+          <button
+            onClick={buyAgain}
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-primary hover:text-primary-dark transition"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Comprar novamente
+          </button>
         </div>
       )}
     </div>

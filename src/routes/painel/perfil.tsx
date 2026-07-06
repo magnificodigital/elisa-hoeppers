@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User, Save, Lock } from "lucide-react";
+import { User, Save, Lock, Bell } from "lucide-react";
 import Layout from "@/components/Layout";
 import { PainelLayout } from "@/components/PainelSidebar";
 import { useAuth } from "@/hooks/useAuth";
@@ -26,6 +26,9 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [notifyOrders, setNotifyOrders] = useState(true);
+  const [notifyMarketing, setNotifyMarketing] = useState(true);
+
   const emptyAddr = { label: "", cep: "", street: "", number: "", complement: "", district: "", city: "", state: "" };
   const [showAddrForm, setShowAddrForm] = useState(false);
   const [addrForm, setAddrForm] = useState(emptyAddr);
@@ -41,6 +44,8 @@ function ProfilePage() {
       setPhone(profile.phone ?? "");
       setBio(profile.bio ?? "");
       setAvatarUrl(profile.avatar_url ?? "");
+      setNotifyOrders(profile.notify_order_updates ?? true);
+      setNotifyMarketing(profile.notify_marketing ?? true);
     }
   }, [profile]);
 
@@ -79,7 +84,25 @@ function ProfilePage() {
     onError: (err: Error) => toast.error(err.message),
   });
 
+  const saveNotifications = useMutation({
+    mutationFn: async (next: { notify_order_updates: boolean; notify_marketing: boolean }) => {
+      const { error } = await supabase
+        .from("profiles")
+        .update(next)
+        .eq("id", user!.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Preferências salvas");
+      qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+    },
+    onError: (err: Error) => toast.error(err.message),
+  });
+
   const savedAddresses = Array.isArray(profile?.saved_addresses) ? profile.saved_addresses : [];
+
+
+
 
   async function setDefaultAddress(id: string) {
     const updated = savedAddresses.map((a: any) => ({ ...a, is_default: a.id === id }));
@@ -286,8 +309,54 @@ function ProfilePage() {
             )}
           </div>
 
+          {/* NOTIFICAÇÕES */}
+          <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Bell className="w-5 h-5 text-primary" />
+              <h2 className="font-display text-xl text-primary-dark">Notificações por email</h2>
+            </div>
+
+            <div className="space-y-3">
+              <label className="flex items-start justify-between gap-4 border border-border rounded-lg p-4 cursor-pointer">
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-primary-dark">Avisos de pedido</span>
+                  <span className="block text-xs text-primary-dark/60 mt-0.5">
+                    Confirmação, envio e código de rastreio das suas compras.
+                  </span>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={notifyOrders}
+                  onChange={(e) => {
+                    setNotifyOrders(e.target.checked);
+                    saveNotifications.mutate({ notify_order_updates: e.target.checked, notify_marketing: notifyMarketing });
+                  }}
+                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3B4F30)] shrink-0"
+                />
+              </label>
+
+              <label className="flex items-start justify-between gap-4 border border-border rounded-lg p-4 cursor-pointer">
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-primary-dark">Novidades e promoções</span>
+                  <span className="block text-xs text-primary-dark/60 mt-0.5">
+                    Lançamentos, dicas e ofertas especiais da BODYOGA.
+                  </span>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={notifyMarketing}
+                  onChange={(e) => {
+                    setNotifyMarketing(e.target.checked);
+                    saveNotifications.mutate({ notify_order_updates: notifyOrders, notify_marketing: e.target.checked });
+                  }}
+                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3B4F30)] shrink-0"
+                />
+              </label>
+            </div>
+          </div>
 
           {/* SENHA */}
+
 
           <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
             <div className="flex items-center gap-2 mb-4">
