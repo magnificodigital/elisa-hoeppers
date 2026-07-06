@@ -76,7 +76,7 @@ const baseStyles = `
 `;
 
 function wrap(body: string): string {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${baseStyles}</style></head><body><div class="container">${body}<p class="muted" style="text-align:center;margin-top:24px;">elisahoeppers.com.br</p></div></body></html>`;
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${baseStyles}</style></head><body><div class="container">${body}<p class="muted" style="text-align:center;margin-top:24px;">bodyogaoficial.com.br</p></div></body></html>`;
 }
 
 async function handleBooking(recordId: string) {
