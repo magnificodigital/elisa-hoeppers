@@ -186,15 +186,8 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-                  <h3 className="font-display text-2xl text-bodyoga-cream drop-shadow">{c.title}</h3>
-                  {c.description && (
-                    <p className="mt-2 text-sm text-bodyoga-cream/90 max-w-xs line-clamp-2">
-                      {c.description}
-                    </p>
-                  )}
-                </div>
+                <div className="absolute inset-0 bg-black/10" />
+
               </div>
               <RitualProductsSlider category={c} products={catProducts} hideHeader />
             </div>
