@@ -283,6 +283,82 @@ export async function deleteProduct(id: string): Promise<void> {
   if (error) throw error;
 }
 
+// =================== PRODUCT RESERVATIONS ===================
+export type ReservationStatus = "pending" | "notified" | "fulfilled" | "cancelled";
+
+export type ProductReservation = {
+  id: string;
+  product_id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string | null;
+  quantity: number;
+  notes: string | null;
+  status: ReservationStatus;
+  created_at: string;
+};
+
+const RESERVATION_COLS =
+  "id, product_id, customer_name, customer_email, customer_phone, quantity, notes, status, created_at";
+
+export async function createReservation(input: {
+  product_id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string | null;
+  quantity?: number;
+  notes?: string | null;
+}): Promise<void> {
+  const { error } = await supabase.from("product_reservations").insert({
+    product_id: input.product_id,
+    customer_name: input.customer_name.trim(),
+    customer_email: input.customer_email.trim(),
+    customer_phone: input.customer_phone?.trim() || null,
+    quantity: input.quantity && input.quantity > 0 ? input.quantity : 1,
+    notes: input.notes?.trim() || null,
+  });
+  if (error) throw error;
+}
+
+export async function listReservationsForAdmin(filter?: {
+  status?: ReservationStatus;
+}): Promise<(ProductReservation & { product_name: string | null; product_slug: string | null })[]> {
+  let q = supabase
+    .from("product_reservations")
+    .select(`${RESERVATION_COLS}, products(name, slug)`)
+    .order("created_at", { ascending: false });
+  if (filter?.status) q = q.eq("status", filter.status);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []).map((r) => {
+    const { products, ...rest } = r as typeof r & {
+      products: { name: string; slug: string } | null;
+    };
+    return {
+      ...(rest as ProductReservation),
+      product_name: products?.name ?? null,
+      product_slug: products?.slug ?? null,
+    };
+  });
+}
+
+export async function updateReservationStatus(
+  id: string,
+  status: ReservationStatus,
+): Promise<void> {
+  const { error } = await supabase
+    .from("product_reservations")
+    .update({ status })
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteReservation(id: string): Promise<void> {
+  const { error } = await supabase.from("product_reservations").delete().eq("id", id);
+  if (error) throw error;
+}
+
+
 // =================== ADMIN: ORDERS ===================
 export type OrderItem = {
   product_id: string;

@@ -40,6 +40,7 @@ import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
+import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
@@ -225,6 +226,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 const AdminSocialRoute = AdminSocialRouteImport.update({
   id: '/admin/social',
   path: '/admin/social',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReservasRoute = AdminReservasRouteImport.update({
+  id: '/admin/reservas',
+  path: '/admin/reservas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPostsRoute = AdminPostsRouteImport.update({
@@ -415,6 +421,7 @@ export interface FileRoutesByFullPath {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
+  '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -478,6 +485,7 @@ export interface FileRoutesByTo {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
+  '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -543,6 +551,7 @@ export interface FileRoutesById {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
+  '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
@@ -609,6 +618,7 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/admin/posts'
+    | '/admin/reservas'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -672,6 +682,7 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/admin/posts'
+    | '/admin/reservas'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -736,6 +747,7 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/pedidos'
     | '/admin/posts'
+    | '/admin/reservas'
     | '/admin/social'
     | '/blog/$slug'
     | '/certificado/$code'
@@ -801,6 +813,7 @@ export interface RootRouteChildren {
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   AdminPostsRoute: typeof AdminPostsRoute
+  AdminReservasRoute: typeof AdminReservasRoute
   AdminSocialRoute: typeof AdminSocialRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
@@ -1058,6 +1071,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/social'
       fullPath: '/admin/social'
       preLoaderRoute: typeof AdminSocialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/reservas': {
+      id: '/admin/reservas'
+      path: '/admin/reservas'
+      fullPath: '/admin/reservas'
+      preLoaderRoute: typeof AdminReservasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/posts': {
@@ -1325,6 +1345,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminInscritosRoute: AdminInscritosRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   AdminPostsRoute: AdminPostsRoute,
+  AdminReservasRoute: AdminReservasRoute,
   AdminSocialRoute: AdminSocialRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
@@ -1367,13 +1388,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
