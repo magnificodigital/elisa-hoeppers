@@ -77,9 +77,7 @@ function MyOrdersPage() {
               <OrderRow key={o.id} order={o} isHighlighted={!!highlightCode && o.code === highlightCode} />
             ))}
           </div>
-        </div>
-      </section>
-    </Layout>
+    </PainelLayout>
   );
 }
 
