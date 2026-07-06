@@ -99,11 +99,6 @@ export function BodyogaLanding() {
         </div>
       </section>
 
-      {/* RITUAIS POR CATEGORIA */}
-      {(rituals ?? []).length > 0 && (
-        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
-      )}
-
       {/* INTRO ELISA HOEPPERS */}
       <section className="bg-bodyoga-cream overflow-hidden">
         <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
@@ -150,6 +145,12 @@ export function BodyogaLanding() {
           </div>
         </div>
       </section>
+
+      {/* RITUAIS POR CATEGORIA */}
+      {(rituals ?? []).length > 0 && (
+        <RitualCategories rituals={rituals ?? []} products={bodyogaProducts} />
+      )}
+
 
       <HomeBlog />
       <HomeInstagram />
