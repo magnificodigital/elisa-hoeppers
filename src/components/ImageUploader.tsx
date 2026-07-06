@@ -162,56 +162,64 @@ export function ImageUploader({
 }
 
 // Recorta a imagem (recorte central) para o aspect ratio usado no site e reduz o tamanho.
+// Sempre gera um JPEG comprimido abaixo do limite de upload (8 MB).
 async function cropToAspect(file: File, aspectRatio: string): Promise<File> {
   const [aw, ah] = aspectRatio.split("/").map((n) => parseFloat(n.trim()));
   const ratio = aw && ah ? aw / ah : 1;
-  if (!isFinite(ratio) || ratio <= 0) return file;
+  const safeRatio = isFinite(ratio) && ratio > 0 ? ratio : 1;
 
   const dataUrl = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
+    reader.onerror = () => reject(new Error("Não foi possível ler a imagem."));
     reader.readAsDataURL(file);
   });
 
   const img = await new Promise<HTMLImageElement>((resolve, reject) => {
     const el = new Image();
     el.onload = () => resolve(el);
-    el.onerror = reject;
+    el.onerror = () => reject(new Error("Não foi possível carregar a imagem."));
     el.src = dataUrl;
   });
 
   const srcRatio = img.width / img.height;
   let sw = img.width;
   let sh = img.height;
-  if (srcRatio > ratio) {
-    sw = img.height * ratio;
+  if (srcRatio > safeRatio) {
+    sw = img.height * safeRatio;
   } else {
-    sh = img.width / ratio;
+    sh = img.width / safeRatio;
   }
   const sx = (img.width - sw) / 2;
   const sy = (img.height - sh) / 2;
 
-  // Limita a largura máxima de saída para arquivos mais leves.
-  const maxW = 2000;
-  const outW = Math.min(sw, maxW);
-  const outH = outW / ratio;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(outW);
-  canvas.height = Math.round(outH);
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return file;
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-
-  const isPng = file.type === "image/png";
-  const mime = isPng ? "image/png" : "image/jpeg";
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, mime, isPng ? undefined : 0.9)
-  );
-  if (!blob) return file;
-
-  const ext = isPng ? "png" : "jpg";
+  const MAX_BYTES = 8 * 1024 * 1024;
   const baseName = file.name.replace(/\.[^/.]+$/, "") || "image";
-  return new File([blob], `${baseName}.${ext}`, { type: mime });
+
+  // Reduz progressivamente dimensão e qualidade até ficar abaixo do limite.
+  let maxW = 2400;
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const outW = Math.max(1, Math.round(Math.min(sw, maxW)));
+    const outH = Math.max(1, Math.round(outW / safeRatio));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = outW;
+    canvas.height = outH;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Não foi possível processar a imagem.");
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
+
+    const quality = Math.max(0.5, 0.9 - attempt * 0.08);
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", quality)
+    );
+
+    if (blob && blob.size <= MAX_BYTES) {
+      return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+    }
+    maxW = Math.round(maxW * 0.8);
+  }
+
+  throw new Error("Não foi possível reduzir a imagem o suficiente. Tente uma imagem menor.");
 }
+
