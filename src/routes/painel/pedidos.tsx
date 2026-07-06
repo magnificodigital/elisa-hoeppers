@@ -45,12 +45,8 @@ function MyOrdersPage() {
   }
 
   return (
-    <Layout>
-      <section className="py-10 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-4xl mx-auto px-4">
-          <Link to="/painel" className="text-xs uppercase tracking-widest text-primary-dark/60 hover:text-primary-dark mb-4 inline-block">
-            ← Voltar ao painel
-          </Link>
+    <PainelLayout active="pedidos">
+
           <div className="flex items-center gap-3 mb-2">
             <Package className="text-primary" size={28} />
             <h1 className="font-display text-3xl text-primary-dark">Meus pedidos</h1>
