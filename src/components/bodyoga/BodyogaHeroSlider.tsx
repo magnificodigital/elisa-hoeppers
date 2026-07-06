@@ -102,12 +102,13 @@ function CustomSlide({ slide }: { slide: Slide }) {
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-24 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
-      <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-start min-h-[85vh]">
+      <div className="absolute inset-x-0 bottom-0 h-40 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
+      <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-32 md:pt-56 pb-20 md:pb-36 flex items-center justify-start min-h-[68vh] md:min-h-[85vh]">
         <div className="relative max-w-xl">
-          <div className="absolute -inset-x-16 -inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
+          <div className="absolute -inset-x-8 md:-inset-x-16 -inset-y-10 md:-inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
           <div className="relative">
-            <h1 className="font-display text-4xl md:text-5xl leading-tight text-bodyoga-green">
+            <h1 className="font-display text-3xl md:text-5xl leading-tight text-bodyoga-green">
+
               {titleLines.map((line, i) => (
                 <span key={i} className="block">{line}</span>
               ))}
