@@ -254,7 +254,8 @@ export async function getProductForAdmin(id: string): Promise<Product | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Product | null;
+  if (!data) return null;
+  return (await attachRituals([data as Product]))[0];
 }
 
 export type ProductUpdate = Partial<Omit<Product, "id">>;
