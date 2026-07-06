@@ -8,45 +8,72 @@ import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
 function DefaultHero() {
   return (
     <>
-      <div
-        className="absolute inset-0 bg-no-repeat pointer-events-none"
-        style={{ backgroundImage: `url(${heroBg})`, backgroundPosition: "center center", backgroundSize: "cover" }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent md:to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-40 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
-      <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-32 md:pt-56 pb-20 md:pb-36 flex items-center justify-start min-h-[68vh] md:min-h-[85vh]">
-        <div className="relative max-w-xl">
-          <div className="absolute -inset-x-8 md:-inset-x-16 -inset-y-10 md:-inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
-          <div className="relative">
-            <h1 className="font-display text-3xl md:text-5xl leading-tight text-bodyoga-green">
-              <span className="md:whitespace-nowrap">Rituais para corpo,</span>
-              <br />
-              <span className="md:whitespace-nowrap">mente e ambiente.</span>
-            </h1>
-            <p className="mt-5 md:mt-6 text-sm md:text-lg text-bodyoga-green/80 leading-relaxed">
-              Cosméticos naturais artesanais com óleos essenciais.
-              Criados à mão por <strong className="font-bold">Elisa Hoeppers Casas</strong>, no encontro
-              entre o yoga e o cuidado natural.
-            </p>
-            <div className="mt-7 md:mt-8 flex flex-wrap gap-4">
-              <a
-                href="#rituais"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("rituais")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-              >
-                Conhecer rituais
-              </a>
+      {/* MOBILE: texto + botão em cima, produtos abaixo */}
+      <div className="md:hidden">
+        <div className="bg-bodyoga-cream px-5 pt-28 pb-7 text-center">
+          <h1 className="font-display text-3xl leading-tight text-bodyoga-green">
+            Rituais para corpo, mente e ambiente.
+          </h1>
+          <div className="mt-6">
+            <a
+              href="#rituais"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("rituais")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+            >
+              Conhecer rituais
+            </a>
+          </div>
+        </div>
+        <img src={heroBg} alt="Produtos BODYOGA" className="w-full h-auto" loading="eager" />
+      </div>
+
+      {/* DESKTOP */}
+      <div className="hidden md:block">
+        <div
+          className="absolute inset-0 bg-no-repeat pointer-events-none"
+          style={{ backgroundImage: `url(${heroBg})`, backgroundPosition: "center center", backgroundSize: "cover" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
+        <div className="relative z-10 max-w-[1170px] mx-auto px-6 pt-56 pb-36 flex items-center justify-start min-h-[85vh]">
+          <div className="relative max-w-xl">
+            <div className="absolute -inset-x-16 -inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
+            <div className="relative">
+              <h1 className="font-display text-5xl leading-tight text-bodyoga-green">
+                <span className="whitespace-nowrap">Rituais para corpo,</span>
+                <br />
+                <span className="whitespace-nowrap">mente e ambiente.</span>
+              </h1>
+              <p className="mt-6 text-lg text-bodyoga-green/80 leading-relaxed">
+                <span className="whitespace-nowrap">Cosméticos naturais artesanais com óleos essenciais.</span>
+                <br />
+                <span className="whitespace-nowrap">Criados à mão por <strong className="font-bold">Elisa Hoeppers Casas</strong>, no encontro</span>
+                <br />
+                <span className="whitespace-nowrap">entre o yoga e o cuidado natural.</span>
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="#rituais"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("rituais")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                >
+                  Conhecer rituais
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
     </>
   );
 }
+
 
 /** Smooth-scrolls to an in-page anchor (href starting with "#"); otherwise lets the link navigate. */
 function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string | null) {
@@ -95,48 +122,76 @@ function CustomSlide({ slide }: { slide: Slide }) {
   const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
   return (
     <>
-      {slide.image_url && (
-        <div
-          className="absolute inset-0 bg-no-repeat pointer-events-none"
-          style={{ backgroundImage: `url(${slide.image_url})`, backgroundPosition: "center center", backgroundSize: "cover" }}
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-40 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
-      <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-32 md:pt-56 pb-20 md:pb-36 flex items-center justify-start min-h-[68vh] md:min-h-[85vh]">
-        <div className="relative max-w-xl">
-          <div className="absolute -inset-x-8 md:-inset-x-16 -inset-y-10 md:-inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
-          <div className="relative">
-            <h1 className="font-display text-3xl md:text-5xl leading-tight text-bodyoga-green">
+      {/* MOBILE: título + botão em cima, imagem dos produtos abaixo */}
+      <div className="md:hidden">
+        <div className="bg-bodyoga-cream px-5 pt-28 pb-7 text-center">
+          <h1 className="font-display text-3xl leading-tight text-bodyoga-green">
+            {titleLines.map((line, i) => (
+              <span key={i} className="block">{line}</span>
+            ))}
+          </h1>
+          {slide.cta_label && (
+            <div className="mt-6">
+              <a
+                href={slide.cta_href || "#rituais"}
+                onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </a>
+            </div>
+          )}
+        </div>
+        {slide.image_url && (
+          <img src={slide.image_url} alt={slide.title} className="w-full h-auto" loading="eager" />
+        )}
+      </div>
 
-              {titleLines.map((line, i) => (
-                <span key={i} className="block">{line}</span>
-              ))}
-            </h1>
-            {subtitleLines.length > 0 && (
-              <p className="mt-6 text-base md:text-lg text-bodyoga-green/80 leading-relaxed">
-                {subtitleLines.map((line, i) => (
+      {/* DESKTOP */}
+      <div className="hidden md:block">
+        {slide.image_url && (
+          <div
+            className="absolute inset-0 bg-no-repeat pointer-events-none"
+            style={{ backgroundImage: `url(${slide.image_url})`, backgroundPosition: "center center", backgroundSize: "cover" }}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
+        <div className="relative z-10 max-w-[1170px] mx-auto px-6 pt-56 pb-36 flex items-center justify-start min-h-[85vh]">
+          <div className="relative max-w-xl">
+            <div className="absolute -inset-x-16 -inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
+            <div className="relative">
+              <h1 className="font-display text-5xl leading-tight text-bodyoga-green">
+                {titleLines.map((line, i) => (
                   <span key={i} className="block">{line}</span>
                 ))}
-              </p>
-            )}
-            {slide.cta_label && (
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href={slide.cta_href || "#rituais"}
-                  onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-                  className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-                >
-                  {slide.cta_label}
-                </a>
-              </div>
-            )}
+              </h1>
+              {subtitleLines.length > 0 && (
+                <p className="mt-6 text-lg text-bodyoga-green/80 leading-relaxed">
+                  {subtitleLines.map((line, i) => (
+                    <span key={i} className="block">{line}</span>
+                  ))}
+                </p>
+              )}
+              {slide.cta_label && (
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <a
+                    href={slide.cta_href || "#rituais"}
+                    onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                    className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                  >
+                    {slide.cta_label}
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 }
+
 
 export function BodyogaHeroSlider() {
   const { data: slides } = useQuery({
