@@ -22,10 +22,47 @@ export type Product = {
   height_cm: number | null;
   brand: string | null;
   ritual_id: string | null;
+  ritual_ids?: string[];
 };
 
 const COLS =
   "id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
+
+async function attachRituals<T extends { id: string; ritual_id: string | null }>(
+  rows: T[],
+): Promise<(T & { ritual_ids: string[] })[]> {
+  if (rows.length === 0) return [];
+  const ids = rows.map((r) => r.id);
+  const { data, error } = await supabase
+    .from("product_rituals")
+    .select("product_id, ritual_id")
+    .in("product_id", ids);
+  if (error) throw error;
+  const map = new Map<string, string[]>();
+  for (const link of data ?? []) {
+    const arr = map.get(link.product_id) ?? [];
+    arr.push(link.ritual_id);
+    map.set(link.product_id, arr);
+  }
+  return rows.map((r) => {
+    const list = map.get(r.id) ?? (r.ritual_id ? [r.ritual_id] : []);
+    return { ...r, ritual_ids: list };
+  });
+}
+
+export async function setProductRituals(productId: string, ritualIds: string[]): Promise<void> {
+  const { error: delErr } = await supabase
+    .from("product_rituals")
+    .delete()
+    .eq("product_id", productId);
+  if (delErr) throw delErr;
+  if (ritualIds.length > 0) {
+    const { error: insErr } = await supabase
+      .from("product_rituals")
+      .insert(ritualIds.map((rid) => ({ product_id: productId, ritual_id: rid })));
+    if (insErr) throw insErr;
+  }
+}
 
 // =================== BODYOGA RITUALS ===================
 export type Ritual = {
@@ -174,7 +211,7 @@ export async function listProducts(filter?: {
   if (filter?.featured) q = q.eq("is_featured", true);
   const { data, error } = await q;
   if (error) throw error;
-  return (data ?? []) as Product[];
+  return attachRituals((data ?? []) as Product[]);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -185,7 +222,8 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     .eq("is_active", true)
     .maybeSingle();
   if (error) throw error;
-  return data as Product | null;
+  if (!data) return null;
+  return (await attachRituals([data as Product]))[0];
 }
 
 export function formatPriceBRL(cents: number): string {
@@ -206,7 +244,7 @@ export async function listAllProductsForAdmin(): Promise<Product[]> {
     .select(COLS)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return (data ?? []) as Product[];
+  return attachRituals((data ?? []) as Product[]);
 }
 
 export async function getProductForAdmin(id: string): Promise<Product | null> {
@@ -216,22 +254,28 @@ export async function getProductForAdmin(id: string): Promise<Product | null> {
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as Product | null;
+  if (!data) return null;
+  return (await attachRituals([data as Product]))[0];
 }
 
 export type ProductUpdate = Partial<Omit<Product, "id">>;
 
 export async function updateProduct(id: string, patch: ProductUpdate): Promise<void> {
-  const { error } = await supabase.from("products").update(patch).eq("id", id);
+  const { ritual_ids, ...rest } = patch;
+  const { error } = await supabase.from("products").update(rest).eq("id", id);
   if (error) throw error;
+  if (ritual_ids !== undefined) await setProductRituals(id, ritual_ids);
 }
 
 export type ProductInsert = Omit<Product, "id">;
 
 export async function createProduct(input: ProductInsert): Promise<Product> {
-  const { data, error } = await supabase.from("products").insert(input).select().single();
+  const { ritual_ids, ...rest } = input;
+  const { data, error } = await supabase.from("products").insert(rest).select().single();
   if (error) throw error;
-  return data as Product;
+  const product = data as Product;
+  if (ritual_ids && ritual_ids.length > 0) await setProductRituals(product.id, ritual_ids);
+  return product;
 }
 
 export async function deleteProduct(id: string): Promise<void> {

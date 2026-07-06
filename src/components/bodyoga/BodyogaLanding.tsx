@@ -174,7 +174,11 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
         {rituals.map((c) => {
           const isActive = c.id === active;
           const hidden = active !== null && !isActive;
-          const catProducts = products.filter((p) => p.ritual_id === c.id);
+          const catProducts = products.filter((p) =>
+            (p.ritual_ids && p.ritual_ids.length > 0
+              ? p.ritual_ids.includes(c.id)
+              : p.ritual_id === c.id),
+          );
           const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
           return (
             <div

@@ -45,7 +45,7 @@ function ProductEditPage() {
     in_stock: true,
     is_active: true,
     is_featured: false,
-    ritual_id: "" as string,
+    ritual_ids: [] as string[],
     display_order: 0,
     gallery: [] as ProductImage[],
     weight_g: "" as string | number,
@@ -68,7 +68,7 @@ function ProductEditPage() {
         in_stock: product.in_stock,
         is_active: product.is_active,
         is_featured: product.is_featured,
-        ritual_id: product.ritual_id ?? "",
+        ritual_ids: product.ritual_ids ?? (product.ritual_id ? [product.ritual_id] : []),
         display_order: product.display_order,
         gallery: product.gallery,
         weight_g: product.weight_g ?? "",
@@ -101,7 +101,8 @@ function ProductEditPage() {
         is_active: form.is_active,
         is_featured: form.is_featured,
         category: null,
-        ritual_id: form.ritual_id || null,
+        ritual_id: form.ritual_ids[0] ?? null,
+        ritual_ids: form.ritual_ids,
         display_order: form.display_order,
         gallery: form.gallery,
         weight_g: form.weight_g === "" ? null : Number(form.weight_g),
@@ -208,13 +209,35 @@ function ProductEditPage() {
             </div>
 
 
-            <Field label="Ritual BODYOGA (em qual ritual este produto aparece)">
-              <select value={form.ritual_id} onChange={(e) => setForm({ ...form, ritual_id: e.target.value })} className={inputCls}>
-                <option value="">— nenhum ritual —</option>
-                {(rituals ?? []).map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
-              </select>
-              <p className="text-[10px] text-[var(--text-muted)] mt-1">Define onde o produto aparece na página BODYOGA. Gerencie os rituais em Admin → Rituais.</p>
+            <Field label="Rituais BODYOGA (em quais rituais este produto aparece)">
+              <div className="flex flex-col gap-2">
+                {(rituals ?? []).map((r) => {
+                  const checked = form.ritual_ids.includes(r.id);
+                  return (
+                    <label key={r.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            ritual_ids: e.target.checked
+                              ? [...form.ritual_ids, r.id]
+                              : form.ritual_ids.filter((x) => x !== r.id),
+                          })
+                        }
+                      />
+                      {r.title}
+                    </label>
+                  );
+                })}
+                {(rituals ?? []).length === 0 && (
+                  <p className="text-[10px] text-[var(--text-muted)]">Nenhum ritual cadastrado.</p>
+                )}
+              </div>
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Selecione um ou mais rituais onde o produto deve aparecer na página BODYOGA. Gerencie os rituais em Admin → Rituais.</p>
             </Field>
+
 
             <div className="flex flex-wrap gap-4 pt-2">
               <label className="flex items-center gap-2 cursor-pointer">
