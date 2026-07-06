@@ -56,17 +56,26 @@ const baseStyles = `
 `;
 
 function wrap(body: string, unsubLink?: string): string {
+  const header = emailBranding.logo_url
+    ? `<div style="text-align:center;padding:8px 0 4px;"><img src="${emailBranding.logo_url}" alt="BODYOGA" style="max-height:56px;max-width:200px;height:auto;" /></div>`
+    : "";
+  const signature = emailBranding.signature
+    ? `<p class="muted" style="text-align:center;margin-top:20px;color:${emailBranding.brand_color};">${emailBranding.signature}</p>`
+    : "";
+  const footer = emailBranding.footer_note || "bodyogaoficial.com.br";
   return `<!DOCTYPE html>
 <html>
   <head><meta charset="utf-8" /><style>${baseStyles}</style></head>
   <body>
     <div class="container">
+      ${header}
       <div class="card">
         ${body}
       </div>
+      ${signature}
       <p class="muted" style="text-align:center;margin-top:16px;">
         ${unsubLink ? `Quer parar de receber? <a href="${unsubLink}">Descadastrar</a><br/>` : ""}
-        <a href="https://bodyogaoficial.com.br">bodyogaoficial.com.br</a>
+        <a href="https://bodyogaoficial.com.br">${footer}</a>
       </p>
     </div>
   </body>
