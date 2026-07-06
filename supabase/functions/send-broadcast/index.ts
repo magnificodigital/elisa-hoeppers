@@ -111,7 +111,21 @@ async function resolveRecipients(segmentType: string, segmentId: string | null):
     }
   }
 
-  return Array.from(emails.entries()).map(([email, name]) => ({ email, name }));
+  const all = Array.from(emails.entries()).map(([email, name]) => ({ email, name }));
+
+  // Remove quem desativou "Novidades e promoções" no perfil
+  const { data: optedOut } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("notify_marketing", false);
+  const optOutEmails = new Set<string>();
+  for (const p of optedOut ?? []) {
+    const { data: u } = await supabase.auth.admin.getUserById((p as any).id);
+    const e = u?.user?.email;
+    if (e) optOutEmails.add(e.toLowerCase());
+  }
+
+  return all.filter((r) => !optOutEmails.has(r.email.toLowerCase()));
 }
 
 async function sendOne(to: string, subject: string, html: string): Promise<boolean> {
