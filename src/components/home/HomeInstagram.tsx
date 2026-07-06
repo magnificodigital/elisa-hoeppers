@@ -12,12 +12,12 @@ const HomeInstagram = () => {
         <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
           Acompanhe{" "}
           <a
-            href="https://instagram.com/elisahoepperscasas"
+            href="https://www.instagram.com/bodyoga.oficial/"
             target="_blank"
             rel="noreferrer"
             className="underline underline-offset-4 hover:text-primary"
           >
-            @elisahoepperscasas
+            @bodyoga.oficial
           </a>{" "}
           no Instagram
         </h3>
