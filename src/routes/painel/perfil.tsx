@@ -248,8 +248,6 @@ function ProfilePage() {
               </button>
             </div>
           </div>
-        </div>
-      </section>
-    </Layout>
+    </PainelLayout>
   );
 }
