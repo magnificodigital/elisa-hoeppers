@@ -302,8 +302,10 @@ function CheckoutPage() {
       const row = Array.isArray(data) ? data[0] : data;
       const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
 
-      // Salva o endereço no perfil se a cliente marcou o checkbox
-      if (user && saveThisAddress && form.street) {
+      // Salva o endereço no perfil da cliente logada (ou recém-criada no checkout)
+      const { data: { session: addrSession } } = await supabase.auth.getSession();
+      const addrUserId = addrSession?.user?.id;
+      if (addrUserId && (saveThisAddress || !user) && form.street) {
         const [aCity, aState] = form.cityState.split("/").map((s) => s.trim());
         const newAddr = {
           id: crypto.randomUUID(),
@@ -321,9 +323,10 @@ function CheckoutPage() {
         supabase
           .from("profiles")
           .update({ saved_addresses: updated })
-          .eq("id", user.id)
-          .then(() => qc.invalidateQueries({ queryKey: ["profile", user.id] }));
+          .eq("id", addrUserId)
+          .then(() => qc.invalidateQueries({ queryKey: ["profile", addrUserId] }));
       }
+
 
 
 
