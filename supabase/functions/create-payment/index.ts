@@ -26,7 +26,8 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const accessToken = await getSetting("mp_access_token");
+    // @ts-ignore - Deno: prioriza o secret (mais seguro); fallback pro valor no banco durante a transição
+    const accessToken = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
     if (!accessToken) throw new Error("Mercado Pago não configurado. Vá em /admin/configuracoes e adicione o Access Token.");
 
     const { order_id } = await req.json();

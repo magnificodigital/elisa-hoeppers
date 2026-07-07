@@ -29,7 +29,8 @@ serve(async (req) => {
     const enabled = await getSetting("mp_enabled");
     if (enabled !== "true") throw new Error("Mercado Pago não está habilitado.");
 
-    const accessToken = await getSetting("mp_access_token");
+    // @ts-ignore - Deno: prioriza o secret; fallback pro banco durante a transição
+    const accessToken = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
     if (!accessToken) throw new Error("Mercado Pago não configurado.");
 
     // pega user do auth header
