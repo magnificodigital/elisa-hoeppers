@@ -477,7 +477,7 @@ function CheckoutPage() {
 
               <Section title="Endereço de entrega">
                 <p className="text-xs text-[var(--text-muted)] -mt-2 mb-2">
-                  Pode deixar em branco e combinar frete por WhatsApp.
+                  Informe seu CEP para calcular o frete automaticamente.
                 </p>
 
                 {user && savedAddresses.length > 0 && (
@@ -694,14 +694,14 @@ function CheckoutPage() {
                     )}
                     {!shippingLoading && !shippingError && shippingOpts.length === 0 && form.cep.replace(/\D/g, "").length === 8 && (
                       <p className="text-xs text-[var(--text-muted)]">
-                        Nenhuma opção disponível pra esse CEP. Combine via WhatsApp.
+                        Nenhuma opção disponível para esse CEP. Verifique se digitou corretamente.
                       </p>
                     )}
                   </div>
                 ) : (
                   <div className="flex justify-between mb-1 text-xs text-[var(--text-muted)]">
                     <span>Frete</span>
-                    <span className="italic">Combinado por WhatsApp</span>
+                    <span className="italic">Calculado pelo CEP</span>
                   </div>
                 )}
 
@@ -714,7 +714,7 @@ function CheckoutPage() {
               </div>
               {mpEnabled && meEnabled && shippingError && (
                 <p className="text-xs text-red-700 mb-3 text-center">
-                  ⚠️ Não conseguimos calcular o frete. Verifique o CEP ou combine via WhatsApp.
+                  ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
               )}
               <button
