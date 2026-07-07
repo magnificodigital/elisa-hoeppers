@@ -7,6 +7,7 @@ import {
   listActiveRituals,
   formatPriceBRL,
   firstImage,
+  secondImage,
   type Product,
 } from "@/lib/shop";
 
