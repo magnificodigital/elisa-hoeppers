@@ -86,7 +86,7 @@ function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string
 /** Video slide — renders a background video (native mp4 file or YouTube embed) from a slide. */
 function VideoSlide({ slide }: { slide: Slide }) {
   const videoUrl = slide.video_url!;
-  const isFile = /\.(mp4|webm|ogg)(\?|$)/i.test(videoUrl) || videoUrl.startsWith("/__l5e/");
+  const isFile = isVideoUrl(videoUrl) || videoUrl.startsWith("/__l5e/");
   return (
     <>
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
