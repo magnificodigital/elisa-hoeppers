@@ -63,6 +63,7 @@ import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/p
 import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
+import { Route as AdminConfiguracoesSiteRouteImport } from './routes/admin/configuracoes/site'
 import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin/configuracoes/newsletter'
 import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
 import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
@@ -350,6 +351,11 @@ const AdminConfiguracoesUsuariosRoute =
     path: '/admin/configuracoes/usuarios',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminConfiguracoesSiteRoute = AdminConfiguracoesSiteRouteImport.update({
+  id: '/admin/configuracoes/site',
+  path: '/admin/configuracoes/site',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminConfiguracoesNewsletterRoute =
   AdminConfiguracoesNewsletterRouteImport.update({
     id: '/admin/configuracoes/newsletter',
@@ -469,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
@@ -536,6 +543,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
@@ -605,6 +613,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
@@ -675,6 +684,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/admin/site/menu'
@@ -742,6 +752,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/admin/site/menu'
@@ -810,6 +821,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/admin/site/menu'
@@ -878,6 +890,7 @@ export interface RootRouteChildren {
   AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
   AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
   AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
+  AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   AdminSiteMenuRoute: typeof AdminSiteMenuRoute
@@ -1275,6 +1288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesUsuariosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/site': {
+      id: '/admin/configuracoes/site'
+      path: '/admin/configuracoes/site'
+      fullPath: '/admin/configuracoes/site'
+      preLoaderRoute: typeof AdminConfiguracoesSiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes/newsletter': {
       id: '/admin/configuracoes/newsletter'
       path: '/admin/configuracoes/newsletter'
@@ -1434,6 +1454,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
   AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
   AdminConfiguracoesNewsletterRoute: AdminConfiguracoesNewsletterRoute,
+  AdminConfiguracoesSiteRoute: AdminConfiguracoesSiteRoute,
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   AdminSiteMenuRoute: AdminSiteMenuRoute,
@@ -1453,13 +1474,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
