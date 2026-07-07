@@ -9,11 +9,11 @@ function DefaultHero() {
   return (
     <>
       {/* MOBILE: imagem dos produtos com botão centralizado */}
-      <div className="md:hidden relative w-full bg-bodyoga-cream">
+      <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
         <img
           src={heroBg}
           alt="Produtos BODYOGA"
-          className="block w-full h-auto"
+          className="absolute inset-0 h-full w-full object-cover object-center"
           loading="eager"
         />
         <div className="absolute inset-x-0 bottom-10 flex justify-center">
@@ -23,7 +23,7 @@ function DefaultHero() {
               e.preventDefault();
               document.getElementById("rituais")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="inline-block px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
+            className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
           >
             Conhecer rituais
           </a>
