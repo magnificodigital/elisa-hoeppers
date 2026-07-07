@@ -81,6 +81,14 @@ export function AdminNav() {
         <ArrowLeft size={20} strokeWidth={1.8} className="text-[#3B4F30]" />
         Ver site
       </Link>
+
+      <button
+        onClick={handleSignOut}
+        className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-[15px] text-[#3B4F30] hover:bg-[#3B4F30]/5 transition-colors"
+      >
+        <LogOut size={20} strokeWidth={1.8} className="text-[#3B4F30]" />
+        Sair
+      </button>
     </nav>
   );
 }
