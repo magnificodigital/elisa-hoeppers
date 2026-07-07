@@ -34,9 +34,8 @@ const HomeInstagram = () => {
   });
 
   const posts = feed?.posts?.slice(0, 6) ?? [];
-  const bio = feed?.biography ?? "Sabonetes • Aromaterapia • Bem-estar";
-  const profilePic = feed?.profilePictureUrl ?? "/images/home/instagram/round-2.png";
   const instagramUrl = `https://instagram.com/${handle}`;
+
 
   return (
     <section className="py-20 md:py-24 bg-cream">
