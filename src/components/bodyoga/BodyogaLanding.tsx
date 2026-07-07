@@ -158,7 +158,7 @@ function RitualCategories({ products }: { products: Product[] }) {
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
       {/* Todos os produtos listados, sem divisão, sem contorno, sem slider */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8 py-8 md:py-16 max-w-[1280px] mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 px-4 md:px-8 py-8 md:py-16 max-w-[1280px] mx-auto">
         {products.map((p) => (
           <BodyogaProductCard key={p.slug} product={p} noBorder />
         ))}
