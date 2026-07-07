@@ -35,6 +35,8 @@ function SlideEditPage() {
     cta_href: "",
     image_url: "" as string,
     video_url: "" as string,
+    media_href: "" as string,
+    show_nav: true,
     display_order: 0,
     is_active: true,
     duration_seconds: 7,
@@ -51,6 +53,10 @@ function SlideEditPage() {
         cta_href: slide.cta_href ?? "",
         image_url: slide.image_url ?? "",
         video_url: slide.video_url ?? "",
+        media_href: slide.media_href ?? "",
+        show_nav: slide.show_nav ?? true,
+
+
 
         display_order: slide.display_order,
         is_active: slide.is_active,
@@ -68,6 +74,10 @@ function SlideEditPage() {
         cta_href: form.cta_href || null,
         image_url: form.image_url || null,
         video_url: form.video_url || null,
+        media_href: form.media_href || null,
+        show_nav: form.show_nav,
+
+
 
         display_order: form.display_order,
         is_active: form.is_active,
@@ -170,12 +180,21 @@ function SlideEditPage() {
               </p>
             </div>
 
+            <Field label="Link da imagem/vídeo (opcional)">
+              <input value={form.media_href} onChange={(e) => setForm({ ...form, media_href: e.target.value })} placeholder="Ex: /loja ou https://..." className={inputCls} />
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Se preenchido, a imagem ou o vídeo deste slide ficam clicáveis e levam a este endereço.</p>
+            </Field>
 
+            <label className="flex items-center gap-2 cursor-pointer pt-1">
+              <input type="checkbox" checked={form.show_nav} onChange={(e) => setForm({ ...form, show_nav: e.target.checked })} />
+              <span className="text-sm text-primary-dark">Mostrar botões de navegação (setas e pontos) do slider</span>
+            </label>
 
             <label className="flex items-center gap-2 cursor-pointer pt-1">
               <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
               <span className="text-sm text-primary-dark">Ativo no banner da página BODYOGA</span>
             </label>
+
 
             {save.error && <p className="text-red-700 text-sm">{(save.error as Error).message}</p>}
 
