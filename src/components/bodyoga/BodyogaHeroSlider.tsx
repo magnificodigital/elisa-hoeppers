@@ -261,6 +261,9 @@ export function BodyogaHeroSlider() {
 
   const go = (dir: number) => setIndex((i) => (i + dir + count) % count);
 
+  // Botões de navegação só aparecem se o slide atual permitir (padrão: sim).
+  const showNav = count > 1 && (dbSlides[index]?.show_nav ?? true);
+
   return (
     <section className="relative overflow-hidden bg-bodyoga-cream -mt-24 pt-24">
       <div className="relative">
