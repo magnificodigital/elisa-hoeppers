@@ -51,7 +51,7 @@ const Footer = () => {
           <div className="space-y-3 text-sm">
             <h4 className="uppercase tracking-widest text-xs text-cream/60 mb-4">Redes</h4>
             <div className="flex space-x-4">
-              <a href="https://instagram.com/elisahoepperscasas" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><Instagram size={20} /></a>
+              <a href="https://www.instagram.com/bodyoga.oficial/" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><Instagram size={20} /></a>
               <a href="https://www.youtube.com/@ElisaHoeppers" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><Youtube size={20} /></a>
               <a href="https://wa.me/5511994061178" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><MessageCircle size={20} /></a>
             </div>
