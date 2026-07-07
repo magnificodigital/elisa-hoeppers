@@ -277,7 +277,7 @@ export function BodyogaHeroSlider() {
           </div>
         ))}
 
-        {count > 1 && (
+        {showNav && (
           <>
             <button
               type="button"
