@@ -54,21 +54,7 @@ const HomeInstagram = () => {
           no Instagram
         </h3>
 
-        <div className="flex items-center justify-center gap-4 mb-10">
-          <img
-            src={profilePic}
-            alt={`Foto de perfil de @${handle}`}
-            className="w-14 h-14 rounded-full object-cover flex-shrink-0"
-            loading="lazy"
-            decoding="async"
-          />
-          <div className="max-w-md">
-            <p className="text-primary-dark font-semibold text-sm">{handle}</p>
-            <p className="text-[var(--text-muted)] text-xs leading-relaxed whitespace-pre-line">
-              {bio}
-            </p>
-          </div>
-        </div>
+
 
         {/* Grid de posts */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3">
