@@ -9,14 +9,13 @@ function DefaultHero() {
   return (
     <>
       {/* MOBILE: imagem dos produtos com botão centralizado */}
-      <div className="md:hidden relative h-[70vh] min-h-[460px] w-full">
+      <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
         <img
           src={heroBg}
           alt="Produtos BODYOGA"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-contain object-center"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-black/10" />
         <div className="absolute inset-x-0 bottom-10 flex justify-center">
           <a
             href="#rituais"
