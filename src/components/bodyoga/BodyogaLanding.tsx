@@ -176,79 +176,7 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
 }
 
 
-function RitualProductsSlider({
-  category,
-  products,
-  hideHeader = false,
-}: {
-  category: Ritual;
-  products: Product[];
-  hideHeader?: boolean;
-}) {
-  const scrollerRef = useRef<HTMLDivElement>(null);
 
-  const scrollBy = (dir: number) => {
-    scrollerRef.current?.scrollBy({ left: dir * 280, behavior: "smooth" });
-  };
-
-  return (
-    <div className="h-full flex flex-col px-5 md:px-8 py-8 md:py-10">
-      <div className={`items-center justify-between mb-5 ${hideHeader ? "hidden" : "flex"}`}>
-        <div className="min-w-0">
-          <h3 className="font-display text-xl md:text-2xl text-bodyoga-green truncate">
-            {category.title}
-          </h3>
-          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.description}</p>
-        </div>
-
-        {products.length > 0 && (
-          <div className="hidden md:flex gap-2 shrink-0 ml-4">
-            <button
-              type="button"
-              onClick={() => scrollBy(-1)}
-              aria-label="Anterior"
-              className="w-10 h-10 rounded-full border border-bodyoga-green/30 text-bodyoga-green flex items-center justify-center hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-            >
-              <ArrowRight className="w-4 h-4 rotate-180" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollBy(1)}
-              aria-label="Próximo"
-              className="w-10 h-10 rounded-full border border-bodyoga-green/30 text-bodyoga-green flex items-center justify-center hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {products.length > 0 ? (
-        <div
-          ref={scrollerRef}
-          className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
-        >
-          {products.map((p) => (
-            <div key={p.slug} className="snap-start shrink-0 w-[230px] md:w-[260px]">
-              <BodyogaProductCard product={p} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <p className="text-bodyoga-green/70">Em breve novos produtos para este ritual.</p>
-          <Link
-            to="/loja"
-            search={{ brand: "bodyoga" }}
-            className="inline-flex items-center gap-2 mt-6 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
-          >
-            Ver linha completa <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      )}
-    </div>
-  );
-}
 
 
 
