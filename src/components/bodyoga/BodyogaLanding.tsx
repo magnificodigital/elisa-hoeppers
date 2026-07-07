@@ -313,7 +313,7 @@ function RitualProductsSlider({
 
 
 
-function BodyogaProductCard({ product }: { product: Product }) {
+function BodyogaProductCard({ product, noBorder = false }: { product: Product; noBorder?: boolean }) {
   const img = firstImage(product);
   const [main, sub] = product.name.split("—").map((s) => s.trim());
 
@@ -321,7 +321,7 @@ function BodyogaProductCard({ product }: { product: Product }) {
     <Link
       to="/loja/$slug"
       params={{ slug: product.slug }}
-      className="group block bg-bodyoga-cream rounded-2xl overflow-hidden border border-bodyoga-brown/15 hover:border-bodyoga-brown/40 transition"
+      className={`group block bg-bodyoga-cream rounded-2xl overflow-hidden transition ${noBorder ? "" : "border border-bodyoga-brown/15 hover:border-bodyoga-brown/40"}`}
     >
       <div className="relative aspect-square overflow-hidden bg-bodyoga-green/5">
         {img ? (
