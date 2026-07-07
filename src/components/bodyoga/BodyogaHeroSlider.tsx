@@ -241,39 +241,39 @@ export function BodyogaHeroSlider() {
             {node}
           </div>
         ))}
-      </div>
 
-      {count > 1 && (
-        <>
-          <button
-            type="button"
-            aria-label="Slide anterior"
-            onClick={() => go(-1)}
-            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            aria-label="Próximo slide"
-            onClick={() => go(1)}
-            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-            {items.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Ir para o slide ${i + 1}`}
-                onClick={() => setIndex(i)}
-                className={`h-2.5 rounded-full transition-all ${i === index ? "w-6 bg-bodyoga-green" : "w-2.5 bg-bodyoga-green/40"}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
+        {count > 1 && (
+          <>
+            <button
+              type="button"
+              aria-label="Slide anterior"
+              onClick={() => go(-1)}
+              className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              aria-label="Próximo slide"
+              onClick={() => go(1)}
+              className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+              {items.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Ir para o slide ${i + 1}`}
+                  onClick={() => setIndex(i)}
+                  className={`h-2.5 rounded-full transition-all ${i === index ? "w-6 bg-bodyoga-green" : "w-2.5 bg-bodyoga-green/40"}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </section>
   );
 }
