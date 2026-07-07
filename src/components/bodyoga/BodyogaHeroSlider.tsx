@@ -133,7 +133,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
           />
         )}
         {slide.cta_label && (
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 pt-40 pb-24 flex items-center justify-center">
             <a
               href={slide.cta_href || "#rituais"}
               onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
