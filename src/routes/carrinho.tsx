@@ -128,7 +128,7 @@ function CartPage() {
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-[var(--text-muted)]">Frete</span>
-                    <span className="italic text-[var(--text-muted)]">Combinado por WhatsApp</span>
+                    <span className="italic text-[var(--text-muted)]">Calculado no checkout</span>
                   </div>
                 </div>
                 <div className="flex justify-between pt-3 border-t border-border mb-5">
@@ -144,7 +144,7 @@ function CartPage() {
                   Finalizar pedido
                 </button>
                 <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                  Pagamento e frete combinados diretamente com a Elisa via WhatsApp.
+                  O frete é calculado na próxima etapa pelo seu CEP.
                 </p>
               </aside>
             </div>
