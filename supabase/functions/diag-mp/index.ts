@@ -34,8 +34,9 @@ serve(async (req) => {
 
   const checks: Check[] = [];
 
-  // 1) Token presente
-  const token = await getSetting("mp_access_token");
+  // 1) Token presente — prioriza o secret; fallback pro banco durante a transição
+  // @ts-ignore - Deno
+  const token = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
   if (!token) {
     checks.push({ id: "token", label: "Access Token configurado", status: "error",
       detail: "Vazio em app_settings. Abra /admin/configuracoes e cole o Access Token do painel MP." });
