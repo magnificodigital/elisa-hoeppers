@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { listActiveSlides, type Slide } from "@/lib/shop";
+import { isVideoUrl } from "@/lib/storage";
 import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
 
 /** The original, default hero — kept as the main (first) slide. */
