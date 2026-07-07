@@ -83,22 +83,35 @@ function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string
   }
 }
 
-/** Video slide — renders a background video (e.g. YouTube embed) from a slide. */
+/** Video slide — renders a background video (native mp4 file or YouTube embed) from a slide. */
 function VideoSlide({ slide }: { slide: Slide }) {
   const videoUrl = slide.video_url!;
+  const isFile = /\.(mp4|webm|ogg)(\?|$)/i.test(videoUrl) || videoUrl.startsWith("/__l5e/");
   return (
     <>
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
-        <iframe
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full h-[56.25vw] min-h-full pointer-events-none"
-          src={`${videoUrl}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playlist=${videoUrl.split("/").pop()}`}
-          title={slide.title}
-          allow="autoplay; encrypted-media"
-          frameBorder={0}
-        />
-        {/* Blocks all YouTube hover controls (play/pause/seek) from appearing */}
+        {isFile ? (
+          <video
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
+            src={videoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        ) : (
+          <iframe
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full h-[56.25vw] min-h-full pointer-events-none"
+            src={`${videoUrl}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3&playlist=${videoUrl.split("/").pop()}`}
+            title={slide.title}
+            allow="autoplay; encrypted-media"
+            frameBorder={0}
+          />
+        )}
+        {/* Blocks all hover controls (play/pause/seek) from appearing */}
         <div className="absolute inset-0 z-10" />
       </div>
+
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
       <div className="absolute inset-x-0 bottom-0 h-24 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
       <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-center min-h-[85vh]">
