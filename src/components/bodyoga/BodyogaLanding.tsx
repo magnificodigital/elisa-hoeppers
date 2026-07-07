@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useRef } from "react";
+
 import {
   Leaf,
   Sparkles,
@@ -20,17 +20,9 @@ import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
-import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Ritual } from "@/lib/shop";
+import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 
-import ritualCorpo from "@/assets/bodyoga/ritual-corpo.jpg";
-import ritualMente from "@/assets/bodyoga/ritual-mente.jpg";
-import ritualAmbiente from "@/assets/bodyoga/ritual-ambiente.jpg";
 
-const RITUAL_FALLBACK_IMAGES: Record<string, string> = {
-  corpo: ritualCorpo,
-  mente: ritualMente,
-  ambiente: ritualAmbiente,
-};
 
 
 const aromas = [
@@ -99,7 +91,7 @@ export function BodyogaLanding() {
 
       {/* RITUAIS POR CATEGORIA */}
       {(rituals ?? []).length > 0 && (
-        <RitualCategories rituals={rituals ?? []} products={ritualProducts} />
+        <RitualCategories products={ritualProducts} />
       )}
 
       {/* INTRO ELISA HOEPPERS */}
@@ -160,156 +152,23 @@ export function BodyogaLanding() {
   );
 }
 
-function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: Product[] }) {
-  const [active, setActive] = useState<string | null>(null);
+function RitualCategories({ products }: { products: Product[] }) {
 
-  const productsFor = (c: Ritual) =>
-    products.filter((p) =>
-      p.ritual_ids && p.ritual_ids.length > 0
-        ? p.ritual_ids.includes(c.id)
-        : p.ritual_id === c.id,
-    );
 
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
-      {/* MOBILE: todos os produtos listados, sem divisão, sem contorno, sem slider */}
-      <div className="md:hidden grid grid-cols-2 gap-4 px-4 py-8">
+      {/* Todos os produtos listados, sem divisão, sem contorno, sem slider */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8 py-8 md:py-16 max-w-[1280px] mx-auto">
         {products.map((p) => (
           <BodyogaProductCard key={p.slug} product={p} noBorder />
         ))}
-      </div>
-
-
-      {/* DESKTOP: animação horizontal com hover */}
-      <div
-        className="hidden md:flex md:h-[640px]"
-        onMouseLeave={() => setActive(null)}
-      >
-        {rituals.map((c) => {
-          const isActive = c.id === active;
-          const hidden = active !== null && !isActive;
-          const catProducts = productsFor(c);
-          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
-          return (
-            <div
-              key={c.id}
-              onMouseEnter={() => setActive(c.id)}
-              className="relative flex min-w-0 overflow-hidden transition-all duration-700 ease-out"
-              style={{
-                flexGrow: hidden ? 0 : 1,
-                flexBasis: 0,
-                width: hidden ? 0 : undefined,
-                opacity: hidden ? 0 : 1,
-              }}
-            >
-              {/* Imagem + título do ritual */}
-              <div
-                className="group relative h-full overflow-hidden text-center shrink-0 transition-all duration-700 ease-out"
-                style={{
-                  width: isActive ? "clamp(260px, 32%, 420px)" : "100%",
-                  flexBasis: isActive ? "clamp(260px, 32%, 420px)" : "auto",
-                  flexGrow: isActive ? 0 : 1,
-                }}
-              >
-                <img
-                  src={image}
-                  alt={c.title}
-                  width={768}
-                  height={1024}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className={`absolute inset-0 transition-colors ${isActive ? "bg-black/15" : "bg-black/0 group-hover:bg-black/15"}`} />
-              </div>
-
-              {/* Produtos do ritual (abre ao passar o mouse) */}
-              {isActive && (
-                <div className="flex-1 min-w-0 bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500">
-                  <RitualProductsSlider category={c} products={catProducts} />
-                </div>
-              )}
-            </div>
-          );
-        })}
       </div>
     </section>
   );
 }
 
 
-function RitualProductsSlider({
-  category,
-  products,
-  hideHeader = false,
-}: {
-  category: Ritual;
-  products: Product[];
-  hideHeader?: boolean;
-}) {
-  const scrollerRef = useRef<HTMLDivElement>(null);
 
-  const scrollBy = (dir: number) => {
-    scrollerRef.current?.scrollBy({ left: dir * 280, behavior: "smooth" });
-  };
-
-  return (
-    <div className="h-full flex flex-col px-5 md:px-8 py-8 md:py-10">
-      <div className={`items-center justify-between mb-5 ${hideHeader ? "hidden" : "flex"}`}>
-        <div className="min-w-0">
-          <h3 className="font-display text-xl md:text-2xl text-bodyoga-green truncate">
-            {category.title}
-          </h3>
-          <p className="mt-1 text-sm text-bodyoga-green/70 line-clamp-2">{category.description}</p>
-        </div>
-
-        {products.length > 0 && (
-          <div className="hidden md:flex gap-2 shrink-0 ml-4">
-            <button
-              type="button"
-              onClick={() => scrollBy(-1)}
-              aria-label="Anterior"
-              className="w-10 h-10 rounded-full border border-bodyoga-green/30 text-bodyoga-green flex items-center justify-center hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-            >
-              <ArrowRight className="w-4 h-4 rotate-180" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollBy(1)}
-              aria-label="Próximo"
-              className="w-10 h-10 rounded-full border border-bodyoga-green/30 text-bodyoga-green flex items-center justify-center hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {products.length > 0 ? (
-        <div
-          ref={scrollerRef}
-          className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
-        >
-          {products.map((p) => (
-            <div key={p.slug} className="snap-start shrink-0 w-[230px] md:w-[260px]">
-              <BodyogaProductCard product={p} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <p className="text-bodyoga-green/70">Em breve novos produtos para este ritual.</p>
-          <Link
-            to="/loja"
-            search={{ brand: "bodyoga" }}
-            className="inline-flex items-center gap-2 mt-6 text-sm uppercase tracking-[0.18em] text-bodyoga-green hover:text-bodyoga-brown transition"
-          >
-            Ver linha completa <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      )}
-    </div>
-  );
-}
 
 
 
