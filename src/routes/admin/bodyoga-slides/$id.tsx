@@ -74,6 +74,10 @@ function SlideEditPage() {
         cta_href: form.cta_href || null,
         image_url: form.image_url || null,
         video_url: form.video_url || null,
+        media_href: form.media_href || null,
+        show_nav: form.show_nav,
+
+
 
         display_order: form.display_order,
         is_active: form.is_active,
