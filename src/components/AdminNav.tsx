@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   GraduationCap,
@@ -10,7 +10,9 @@ import {
   Settings,
   Sparkles,
   ArrowLeft,
+  LogOut,
 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 type NavLeaf = {
   to: string;
@@ -33,6 +35,15 @@ const NAV_ITEMS: NavLeaf[] = [
 
 export function AdminNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate({ to: "/login" });
+  };
+
+
 
   const isActive = (to: string, exact?: boolean) =>
     exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
@@ -70,6 +81,14 @@ export function AdminNav() {
         <ArrowLeft size={20} strokeWidth={1.8} className="text-[#3B4F30]" />
         Ver site
       </Link>
+
+      <button
+        onClick={handleSignOut}
+        className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-[15px] text-[#3B4F30] hover:bg-[#3B4F30]/5 transition-colors"
+      >
+        <LogOut size={20} strokeWidth={1.8} className="text-[#3B4F30]" />
+        Sair
+      </button>
     </nav>
   );
 }
