@@ -172,18 +172,13 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
 
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
-      {/* MOBILE: cartões empilhados */}
-      <div className="md:hidden">
-        {rituals.map((c) => {
-          const catProducts = productsFor(c);
-          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
-          return (
-            <div key={c.id}>
-              <RitualProductsSlider category={c} products={catProducts} hideHeader />
-            </div>
-          );
-        })}
+      {/* MOBILE: todos os produtos listados, sem divisão, sem contorno, sem slider */}
+      <div className="md:hidden grid grid-cols-2 gap-4 px-4 py-8">
+        {products.map((p) => (
+          <BodyogaProductCard key={p.slug} product={p} noBorder />
+        ))}
       </div>
+
 
       {/* DESKTOP: animação horizontal com hover */}
       <div
@@ -318,7 +313,7 @@ function RitualProductsSlider({
 
 
 
-function BodyogaProductCard({ product }: { product: Product }) {
+function BodyogaProductCard({ product, noBorder = false }: { product: Product; noBorder?: boolean }) {
   const img = firstImage(product);
   const [main, sub] = product.name.split("—").map((s) => s.trim());
 
@@ -326,7 +321,7 @@ function BodyogaProductCard({ product }: { product: Product }) {
     <Link
       to="/loja/$slug"
       params={{ slug: product.slug }}
-      className="group block bg-bodyoga-cream rounded-2xl overflow-hidden border border-bodyoga-brown/15 hover:border-bodyoga-brown/40 transition"
+      className={`group block bg-bodyoga-cream rounded-2xl overflow-hidden transition ${noBorder ? "" : "border border-bodyoga-brown/15 hover:border-bodyoga-brown/40"}`}
     >
       <div className="relative aspect-square overflow-hidden bg-bodyoga-green/5">
         {img ? (
