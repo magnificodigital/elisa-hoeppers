@@ -34,6 +34,9 @@ function SlidesList() {
         cta_href: null,
         image_url: null,
         video_url: null,
+        media_href: null,
+        show_nav: true,
+
 
         display_order: order,
         is_active: false,
