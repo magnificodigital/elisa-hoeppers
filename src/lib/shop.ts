@@ -259,6 +259,11 @@ export function firstImage(p: Product): string | null {
   return mediaUrl(p.gallery?.[0]?.url) ?? null;
 }
 
+export function secondImage(p: Product): string | null {
+  return mediaUrl(p.gallery?.[1]?.url) ?? null;
+}
+
+
 // =================== ADMIN: PRODUCTS ===================
 export async function listAllProductsForAdmin(): Promise<Product[]> {
   const { data, error } = await supabase
