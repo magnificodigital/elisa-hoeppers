@@ -35,6 +35,8 @@ function SlideEditPage() {
     cta_href: "",
     image_url: "" as string,
     video_url: "" as string,
+    media_href: "" as string,
+    show_nav: true,
     display_order: 0,
     is_active: true,
     duration_seconds: 7,
