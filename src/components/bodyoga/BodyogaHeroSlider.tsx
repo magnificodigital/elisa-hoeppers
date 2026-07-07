@@ -123,12 +123,12 @@ function CustomSlide({ slide }: { slide: Slide }) {
   return (
     <>
       {/* MOBILE: imagem dos produtos com botão centralizado */}
-      <div className="md:hidden relative w-full bg-bodyoga-cream">
+      <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
         {slide.image_url && (
           <img
             src={slide.image_url}
             alt={slide.title}
-            className="block w-full h-auto"
+            className="absolute inset-0 h-full w-full object-cover object-center"
             loading="eager"
           />
         )}
@@ -137,7 +137,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
             <a
               href={slide.cta_href || "#rituais"}
               onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-              className="inline-block px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
+              className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
             >
               {slide.cta_label}
             </a>
