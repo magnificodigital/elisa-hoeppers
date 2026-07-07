@@ -114,7 +114,16 @@ function VideoSlide({ slide }: { slide: Slide }) {
       </div>
 
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+      {slide.media_href && (
+        <a
+          href={slide.media_href}
+          onClick={(e) => handleAnchorClick(e, slide.media_href)}
+          aria-label={slide.title || "Abrir"}
+          className="absolute inset-0 z-[5]"
+        />
+      )}
       <div className="absolute inset-x-0 bottom-0 h-24 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
+
       <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-center min-h-[85vh]">
         {slide.cta_label && (
           <a
