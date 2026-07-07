@@ -161,14 +161,7 @@ export function BodyogaLanding() {
 }
 
 function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: Product[] }) {
-  const [active, setActive] = useState<string | null>(null);
 
-  const productsFor = (c: Ritual) =>
-    products.filter((p) =>
-      p.ritual_ids && p.ritual_ids.length > 0
-        ? p.ritual_ids.includes(c.id)
-        : p.ritual_id === c.id,
-    );
 
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
