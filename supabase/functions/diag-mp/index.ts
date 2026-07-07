@@ -89,7 +89,7 @@ serve(async (req) => {
 
   // 5) back_urls
   checks.push({ id: "backurls", label: "Back URLs (SITE_URL atual)",
-    status: SITE_URL.includes("lovable.app") || SITE_URL.includes("elisahoeppers.com.br") ? "ok" : "warn",
+    status: SITE_URL.includes("bodyogaoficial.com") || SITE_URL.includes("lovable.app") || SITE_URL.includes("elisahoeppers.com.br") ? "ok" : "warn",
     detail: `SITE_URL = ${SITE_URL}. Sucesso/pending/falha vão pra ${SITE_URL}/pedido/<code>?status=...` });
 
   // 6) Tentativa real de criar preference (com order dummy)
