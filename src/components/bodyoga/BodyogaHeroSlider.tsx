@@ -145,7 +145,16 @@ function CustomSlide({ slide }: { slide: Slide }) {
   const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
   return (
     <>
+      {slide.media_href && (
+        <a
+          href={slide.media_href}
+          onClick={(e) => handleAnchorClick(e, slide.media_href)}
+          aria-label={slide.title || "Abrir"}
+          className="absolute inset-0 z-[5]"
+        />
+      )}
       {/* MOBILE: imagem dos produtos com botão centralizado */}
+
       <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
         {slide.image_url && (
           <img
