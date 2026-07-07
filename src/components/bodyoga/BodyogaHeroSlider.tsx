@@ -16,7 +16,7 @@ function DefaultHero() {
           className="absolute inset-0 h-full w-full object-cover object-center"
           loading="eager"
         />
-        <div className="absolute inset-x-0 bottom-10 flex justify-center">
+        <div className="absolute inset-0 flex items-center justify-center">
           <a
             href="#rituais"
             onClick={(e) => {
