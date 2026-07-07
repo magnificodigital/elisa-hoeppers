@@ -123,12 +123,12 @@ function CustomSlide({ slide }: { slide: Slide }) {
   return (
     <>
       {/* MOBILE: imagem dos produtos com botão centralizado */}
-      <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
+      <div className="md:hidden relative w-full bg-bodyoga-cream">
         {slide.image_url && (
           <img
             src={slide.image_url}
             alt={slide.title}
-            className="absolute inset-0 h-full w-full object-contain object-center"
+            className="block w-full h-auto"
             loading="eager"
           />
         )}
