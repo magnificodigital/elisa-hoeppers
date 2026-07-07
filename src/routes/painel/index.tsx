@@ -77,7 +77,7 @@ function PainelPage() {
   const totalOrders = orders?.length ?? 0;
   const pendingOrders = (orders ?? []).filter((o) => o.status === "pending" || o.status === "confirmed").length;
 
-  if (loading || !user) {
+  if (loading || !user || profile?.role === "admin") {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
