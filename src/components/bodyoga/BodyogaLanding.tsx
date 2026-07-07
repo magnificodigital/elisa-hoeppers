@@ -178,17 +178,7 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
           const catProducts = productsFor(c);
           const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
           return (
-            <div key={c.id} className="border-b border-bodyoga-brown/10">
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={image}
-                  alt={c.title}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/10" />
-
-              </div>
+            <div key={c.id}>
               <RitualProductsSlider category={c} products={catProducts} hideHeader />
             </div>
           );
