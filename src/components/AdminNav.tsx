@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   GraduationCap,
@@ -10,7 +10,9 @@ import {
   Settings,
   Sparkles,
   ArrowLeft,
+  LogOut,
 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 type NavLeaf = {
   to: string;
