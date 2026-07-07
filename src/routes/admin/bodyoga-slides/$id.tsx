@@ -53,6 +53,10 @@ function SlideEditPage() {
         cta_href: slide.cta_href ?? "",
         image_url: slide.image_url ?? "",
         video_url: slide.video_url ?? "",
+        media_href: slide.media_href ?? "",
+        show_nav: slide.show_nav ?? true,
+
+
 
         display_order: slide.display_order,
         is_active: slide.is_active,
