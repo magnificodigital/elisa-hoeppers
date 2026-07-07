@@ -156,17 +156,20 @@ function SlideEditPage() {
               <p className="text-[10px] text-[var(--text-muted)] mt-2">Imagem horizontal (paisagem) fica melhor no banner.</p>
             </div>
 
-            <Field label="Vídeo de fundo (URL de embed do YouTube)">
-              <input
-                value={form.video_url}
-                onChange={(e) => setForm({ ...form, video_url: e.target.value })}
-                placeholder="Ex: https://www.youtube.com/embed/ID_DO_VIDEO"
-                className={inputCls}
+            <div>
+              <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Vídeo de fundo do slide</label>
+              <ImageUploader
+                value={form.video_url || null}
+                folder="slides"
+                allowVideo
+                aspectRatio="9/16"
+                onChange={(url) => setForm({ ...form, video_url: url ?? "" })}
               />
-              <p className="text-[10px] text-[var(--text-muted)] mt-1">
-                Se preenchido, este slide exibe o vídeo em tela cheia (a imagem de fundo é ignorada). Deixe vazio para um slide normal.
+              <p className="text-[10px] text-[var(--text-muted)] mt-2">
+                Faça upload de um vídeo (máx 50 MB) ou cole uma URL de embed do YouTube. Se preenchido, este slide exibe o vídeo em tela cheia (a imagem de fundo é ignorada). Deixe vazio para um slide normal.
               </p>
-            </Field>
+            </div>
+
 
 
             <label className="flex items-center gap-2 cursor-pointer pt-1">
