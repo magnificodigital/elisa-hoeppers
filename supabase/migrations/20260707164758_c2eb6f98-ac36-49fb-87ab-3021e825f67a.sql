@@ -1,0 +1,1 @@
+update public.bodyoga_slides set video_url = '/__l5e/assets-v1/1537eece-e849-4a10-8c46-0d7f45783e06/bodyoga-hero.mp4', image_url = null where id = '010bfa06-fa49-4a86-a1ba-812b62536ddb';
