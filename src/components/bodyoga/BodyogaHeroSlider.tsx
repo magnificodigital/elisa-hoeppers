@@ -78,11 +78,23 @@ function DefaultHero() {
 
 /** Smooth-scrolls to an in-page anchor (href starting with "#"); otherwise lets the link navigate. */
 function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string | null) {
-  if (href && href.startsWith("#")) {
+  if (!href) return;
+  // Aliases comuns que apontam para a seção de produtos.
+  const productAliases = ["#produtos", "#products", "#rituais", "#loja", "/produtos", "/loja"];
+  if (productAliases.includes(href.toLowerCase())) {
+    const target = document.getElementById("produtos") || document.getElementById("rituais");
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+    return;
+  }
+  if (href.startsWith("#")) {
     e.preventDefault();
     document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" });
   }
 }
+
 
 /** Video slide — renders a background video (native mp4 file or YouTube embed) from a slide. */
 function VideoSlide({ slide }: { slide: Slide }) {
