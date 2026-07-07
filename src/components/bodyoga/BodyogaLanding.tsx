@@ -172,18 +172,13 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
 
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
-      {/* MOBILE: cartões empilhados */}
-      <div className="md:hidden">
-        {rituals.map((c) => {
-          const catProducts = productsFor(c);
-          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
-          return (
-            <div key={c.id}>
-              <RitualProductsSlider category={c} products={catProducts} hideHeader />
-            </div>
-          );
-        })}
+      {/* MOBILE: todos os produtos listados, sem divisão, sem contorno, sem slider */}
+      <div className="md:hidden grid grid-cols-2 gap-4 px-4 py-8">
+        {products.map((p) => (
+          <BodyogaProductCard key={p.slug} product={p} noBorder />
+        ))}
       </div>
+
 
       {/* DESKTOP: animação horizontal com hover */}
       <div
