@@ -91,7 +91,8 @@ serve(async (req) => {
       });
     }
 
-    const accessToken = await getSetting("mp_access_token");
+    // @ts-ignore - Deno: prioriza o secret; fallback pro banco durante a transição
+    const accessToken = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
     if (!accessToken) {
       return new Response(JSON.stringify({ ok: false, error: "mp not configured" }), {
         status: 200,
