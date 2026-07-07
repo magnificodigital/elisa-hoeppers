@@ -248,7 +248,7 @@ export function BodyogaHeroSlider() {
               type="button"
               aria-label="Slide anterior"
               onClick={() => go(-1)}
-              className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
+              className="absolute left-3 md:left-6 top-[calc(50%+32px)] md:top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -256,7 +256,7 @@ export function BodyogaHeroSlider() {
               type="button"
               aria-label="Próximo slide"
               onClick={() => go(1)}
-              className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
+              className="absolute right-3 md:right-6 top-[calc(50%+32px)] md:top-1/2 -translate-y-1/2 z-20 flex items-center justify-center h-10 w-10 rounded-full bg-bodyoga-cream/70 text-bodyoga-green hover:bg-bodyoga-cream transition"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
