@@ -33,9 +33,17 @@ const HomeShop = () => {
                   <img
                     src={firstImage(p)!}
                     alt={`Foto do produto ${p.name}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${secondImage(p) ? "group-hover:opacity-0" : ""}`}
                    loading="lazy" decoding="async" />
                 )}
+                {secondImage(p) && (
+                  <img
+                    src={secondImage(p)!}
+                    alt={`Foto do produto ${p.name}`}
+                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                   loading="lazy" decoding="async" />
+                )}
+
                 {!p.in_stock && (
                   <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">
                     Fora De Estoque
