@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useRef } from "react";
+
 import {
   Leaf,
   Sparkles,
@@ -99,7 +99,7 @@ export function BodyogaLanding() {
 
       {/* RITUAIS POR CATEGORIA */}
       {(rituals ?? []).length > 0 && (
-        <RitualCategories rituals={rituals ?? []} products={ritualProducts} />
+        <RitualCategories products={ritualProducts} />
       )}
 
       {/* INTRO ELISA HOEPPERS */}
@@ -160,7 +160,7 @@ export function BodyogaLanding() {
   );
 }
 
-function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: Product[] }) {
+function RitualCategories({ products }: { products: Product[] }) {
 
 
   return (
