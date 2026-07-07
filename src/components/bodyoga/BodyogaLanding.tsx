@@ -20,17 +20,9 @@ import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
-import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Ritual } from "@/lib/shop";
+import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
 
-import ritualCorpo from "@/assets/bodyoga/ritual-corpo.jpg";
-import ritualMente from "@/assets/bodyoga/ritual-mente.jpg";
-import ritualAmbiente from "@/assets/bodyoga/ritual-ambiente.jpg";
 
-const RITUAL_FALLBACK_IMAGES: Record<string, string> = {
-  corpo: ritualCorpo,
-  mente: ritualMente,
-  ambiente: ritualAmbiente,
-};
 
 
 const aromas = [
