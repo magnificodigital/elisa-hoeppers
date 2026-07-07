@@ -9,11 +9,11 @@ function DefaultHero() {
   return (
     <>
       {/* MOBILE: imagem dos produtos com botão centralizado */}
-      <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
+      <div className="md:hidden relative w-full bg-bodyoga-cream">
         <img
           src={heroBg}
           alt="Produtos BODYOGA"
-          className="absolute inset-0 h-full w-full object-contain object-center"
+          className="block w-full h-auto"
           loading="eager"
         />
         <div className="absolute inset-x-0 bottom-10 flex justify-center">
@@ -123,12 +123,12 @@ function CustomSlide({ slide }: { slide: Slide }) {
   return (
     <>
       {/* MOBILE: imagem dos produtos com botão centralizado */}
-      <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
+      <div className="md:hidden relative w-full bg-bodyoga-cream">
         {slide.image_url && (
           <img
             src={slide.image_url}
             alt={slide.title}
-            className="absolute inset-0 h-full w-full object-contain object-center"
+            className="block w-full h-auto"
             loading="eager"
           />
         )}
@@ -150,7 +150,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
         {slide.image_url && (
           <div
             className="absolute inset-0 bg-no-repeat pointer-events-none"
-            style={{ backgroundImage: `url(${slide.image_url})`, backgroundPosition: "center center", backgroundSize: "cover" }}
+            style={{ backgroundImage: `url(${slide.image_url})`, backgroundPosition: "right center", backgroundSize: "contain" }}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
