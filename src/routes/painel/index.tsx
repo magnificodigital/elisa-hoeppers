@@ -33,8 +33,15 @@ function PainelPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/login", search: { next: "/painel" } });
-  }, [loading, user, navigate]);
+    if (!loading && !user) {
+      navigate({ to: "/login", search: { next: "/painel" } });
+      return;
+    }
+    // Admins têm sua própria área — não veem o painel de aluno.
+    if (!loading && profile?.role === "admin") {
+      navigate({ to: "/admin" });
+    }
+  }, [loading, user, profile, navigate]);
 
   const { data: progress, isLoading } = useQuery({
     queryKey: ["my-course-progress", user?.id],
@@ -70,7 +77,7 @@ function PainelPage() {
   const totalOrders = orders?.length ?? 0;
   const pendingOrders = (orders ?? []).filter((o) => o.status === "pending" || o.status === "confirmed").length;
 
-  if (loading || !user) {
+  if (loading || !user || profile?.role === "admin") {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
@@ -102,7 +109,7 @@ function PainelPage() {
 
             {/* Main content */}
             <div className="flex-1 min-w-0">
-              {(profile?.role === "admin" || profile?.role === "instructor") && (
+              {profile?.role === "instructor" && (
                 <div className="mb-6 bg-primary/10 border border-primary/20 rounded-lg px-4 py-3 flex items-center justify-between gap-3">
                   <p className="text-sm text-primary-dark">
                     Você tem acesso à área administrativa.
