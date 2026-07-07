@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "@/components/SectionTitle";
-import { listProducts, formatPriceBRL, firstImage } from "@/lib/shop";
+import { listProducts, formatPriceBRL, firstImage, secondImage } from "@/lib/shop";
 
 const HomeShop = () => {
   const { data: products, isLoading } = useQuery({
