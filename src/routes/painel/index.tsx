@@ -33,8 +33,15 @@ function PainelPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/login", search: { next: "/painel" } });
-  }, [loading, user, navigate]);
+    if (!loading && !user) {
+      navigate({ to: "/login", search: { next: "/painel" } });
+      return;
+    }
+    // Admins têm sua própria área — não veem o painel de aluno.
+    if (!loading && profile?.role === "admin") {
+      navigate({ to: "/admin" });
+    }
+  }, [loading, user, profile, navigate]);
 
   const { data: progress, isLoading } = useQuery({
     queryKey: ["my-course-progress", user?.id],
