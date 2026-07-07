@@ -109,7 +109,7 @@ function PainelPage() {
 
             {/* Main content */}
             <div className="flex-1 min-w-0">
-              {(profile?.role === "admin" || profile?.role === "instructor") && (
+              {profile?.role === "instructor" && (
                 <div className="mb-6 bg-primary/10 border border-primary/20 rounded-lg px-4 py-3 flex items-center justify-between gap-3">
                   <p className="text-sm text-primary-dark">
                     Você tem acesso à área administrativa.
