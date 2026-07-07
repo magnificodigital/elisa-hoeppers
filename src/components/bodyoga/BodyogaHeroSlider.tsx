@@ -16,7 +16,7 @@ function DefaultHero() {
           className="absolute inset-0 h-full w-full object-cover object-center"
           loading="eager"
         />
-        <div className="absolute inset-x-0 bottom-10 flex justify-center">
+        <div className="absolute inset-0 flex items-center justify-center">
           <a
             href="#rituais"
             onClick={(e) => {
@@ -133,7 +133,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
           />
         )}
         {slide.cta_label && (
-          <div className="absolute inset-x-0 bottom-10 flex justify-center">
+          <div className="absolute inset-0 flex items-center justify-center">
             <a
               href={slide.cta_href || "#rituais"}
               onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
