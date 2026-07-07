@@ -172,65 +172,11 @@ function RitualCategories({ rituals, products }: { rituals: Ritual[]; products: 
 
   return (
     <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
-      {/* MOBILE: todos os produtos listados, sem divisão, sem contorno, sem slider */}
-      <div className="md:hidden grid grid-cols-2 gap-4 px-4 py-8">
+      {/* Todos os produtos listados, sem divisão, sem contorno, sem slider */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8 py-8 md:py-16 max-w-[1280px] mx-auto">
         {products.map((p) => (
           <BodyogaProductCard key={p.slug} product={p} noBorder />
         ))}
-      </div>
-
-
-      {/* DESKTOP: animação horizontal com hover */}
-      <div
-        className="hidden md:flex md:h-[640px]"
-        onMouseLeave={() => setActive(null)}
-      >
-        {rituals.map((c) => {
-          const isActive = c.id === active;
-          const hidden = active !== null && !isActive;
-          const catProducts = productsFor(c);
-          const image = c.image_url || RITUAL_FALLBACK_IMAGES[c.slug] || ritualCorpo;
-          return (
-            <div
-              key={c.id}
-              onMouseEnter={() => setActive(c.id)}
-              className="relative flex min-w-0 overflow-hidden transition-all duration-700 ease-out"
-              style={{
-                flexGrow: hidden ? 0 : 1,
-                flexBasis: 0,
-                width: hidden ? 0 : undefined,
-                opacity: hidden ? 0 : 1,
-              }}
-            >
-              {/* Imagem + título do ritual */}
-              <div
-                className="group relative h-full overflow-hidden text-center shrink-0 transition-all duration-700 ease-out"
-                style={{
-                  width: isActive ? "clamp(260px, 32%, 420px)" : "100%",
-                  flexBasis: isActive ? "clamp(260px, 32%, 420px)" : "auto",
-                  flexGrow: isActive ? 0 : 1,
-                }}
-              >
-                <img
-                  src={image}
-                  alt={c.title}
-                  width={768}
-                  height={1024}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className={`absolute inset-0 transition-colors ${isActive ? "bg-black/15" : "bg-black/0 group-hover:bg-black/15"}`} />
-              </div>
-
-              {/* Produtos do ritual (abre ao passar o mouse) */}
-              {isActive && (
-                <div className="flex-1 min-w-0 bg-bodyoga-cream md:h-full overflow-hidden animate-in fade-in duration-500">
-                  <RitualProductsSlider category={c} products={catProducts} />
-                </div>
-              )}
-            </div>
-          );
-        })}
       </div>
     </section>
   );
