@@ -150,7 +150,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
         {slide.image_url && (
           <div
             className="absolute inset-0 bg-no-repeat pointer-events-none"
-            style={{ backgroundImage: `url(${slide.image_url})`, backgroundPosition: "center center", backgroundSize: "cover" }}
+            style={{ backgroundImage: `url(${slide.image_url})`, backgroundPosition: "right center", backgroundSize: "contain" }}
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-bodyoga-cream via-bodyoga-cream/85 to-transparent pointer-events-none" />
