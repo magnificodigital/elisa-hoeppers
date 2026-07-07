@@ -348,12 +348,12 @@ function BodyogaProductCard({ product, noBorder = false }: { product: Product; n
             {product.short_description}
           </p>
         )}
-        <div className="mt-5 flex items-center justify-between">
-          <span className="text-bodyoga-green font-medium">
+        <div className="mt-5">
+          <span className="block text-bodyoga-green font-medium">
             {formatPriceBRL(product.price_cents)}
           </span>
-          <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.18em] text-bodyoga-green group-hover:text-bodyoga-brown transition">
-            Ver <ArrowRight className="w-3.5 h-3.5" />
+          <span className="mt-3 inline-flex w-full items-center justify-center gap-1 rounded-full bg-bodyoga-green px-5 py-2.5 text-xs uppercase tracking-[0.18em] text-bodyoga-cream transition">
+            Comprar <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>
       </div>
