@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getInstagramPosts, type InstagramPost } from "@/lib/instagram.functions";
+import { Instagram, Play, Layers, Heart, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { fetchBeholdFeed, type BeholdPost } from "@/lib/instagram";
+import { getSetting } from "@/lib/settings";
 
+// Fallback estático caso feed falhe (mantém experiência do site)
 const fallbackImages = [
   "/images/instagram/ig-01.jpg",
   "/images/instagram/ig-02.jpg",
@@ -9,89 +12,173 @@ const fallbackImages = [
   "/images/instagram/ig-04.jpg",
 ];
 
-const PROFILE_URL = "https://www.instagram.com/bodyoga.oficial/";
-
 const HomeInstagram = () => {
-  const fetchPosts = useServerFn(getInstagramPosts);
-  const { data } = useQuery({
-    queryKey: ["instagram-posts"],
-    queryFn: () => fetchPosts(),
-    staleTime: 1000 * 60 * 30,
+  const [feedUrl, setFeedUrl] = useState<string>("");
+  const [handle, setHandle] = useState<string>("bodyoga.ritual");
+
+  useEffect(() => {
+    Promise.all([getSetting("behold_feed_url"), getSetting("instagram_handle")])
+      .then(([url, ig]) => {
+        if (url) setFeedUrl(url);
+        if (ig) setHandle(ig);
+      })
+      .catch(() => {});
+  }, []);
+
+  const { data: feed, isLoading, isError } = useQuery({
+    queryKey: ["ig-feed", feedUrl],
+    queryFn: () => fetchBeholdFeed(feedUrl),
+    enabled: !!feedUrl,
+    staleTime: 30 * 60 * 1000, // 30 min
+    refetchOnWindowFocus: false,
   });
 
-  const posts: InstagramPost[] = data?.posts ?? [];
-  const hasLive = posts.length > 0;
+  const posts = feed?.posts?.slice(0, 6) ?? [];
+  const bio = feed?.biography ?? "Sabonetes • Aromaterapia • Bem-estar";
+  const profilePic = feed?.profilePictureUrl ?? "/images/home/instagram/round-2.png";
+  const instagramUrl = `https://instagram.com/${handle}`;
 
   return (
-    <section className="py-14 md:py-24 bg-cream">
+    <section className="py-20 md:py-24 bg-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-        <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-6 md:mb-8">
+        <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
           Acompanhe{" "}
           <a
-            href={PROFILE_URL}
+            href={instagramUrl}
             target="_blank"
             rel="noreferrer"
             className="underline underline-offset-4 hover:text-primary"
           >
-            @bodyoga.oficial
+            @{handle}
           </a>{" "}
           no Instagram
         </h3>
-        <div className="flex items-center justify-center gap-3 md:gap-4 mb-8 md:mb-10">
+
+        <div className="flex items-center justify-center gap-4 mb-10">
           <img
-            src="/images/home/instagram/round-2.png"
-            alt="Foto de perfil de Bodyoga"
-            className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover shrink-0"
-           loading="lazy" decoding="async" />
-          <div className="min-w-0 max-w-md">
-            <p className="text-primary-dark font-semibold text-sm">bodyoga.oficial</p>
-            <p className="text-[var(--text-muted)] text-xs leading-relaxed">
-              Fundadora do @bodyoga__ ® · Professora de YOGA · Alquimia Olfativa ·
-              Aromaterapia com Óleos Essenciais: Elisa Hoeppers Casas
+            src={profilePic}
+            alt={`Foto de perfil de @${handle}`}
+            className="w-14 h-14 rounded-full object-cover flex-shrink-0"
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="max-w-md">
+            <p className="text-primary-dark font-semibold text-sm">{handle}</p>
+            <p className="text-[var(--text-muted)] text-xs leading-relaxed whitespace-pre-line">
+              {bio}
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-          {hasLive
-            ? posts.map((post, i) => (
-                <a
-                  key={post.id}
-                  href={post.permalink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="aspect-square overflow-hidden rounded-md"
-                >
-                  <img
-                    src={post.imageUrl}
-                    alt={post.caption ? post.caption.slice(0, 120) : `Publicação ${i + 1} do Instagram @bodyoga.oficial`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-              ))
-            : fallbackImages.map((src, i) => (
-                <a
-                  key={i}
-                  href={PROFILE_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="aspect-square overflow-hidden rounded-md"
-                >
-                  <img
-                    src={src}
-                    alt={`Publicação ${i + 1} do Instagram @bodyoga.oficial`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-              ))}
+        {/* Grid de posts */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3">
+          {isLoading &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-square bg-sand/50 animate-pulse rounded-md" />
+            ))}
+
+          {(isError || (!isLoading && posts.length === 0)) &&
+            fallbackImages.map((src, i) => (
+              <a
+                key={i}
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="block aspect-square overflow-hidden rounded-md group relative"
+              >
+                <img
+                  src={src}
+                  alt={`Post do Instagram ${i + 1}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            ))}
+
+          {!isLoading &&
+            !isError &&
+            posts.map((post) => <PostThumbnail key={post.id} post={post} />)}
+        </div>
+
+        {/* CTA final */}
+        <div className="text-center mt-10">
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full uppercase tracking-[0.15em] text-xs hover:bg-primary-dark transition"
+          >
+            <Instagram className="w-4 h-4" />
+            Seguir no Instagram
+          </a>
         </div>
       </div>
     </section>
   );
 };
+
+function PostThumbnail({ post }: { post: BeholdPost }) {
+  const thumb =
+    post.thumbnailUrl ||
+    post.sizes?.medium?.mediaUrl ||
+    post.sizes?.small?.mediaUrl ||
+    post.mediaUrl;
+
+  const isReel = post.mediaType === "VIDEO" && post.isReel;
+  const isCarousel = post.mediaType === "CAROUSEL_ALBUM";
+  const isVideo = post.mediaType === "VIDEO";
+
+  return (
+    <a
+      href={post.permalink}
+      target="_blank"
+      rel="noreferrer"
+      className="block aspect-square overflow-hidden rounded-md group relative bg-sand/30"
+    >
+      <img
+        src={thumb}
+        alt={post.prunedCaption?.slice(0, 80) ?? "Post do Instagram"}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+        decoding="async"
+        onError={(e) => {
+          // se der 404 (URLs do IG expiram), tenta o mediaUrl original
+          const img = e.currentTarget;
+          if (img.src !== post.mediaUrl && post.mediaType === "IMAGE") {
+            img.src = post.mediaUrl;
+          }
+        }}
+      />
+
+      {/* Overlay com contadores no hover */}
+      <div className="absolute inset-0 bg-primary-dark/0 group-hover:bg-primary-dark/40 transition-colors flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100">
+        {post.likeCount != null && (
+          <span className="inline-flex items-center gap-1 text-cream text-sm font-semibold">
+            <Heart className="w-4 h-4 fill-cream" />
+            {post.likeCount}
+          </span>
+        )}
+        {post.commentsCount != null && (
+          <span className="inline-flex items-center gap-1 text-cream text-sm font-semibold">
+            <MessageCircle className="w-4 h-4 fill-cream" />
+            {post.commentsCount}
+          </span>
+        )}
+      </div>
+
+      {/* Badge de tipo (canto superior direito) */}
+      {(isReel || isVideo || isCarousel) && (
+        <div className="absolute top-1.5 right-1.5 bg-black/50 backdrop-blur-sm rounded p-1">
+          {isReel || isVideo ? (
+            <Play className="w-3.5 h-3.5 text-white fill-white" />
+          ) : (
+            <Layers className="w-3.5 h-3.5 text-white" />
+          )}
+        </div>
+      )}
+    </a>
+  );
+}
 
 export default HomeInstagram;
