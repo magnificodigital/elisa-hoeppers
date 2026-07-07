@@ -714,7 +714,7 @@ function CheckoutPage() {
               </div>
               {mpEnabled && meEnabled && shippingError && (
                 <p className="text-xs text-red-700 mb-3 text-center">
-                  ⚠️ Não conseguimos calcular o frete. Verifique o CEP ou combine via WhatsApp.
+                  ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
               )}
               <button
