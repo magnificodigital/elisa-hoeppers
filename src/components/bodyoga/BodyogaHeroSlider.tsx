@@ -137,7 +137,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
             <a
               href={slide.cta_href || "#rituais"}
               onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-              className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] shadow-lg transition"
+              className="inline-block px-7 py-3 rounded-full border border-bodyoga-cream text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:border-bodyoga-green hover:text-bodyoga-cream transition"
             >
               {slide.cta_label}
             </a>
