@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CreditCard, Mail, Truck, Users, Stethoscope, CalendarClock, ChevronRight, MailCheck, Plug, Globe, Wallet } from "lucide-react";
+import { Mail, Users, Stethoscope, CalendarClock, ChevronRight, MailCheck, Plug } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
