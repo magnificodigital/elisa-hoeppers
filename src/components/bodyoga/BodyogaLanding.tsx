@@ -72,7 +72,7 @@ export function BodyogaLanding() {
             className="w-20 md:w-28 h-auto mb-6"
             loading="lazy"
           />
-          <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug">
+          <p className="font-display italic text-2xl md:text-4xl text-bodyoga-green leading-snug">
             Corpo, mente e ambiente em equilíbrio.
           </p>
         </div>
