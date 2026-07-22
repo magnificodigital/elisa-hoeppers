@@ -449,6 +449,21 @@ function CheckoutPage() {
                   </Field>
                 </div>
 
+                {asaasEnabled && (
+                  <Field label="CPF ou CNPJ *">
+                    <input
+                      value={form.cpfCnpj}
+                      onChange={(e) => setForm({ ...form, cpfCnpj: e.target.value })}
+                      required
+                      placeholder="000.000.000-00"
+                      className={inputCls}
+                    />
+                    <p className="text-[10px] text-primary-dark/50 mt-1">
+                      Necessário pra emissão da nota fiscal.
+                    </p>
+                  </Field>
+                )}
+
                 {!user && (
                   <div className="pt-3 mt-1 border-t border-border">
                     <label className="flex items-start gap-2.5 cursor-pointer">
