@@ -79,7 +79,7 @@ function Page() {
                   </span>
                   <div className="flex-1 min-w-0">
                     <h2 className="font-medium text-primary-dark mb-2">{step.title}</h2>
-                    <div className="text-sm text-primary-dark/80 leading-relaxed whitespace-pre-line">
+                    <div className="text-sm text-primary-dark/80 leading-relaxed">
                       {renderBody(step.body)}
                     </div>
 
