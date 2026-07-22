@@ -19,11 +19,7 @@ const OPTIONS = [
     description: "Gerencie os slides do banner principal.",
     icon: GalleryHorizontal,
   },
-    to: "/admin/bodyoga-slides",
-    label: "Slides",
-    description: "Gerencie os slides do banner principal.",
-    icon: GalleryHorizontal,
-  },
+  {
   {
     to: "/admin/site/menu",
     label: "Menu de navegação",
