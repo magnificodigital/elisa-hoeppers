@@ -358,6 +358,18 @@ function CheckoutPage() {
       }).catch((e) => console.error("email failed:", e));
 
       if (method === "mercadopago") {
+        if (asaasEnabled) {
+          // PIX transparente via Asaas — cliente vê QR na página do pedido
+          const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
+            body: { order_id: orderResult.order_id },
+          });
+          if (payErr) throw payErr;
+          if ((payData as any)?.error) throw new Error((payData as any).error);
+          clear();
+          navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+          return;
+        }
+
         const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
           body: { order_id: orderResult.order_id },
         });
