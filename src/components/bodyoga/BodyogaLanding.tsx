@@ -21,6 +21,7 @@ import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
 import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
 
 
 
@@ -62,10 +63,26 @@ export function BodyogaLanding() {
       {/* HERO SLIDER */}
       <BodyogaHeroSlider />
 
+      {/* FRASE DE ABERTURA */}
+      <section className="bg-bodyoga-cream">
+        <div className="max-w-[900px] mx-auto px-6 py-16 md:py-24 flex flex-col items-center text-center">
+          <img
+            src={iconAsset.url}
+            alt="BODYOGA"
+            className="w-20 md:w-28 h-auto mb-6"
+            loading="lazy"
+          />
+          <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug">
+            Corpo, mente e ambiente em equilíbrio.
+          </p>
+        </div>
+      </section>
+
       {/* RITUAIS POR CATEGORIA */}
       {(rituals ?? []).length > 0 && (
         <RitualCategories products={ritualProducts} />
       )}
+
 
       {/* INTRO ELISA HOEPPERS */}
       <section className="bg-bodyoga-cream overflow-hidden">
