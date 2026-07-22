@@ -735,6 +735,13 @@ export type Database = {
       }
       orders: {
         Row: {
+          asaas_customer_id: string | null
+          asaas_invoice_url: string | null
+          asaas_payment_id: string | null
+          asaas_payment_status: string | null
+          asaas_pix_expires_at: string | null
+          asaas_pix_qr_code_copy_paste: string | null
+          asaas_pix_qr_code_image: string | null
           code: string
           created_at: string
           customer_address: Json | null
@@ -765,6 +772,13 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          asaas_customer_id?: string | null
+          asaas_invoice_url?: string | null
+          asaas_payment_id?: string | null
+          asaas_payment_status?: string | null
+          asaas_pix_expires_at?: string | null
+          asaas_pix_qr_code_copy_paste?: string | null
+          asaas_pix_qr_code_image?: string | null
           code: string
           created_at?: string
           customer_address?: Json | null
@@ -795,6 +809,13 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          asaas_customer_id?: string | null
+          asaas_invoice_url?: string | null
+          asaas_payment_id?: string | null
+          asaas_payment_status?: string | null
+          asaas_pix_expires_at?: string | null
+          asaas_pix_qr_code_copy_paste?: string | null
+          asaas_pix_qr_code_image?: string | null
           code?: string
           created_at?: string
           customer_address?: Json | null
@@ -1086,8 +1107,10 @@ export type Database = {
       }
       profiles: {
         Row: {
+          asaas_customer_id: string | null
           avatar_url: string | null
           bio: string | null
+          cpf_cnpj: string | null
           created_at: string
           full_name: string | null
           id: string
@@ -1099,8 +1122,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          asaas_customer_id?: string | null
           avatar_url?: string | null
           bio?: string | null
+          cpf_cnpj?: string | null
           created_at?: string
           full_name?: string | null
           id: string
@@ -1112,8 +1137,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          asaas_customer_id?: string | null
           avatar_url?: string | null
           bio?: string | null
+          cpf_cnpj?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
@@ -1482,6 +1509,10 @@ export type Database = {
       get_order_by_code: {
         Args: { p_code: string; p_email?: string }
         Returns: {
+          asaas_invoice_url: string
+          asaas_pix_expires_at: string
+          asaas_pix_qr_code_copy_paste: string
+          asaas_pix_qr_code_image: string
           code: string
           created_at: string
           customer_name: string
