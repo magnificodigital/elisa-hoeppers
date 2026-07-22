@@ -11,6 +11,7 @@ import {
   Sparkles,
   ArrowLeft,
   LogOut,
+  HelpCircle,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -23,13 +24,14 @@ type NavLeaf = {
 
 const NAV_ITEMS: NavLeaf[] = [
   { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
-  { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
+  { to: "/admin/pedidos", label: "Pedidos", icon: Package },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
-  { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
+  { to: "/admin/site", label: "WebSite", icon: Sparkles },
   { to: "/admin/posts", label: "Posts", icon: Newspaper },
-  { to: "/admin/site", label: "Site", icon: Sparkles },
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
+  { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
+  { to: "/admin/ajuda", label: "Tutoriais", icon: HelpCircle },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
 
