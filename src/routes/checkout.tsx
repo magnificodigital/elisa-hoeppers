@@ -61,6 +61,7 @@ function CheckoutPage() {
     name: "",
     email: "",
     phone: "",
+    cpfCnpj: "",
     cep: "",
     street: "",
     number: "",
@@ -89,6 +90,7 @@ function CheckoutPage() {
   const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
+  const [asaasEnabled, setAsaasEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
   const [cepFilled, setCepFilled] = useState(false);
 
@@ -111,6 +113,7 @@ function CheckoutPage() {
   useEffect(() => {
     getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
+    getSetting("asaas_enabled").then((v) => setAsaasEnabled(v === "true")).catch(() => setAsaasEnabled(false));
   }, []);
 
   useEffect(() => {
@@ -266,6 +269,15 @@ function CheckoutPage() {
       return;
     }
 
+    // Asaas exige CPF/CNPJ
+    if (method === "mercadopago" && asaasEnabled) {
+      const clean = form.cpfCnpj.replace(/\D/g, "");
+      if (clean.length !== 11 && clean.length !== 14) {
+        setSubmitError("Informe um CPF ou CNPJ válido pra emissão da nota fiscal.");
+        return;
+      }
+    }
+
     const accountOk = await maybeCreateAccount();
     if (!accountOk) return;
 
@@ -274,22 +286,27 @@ function CheckoutPage() {
       setSubmitting(method);
 
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
+      const addressPayload = form.street
+        ? {
+            cep: form.cep,
+            street: form.street,
+            number: form.number,
+            complement: form.complement,
+            district: form.district,
+            city: city ?? "",
+            state: state ?? "",
+            cpf_cnpj: form.cpfCnpj.replace(/\D/g, ""),
+          }
+        : form.cpfCnpj
+          ? { cpf_cnpj: form.cpfCnpj.replace(/\D/g, "") }
+          : null;
+
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
         p_customer_name: form.name,
         p_customer_email: form.email,
         p_customer_phone: form.phone,
-        p_customer_address: form.street
-          ? {
-              cep: form.cep,
-              street: form.street,
-              number: form.number,
-              complement: form.complement,
-              district: form.district,
-              city: city ?? "",
-              state: state ?? "",
-            }
-          : null,
+        p_customer_address: addressPayload,
         p_notes: form.notes || null,
         p_shipping_service_id: selectedShipping?.id ?? null,
         p_shipping_service_label: selectedShipping
