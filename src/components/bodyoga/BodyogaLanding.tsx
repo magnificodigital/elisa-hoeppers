@@ -21,6 +21,7 @@ import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
 import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
 
 
 
