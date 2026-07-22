@@ -29,6 +29,10 @@ type Order = {
   payment_method_type: string | null;
   payment_installments: number | null;
   created_at: string;
+  asaas_pix_qr_code_image?: string | null;
+  asaas_pix_qr_code_copy_paste?: string | null;
+  asaas_pix_expires_at?: string | null;
+  asaas_invoice_url?: string | null;
 };
 
 function PaymentCountdown({ order }: { order: Order }) {
@@ -234,7 +238,10 @@ function OrderPage() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[720px] mx-auto px-4 md:px-6">
-          {order.status === "pending" && <PaymentCountdown order={order} />}
+          {order.status === "pending" && order.asaas_pix_qr_code_image && (
+            <PixPaymentBlock order={order} />
+          )}
+          {order.status === "pending" && !order.asaas_pix_qr_code_image && <PaymentCountdown order={order} />}
           {banner && (
             <div className={`mb-6 rounded-lg border px-4 py-3 text-sm ${banner.cls}`}>
               {banner.text}
