@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, Plug, Instagram } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plug, CreditCard, Wallet, Truck, Instagram } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
-import { SettingsCategory } from "@/components/admin/SettingsCategory";
 
 export const Route = createFileRoute("/admin/configuracoes/integracoes")({
   head: () => ({ meta: [{ title: "Admin — Integrações" }] }),
@@ -12,6 +11,13 @@ export const Route = createFileRoute("/admin/configuracoes/integracoes")({
     </AdminGuard>
   ),
 });
+
+const integrations = [
+  { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Chaves de produção e teste, toggle de habilitação." },
+  { to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas", desc: "Gateway com PIX e cartão transparente." },
+  { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
+  { to: "/admin/configuracoes/site", icon: Instagram, title: "Feed do Instagram", desc: "Feed automático da home via Behold e handle do perfil." },
+] as const;
 
 function Page() {
   return (
@@ -28,30 +34,30 @@ function Page() {
             <h1 className="font-display text-3xl text-primary-dark">Integrações</h1>
           </div>
           <p className="text-sm text-primary-dark/60 mb-8">
-            Guarde aqui as chaves e tokens de serviços externos. Os campos marcados como secretos ficam
-            mascarados e só são usados pelo servidor — nunca aparecem no site público.
+            Serviços externos conectados ao site: pagamentos, envio e feed social.
           </p>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm">
-            <div className="flex items-center gap-2.5 mb-4">
-              <Instagram size={20} className="text-primary" />
-              <h2 className="font-display text-xl text-primary-dark">Instagram</h2>
-            </div>
-            <SettingsCategory category="integracoes" />
-
-            <div className="mt-6 border-t border-border pt-4 text-xs text-primary-dark/60 space-y-1.5">
-              <p className="font-medium text-primary-dark/80">Como obter o token:</p>
-              <p>1. Acesse developers.facebook.com → crie/abra um app do tipo Business.</p>
-              <p>2. Adicione o produto Instagram Graph API e vincule a Página do Facebook + a conta.</p>
-              <p>3. Gere um token com as permissões instagram_basic e pages_show_list.</p>
-              <p>4. Converta para um token de longa duração (~60 dias) e cole acima.</p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {integrations.map((s) => {
+              const Icon = s.icon;
+              return (
+                <Link
+                  key={s.to}
+                  to={s.to}
+                  className="bg-white rounded-xl p-6 shadow-sm flex items-start gap-3 hover:shadow-lg transition group"
+                >
+                  <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center shrink-0">
+                    <Icon size={20} className="text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-display text-xl text-primary-dark group-hover:text-primary transition">{s.title}</h2>
+                    <p className="text-sm text-primary-dark/60 mt-0.5">{s.desc}</p>
+                  </div>
+                  <ChevronRight size={20} className="text-primary-dark/40 shrink-0" />
+                </Link>
+              );
+            })}
           </div>
-
-          <p className="text-xs text-primary-dark/50 mt-4">
-            Dica: com o Instagram ligado e o token válido, a seção da home passa a mostrar os posts reais
-            mais recentes automaticamente. Sem token válido, ela mantém as imagens padrão.
-          </p>
         </div>
       </section>
     </Layout>
