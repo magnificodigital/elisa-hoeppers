@@ -14,11 +14,12 @@ import {
   Users,
   Bell,
   AlertCircle,
-  
+  HelpCircle,
   
   Stethoscope,
   Truck,
 } from "lucide-react";
+
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { AdminSearchBar } from "@/components/AdminSearchBar";
@@ -47,6 +48,7 @@ const sections = [
   { to: "/admin/social", icon: Share2, title: "Social Posts", desc: "Posts para as redes sociais." },
   { to: "/admin/broadcast", icon: Mail, title: "Emails", desc: "Envie email pra newsletter ou alunas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
+  { to: "/admin/ajuda", icon: HelpCircle, title: "Ajuda", desc: "Tutoriais passo a passo." },
   { to: "/admin/diagnostico-pagamentos", icon: Stethoscope, title: "Diagnóstico Pagamentos", desc: "Auto-check da integração Mercado Pago." },
   { to: "/admin/diagnostico-envio", icon: Truck, title: "Diagnóstico Envio", desc: "Auto-check do Melhor Envio." },
 ] as const;
