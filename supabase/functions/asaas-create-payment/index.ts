@@ -15,6 +15,20 @@ const corsHeaders = {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+type RequestBody = {
+  order_id: string;
+  billing_type?: "PIX" | "CREDIT_CARD";
+  installment_count?: number;
+  credit_card?: {
+    holderName: string;
+    number: string;
+    expiryMonth: string;
+    expiryYear: string;
+    ccv: string;
+  };
+  remote_ip?: string;
+};
+
 async function getSetting(key: string): Promise<string | null> {
   const { data } = await supabase.from("app_settings").select("value").eq("key", key).maybeSingle();
   return (data?.value as string | null)?.trim() ?? null;
@@ -102,7 +116,14 @@ serve(async (req) => {
     const env = (await getSetting("asaas_environment")) ?? "sandbox";
     const base = asaasBase(env);
 
-    const { order_id } = await req.json();
+    const body: RequestBody = await req.json();
+    const {
+      order_id,
+      billing_type = "PIX",
+      installment_count = 1,
+      credit_card,
+      remote_ip,
+    } = body;
     if (!order_id) throw new Error("order_id obrigatório");
 
     const { data: order, error: orderErr } = await supabase
@@ -126,16 +147,65 @@ serve(async (req) => {
     });
 
     const dueDate = new Date();
-    dueDate.setHours(dueDate.getHours() + 1);
-    const paymentPayload = {
-      customer: customerId,
-      billingType: "PIX",
-      value: order.total_cents / 100,
-      dueDate: dueDate.toISOString().split("T")[0],
-      description: `Pedido #${order.code} — ${((order.items as any[]) ?? []).map((i) => `${i.qty}x ${i.name}`).join(", ").slice(0, 500)}`,
-      externalReference: order.id,
-      postalService: false,
-    };
+    if (billing_type === "PIX") {
+      dueDate.setHours(dueDate.getHours() + 1);
+    } else {
+      dueDate.setDate(dueDate.getDate() + 1);
+    }
+
+    const baseDescription = `Pedido #${order.code} — ${((order.items as any[]) ?? [])
+      .map((i) => `${i.qty}x ${i.name}`).join(", ").slice(0, 500)}`;
+
+    let paymentPayload: any;
+
+    if (billing_type === "PIX") {
+      paymentPayload = {
+        customer: customerId,
+        billingType: "PIX",
+        value: order.total_cents / 100,
+        dueDate: dueDate.toISOString().split("T")[0],
+        description: baseDescription,
+        externalReference: order.id,
+        postalService: false,
+      };
+    } else if (billing_type === "CREDIT_CARD") {
+      if (!credit_card) throw new Error("Dados do cartão são obrigatórios");
+
+      const holderInfo = {
+        name: credit_card.holderName,
+        email: order.customer_email,
+        cpfCnpj: cpfCnpj.replace(/\D/g, ""),
+        postalCode: addr.cep ? String(addr.cep).replace(/\D/g, "") : "01310100",
+        addressNumber: addr.number ?? "0",
+        addressComplement: addr.complement ?? null,
+        phone: order.customer_phone.replace(/\D/g, ""),
+        mobilePhone: order.customer_phone.replace(/\D/g, ""),
+      };
+
+      paymentPayload = {
+        customer: customerId,
+        billingType: "CREDIT_CARD",
+        value: order.total_cents / 100,
+        dueDate: dueDate.toISOString().split("T")[0],
+        description: baseDescription,
+        externalReference: order.id,
+        installmentCount: installment_count > 1 ? installment_count : undefined,
+        totalValue: installment_count > 1 ? order.total_cents / 100 : undefined,
+        creditCard: {
+          holderName: credit_card.holderName,
+          number: credit_card.number.replace(/\D/g, ""),
+          expiryMonth: credit_card.expiryMonth.padStart(2, "0"),
+          expiryYear: credit_card.expiryYear.length === 2
+            ? `20${credit_card.expiryYear}`
+            : credit_card.expiryYear,
+          ccv: credit_card.ccv,
+        },
+        creditCardHolderInfo: holderInfo,
+        remoteIp: remote_ip ?? req.headers.get("x-forwarded-for")?.split(",")[0] ?? "127.0.0.1",
+      };
+    } else {
+      throw new Error(`billing_type inválido: ${billing_type}`);
+    }
 
     const paymentRes = await fetch(`${base}/payments`, {
       method: "POST",
@@ -143,37 +213,65 @@ serve(async (req) => {
       body: JSON.stringify(paymentPayload),
     });
     if (!paymentRes.ok) {
-      const err = await paymentRes.text();
-      throw new Error(`Falha ao criar cobrança: ${err.slice(0, 400)}`);
+      const errText = await paymentRes.text();
+      let userMessage = "Falha no pagamento";
+      try {
+        const errObj = JSON.parse(errText);
+        if (errObj.errors?.[0]?.description) {
+          userMessage = errObj.errors[0].description;
+        }
+      } catch {}
+      throw new Error(userMessage);
     }
     const payment = await paymentRes.json();
 
-    const qrRes = await fetch(`${base}/payments/${payment.id}/pixQrCode`, {
-      headers: { access_token: apiKey },
-    });
-    if (!qrRes.ok) {
-      const err = await qrRes.text();
-      throw new Error(`Falha ao gerar PIX: ${err.slice(0, 400)}`);
-    }
-    const qr = await qrRes.json();
-
-    await supabase.from("orders").update({
+    const updateFields: any = {
       asaas_customer_id: customerId,
       asaas_payment_id: payment.id,
       asaas_payment_status: payment.status,
-      asaas_pix_qr_code_image: qr.encodedImage,
-      asaas_pix_qr_code_copy_paste: qr.payload,
-      asaas_pix_expires_at: qr.expirationDate,
       asaas_invoice_url: payment.invoiceUrl,
-      payment_method_type: "pix",
-    }).eq("id", order.id);
+      payment_method_type: billing_type === "CREDIT_CARD" ? "credit_card" : "pix",
+      payment_installments: billing_type === "CREDIT_CARD" ? installment_count : null,
+    };
+
+    if (billing_type === "PIX") {
+      const qrRes = await fetch(`${base}/payments/${payment.id}/pixQrCode`, {
+        headers: { access_token: apiKey },
+      });
+      if (qrRes.ok) {
+        const qr = await qrRes.json();
+        updateFields.asaas_pix_qr_code_image = qr.encodedImage;
+        updateFields.asaas_pix_qr_code_copy_paste = qr.payload;
+        updateFields.asaas_pix_expires_at = qr.expirationDate;
+      }
+    }
+
+    if (
+      billing_type === "CREDIT_CARD" &&
+      (payment.status === "CONFIRMED" || payment.status === "RECEIVED")
+    ) {
+      updateFields.status = "confirmed";
+    }
+
+    await supabase.from("orders").update(updateFields).eq("id", order.id);
+
+    if (updateFields.status === "confirmed") {
+      supabase.functions.invoke("send-notification", {
+        body: { type: "order", record_id: order.id },
+      }).catch((e) => console.error("email dispatch failed:", e));
+    }
 
     return new Response(JSON.stringify({
       ok: true,
       payment_id: payment.id,
-      qr_code_image: qr.encodedImage,
-      qr_code_copy_paste: qr.payload,
-      expires_at: qr.expirationDate,
+      billing_type,
+      status: payment.status,
+      approved:
+        billing_type === "CREDIT_CARD" &&
+        (payment.status === "CONFIRMED" || payment.status === "RECEIVED"),
+      qr_code_image: updateFields.asaas_pix_qr_code_image,
+      qr_code_copy_paste: updateFields.asaas_pix_qr_code_copy_paste,
+      expires_at: updateFields.asaas_pix_expires_at,
     }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
