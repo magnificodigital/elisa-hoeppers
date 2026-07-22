@@ -14,12 +14,11 @@ export const Route = createFileRoute("/admin/site/")({
 
 const OPTIONS = [
   {
-    to: "/admin/bodyoga-rituais",
-    label: "Rituais",
-    description: "Gerencie os rituais BODYOGA e seus produtos.",
-    icon: Sparkles,
+    to: "/admin/bodyoga-slides",
+    label: "Slides",
+    description: "Gerencie os slides do banner principal.",
+    icon: GalleryHorizontal,
   },
-  {
     to: "/admin/bodyoga-slides",
     label: "Slides",
     description: "Gerencie os slides do banner principal.",
