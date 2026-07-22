@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sparkles, GalleryHorizontal, Menu } from "lucide-react";
+import { GalleryHorizontal, Menu } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -13,12 +13,6 @@ export const Route = createFileRoute("/admin/site/")({
 });
 
 const OPTIONS = [
-  {
-    to: "/admin/bodyoga-rituais",
-    label: "Rituais",
-    description: "Gerencie os rituais BODYOGA e seus produtos.",
-    icon: Sparkles,
-  },
   {
     to: "/admin/bodyoga-slides",
     label: "Slides",

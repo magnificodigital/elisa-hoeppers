@@ -55,7 +55,6 @@ import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/configuracoes/index'
 import { Route as AdminBodyogaSlidesIndexRouteImport } from './routes/admin/bodyoga-slides/index'
-import { Route as AdminBodyogaRituaisIndexRouteImport } from './routes/admin/bodyoga-rituais/index'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
 import { Route as AdminAjudaIndexRouteImport } from './routes/admin/ajuda.index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
@@ -73,7 +72,6 @@ import { Route as AdminConfiguracoesEmailsRouteImport } from './routes/admin/con
 import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
 import { Route as AdminConfiguracoesAsaasRouteImport } from './routes/admin/configuracoes/asaas'
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
-import { Route as AdminBodyogaRituaisIdRouteImport } from './routes/admin/bodyoga-rituais/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
 import { Route as AdminAjudaSlugRouteImport } from './routes/admin/ajuda/$slug'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
@@ -311,12 +309,6 @@ const AdminBodyogaSlidesIndexRoute = AdminBodyogaSlidesIndexRouteImport.update({
   path: '/admin/bodyoga-slides/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBodyogaRituaisIndexRoute =
-  AdminBodyogaRituaisIndexRouteImport.update({
-    id: '/admin/bodyoga-rituais/',
-    path: '/admin/bodyoga-rituais/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   id: '/admin/blog/',
   path: '/admin/blog/',
@@ -410,11 +402,6 @@ const AdminBodyogaSlidesIdRoute = AdminBodyogaSlidesIdRouteImport.update({
   path: '/admin/bodyoga-slides/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminBodyogaRituaisIdRoute = AdminBodyogaRituaisIdRouteImport.update({
-  id: '/admin/bodyoga-rituais/$id',
-  path: '/admin/bodyoga-rituais/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   id: '/admin/blog/$id',
   path: '/admin/blog/$id',
@@ -486,7 +473,6 @@ export interface FileRoutesByFullPath {
   '/painel/': typeof PainelIndexRoute
   '/admin/ajuda/$slug': typeof AdminAjudaSlugRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
-  '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
@@ -504,7 +490,6 @@ export interface FileRoutesByFullPath {
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/ajuda/': typeof AdminAjudaIndexRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
-  '/admin/bodyoga-rituais/': typeof AdminBodyogaRituaisIndexRoute
   '/admin/bodyoga-slides/': typeof AdminBodyogaSlidesIndexRoute
   '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
@@ -557,7 +542,6 @@ export interface FileRoutesByTo {
   '/painel': typeof PainelIndexRoute
   '/admin/ajuda/$slug': typeof AdminAjudaSlugRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
-  '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
@@ -575,7 +559,6 @@ export interface FileRoutesByTo {
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/ajuda': typeof AdminAjudaIndexRoute
   '/admin/blog': typeof AdminBlogIndexRoute
-  '/admin/bodyoga-rituais': typeof AdminBodyogaRituaisIndexRoute
   '/admin/bodyoga-slides': typeof AdminBodyogaSlidesIndexRoute
   '/admin/configuracoes': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
@@ -630,7 +613,6 @@ export interface FileRoutesById {
   '/painel/': typeof PainelIndexRoute
   '/admin/ajuda/$slug': typeof AdminAjudaSlugRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
-  '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
@@ -648,7 +630,6 @@ export interface FileRoutesById {
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
   '/admin/ajuda/': typeof AdminAjudaIndexRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
-  '/admin/bodyoga-rituais/': typeof AdminBodyogaRituaisIndexRoute
   '/admin/bodyoga-slides/': typeof AdminBodyogaSlidesIndexRoute
   '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
@@ -704,7 +685,6 @@ export interface FileRouteTypes {
     | '/painel/'
     | '/admin/ajuda/$slug'
     | '/admin/blog/$id'
-    | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/diagnosticos'
@@ -722,7 +702,6 @@ export interface FileRouteTypes {
     | '/painel/aula/$lessonId'
     | '/admin/ajuda/'
     | '/admin/blog/'
-    | '/admin/bodyoga-rituais/'
     | '/admin/bodyoga-slides/'
     | '/admin/configuracoes/'
     | '/admin/cursos/'
@@ -775,7 +754,6 @@ export interface FileRouteTypes {
     | '/painel'
     | '/admin/ajuda/$slug'
     | '/admin/blog/$id'
-    | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/diagnosticos'
@@ -793,7 +771,6 @@ export interface FileRouteTypes {
     | '/painel/aula/$lessonId'
     | '/admin/ajuda'
     | '/admin/blog'
-    | '/admin/bodyoga-rituais'
     | '/admin/bodyoga-slides'
     | '/admin/configuracoes'
     | '/admin/cursos'
@@ -847,7 +824,6 @@ export interface FileRouteTypes {
     | '/painel/'
     | '/admin/ajuda/$slug'
     | '/admin/blog/$id'
-    | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/diagnosticos'
@@ -865,7 +841,6 @@ export interface FileRouteTypes {
     | '/painel/aula/$lessonId'
     | '/admin/ajuda/'
     | '/admin/blog/'
-    | '/admin/bodyoga-rituais/'
     | '/admin/bodyoga-slides/'
     | '/admin/configuracoes/'
     | '/admin/cursos/'
@@ -919,7 +894,6 @@ export interface RootRouteChildren {
   PainelIndexRoute: typeof PainelIndexRoute
   AdminAjudaSlugRoute: typeof AdminAjudaSlugRoute
   AdminBlogIdRoute: typeof AdminBlogIdRoute
-  AdminBodyogaRituaisIdRoute: typeof AdminBodyogaRituaisIdRoute
   AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
   AdminConfiguracoesAsaasRoute: typeof AdminConfiguracoesAsaasRoute
   AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
@@ -937,7 +911,6 @@ export interface RootRouteChildren {
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
   AdminAjudaIndexRoute: typeof AdminAjudaIndexRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
-  AdminBodyogaRituaisIndexRoute: typeof AdminBodyogaRituaisIndexRoute
   AdminBodyogaSlidesIndexRoute: typeof AdminBodyogaSlidesIndexRoute
   AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
@@ -1271,13 +1244,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBodyogaSlidesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/bodyoga-rituais/': {
-      id: '/admin/bodyoga-rituais/'
-      path: '/admin/bodyoga-rituais'
-      fullPath: '/admin/bodyoga-rituais/'
-      preLoaderRoute: typeof AdminBodyogaRituaisIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/blog/': {
       id: '/admin/blog/'
       path: '/admin/blog'
@@ -1397,13 +1363,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBodyogaSlidesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/bodyoga-rituais/$id': {
-      id: '/admin/bodyoga-rituais/$id'
-      path: '/admin/bodyoga-rituais/$id'
-      fullPath: '/admin/bodyoga-rituais/$id'
-      preLoaderRoute: typeof AdminBodyogaRituaisIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/blog/$id': {
       id: '/admin/blog/$id'
       path: '/admin/blog/$id'
@@ -1507,7 +1466,6 @@ const rootRouteChildren: RootRouteChildren = {
   PainelIndexRoute: PainelIndexRoute,
   AdminAjudaSlugRoute: AdminAjudaSlugRoute,
   AdminBlogIdRoute: AdminBlogIdRoute,
-  AdminBodyogaRituaisIdRoute: AdminBodyogaRituaisIdRoute,
   AdminBodyogaSlidesIdRoute: AdminBodyogaSlidesIdRoute,
   AdminConfiguracoesAsaasRoute: AdminConfiguracoesAsaasRoute,
   AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
@@ -1525,7 +1483,6 @@ const rootRouteChildren: RootRouteChildren = {
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminAjudaIndexRoute: AdminAjudaIndexRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
-  AdminBodyogaRituaisIndexRoute: AdminBodyogaRituaisIndexRoute,
   AdminBodyogaSlidesIndexRoute: AdminBodyogaSlidesIndexRoute,
   AdminConfiguracoesIndexRoute: AdminConfiguracoesIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
