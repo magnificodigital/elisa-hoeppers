@@ -49,6 +49,7 @@ import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/d
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
+import { Route as AdminAjudaRouteImport } from './routes/admin/ajuda'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
 import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
@@ -73,6 +74,7 @@ import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/adm
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
 import { Route as AdminBodyogaRituaisIdRouteImport } from './routes/admin/bodyoga-rituais/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
+import { Route as AdminAjudaSlugRouteImport } from './routes/admin/ajuda/$slug'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
 import { Route as AdminCursosIdAulasLessonIdQuizRouteImport } from './routes/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -278,6 +280,11 @@ const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
   path: '/admin/broadcast',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAjudaRoute = AdminAjudaRouteImport.update({
+  id: '/admin/ajuda',
+  path: '/admin/ajuda',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   id: '/admin/agendamentos',
   path: '/admin/agendamentos',
@@ -407,6 +414,11 @@ const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   path: '/admin/blog/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAjudaSlugRoute = AdminAjudaSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => AdminAjudaRoute,
+} as any)
 const AdminCursosIdEditarRoute = AdminCursosIdEditarRouteImport.update({
   id: '/admin/cursos/$id/editar',
   path: '/admin/cursos/$id/editar',
@@ -439,6 +451,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/ajuda': typeof AdminAjudaRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -466,6 +479,7 @@ export interface FileRoutesByFullPath {
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
+  '/admin/ajuda/$slug': typeof AdminAjudaSlugRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
@@ -507,6 +521,7 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/ajuda': typeof AdminAjudaRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -534,6 +549,7 @@ export interface FileRoutesByTo {
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
+  '/admin/ajuda/$slug': typeof AdminAjudaSlugRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
@@ -577,6 +593,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/ajuda': typeof AdminAjudaRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -604,6 +621,7 @@ export interface FileRoutesById {
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
+  '/admin/ajuda/$slug': typeof AdminAjudaSlugRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
@@ -648,6 +666,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
+    | '/admin/ajuda'
     | '/admin/broadcast'
     | '/admin/clientes'
     | '/admin/diagnostico-envio'
@@ -675,6 +694,7 @@ export interface FileRouteTypes {
     | '/cursos/'
     | '/loja/'
     | '/painel/'
+    | '/admin/ajuda/$slug'
     | '/admin/blog/$id'
     | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
@@ -716,6 +736,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
+    | '/admin/ajuda'
     | '/admin/broadcast'
     | '/admin/clientes'
     | '/admin/diagnostico-envio'
@@ -743,6 +764,7 @@ export interface FileRouteTypes {
     | '/cursos'
     | '/loja'
     | '/painel'
+    | '/admin/ajuda/$slug'
     | '/admin/blog/$id'
     | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
@@ -785,6 +807,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
+    | '/admin/ajuda'
     | '/admin/broadcast'
     | '/admin/clientes'
     | '/admin/diagnostico-envio'
@@ -812,6 +835,7 @@ export interface FileRouteTypes {
     | '/cursos/'
     | '/loja/'
     | '/painel/'
+    | '/admin/ajuda/$slug'
     | '/admin/blog/$id'
     | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
@@ -855,6 +879,7 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
+  AdminAjudaRoute: typeof AdminAjudaRouteWithChildren
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
@@ -1190,6 +1215,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBroadcastRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/ajuda': {
+      id: '/admin/ajuda'
+      path: '/admin/ajuda'
+      fullPath: '/admin/ajuda'
+      preLoaderRoute: typeof AdminAjudaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/agendamentos': {
       id: '/admin/agendamentos'
       path: '/admin/agendamentos'
@@ -1358,6 +1390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/ajuda/$slug': {
+      id: '/admin/ajuda/$slug'
+      path: '/$slug'
+      fullPath: '/admin/ajuda/$slug'
+      preLoaderRoute: typeof AdminAjudaSlugRouteImport
+      parentRoute: typeof AdminAjudaRoute
+    }
     '/admin/cursos/$id/editar': {
       id: '/admin/cursos/$id/editar'
       path: '/admin/cursos/$id/editar'
@@ -1393,6 +1432,18 @@ const BodyogaRouteChildren: BodyogaRouteChildren = {
 const BodyogaRouteWithChildren =
   BodyogaRoute._addFileChildren(BodyogaRouteChildren)
 
+interface AdminAjudaRouteChildren {
+  AdminAjudaSlugRoute: typeof AdminAjudaSlugRoute
+}
+
+const AdminAjudaRouteChildren: AdminAjudaRouteChildren = {
+  AdminAjudaSlugRoute: AdminAjudaSlugRoute,
+}
+
+const AdminAjudaRouteWithChildren = AdminAjudaRoute._addFileChildren(
+  AdminAjudaRouteChildren,
+)
+
 interface AdminCursosIdAulasRouteChildren {
   AdminCursosIdAulasLessonIdQuizRoute: typeof AdminCursosIdAulasLessonIdQuizRoute
 }
@@ -1419,6 +1470,7 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
+  AdminAjudaRoute: AdminAjudaRouteWithChildren,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
@@ -1474,13 +1526,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

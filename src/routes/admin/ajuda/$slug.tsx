@@ -3,7 +3,7 @@ import { ChevronLeft, Clock, Lightbulb, AlertTriangle } from "lucide-react";
 import type { ReactNode } from "react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
-import { tutorials, categories } from "@/data/tutorials";
+import { tutorials, categories, type Tutorial } from "@/data/tutorials";
 
 export const Route = createFileRoute("/admin/ajuda/$slug")({
   loader: ({ params }) => {
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/admin/ajuda/$slug")({
 });
 
 function Page() {
-  const { tutorial } = Route.useLoaderData();
+  const { tutorial } = Route.useLoaderData() as { tutorial: Tutorial };
   const cat = categories[tutorial.category];
 
   return (
