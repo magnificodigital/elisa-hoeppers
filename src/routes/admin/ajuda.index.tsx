@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { tutorials, categories } from "@/data/tutorials";
 
-export const Route = createFileRoute("/admin/ajuda")({
+export const Route = createFileRoute("/admin/ajuda/")({
   head: () => ({ meta: [{ title: "Admin — Ajuda" }] }),
   component: () => (
     <AdminGuard>
