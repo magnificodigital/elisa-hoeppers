@@ -10,6 +10,7 @@ import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
 import { toast } from "sonner";
+import { CardPaymentForm, type CardData } from "@/components/checkout/CardPaymentForm";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
@@ -87,8 +88,10 @@ function CheckoutPage() {
     }
   }, [user, profile]);
 
-  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
+  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | "processing" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"pix" | "credit_card">("pix");
+  const [cardError, setCardError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
   const [asaasEnabled, setAsaasEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
