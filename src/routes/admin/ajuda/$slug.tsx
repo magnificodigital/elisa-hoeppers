@@ -79,7 +79,7 @@ function Page() {
                   </span>
                   <div className="flex-1 min-w-0">
                     <h2 className="font-medium text-primary-dark mb-2">{step.title}</h2>
-                    <div className="text-sm text-primary-dark/80 leading-relaxed whitespace-pre-line">
+                    <div className="text-sm text-primary-dark/80 leading-relaxed">
                       {renderBody(step.body)}
                     </div>
 
@@ -123,12 +123,17 @@ function Page() {
 
 function renderBody(body: string): ReactNode {
   const html = body
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/_(.+?)_/g, "<em>$1</em>")
     .replace(
       /\[(.+?)\]\((.+?)\)/g,
       '<a href="$2" class="text-primary underline" target="_blank" rel="noreferrer">$1</a>'
     )
-    .replace(/^- (.+)$/gm, "• $1");
+    .replace(/^- (.+)$/gm, '<span class="block ml-4">• $1</span>')
+    .replace(/\n\n/g, "<br /><br />")
+    .replace(/\n/g, "<br />");
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }
