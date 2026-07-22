@@ -20,7 +20,6 @@ const OPTIONS = [
     icon: GalleryHorizontal,
   },
   {
-  {
     to: "/admin/site/menu",
     label: "Menu de navegação",
     description: "Escolha o que aparece no header e no footer, e de que lado.",
