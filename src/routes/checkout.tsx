@@ -401,6 +401,90 @@ function CheckoutPage() {
     }
   }
 
+  async function handleCardSubmit(card: CardData) {
+    setCardError(null);
+    setSubmitError(null);
+
+    if (meEnabled && (shippingError || (!selectedShipping && shippingOpts.length > 0))) {
+      setCardError("Selecione uma opção de frete válida antes de pagar.");
+      return;
+    }
+
+    const clean = form.cpfCnpj.replace(/\D/g, "");
+    if (clean.length !== 11 && clean.length !== 14) {
+      setCardError("Informe um CPF ou CNPJ válido.");
+      return;
+    }
+
+    const accountOk = await maybeCreateAccount();
+    if (!accountOk) return;
+
+    try {
+      setSubmitting("processing");
+      const [city, state] = form.cityState.split("/").map((s) => s.trim());
+      const addressPayload = form.street
+        ? {
+            cep: form.cep,
+            street: form.street,
+            number: form.number,
+            complement: form.complement,
+            district: form.district,
+            city: city ?? "",
+            state: state ?? "",
+            cpf_cnpj: clean,
+          }
+        : { cpf_cnpj: clean };
+
+      const { data, error } = await supabase.rpc("place_order", {
+        p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
+        p_customer_name: form.name,
+        p_customer_email: form.email,
+        p_customer_phone: form.phone,
+        p_customer_address: addressPayload,
+        p_notes: form.notes || null,
+        p_shipping_service_id: selectedShipping?.id ?? null,
+        p_shipping_service_label: selectedShipping
+          ? `${selectedShipping.company} ${selectedShipping.name}`
+          : null,
+        p_shipping_cents: shippingCents,
+        p_destination_cep: form.cep.replace(/\D/g, "") || null,
+      });
+      if (error) throw error;
+      const row = Array.isArray(data) ? data[0] : data;
+      const orderResult = row as { order_id: string; code: string };
+
+      const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
+        body: {
+          order_id: orderResult.order_id,
+          billing_type: "CREDIT_CARD",
+          installment_count: card.installmentCount,
+          credit_card: {
+            holderName: card.holderName,
+            number: card.number,
+            expiryMonth: card.expiryMonth,
+            expiryYear: card.expiryYear,
+            ccv: card.ccv,
+          },
+        },
+      });
+      if (payErr) throw payErr;
+      if ((payData as any)?.error) throw new Error((payData as any).error);
+
+      track("order_created", {
+        order_code: orderResult.code,
+        total_brl: Number((totalCents / 100).toFixed(2)),
+        items: items.length,
+      });
+
+      clear();
+      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+    } catch (err) {
+      setCardError((err as Error).message);
+    } finally {
+      setSubmitting(null);
+    }
+  }
+
   if (loaded && totalItems === 0) return null;
 
   return (
