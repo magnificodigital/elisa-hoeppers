@@ -69,11 +69,13 @@ export function BodyogaLanding() {
           <img
             src={iconAsset.url}
             alt="BODYOGA"
-            className="w-20 md:w-28 h-auto mb-6"
+            className="w-28 md:w-40 h-auto mb-6"
             loading="lazy"
           />
-          <p className="font-display italic text-2xl md:text-4xl text-bodyoga-green leading-snug">
-            Corpo, mente e ambiente em equilíbrio.
+          <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug">
+            Corpo, mente e ambiente
+            <br />
+            em equilíbrio.
           </p>
         </div>
       </section>
