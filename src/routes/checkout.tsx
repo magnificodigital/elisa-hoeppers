@@ -848,19 +848,66 @@ function CheckoutPage() {
                   ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
               )}
-              <button
-                type="button"
-                onClick={() => submitOrder("mercadopago")}
-                disabled={
-                  submitting !== null ||
-                  !mpEnabled ||
-                  (meEnabled && !!shippingError) ||
-                  (meEnabled && !selectedShipping && shippingOpts.length > 0)
-                }
-                className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
-              >
-                {submitting === "mercadopago" ? "Indo pro pagamento…" : "Finalizar Compra"}
-              </button>
+
+              {asaasEnabled && (
+                <div className="mb-4">
+                  <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-2">
+                    Método de pagamento
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod("pix")}
+                      className={`p-3 rounded-lg border-2 transition text-left ${
+                        paymentMethod === "pix"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="text-xl mb-0.5">⚡</div>
+                      <p className="font-medium text-xs text-primary-dark">PIX</p>
+                      <p className="text-[10px] text-primary-dark/60">Imediato</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod("credit_card")}
+                      className={`p-3 rounded-lg border-2 transition text-left ${
+                        paymentMethod === "credit_card"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="text-xl mb-0.5">💳</div>
+                      <p className="font-medium text-xs text-primary-dark">Cartão</p>
+                      <p className="text-[10px] text-primary-dark/60">Até 12×</p>
+                    </button>
+                  </div>
+                  {paymentMethod === "credit_card" && (
+                    <CardPaymentForm
+                      totalCents={totalCents}
+                      onSubmit={handleCardSubmit}
+                      loading={submitting === "processing"}
+                      error={cardError}
+                    />
+                  )}
+                </div>
+              )}
+
+              {(!asaasEnabled || paymentMethod === "pix") && (
+                <button
+                  type="button"
+                  onClick={() => submitOrder("mercadopago")}
+                  disabled={
+                    submitting !== null ||
+                    !mpEnabled ||
+                    (meEnabled && !!shippingError) ||
+                    (meEnabled && !selectedShipping && shippingOpts.length > 0)
+                  }
+                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+                >
+                  {submitting === "mercadopago" || submitting === "processing" ? "Processando…" : "Finalizar Compra"}
+                </button>
+              )}
 
               {!mpEnabled && (
                 <p className="text-xs text-red-700 mt-2 text-center">
