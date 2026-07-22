@@ -71,6 +71,7 @@ import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admi
 import { Route as AdminConfiguracoesIntegracoesRouteImport } from './routes/admin/configuracoes/integracoes'
 import { Route as AdminConfiguracoesEmailsRouteImport } from './routes/admin/configuracoes/emails'
 import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
+import { Route as AdminConfiguracoesAsaasRouteImport } from './routes/admin/configuracoes/asaas'
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
 import { Route as AdminBodyogaRituaisIdRouteImport } from './routes/admin/bodyoga-rituais/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
@@ -399,6 +400,11 @@ const AdminConfiguracoesDiagnosticosRoute =
     path: '/admin/configuracoes/diagnosticos',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminConfiguracoesAsaasRoute = AdminConfiguracoesAsaasRouteImport.update({
+  id: '/admin/configuracoes/asaas',
+  path: '/admin/configuracoes/asaas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBodyogaSlidesIdRoute = AdminBodyogaSlidesIdRouteImport.update({
   id: '/admin/bodyoga-slides/$id',
   path: '/admin/bodyoga-slides/$id',
@@ -483,6 +489,7 @@ export interface FileRoutesByFullPath {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
+  '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -553,6 +560,7 @@ export interface FileRoutesByTo {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
+  '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -625,6 +633,7 @@ export interface FileRoutesById {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-rituais/$id': typeof AdminBodyogaRituaisIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
+  '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -698,6 +707,7 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
+    | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -768,6 +778,7 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
+    | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -839,6 +850,7 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/bodyoga-rituais/$id'
     | '/admin/bodyoga-slides/$id'
+    | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -909,6 +921,7 @@ export interface RootRouteChildren {
   AdminBlogIdRoute: typeof AdminBlogIdRoute
   AdminBodyogaRituaisIdRoute: typeof AdminBodyogaRituaisIdRoute
   AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
+  AdminConfiguracoesAsaasRoute: typeof AdminConfiguracoesAsaasRoute
   AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
   AdminConfiguracoesEmailsRoute: typeof AdminConfiguracoesEmailsRoute
   AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
@@ -1369,6 +1382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesDiagnosticosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/asaas': {
+      id: '/admin/configuracoes/asaas'
+      path: '/admin/configuracoes/asaas'
+      fullPath: '/admin/configuracoes/asaas'
+      preLoaderRoute: typeof AdminConfiguracoesAsaasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/bodyoga-slides/$id': {
       id: '/admin/bodyoga-slides/$id'
       path: '/admin/bodyoga-slides/$id'
@@ -1500,6 +1520,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminBlogIdRoute: AdminBlogIdRoute,
   AdminBodyogaRituaisIdRoute: AdminBodyogaRituaisIdRoute,
   AdminBodyogaSlidesIdRoute: AdminBodyogaSlidesIdRoute,
+  AdminConfiguracoesAsaasRoute: AdminConfiguracoesAsaasRoute,
   AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
   AdminConfiguracoesEmailsRoute: AdminConfiguracoesEmailsRoute,
   AdminConfiguracoesIntegracoesRoute: AdminConfiguracoesIntegracoesRoute,
@@ -1526,13 +1547,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

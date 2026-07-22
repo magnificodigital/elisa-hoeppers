@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CreditCard, Mail, Truck, Users, Stethoscope, CalendarClock, ChevronRight, MailCheck, Plug, Globe } from "lucide-react";
+import { CreditCard, Mail, Truck, Users, Stethoscope, CalendarClock, ChevronRight, MailCheck, Plug, Globe, Wallet } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/admin/configuracoes/")({
 
 const sections = [
   { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Chaves de produção e teste, toggle de habilitação." },
+  { to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas", desc: "Gateway com PIX transparente. Cliente paga sem sair do site." },
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/newsletter", icon: Mail, title: "Newsletter", desc: "Audience do Resend e captura de email." },
   { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Emails", desc: "Logotipo, cor, assinatura e rodapé dos emails enviados." },
