@@ -10,6 +10,7 @@ import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
 import { toast } from "sonner";
+import { CardPaymentForm, type CardData } from "@/components/checkout/CardPaymentForm";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
@@ -87,8 +88,10 @@ function CheckoutPage() {
     }
   }, [user, profile]);
 
-  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | null>(null);
+  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | "processing" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"pix" | "credit_card">("pix");
+  const [cardError, setCardError] = useState<string | null>(null);
   const [mpEnabled, setMpEnabled] = useState(false);
   const [asaasEnabled, setAsaasEnabled] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
@@ -393,6 +396,90 @@ function CheckoutPage() {
       }
     } catch (err) {
       setSubmitError(friendlyError((err as Error).message));
+    } finally {
+      setSubmitting(null);
+    }
+  }
+
+  async function handleCardSubmit(card: CardData) {
+    setCardError(null);
+    setSubmitError(null);
+
+    if (meEnabled && (shippingError || (!selectedShipping && shippingOpts.length > 0))) {
+      setCardError("Selecione uma opção de frete válida antes de pagar.");
+      return;
+    }
+
+    const clean = form.cpfCnpj.replace(/\D/g, "");
+    if (clean.length !== 11 && clean.length !== 14) {
+      setCardError("Informe um CPF ou CNPJ válido.");
+      return;
+    }
+
+    const accountOk = await maybeCreateAccount();
+    if (!accountOk) return;
+
+    try {
+      setSubmitting("processing");
+      const [city, state] = form.cityState.split("/").map((s) => s.trim());
+      const addressPayload = form.street
+        ? {
+            cep: form.cep,
+            street: form.street,
+            number: form.number,
+            complement: form.complement,
+            district: form.district,
+            city: city ?? "",
+            state: state ?? "",
+            cpf_cnpj: clean,
+          }
+        : { cpf_cnpj: clean };
+
+      const { data, error } = await supabase.rpc("place_order", {
+        p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
+        p_customer_name: form.name,
+        p_customer_email: form.email,
+        p_customer_phone: form.phone,
+        p_customer_address: addressPayload,
+        p_notes: form.notes || null,
+        p_shipping_service_id: selectedShipping?.id ?? null,
+        p_shipping_service_label: selectedShipping
+          ? `${selectedShipping.company} ${selectedShipping.name}`
+          : null,
+        p_shipping_cents: shippingCents,
+        p_destination_cep: form.cep.replace(/\D/g, "") || null,
+      });
+      if (error) throw error;
+      const row = Array.isArray(data) ? data[0] : data;
+      const orderResult = row as { order_id: string; code: string };
+
+      const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
+        body: {
+          order_id: orderResult.order_id,
+          billing_type: "CREDIT_CARD",
+          installment_count: card.installmentCount,
+          credit_card: {
+            holderName: card.holderName,
+            number: card.number,
+            expiryMonth: card.expiryMonth,
+            expiryYear: card.expiryYear,
+            ccv: card.ccv,
+          },
+        },
+      });
+      if (payErr) throw payErr;
+      if ((payData as any)?.error) throw new Error((payData as any).error);
+
+      track("order_created", {
+        order_code: orderResult.code,
+        total_brl: Number((totalCents / 100).toFixed(2)),
+        items: items.length,
+      });
+
+      clear();
+      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
+    } catch (err) {
+      setCardError((err as Error).message);
     } finally {
       setSubmitting(null);
     }
@@ -761,19 +848,66 @@ function CheckoutPage() {
                   ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
               )}
-              <button
-                type="button"
-                onClick={() => submitOrder("mercadopago")}
-                disabled={
-                  submitting !== null ||
-                  !mpEnabled ||
-                  (meEnabled && !!shippingError) ||
-                  (meEnabled && !selectedShipping && shippingOpts.length > 0)
-                }
-                className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
-              >
-                {submitting === "mercadopago" ? "Indo pro pagamento…" : "Finalizar Compra"}
-              </button>
+
+              {asaasEnabled && (
+                <div className="mb-4">
+                  <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-2">
+                    Método de pagamento
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod("pix")}
+                      className={`p-3 rounded-lg border-2 transition text-left ${
+                        paymentMethod === "pix"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="text-xl mb-0.5">⚡</div>
+                      <p className="font-medium text-xs text-primary-dark">PIX</p>
+                      <p className="text-[10px] text-primary-dark/60">Imediato</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod("credit_card")}
+                      className={`p-3 rounded-lg border-2 transition text-left ${
+                        paymentMethod === "credit_card"
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="text-xl mb-0.5">💳</div>
+                      <p className="font-medium text-xs text-primary-dark">Cartão</p>
+                      <p className="text-[10px] text-primary-dark/60">Até 12×</p>
+                    </button>
+                  </div>
+                  {paymentMethod === "credit_card" && (
+                    <CardPaymentForm
+                      totalCents={totalCents}
+                      onSubmit={handleCardSubmit}
+                      loading={submitting === "processing"}
+                      error={cardError}
+                    />
+                  )}
+                </div>
+              )}
+
+              {(!asaasEnabled || paymentMethod === "pix") && (
+                <button
+                  type="button"
+                  onClick={() => submitOrder("mercadopago")}
+                  disabled={
+                    submitting !== null ||
+                    !mpEnabled ||
+                    (meEnabled && !!shippingError) ||
+                    (meEnabled && !selectedShipping && shippingOpts.length > 0)
+                  }
+                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+                >
+                  {submitting === "mercadopago" || submitting === "processing" ? "Processando…" : "Finalizar Compra"}
+                </button>
+              )}
 
               {!mpEnabled && (
                 <p className="text-xs text-red-700 mt-2 text-center">

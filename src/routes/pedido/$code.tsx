@@ -238,10 +238,49 @@ function OrderPage() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[720px] mx-auto px-4 md:px-6">
+          {order.status === "confirmed" && order.payment_method_type === "credit_card" && (
+            <div className="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6 text-center">
+              <div className="text-4xl mb-3">✅</div>
+              <h2 className="font-display text-2xl text-primary-dark mb-2">
+                Pagamento aprovado!
+              </h2>
+              <p className="text-sm text-primary-dark/70">
+                Pago com cartão{order.payment_installments && order.payment_installments > 1 ? ` em ${order.payment_installments}×` : ""}. Você recebeu confirmação por email.
+              </p>
+            </div>
+          )}
+          {order.status === "pending" && order.payment_method_type === "credit_card" && (
+            <div className="bg-peach/30 border border-peach rounded-xl p-6 mb-6 text-center">
+              <div className="text-4xl mb-3">⏳</div>
+              <h2 className="font-display text-2xl text-primary-dark mb-2">
+                Processando pagamento
+              </h2>
+              <p className="text-sm text-primary-dark/70">
+                Confirmando com a operadora do cartão. Isso costuma levar alguns segundos.
+              </p>
+            </div>
+          )}
+          {order.status === "cancelled" && order.payment_method_type === "credit_card" && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6 text-center">
+              <div className="text-4xl mb-3">❌</div>
+              <h2 className="font-display text-2xl text-primary-dark mb-2">
+                Pagamento não aprovado
+              </h2>
+              <p className="text-sm text-primary-dark/70 mb-4">
+                Seu cartão foi recusado pela operadora. Tente novamente com outro cartão ou use PIX.
+              </p>
+              <Link
+                to="/loja"
+                className="inline-block bg-primary text-cream px-6 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
+              >
+                Voltar pra loja
+              </Link>
+            </div>
+          )}
           {order.status === "pending" && order.asaas_pix_qr_code_image && (
             <PixPaymentBlock order={order} />
           )}
-          {order.status === "pending" && !order.asaas_pix_qr_code_image && <PaymentCountdown order={order} />}
+          {order.status === "pending" && !order.asaas_pix_qr_code_image && order.payment_method_type !== "credit_card" && <PaymentCountdown order={order} />}
           {banner && (
             <div className={`mb-6 rounded-lg border px-4 py-3 text-sm ${banner.cls}`}>
               {banner.text}
