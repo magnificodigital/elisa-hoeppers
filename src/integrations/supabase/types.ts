@@ -742,6 +742,16 @@ export type Database = {
           asaas_pix_expires_at: string | null
           asaas_pix_qr_code_copy_paste: string | null
           asaas_pix_qr_code_image: string | null
+          base_customer_id: number | null
+          base_invoice_danfe_url: string | null
+          base_invoice_emitted_at: string | null
+          base_invoice_error: string | null
+          base_invoice_id: number | null
+          base_invoice_key: string | null
+          base_invoice_number: number | null
+          base_invoice_status: string | null
+          base_invoice_xml_url: string | null
+          base_sales_order_id: number | null
           code: string
           created_at: string
           customer_address: Json | null
@@ -779,6 +789,16 @@ export type Database = {
           asaas_pix_expires_at?: string | null
           asaas_pix_qr_code_copy_paste?: string | null
           asaas_pix_qr_code_image?: string | null
+          base_customer_id?: number | null
+          base_invoice_danfe_url?: string | null
+          base_invoice_emitted_at?: string | null
+          base_invoice_error?: string | null
+          base_invoice_id?: number | null
+          base_invoice_key?: string | null
+          base_invoice_number?: number | null
+          base_invoice_status?: string | null
+          base_invoice_xml_url?: string | null
+          base_sales_order_id?: number | null
           code: string
           created_at?: string
           customer_address?: Json | null
@@ -816,6 +836,16 @@ export type Database = {
           asaas_pix_expires_at?: string | null
           asaas_pix_qr_code_copy_paste?: string | null
           asaas_pix_qr_code_image?: string | null
+          base_customer_id?: number | null
+          base_invoice_danfe_url?: string | null
+          base_invoice_emitted_at?: string | null
+          base_invoice_error?: string | null
+          base_invoice_id?: number | null
+          base_invoice_key?: string | null
+          base_invoice_number?: number | null
+          base_invoice_status?: string | null
+          base_invoice_xml_url?: string | null
+          base_sales_order_id?: number | null
           code?: string
           created_at?: string
           customer_address?: Json | null
@@ -1024,13 +1054,16 @@ export type Database = {
       }
       products: {
         Row: {
+          base_product_id: number | null
           brand: string | null
           category: string | null
+          cfop: string | null
           compare_at_price_cents: number | null
           created_at: string
           description: string | null
           display_order: number
           gallery: Json
+          gross_weight_kg: number | null
           height_cm: number | null
           id: string
           in_stock: boolean
@@ -1038,23 +1071,28 @@ export type Database = {
           is_featured: boolean
           length_cm: number | null
           name: string
+          ncm: string | null
           price_cents: number
           ritual_id: string | null
           short_description: string | null
           sku: string | null
           slug: string
+          unit_of_measure: string | null
           updated_at: string
           weight_g: number | null
           width_cm: number | null
         }
         Insert: {
+          base_product_id?: number | null
           brand?: string | null
           category?: string | null
+          cfop?: string | null
           compare_at_price_cents?: number | null
           created_at?: string
           description?: string | null
           display_order?: number
           gallery?: Json
+          gross_weight_kg?: number | null
           height_cm?: number | null
           id?: string
           in_stock?: boolean
@@ -1062,23 +1100,28 @@ export type Database = {
           is_featured?: boolean
           length_cm?: number | null
           name: string
+          ncm?: string | null
           price_cents: number
           ritual_id?: string | null
           short_description?: string | null
           sku?: string | null
           slug: string
+          unit_of_measure?: string | null
           updated_at?: string
           weight_g?: number | null
           width_cm?: number | null
         }
         Update: {
+          base_product_id?: number | null
           brand?: string | null
           category?: string | null
+          cfop?: string | null
           compare_at_price_cents?: number | null
           created_at?: string
           description?: string | null
           display_order?: number
           gallery?: Json
+          gross_weight_kg?: number | null
           height_cm?: number | null
           id?: string
           in_stock?: boolean
@@ -1086,11 +1129,13 @@ export type Database = {
           is_featured?: boolean
           length_cm?: number | null
           name?: string
+          ncm?: string | null
           price_cents?: number
           ritual_id?: string | null
           short_description?: string | null
           sku?: string | null
           slug?: string
+          unit_of_measure?: string | null
           updated_at?: string
           weight_g?: number | null
           width_cm?: number | null
@@ -1109,6 +1154,7 @@ export type Database = {
         Row: {
           asaas_customer_id: string | null
           avatar_url: string | null
+          base_customer_id: number | null
           bio: string | null
           cpf_cnpj: string | null
           created_at: string
@@ -1124,6 +1170,7 @@ export type Database = {
         Insert: {
           asaas_customer_id?: string | null
           avatar_url?: string | null
+          base_customer_id?: number | null
           bio?: string | null
           cpf_cnpj?: string | null
           created_at?: string
@@ -1139,6 +1186,7 @@ export type Database = {
         Update: {
           asaas_customer_id?: string | null
           avatar_url?: string | null
+          base_customer_id?: number | null
           bio?: string | null
           cpf_cnpj?: string | null
           created_at?: string
