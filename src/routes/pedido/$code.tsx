@@ -387,6 +387,41 @@ function OrderPage() {
             </button>
           )}
 
+          {order.base_invoice_danfe_url && (
+            <div className="mt-6 bg-white rounded-lg p-5">
+              <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-2 text-center">
+                Nota Fiscal (NFe)
+              </p>
+              {order.base_invoice_number && (
+                <p className="text-center text-sm text-primary-dark mb-3">
+                  NFe nº <span className="font-mono">{order.base_invoice_number}</span>
+                </p>
+              )}
+              <div className="flex flex-wrap justify-center gap-2">
+                <a
+                  href={order.base_invoice_danfe_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-primary text-cream px-5 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
+                >
+                  📄 Baixar DANFE
+                </a>
+                {order.base_invoice_xml_url && (
+                  <a
+                    href={order.base_invoice_xml_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 border border-primary text-primary px-5 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-cream transition"
+                  >
+                    XML
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+
+
           {order.tracking_code && (order.status === "shipped" || order.status === "completed") && (
             <div className="mt-6 bg-white rounded-lg p-5 text-center">
               <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-1">
