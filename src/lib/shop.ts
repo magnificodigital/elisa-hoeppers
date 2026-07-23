@@ -25,10 +25,14 @@ export type Product = {
   brand: string | null;
   ritual_id: string | null;
   ritual_ids?: string[];
+  ncm: string | null;
+  cfop: string | null;
+  unit_of_measure: string | null;
+  gross_weight_kg: number | null;
 };
 
 const COLS =
-  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id";
+  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg";
 
 function withProductMedia(product: Product): Product {
   return {

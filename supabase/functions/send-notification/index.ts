@@ -404,6 +404,38 @@ async function handleOrderCompleted(orderId: string) {
     .catch((e) => console.error("completed customer email failed:", e));
 }
 
+async function handleInvoiceReady(recordId: string) {
+  const { data: order, error } = await supabase
+    .from("orders")
+    .select("id, code, customer_name, customer_email, user_id, base_invoice_number, base_invoice_danfe_url, base_invoice_xml_url, base_invoice_key")
+    .eq("id", recordId)
+    .maybeSingle();
+  if (error || !order) throw new Error("order not found");
+  if (!order.base_invoice_danfe_url) {
+    console.warn(`Invoice ${recordId} sem DANFE URL, pulando email`);
+    return;
+  }
+
+  const firstName = order.customer_name.split(" ")[0];
+  const html = wrap(`
+    <div class="card">
+      <h1>Sua nota fiscal chegou 🌿</h1>
+      <p>Olá ${firstName}, aqui está a NFe do seu pedido <span class="code">#${order.code}</span>.</p>
+      ${order.base_invoice_number ? `<p><span class="label">Número da NFe</span> ${order.base_invoice_number}</p>` : ""}
+      ${order.base_invoice_key ? `<p><span class="label">Chave de acesso</span><br/><span class="code" style="font-size:11px;word-break:break-all;">${order.base_invoice_key}</span></p>` : ""}
+      <p style="margin-top:20px;">Você pode baixar o DANFE (PDF) e o XML nos botões abaixo:</p>
+      <a class="btn" href="${order.base_invoice_danfe_url}">Baixar DANFE (PDF)</a>
+      ${order.base_invoice_xml_url ? `<p style="margin-top:8px;"><a href="${order.base_invoice_xml_url}" style="color:#3B4F30;font-size:13px;">Baixar XML</a></p>` : ""}
+      <p class="muted" style="margin-top:24px;">Guarde esses arquivos — servem como comprovante fiscal.</p>
+    </div>
+  `);
+  if (!(await wantsOrderUpdates(order.user_id))) return;
+  await sendEmail(order.customer_email, `NFe #${order.base_invoice_number ?? order.code} disponível`, html)
+    .catch((e) => console.error("invoice email failed:", e));
+}
+
+
+
 
 
 
@@ -426,6 +458,7 @@ serve(async (req) => {
     else if (type === "order_shipped") await handleOrderShipped(record_id);
     else if (type === "order_completed") await handleOrderCompleted(record_id);
     else if (type === "course_purchased") await handleCoursePurchased(record_id);
+    else if (type === "invoice_ready") await handleInvoiceReady(record_id);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,

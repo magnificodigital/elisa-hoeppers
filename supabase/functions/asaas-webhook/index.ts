@@ -64,6 +64,14 @@ serve(async (req) => {
       supabase.functions.invoke("send-notification", {
         body: { type: "order", record_id: order.id },
       }).catch((e) => console.error("email dispatch failed:", e));
+
+      // Emite NFe automaticamente (se Base ERP habilitado)
+      const baseEnabled = await getSetting("base_enabled");
+      if (baseEnabled === "true") {
+        supabase.functions.invoke("base-emit-invoice", {
+          body: { order_id: order.id },
+        }).catch((e) => console.error("NFe dispatch failed:", e));
+      }
     }
 
     return new Response(JSON.stringify({ ok: true, event, newStatus }), { status: 200 });
