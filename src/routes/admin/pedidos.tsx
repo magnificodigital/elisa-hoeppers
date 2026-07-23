@@ -291,6 +291,20 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
     },
   });
 
+  const emitNfe = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("base-emit-invoice", { body: { order_id: o.id } });
+      if (error) throw error;
+      if ((data as { error?: string }).error) throw new Error((data as { error: string }).error);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Emissão de NFe iniciada. O status atualiza pelo webhook.");
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
 
 
 
