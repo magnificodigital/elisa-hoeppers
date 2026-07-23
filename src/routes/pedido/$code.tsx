@@ -33,6 +33,11 @@ type Order = {
   asaas_pix_qr_code_copy_paste?: string | null;
   asaas_pix_expires_at?: string | null;
   asaas_invoice_url?: string | null;
+  base_invoice_number?: string | null;
+  base_invoice_status?: string | null;
+  base_invoice_danfe_url?: string | null;
+  base_invoice_xml_url?: string | null;
+  base_invoice_key?: string | null;
 };
 
 function PaymentCountdown({ order }: { order: Order }) {
