@@ -424,10 +424,17 @@ export type Order = {
   payment_method_type: string | null;
   payment_installments: number | null;
   created_at: string;
+  base_invoice_id?: string | null;
+  base_invoice_number?: string | null;
+  base_invoice_status?: string | null;
+  base_invoice_danfe_url?: string | null;
+  base_invoice_xml_url?: string | null;
+  base_invoice_key?: string | null;
+  base_invoice_error?: string | null;
 };
 
 const ORDER_COLS =
-  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, shipping_service_id, shipping_service_label, shipping_destination_cep, me_order_id, me_label_url, me_status, payment_method_type, payment_installments, created_at";
+  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, shipping_service_id, shipping_service_label, shipping_destination_cep, me_order_id, me_label_url, me_status, payment_method_type, payment_installments, created_at, base_invoice_id, base_invoice_number, base_invoice_status, base_invoice_danfe_url, base_invoice_xml_url, base_invoice_key, base_invoice_error";
 
 export async function listAllOrdersForAdmin(filter?: { status?: Order["status"] }): Promise<Order[]> {
   let q = supabase
