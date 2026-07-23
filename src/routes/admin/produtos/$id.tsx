@@ -53,6 +53,10 @@ function ProductEditPage() {
     length_cm: "" as string | number,
     width_cm: "" as string | number,
     height_cm: "" as string | number,
+    ncm: "",
+    cfop: "",
+    unit_of_measure: "",
+    gross_weight_kg: "" as string | number,
   });
   const [delOpen, setDelOpen] = useState(false);
   const [priceDisplay, setPriceDisplay] = useState("");
@@ -77,6 +81,10 @@ function ProductEditPage() {
         length_cm: product.length_cm ?? "",
         width_cm: product.width_cm ?? "",
         height_cm: product.height_cm ?? "",
+        ncm: product.ncm ?? "",
+        cfop: product.cfop ?? "",
+        unit_of_measure: product.unit_of_measure ?? "",
+        gross_weight_kg: product.gross_weight_kg ?? "",
       });
       setPriceDisplay(product.price_cents ? centsToBRL(product.price_cents) : "");
       const compare = product.compare_at_price_cents ?? 0;
@@ -112,6 +120,10 @@ function ProductEditPage() {
         length_cm: form.length_cm === "" ? null : Number(form.length_cm),
         width_cm: form.width_cm === "" ? null : Number(form.width_cm),
         height_cm: form.height_cm === "" ? null : Number(form.height_cm),
+        ncm: form.ncm.trim() || null,
+        cfop: form.cfop.trim() || null,
+        unit_of_measure: form.unit_of_measure.trim() || null,
+        gross_weight_kg: form.gross_weight_kg === "" ? null : Number(form.gross_weight_kg),
       });
     },
     onSuccess: () => {
