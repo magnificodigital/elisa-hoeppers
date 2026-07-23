@@ -330,6 +330,9 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
             <span className="font-mono text-sm text-primary-dark">#{o.code}</span>
             <StatusPill status={o.status} />
             <PaymentMethodBadge type={o.payment_method_type} installments={o.payment_installments} />
+            {o.base_invoice_status && <NfeStatusPill status={o.base_invoice_status} />}
+
+
 
             <span className="text-[11px] text-[var(--text-muted)] inline-flex items-center gap-1">
               <Calendar className="w-3 h-3" />
