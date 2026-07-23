@@ -14,33 +14,70 @@ async function getSetting(key: string): Promise<string | null> {
   return (data?.value as string | null)?.trim() ?? null;
 }
 
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  const enc = new TextEncoder();
+  const aBytes = enc.encode(a);
+  const bBytes = enc.encode(b);
+  let result = 0;
+  for (let i = 0; i < aBytes.length; i++) {
+    result |= aBytes[i] ^ bBytes[i];
+  }
+  return result === 0;
+}
+
 serve(async (req) => {
   try {
     const expectedToken = await getSetting("base_webhook_token");
     const providedToken = req.headers.get("access_token") ?? req.headers.get("x-webhook-token") ?? "";
-    if (expectedToken && providedToken !== expectedToken) {
-      console.error("Base webhook: token inválido");
-      return new Response(JSON.stringify({ error: "unauthorized" }), { status: 401 });
+
+    if (expectedToken) {
+      if (!providedToken || !timingSafeEqual(providedToken, expectedToken)) {
+        console.error("Base webhook: token inválido (from IP:", req.headers.get("x-forwarded-for"), ")");
+        return new Response(JSON.stringify({ error: "unauthorized" }), {
+          status: 401, headers: { "Content-Type": "application/json" },
+        });
+      }
+    } else {
+      console.warn("Base webhook: expected token não configurado — modo permissivo (INSEGURO)");
     }
 
-    const body = await req.json();
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: "invalid json" }), { status: 400 });
+    }
+
     const event = body.event;
     const nfe = body.invoiceNfe ?? body.data ?? {};
     const invoiceId = nfe.id ?? nfe.invoiceId;
 
-    if (!invoiceId) {
-      console.warn("Base webhook: sem invoice ID");
-      return new Response(JSON.stringify({ ok: true, ignored: true }), { status: 200 });
+    if (!invoiceId || typeof invoiceId !== "number") {
+      console.warn("Base webhook: invoiceId ausente ou inválido");
+      return new Response(JSON.stringify({ ok: true, ignored: "no invoice id" }), { status: 200 });
+    }
+
+    if (!event || typeof event !== "string") {
+      console.warn("Base webhook: event ausente ou inválido");
+      return new Response(JSON.stringify({ ok: true, ignored: "no event" }), { status: 200 });
     }
 
     const { data: order } = await supabase.from("orders")
-      .select("id, code, customer_email, status")
+      .select("id, code, customer_email, status, base_invoice_status, base_invoice_emitted_at")
       .eq("base_invoice_id", invoiceId).maybeSingle();
 
     if (!order) {
-      console.warn(`Base webhook: pedido não encontrado pra invoice ${invoiceId}`);
-      return new Response(JSON.stringify({ ok: true, ignored: true }), { status: 200 });
+      console.warn(`Base webhook: pedido não encontrado pra invoice ${invoiceId} — payload ignorado`);
+      return new Response(JSON.stringify({ ok: true, ignored: "order not found" }), { status: 200 });
     }
+
+    if (event === "INVOICE_NFE_AUTHORIZED" && order.base_invoice_status === "AUTORIZADA" && order.base_invoice_emitted_at) {
+      console.log(`Base webhook: invoice ${invoiceId} já processada como AUTORIZADA, ignorando replay`);
+      return new Response(JSON.stringify({ ok: true, already_processed: true }), { status: 200 });
+    }
+
+    console.log(`Base webhook: event=${event} invoice=${invoiceId} order=${order.code}`);
 
     let statusUpdate: any = {};
     let dispatchEmail = false;
