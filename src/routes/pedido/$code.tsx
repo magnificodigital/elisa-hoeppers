@@ -107,6 +107,15 @@ export const Route = createFileRoute("/pedido/$code")({
     if (error) throw error;
     const order = Array.isArray(data) ? data[0] : data;
     if (!order) return { order: null as Order | null, needsEmail: true };
+    // Enriquece com dados fiscais (RLS aplica; falhas silenciosas)
+    try {
+      const { data: nfe } = await supabase
+        .from("orders")
+        .select("base_invoice_number, base_invoice_status, base_invoice_danfe_url, base_invoice_xml_url, base_invoice_key")
+        .eq("id", order.id)
+        .maybeSingle();
+      if (nfe) Object.assign(order, nfe);
+    } catch {}
     return { order: order as Order, needsEmail: false };
   },
   head: ({ loaderData }) => ({
