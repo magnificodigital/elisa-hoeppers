@@ -43,6 +43,7 @@ import { Route as AdminSocialRouteImport } from './routes/admin/social'
 import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
+import { Route as AdminNotasFiscaisRouteImport } from './routes/admin/notas-fiscais'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
@@ -70,6 +71,7 @@ import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admi
 import { Route as AdminConfiguracoesIntegracoesRouteImport } from './routes/admin/configuracoes/integracoes'
 import { Route as AdminConfiguracoesEmailsRouteImport } from './routes/admin/configuracoes/emails'
 import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
+import { Route as AdminConfiguracoesBaseRouteImport } from './routes/admin/configuracoes/base'
 import { Route as AdminConfiguracoesAsaasRouteImport } from './routes/admin/configuracoes/asaas'
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
@@ -248,6 +250,11 @@ const AdminPedidosRoute = AdminPedidosRouteImport.update({
   path: '/admin/pedidos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminNotasFiscaisRoute = AdminNotasFiscaisRouteImport.update({
+  id: '/admin/notas-fiscais',
+  path: '/admin/notas-fiscais',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminInscritosRoute = AdminInscritosRouteImport.update({
   id: '/admin/inscritos',
   path: '/admin/inscritos',
@@ -392,6 +399,11 @@ const AdminConfiguracoesDiagnosticosRoute =
     path: '/admin/configuracoes/diagnosticos',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminConfiguracoesBaseRoute = AdminConfiguracoesBaseRouteImport.update({
+  id: '/admin/configuracoes/base',
+  path: '/admin/configuracoes/base',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminConfiguracoesAsaasRoute = AdminConfiguracoesAsaasRouteImport.update({
   id: '/admin/configuracoes/asaas',
   path: '/admin/configuracoes/asaas',
@@ -450,6 +462,7 @@ export interface FileRoutesByFullPath {
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
+  '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
@@ -475,6 +488,7 @@ export interface FileRoutesByFullPath {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
+  '/admin/configuracoes/base': typeof AdminConfiguracoesBaseRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -519,6 +533,7 @@ export interface FileRoutesByTo {
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
+  '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
@@ -544,6 +559,7 @@ export interface FileRoutesByTo {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
+  '/admin/configuracoes/base': typeof AdminConfiguracoesBaseRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -590,6 +606,7 @@ export interface FileRoutesById {
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/inscritos': typeof AdminInscritosRoute
+  '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
@@ -615,6 +632,7 @@ export interface FileRoutesById {
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
+  '/admin/configuracoes/base': typeof AdminConfiguracoesBaseRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -662,6 +680,7 @@ export interface FileRouteTypes {
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
+    | '/admin/notas-fiscais'
     | '/admin/pedidos'
     | '/admin/posts'
     | '/admin/reservas'
@@ -687,6 +706,7 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
+    | '/admin/configuracoes/base'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -731,6 +751,7 @@ export interface FileRouteTypes {
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
+    | '/admin/notas-fiscais'
     | '/admin/pedidos'
     | '/admin/posts'
     | '/admin/reservas'
@@ -756,6 +777,7 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
+    | '/admin/configuracoes/base'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -801,6 +823,7 @@ export interface FileRouteTypes {
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/inscritos'
+    | '/admin/notas-fiscais'
     | '/admin/pedidos'
     | '/admin/posts'
     | '/admin/reservas'
@@ -826,6 +849,7 @@ export interface FileRouteTypes {
     | '/admin/blog/$id'
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
+    | '/admin/configuracoes/base'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -872,6 +896,7 @@ export interface RootRouteChildren {
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
+  AdminNotasFiscaisRoute: typeof AdminNotasFiscaisRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   AdminPostsRoute: typeof AdminPostsRoute
   AdminReservasRoute: typeof AdminReservasRoute
@@ -896,6 +921,7 @@ export interface RootRouteChildren {
   AdminBlogIdRoute: typeof AdminBlogIdRoute
   AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
   AdminConfiguracoesAsaasRoute: typeof AdminConfiguracoesAsaasRoute
+  AdminConfiguracoesBaseRoute: typeof AdminConfiguracoesBaseRoute
   AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
   AdminConfiguracoesEmailsRoute: typeof AdminConfiguracoesEmailsRoute
   AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
@@ -1160,6 +1186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPedidosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/notas-fiscais': {
+      id: '/admin/notas-fiscais'
+      path: '/admin/notas-fiscais'
+      fullPath: '/admin/notas-fiscais'
+      preLoaderRoute: typeof AdminNotasFiscaisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/inscritos': {
       id: '/admin/inscritos'
       path: '/admin/inscritos'
@@ -1349,6 +1382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesDiagnosticosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/base': {
+      id: '/admin/configuracoes/base'
+      path: '/admin/configuracoes/base'
+      fullPath: '/admin/configuracoes/base'
+      preLoaderRoute: typeof AdminConfiguracoesBaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes/asaas': {
       id: '/admin/configuracoes/asaas'
       path: '/admin/configuracoes/asaas'
@@ -1444,6 +1484,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
   AdminInscritosRoute: AdminInscritosRoute,
+  AdminNotasFiscaisRoute: AdminNotasFiscaisRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   AdminPostsRoute: AdminPostsRoute,
   AdminReservasRoute: AdminReservasRoute,
@@ -1468,6 +1509,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminBlogIdRoute: AdminBlogIdRoute,
   AdminBodyogaSlidesIdRoute: AdminBodyogaSlidesIdRoute,
   AdminConfiguracoesAsaasRoute: AdminConfiguracoesAsaasRoute,
+  AdminConfiguracoesBaseRoute: AdminConfiguracoesBaseRoute,
   AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
   AdminConfiguracoesEmailsRoute: AdminConfiguracoesEmailsRoute,
   AdminConfiguracoesIntegracoesRoute: AdminConfiguracoesIntegracoesRoute,
