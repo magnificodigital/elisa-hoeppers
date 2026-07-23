@@ -363,6 +363,53 @@ function ProductEditPage() {
               </div>
             </div>
 
+            <div className="border-t border-border pt-5">
+              <h2 className="font-display text-lg text-primary-dark mb-1">Fiscal (Base ERP / NFe)</h2>
+              <p className="text-xs text-primary-dark/60 mb-4">
+                Necessário para emissão automática de nota fiscal. NCM é obrigatório.
+                Consulte sua contadora se tiver dúvida.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <Field label="NCM (8 dígitos)">
+                  <input
+                    value={form.ncm}
+                    onChange={(e) => setForm({ ...form, ncm: e.target.value.replace(/\D/g, "").slice(0, 8) })}
+                    placeholder="ex: 33049910"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="CFOP (opcional)">
+                  <input
+                    value={form.cfop}
+                    onChange={(e) => setForm({ ...form, cfop: e.target.value.replace(/\D/g, "").slice(0, 4) })}
+                    placeholder="ex: 5102"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Unidade">
+                  <input
+                    value={form.unit_of_measure}
+                    onChange={(e) => setForm({ ...form, unit_of_measure: e.target.value.toUpperCase().slice(0, 6) })}
+                    placeholder="UN, KG, ML"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Peso bruto (kg)">
+                  <input
+                    type="number"
+                    step="0.001"
+                    min="0"
+                    value={form.gross_weight_kg}
+                    onChange={(e) => setForm({ ...form, gross_weight_kg: e.target.value === "" ? "" : parseFloat(e.target.value) || 0 })}
+                    placeholder="ex: 0.350"
+                    className={inputCls}
+                  />
+                </Field>
+              </div>
+            </div>
+
+
+
 
             {save.error && <p className="text-red-700 text-sm">{(save.error as Error).message}</p>}
 
