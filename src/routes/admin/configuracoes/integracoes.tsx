@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Plug, CreditCard, Wallet, Truck, Instagram } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plug, CreditCard, Wallet, Truck, Instagram, FileText } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/admin/configuracoes/integracoes")({
 const integrations = [
   { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Chaves de produção e teste, toggle de habilitação." },
   { to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas", desc: "Gateway com PIX e cartão transparente." },
+  { to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/site", icon: Instagram, title: "Feed do Instagram", desc: "Feed automático da home via Behold e handle do perfil." },
 ] as const;

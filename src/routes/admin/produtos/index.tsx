@@ -45,6 +45,10 @@ function AdminProductsList() {
         height_cm: null,
         brand: null,
         ritual_id: null,
+        ncm: null,
+        cfop: null,
+        unit_of_measure: null,
+        gross_weight_kg: null,
       });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-products"] }),

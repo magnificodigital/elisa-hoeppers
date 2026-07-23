@@ -291,6 +291,20 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
     },
   });
 
+  const emitNfe = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("base-emit-invoice", { body: { order_id: o.id } });
+      if (error) throw error;
+      if ((data as { error?: string }).error) throw new Error((data as { error: string }).error);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Emissão de NFe iniciada. O status atualiza pelo webhook.");
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
 
 
 
@@ -316,6 +330,9 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
             <span className="font-mono text-sm text-primary-dark">#{o.code}</span>
             <StatusPill status={o.status} />
             <PaymentMethodBadge type={o.payment_method_type} installments={o.payment_installments} />
+            {o.base_invoice_status && <NfeStatusPill status={o.base_invoice_status} />}
+
+
 
             <span className="text-[11px] text-[var(--text-muted)] inline-flex items-center gap-1">
               <Calendar className="w-3 h-3" />
@@ -478,6 +495,29 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
           </a>
         )}
 
+        {o.base_invoice_danfe_url && (
+          <a href={o.base_invoice_danfe_url} target="_blank" rel="noreferrer"
+            className="inline-flex items-center gap-1.5 border border-primary text-primary px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition">
+            <FileText className="w-3.5 h-3.5" /> DANFE
+          </a>
+        )}
+
+        {(o.status === "confirmed" || o.status === "shipped" || o.status === "completed") &&
+          (!o.base_invoice_status || o.base_invoice_status === "ERRO") && (
+          <button
+            onClick={() => emitNfe.mutate()}
+            disabled={emitNfe.isPending}
+            className="inline-flex items-center gap-1.5 bg-primary-dark text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            {emitNfe.isPending ? "Emitindo..." : o.base_invoice_status === "ERRO" ? "Reemitir NFe" : "Emitir NFe"}
+          </button>
+        )}
+
+        {o.base_invoice_error && (
+          <p className="w-full text-red-700 text-xs mt-1">NFe: {o.base_invoice_error}</p>
+        )}
+
         {buyLabel.error && (
           <p className="w-full text-red-700 text-xs mt-1">{(buyLabel.error as Error).message}</p>
         )}
@@ -497,3 +537,16 @@ function StatusPill({ status }: { status: Order["status"] }) {
   const m = map[status];
   return <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${m.cls}`}>{m.label}</span>;
 }
+
+function NfeStatusPill({ status }: { status: string }) {
+  const map: Record<string, { label: string; cls: string }> = {
+    AUTORIZADA: { label: "NFe ✓", cls: "bg-primary/10 text-primary" },
+    PROCESSANDO: { label: "NFe ...", cls: "bg-peach/40 text-primary-dark" },
+    CRIADA: { label: "NFe ...", cls: "bg-peach/40 text-primary-dark" },
+    ERRO: { label: "NFe ✗", cls: "bg-red-100 text-red-700" },
+    CANCELADA: { label: "NFe canc.", cls: "bg-gray-200 text-gray-700" },
+  };
+  const m = map[status] ?? { label: `NFe ${status}`, cls: "bg-gray-100 text-gray-700" };
+  return <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${m.cls}`}>{m.label}</span>;
+}
+

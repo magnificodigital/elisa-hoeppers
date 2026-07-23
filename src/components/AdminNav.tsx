@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   LogOut,
   HelpCircle,
+  FileText,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -26,6 +27,7 @@ const NAV_ITEMS: NavLeaf[] = [
   { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
+  { to: "/admin/notas-fiscais", label: "Notas Fiscais", icon: FileText },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
   { to: "/admin/site", label: "WebSite", icon: Sparkles },
   { to: "/admin/posts", label: "Posts", icon: Newspaper },
