@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/lib/supabase";
 
-const SITE_URL = "https://elisahoeppers.com.br";
+const SITE_URL = "https://bodyogaoficial.com.br";
 
 function buildSitemap(
   posts: { slug: string; updated_at?: string | null }[],
