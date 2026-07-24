@@ -166,12 +166,13 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
 }
 
 
-function CustomSlide({ slide }: { slide: Slide }) {
+function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: () => void }) {
   const titleLines = slide.title.split("\n");
   const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
+  const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
   return (
     <>
-      {slide.media_href && (
+      {slide.media_href && !capturesCoupon && (
         <a
           href={slide.media_href}
           onClick={(e) => handleAnchorClick(e, slide.media_href)}
@@ -179,8 +180,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
           className="absolute inset-0 z-[5]"
         />
       )}
-      {/* MOBILE: imagem dos produtos com botão centralizado */}
-
+      {/* MOBILE */}
       <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
         <h1 className="sr-only">{slide.title}</h1>
         {slide.image_url && (
@@ -196,13 +196,23 @@ function CustomSlide({ slide }: { slide: Slide }) {
         )}
         {slide.cta_label && (
           <div className="absolute inset-0 pt-40 pb-24 flex items-center justify-center">
-            <a
-              href={slide.cta_href || "#rituais"}
-              onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-              className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-            >
-              {slide.cta_label}
-            </a>
+            {capturesCoupon ? (
+              <button
+                type="button"
+                onClick={onCouponClick}
+                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </button>
+            ) : (
+              <a
+                href={slide.cta_href || "#rituais"}
+                onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </a>
+            )}
           </div>
         )}
       </div>
@@ -235,13 +245,23 @@ function CustomSlide({ slide }: { slide: Slide }) {
               )}
               {slide.cta_label && (
                 <div className="mt-8 flex flex-wrap gap-4">
-                  <a
-                    href={slide.cta_href || "#rituais"}
-                    onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-                    className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-                  >
-                    {slide.cta_label}
-                  </a>
+                  {capturesCoupon ? (
+                    <button
+                      type="button"
+                      onClick={onCouponClick}
+                      className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                    >
+                      {slide.cta_label}
+                    </button>
+                  ) : (
+                    <a
+                      href={slide.cta_href || "#rituais"}
+                      onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                      className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                    >
+                      {slide.cta_label}
+                    </a>
+                  )}
                 </div>
               )}
             </div>
