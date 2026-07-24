@@ -84,6 +84,7 @@ function SlideEditPage() {
         display_order: form.display_order,
         is_active: form.is_active,
         duration_seconds: form.duration_seconds,
+        coupon_capture_enabled: form.coupon_capture_enabled,
       }),
     onSuccess: () => {
       toast.success("Slide atualizado");
