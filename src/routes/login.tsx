@@ -71,9 +71,6 @@ function LoginPage() {
 
           <div className="flex flex-col items-center mb-8">
             <BodyogaLogo variant="full" tone="cream" size={68} />
-            <p className="mt-4 text-sm text-bodyoga-cream tracking-wide text-center">
-              Bem-vinda de volta ao seu ritual.
-            </p>
           </div>
 
           <form onSubmit={onSubmit} className="space-y-5">
