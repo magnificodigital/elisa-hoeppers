@@ -17,8 +17,8 @@ const integrations = [
   { to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/site", icon: Instagram, title: "Feed do Instagram", desc: "Feed automático da home via Behold e handle do perfil." },
-  { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Emails", desc: "Logotipo, cor, assinatura e rodapé dos emails enviados." },
-  { to: "/admin/configuracoes/newsletter", icon: Mail, title: "Newsletter", desc: "Audience do Resend e captura de email." },
+  { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Integração Resend", desc: "Status da API key e domínio de envio." },
+  { to: "/admin/broadcast", icon: Mail, title: "Emails & Newsletter", desc: "Campanhas, templates, layout, automáticos e inscritos." },
   { to: "/admin/configuracoes/cupom", icon: Gift, title: "Cupom de boas-vindas", desc: "Modal de captura no banner, desconto e email automático." },
 ] as const;
 
