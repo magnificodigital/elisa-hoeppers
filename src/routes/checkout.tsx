@@ -11,6 +11,7 @@ import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
 import { toast } from "sonner";
 import { CardPaymentForm, type CardData } from "@/components/checkout/CardPaymentForm";
+import pixIcon from "@/assets/pix-icon.png.asset.json";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
@@ -838,11 +839,7 @@ function CheckoutPage() {
                       }`}
                     >
                       <div className="mb-0.5 h-5 flex items-center">
-                        <img
-                          src="https://logospng.org/download/pix/logo-pix-icone-256.png"
-                          alt="PIX"
-                          className="h-5 w-auto"
-                        />
+                        <img src={pixIcon.url} alt="PIX" className="h-5 w-auto" />
                       </div>
                       <p className="font-medium text-xs text-primary-dark">PIX</p>
                       <p className="text-[10px] text-primary-dark/60">Imediato</p>
