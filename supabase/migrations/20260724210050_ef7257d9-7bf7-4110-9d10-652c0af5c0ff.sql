@@ -1,0 +1,1 @@
+update public.app_settings set value = 'false' where key = 'mp_enabled';
