@@ -65,11 +65,11 @@ export function BodyogaLanding() {
 
       {/* FRASE DE ABERTURA */}
       <section className="bg-bodyoga-cream">
-        <div className="max-w-[900px] mx-auto px-6 py-16 md:py-24 flex flex-col items-center text-center">
+        <div className="max-w-[900px] mx-auto px-6 py-6 md:py-10 flex flex-col items-center text-center">
           <img
             src={iconAsset.url}
             alt="BODYOGA"
-            className="w-28 md:w-40 h-auto mb-6"
+            className="w-28 md:w-40 h-auto mb-3"
             loading="lazy"
           />
           <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug">
