@@ -1,7 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BodyogaLanding } from "@/components/bodyoga/BodyogaLanding";
+import { listActiveSlides } from "@/lib/shop";
 
 export const Route = createFileRoute("/")({
+  loader: async ({ context: { queryClient } }) => {
+    const slides = await queryClient.ensureQueryData({
+      queryKey: ["bodyoga-slides-active"],
+      queryFn: listActiveSlides,
+    });
+
+    return { slides };
+  },
   head: () => ({
     meta: [
       { title: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
@@ -16,7 +25,21 @@ export const Route = createFileRoute("/")({
         content:
           "Cosméticos naturais artesanais com óleos essenciais, criados à mão por Elisa Hoeppers Casas.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
+      {
+        name: "twitter:description",
+        content:
+          "Cosméticos naturais artesanais com óleos essenciais, criados à mão por Elisa Hoeppers Casas.",
+      },
     ],
   }),
-  component: BodyogaLanding,
+  component: HomeRoute,
 });
+
+function HomeRoute() {
+  const { slides } = Route.useLoaderData();
+
+  return <BodyogaLanding initialSlides={slides} />;
+}
