@@ -55,3 +55,7 @@ export async function deleteUser(userId: string): Promise<void> {
 export async function sendPasswordResetForUser(email: string): Promise<void> {
   await call("send_password_reset", { email });
 }
+
+export async function setUserPassword(userId: string, password: string): Promise<void> {
+  await call("set_password", { user_id: userId, password });
+}

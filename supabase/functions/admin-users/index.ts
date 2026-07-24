@@ -125,6 +125,18 @@ serve(async (req) => {
       });
     }
 
+    if (action === "set_password") {
+      const { user_id, password } = payload;
+      if (!user_id) throw new Error("user_id obrigatório");
+      if (!password || String(password).length < 6) throw new Error("A senha precisa ter ao menos 6 caracteres");
+      const { error } = await supabase.auth.admin.updateUserById(user_id, { password });
+      if (error) throw error;
+      return new Response(JSON.stringify({ ok: true }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (action === "delete") {
       const { user_id } = payload;
       const { error } = await supabase.auth.admin.deleteUser(user_id);
