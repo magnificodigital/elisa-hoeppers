@@ -40,6 +40,7 @@ function SlideEditPage() {
     display_order: 0,
     is_active: true,
     duration_seconds: 7,
+    coupon_capture_enabled: false,
   });
 
   const [delOpen, setDelOpen] = useState(false);
