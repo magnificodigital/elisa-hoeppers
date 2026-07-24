@@ -198,6 +198,24 @@ function SlideEditPage() {
               <span className="text-sm text-primary-dark">Ativo no banner da página BODYOGA</span>
             </label>
 
+            <div className="rounded-lg border border-bodyoga-brown/20 bg-cream/50 p-4">
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.coupon_capture_enabled}
+                  onChange={(e) => setForm({ ...form, coupon_capture_enabled: e.target.checked })}
+                  className="mt-1"
+                />
+                <div>
+                  <span className="block text-sm text-primary-dark font-medium">Botão vira captura de cupom por email</span>
+                  <span className="block text-xs text-primary-dark/60 mt-0.5">
+                    Ao ativar, clicar no botão deste slide abre um modal pedindo o email da visitante e envia um cupom de desconto único.
+                    Configure a porcentagem e a mensagem em <strong>Configurações → Integrações → Cupom de boas-vindas</strong>.
+                  </span>
+                </div>
+              </label>
+            </div>
+
 
             {save.error && <p className="text-red-700 text-sm">{(save.error as Error).message}</p>}
 
