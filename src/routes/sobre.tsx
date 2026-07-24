@@ -27,6 +27,9 @@ function Sobre() {
       <section className="py-20 md:py-28 bg-cream min-h-screen">
         <div className="max-w-[1170px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
           <div className="space-y-6 text-primary-dark text-base md:text-lg leading-relaxed order-2 md:order-1">
+            <h1 className="font-display text-4xl md:text-5xl text-primary-dark mb-4">
+              Elisa Hoeppers — Yoga e Cuidado Consciente
+            </h1>
             <p>
               Sou professora de Hatha e Vinyasa Yoga. Iniciei a prática pessoal há 18 anos.
               Em 2014, quando estive na Índia, no Ashram da Amma, iniciei o aprofundamento
