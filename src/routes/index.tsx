@@ -4,13 +4,13 @@ import { BodyogaLanding } from "@/components/bodyoga/BodyogaLanding";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BODYOGA — Rituais para corpo, mente e ambiente" },
+      { title: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
       {
         name: "description",
         content:
           "Cosméticos naturais artesanais com óleos essenciais. Spray antisséptico, spray aromático de ambiente e sabonete natural — criados por Elisa Hoeppers Casas.",
       },
-      { property: "og:title", content: "BODYOGA — Rituais para corpo, mente e ambiente" },
+      { property: "og:title", content: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
       {
         property: "og:description",
         content:

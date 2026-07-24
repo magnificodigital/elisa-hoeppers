@@ -4,7 +4,7 @@ import { BodyogaLanding } from "@/components/bodyoga/BodyogaLanding";
 export const Route = createFileRoute("/bodyoga/")({
   head: () => ({
     meta: [
-      { title: "BODYOGA — Rituais para corpo, mente e ambiente" },
+      { title: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
       {
         name: "description",
         content:
