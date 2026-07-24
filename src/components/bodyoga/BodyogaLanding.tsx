@@ -20,7 +20,7 @@ import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
-import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product } from "@/lib/shop";
+import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Slide } from "@/lib/shop";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
 
 
@@ -43,7 +43,7 @@ function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
   e.currentTarget.style.display = "none";
 }
 
-export function BodyogaLanding() {
+export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = {}) {
   const { data: products } = useQuery({
     queryKey: ["bodyoga-products"],
     queryFn: () => listProducts({ onlyInStock: false }),
@@ -61,7 +61,7 @@ export function BodyogaLanding() {
       <BodyogaHeader alwaysGreen />
 
       {/* HERO SLIDER */}
-      <BodyogaHeroSlider />
+      <BodyogaHeroSlider initialSlides={initialSlides} />
 
       {/* FRASE DE ABERTURA */}
       <section className="bg-bodyoga-cream">
