@@ -191,7 +191,8 @@ async function sendInBatches(
     const slice = recipients.slice(i, i + CHUNK);
     const results = await Promise.all(slice.map((r) => {
       const personalized = bodyHtml.replace(/\{\{first_name\}\}/g, (r.name ?? "").split(" ")[0] || "");
-      const html = wrap(personalized);
+      const isFullDoc = /<(!doctype|html)[\s>]/i.test(personalized.trim().slice(0, 200));
+      const html = isFullDoc ? personalized : wrap(personalized);
       return sendOne(r.email, subject, html);
     }));
     sent += results.filter(Boolean).length;
