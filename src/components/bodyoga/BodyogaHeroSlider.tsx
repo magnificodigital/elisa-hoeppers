@@ -275,19 +275,21 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
 
 export function BodyogaHeroSlider({ initialSlides }: { initialSlides?: Slide[] } = {}) {
   const [index, setIndex] = useState(0);
+  const [couponOpen, setCouponOpen] = useState(false);
   const { data: slides, isPending } = useQuery({
     queryKey: ["bodyoga-slides-active"],
     queryFn: listActiveSlides,
     initialData: initialSlides,
   });
 
-  // Render DB slides; fall back to the built-in default hero when there are none.
-  // A slide with a video_url renders as a video slide; otherwise as a custom slide.
   const dbSlides = slides ?? [];
+  const openCoupon = () => setCouponOpen(true);
   const items: ReactNode[] =
     !isPending && dbSlides.length > 0
       ? dbSlides.map((s) =>
-          s.video_url ? <VideoSlide key={s.id} slide={s} /> : <CustomSlide key={s.id} slide={s} />,
+          s.video_url
+            ? <VideoSlide key={s.id} slide={s} onCouponClick={openCoupon} />
+            : <CustomSlide key={s.id} slide={s} onCouponClick={openCoupon} />,
         )
       : isPending
         ? []
