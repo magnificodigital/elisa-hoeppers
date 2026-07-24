@@ -11,6 +11,7 @@ import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
 import { toast } from "sonner";
 import { CardPaymentForm, type CardData } from "@/components/checkout/CardPaymentForm";
+import pixIcon from "@/assets/pix-icon.png.asset.json";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
