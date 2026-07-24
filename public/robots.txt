@@ -7,4 +7,4 @@ Disallow: /cadastro-de-alunos
 Disallow: /checkout
 Disallow: /carrinho
 
-Sitemap: https://elisahoeppers.com.br/sitemap.xml
+Sitemap: https://bodyogaoficial.com.br/sitemap.xml
