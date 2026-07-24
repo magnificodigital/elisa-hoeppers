@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Plug, CreditCard, Wallet, Truck, Instagram, FileText } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plug, Wallet, Truck, Instagram, FileText } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
