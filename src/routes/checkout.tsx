@@ -88,12 +88,12 @@ function CheckoutPage() {
     }
   }, [user, profile]);
 
-  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | "processing" | null>(null);
+  const [submitting, setSubmitting] = useState<"processing" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"pix" | "credit_card">("pix");
   const [cardError, setCardError] = useState<string | null>(null);
-  const [mpEnabled, setMpEnabled] = useState(false);
   const [asaasEnabled, setAsaasEnabled] = useState(false);
+
   const [cepLoading, setCepLoading] = useState(false);
   const [cepFilled, setCepFilled] = useState(false);
 
