@@ -251,7 +251,7 @@ export function BodyogaHeroSlider() {
 
   // Render DB slides; fall back to the built-in default hero when there are none.
   // A slide with a video_url renders as a video slide; otherwise as a custom slide.
-  const dbSlides = slides;
+  const dbSlides = slides ?? [];
   const items: ReactNode[] =
     dbSlides.length > 0
       ? dbSlides.map((s) =>
