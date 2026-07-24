@@ -362,7 +362,7 @@ export function BodyogaHeroSlider({ initialSlides }: { initialSlides?: Slide[] }
           </>
         )}
       </div>
-      <CouponCaptureDialog open={couponOpen} onOpenChange={setCouponOpen} />
+      <CouponCaptureDialog open={couponOpen} onClose={() => setCouponOpen(false)} />
     </section>
   );
 }
