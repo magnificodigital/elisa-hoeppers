@@ -54,6 +54,12 @@ export function InscritosTab() {
 
   return (
     <div className="space-y-4">
+      <div className="bg-white rounded-xl p-5 shadow-sm">
+        <h3 className="text-sm font-medium text-primary-dark mb-1">Configurações da newsletter</h3>
+        <p className="text-xs text-primary-dark/60 mb-2">Audience do Resend e captura de email da home/footer. <a href="https://resend.com/audiences" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Abrir Audiences no Resend ↗</a></p>
+        <SettingsCategory category="newsletter" />
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-primary-dark/60">{active} ativos · {total} total</p>
         <button onClick={exportCsv} disabled={filtered.length === 0}
