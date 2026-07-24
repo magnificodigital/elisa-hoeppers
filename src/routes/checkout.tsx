@@ -816,7 +816,7 @@ function CheckoutPage() {
                   </span>
                 </div>
               </div>
-              {mpEnabled && meEnabled && shippingError && (
+              {asaasEnabled && meEnabled && shippingError && (
                 <p className="text-xs text-red-700 mb-3 text-center">
                   ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
@@ -866,33 +866,37 @@ function CheckoutPage() {
                 </div>
               )}
 
-              {(!asaasEnabled || paymentMethod === "pix") && (
+              {asaasEnabled && paymentMethod === "pix" && (
                 <button
                   type="button"
-                  onClick={() => submitOrder("mercadopago")}
+                  onClick={submitOrder}
                   disabled={
                     submitting !== null ||
-                    !mpEnabled ||
                     (meEnabled && !!shippingError) ||
                     (meEnabled && !selectedShipping && shippingOpts.length > 0)
                   }
                   className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
                 >
-                  {submitting === "mercadopago" || submitting === "processing" ? "Processando…" : "Finalizar Compra"}
+                  {submitting === "processing" ? "Gerando PIX..." : "Gerar QR Code PIX"}
                 </button>
               )}
 
-              {!mpEnabled && (
-                <p className="text-xs text-red-700 mt-2 text-center">
-                  Pagamento online indisponível no momento. Entre em contato pelo WhatsApp.
-                </p>
+              {!asaasEnabled && (
+                <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mt-3 text-center">
+                  <p className="text-xs text-amber-900">
+                    ⚠️ Pagamento online indisponível no momento. Entre em contato pelo WhatsApp pra finalizar sua compra.
+                  </p>
+                </div>
               )}
               {submitError && (
                 <p className="text-red-700 text-sm mt-3">{submitError}</p>
               )}
-              <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                Pague online com cartão, PIX ou boleto pelo Mercado Pago.
-              </p>
+              {asaasEnabled && (
+                <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
+                  🔒 Pagamento seguro. Aceita PIX e cartão de crédito.
+                </p>
+              )}
+
               <div className="flex items-center justify-center gap-2 mt-2 flex-wrap">
                 {/* Visa */}
                 <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
