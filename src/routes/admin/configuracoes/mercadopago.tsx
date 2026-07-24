@@ -31,6 +31,13 @@ function Page() {
           <a href="https://www.mercadopago.com.br/developers/panel" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline inline-block mb-6">
             Abrir painel MP ↗
           </a>
+          <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <p className="text-sm text-amber-900">
+              ⚠️ Mercado Pago não está mais em uso. Todos os pagamentos passam pelo Asaas.
+              Configurações abaixo mantidas apenas pra referência histórica.
+            </p>
+          </div>
+
 
           <div className="bg-white rounded-xl p-6 shadow-sm">
             <SettingsCategory category="mercadopago" />
