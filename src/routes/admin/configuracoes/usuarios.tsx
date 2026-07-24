@@ -143,6 +143,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
   const qc = useQueryClient();
   const [resetOpen, setResetOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [pwOpen, setPwOpen] = useState(false);
 
   const update = useMutation({
     mutationFn: (role: UserRow["role"]) => updateUserRole(u.id, role),
