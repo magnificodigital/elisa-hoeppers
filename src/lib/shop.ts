@@ -167,9 +167,10 @@ export type Slide = {
   display_order: number;
   is_active: boolean;
   duration_seconds: number;
+  coupon_capture_enabled: boolean;
 };
 
-const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, video_url, media_href, show_nav, display_order, is_active, duration_seconds";
+const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, video_url, media_href, show_nav, display_order, is_active, duration_seconds, coupon_capture_enabled";
 
 
 export async function listActiveSlides(): Promise<Slide[]> {

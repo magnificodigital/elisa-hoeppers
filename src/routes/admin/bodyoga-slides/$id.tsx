@@ -40,6 +40,7 @@ function SlideEditPage() {
     display_order: 0,
     is_active: true,
     duration_seconds: 7,
+    coupon_capture_enabled: false,
   });
 
   const [delOpen, setDelOpen] = useState(false);
@@ -61,6 +62,7 @@ function SlideEditPage() {
         display_order: slide.display_order,
         is_active: slide.is_active,
         duration_seconds: slide.duration_seconds ?? 7,
+        coupon_capture_enabled: slide.coupon_capture_enabled ?? false,
       });
     }
   }, [slide]);
@@ -82,6 +84,7 @@ function SlideEditPage() {
         display_order: form.display_order,
         is_active: form.is_active,
         duration_seconds: form.duration_seconds,
+        coupon_capture_enabled: form.coupon_capture_enabled,
       }),
     onSuccess: () => {
       toast.success("Slide atualizado");
@@ -194,6 +197,24 @@ function SlideEditPage() {
               <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
               <span className="text-sm text-primary-dark">Ativo no banner da página BODYOGA</span>
             </label>
+
+            <div className="rounded-lg border border-bodyoga-brown/20 bg-cream/50 p-4">
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.coupon_capture_enabled}
+                  onChange={(e) => setForm({ ...form, coupon_capture_enabled: e.target.checked })}
+                  className="mt-1"
+                />
+                <div>
+                  <span className="block text-sm text-primary-dark font-medium">Botão vira captura de cupom por email</span>
+                  <span className="block text-xs text-primary-dark/60 mt-0.5">
+                    Ao ativar, clicar no botão deste slide abre um modal pedindo o email da visitante e envia um cupom de desconto único.
+                    Configure a porcentagem e a mensagem em <strong>Configurações → Integrações → Cupom de boas-vindas</strong>.
+                  </span>
+                </div>
+              </label>
+            </div>
 
 
             {save.error && <p className="text-red-700 text-sm">{(save.error as Error).message}</p>}

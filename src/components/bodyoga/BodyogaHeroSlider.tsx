@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { listActiveSlides, type Slide } from "@/lib/shop";
 import { isVideoUrl } from "@/lib/storage";
 import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
+import { CouponCaptureDialog } from "@/components/bodyoga/CouponCaptureDialog";
 
 /** The original, default hero — kept as the main (first) slide. */
 function DefaultHero() {
@@ -100,9 +101,10 @@ function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string
 
 
 /** Video slide — renders a background video (native mp4 file or YouTube embed) from a slide. */
-function VideoSlide({ slide }: { slide: Slide }) {
+function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: () => void }) {
   const videoUrl = slide.video_url!;
   const isFile = isVideoUrl(videoUrl) || videoUrl.startsWith("/__l5e/");
+  const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
   return (
     <>
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
@@ -124,12 +126,11 @@ function VideoSlide({ slide }: { slide: Slide }) {
             frameBorder={0}
           />
         )}
-        {/* Blocks all hover controls (play/pause/seek) from appearing */}
         <div className="absolute inset-0 z-10" />
       </div>
 
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
-      {slide.media_href && (
+      {slide.media_href && !capturesCoupon && (
         <a
           href={slide.media_href}
           onClick={(e) => handleAnchorClick(e, slide.media_href)}
@@ -141,13 +142,23 @@ function VideoSlide({ slide }: { slide: Slide }) {
 
       <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-center min-h-[85vh]">
         {slide.cta_label && (
-          <a
-            href={slide.cta_href || "/agendar"}
-            onClick={(e) => handleAnchorClick(e, slide.cta_href)}
-            className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-          >
-            {slide.cta_label}
-          </a>
+          capturesCoupon ? (
+            <button
+              type="button"
+              onClick={onCouponClick}
+              className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+            >
+              {slide.cta_label}
+            </button>
+          ) : (
+            <a
+              href={slide.cta_href || "/agendar"}
+              onClick={(e) => handleAnchorClick(e, slide.cta_href)}
+              className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+            >
+              {slide.cta_label}
+            </a>
+          )
         )}
       </div>
     </>
@@ -155,12 +166,13 @@ function VideoSlide({ slide }: { slide: Slide }) {
 }
 
 
-function CustomSlide({ slide }: { slide: Slide }) {
+function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: () => void }) {
   const titleLines = slide.title.split("\n");
   const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
+  const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
   return (
     <>
-      {slide.media_href && (
+      {slide.media_href && !capturesCoupon && (
         <a
           href={slide.media_href}
           onClick={(e) => handleAnchorClick(e, slide.media_href)}
@@ -168,8 +180,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
           className="absolute inset-0 z-[5]"
         />
       )}
-      {/* MOBILE: imagem dos produtos com botão centralizado */}
-
+      {/* MOBILE */}
       <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
         <h1 className="sr-only">{slide.title}</h1>
         {slide.image_url && (
@@ -185,13 +196,23 @@ function CustomSlide({ slide }: { slide: Slide }) {
         )}
         {slide.cta_label && (
           <div className="absolute inset-0 pt-40 pb-24 flex items-center justify-center">
-            <a
-              href={slide.cta_href || "#rituais"}
-              onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-              className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-            >
-              {slide.cta_label}
-            </a>
+            {capturesCoupon ? (
+              <button
+                type="button"
+                onClick={onCouponClick}
+                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </button>
+            ) : (
+              <a
+                href={slide.cta_href || "#rituais"}
+                onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </a>
+            )}
           </div>
         )}
       </div>
@@ -224,13 +245,23 @@ function CustomSlide({ slide }: { slide: Slide }) {
               )}
               {slide.cta_label && (
                 <div className="mt-8 flex flex-wrap gap-4">
-                  <a
-                    href={slide.cta_href || "#rituais"}
-                    onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-                    className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
-                  >
-                    {slide.cta_label}
-                  </a>
+                  {capturesCoupon ? (
+                    <button
+                      type="button"
+                      onClick={onCouponClick}
+                      className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                    >
+                      {slide.cta_label}
+                    </button>
+                  ) : (
+                    <a
+                      href={slide.cta_href || "#rituais"}
+                      onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                      className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+                    >
+                      {slide.cta_label}
+                    </a>
+                  )}
                 </div>
               )}
             </div>
@@ -244,19 +275,21 @@ function CustomSlide({ slide }: { slide: Slide }) {
 
 export function BodyogaHeroSlider({ initialSlides }: { initialSlides?: Slide[] } = {}) {
   const [index, setIndex] = useState(0);
+  const [couponOpen, setCouponOpen] = useState(false);
   const { data: slides, isPending } = useQuery({
     queryKey: ["bodyoga-slides-active"],
     queryFn: listActiveSlides,
     initialData: initialSlides,
   });
 
-  // Render DB slides; fall back to the built-in default hero when there are none.
-  // A slide with a video_url renders as a video slide; otherwise as a custom slide.
   const dbSlides = slides ?? [];
+  const openCoupon = () => setCouponOpen(true);
   const items: ReactNode[] =
     !isPending && dbSlides.length > 0
       ? dbSlides.map((s) =>
-          s.video_url ? <VideoSlide key={s.id} slide={s} /> : <CustomSlide key={s.id} slide={s} />,
+          s.video_url
+            ? <VideoSlide key={s.id} slide={s} onCouponClick={openCoupon} />
+            : <CustomSlide key={s.id} slide={s} onCouponClick={openCoupon} />,
         )
       : isPending
         ? []
@@ -329,6 +362,7 @@ export function BodyogaHeroSlider({ initialSlides }: { initialSlides?: Slide[] }
           </>
         )}
       </div>
+      <CouponCaptureDialog open={couponOpen} onClose={() => setCouponOpen(false)} />
     </section>
   );
 }

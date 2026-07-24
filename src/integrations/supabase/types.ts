@@ -196,6 +196,7 @@ export type Database = {
       }
       bodyoga_slides: {
         Row: {
+          coupon_capture_enabled: boolean
           created_at: string
           cta_href: string | null
           cta_label: string | null
@@ -212,6 +213,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          coupon_capture_enabled?: boolean
           created_at?: string
           cta_href?: string | null
           cta_label?: string | null
@@ -228,6 +230,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          coupon_capture_enabled?: boolean
           created_at?: string
           cta_href?: string | null
           cta_label?: string | null
@@ -341,6 +344,53 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coupons: {
+        Row: {
+          code: string
+          created_at: string
+          discount_percent: number
+          email: string
+          expires_at: string | null
+          full_name: string | null
+          id: string
+          source: string | null
+          used_at: string | null
+          used_order_id: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          discount_percent: number
+          email: string
+          expires_at?: string | null
+          full_name?: string | null
+          id?: string
+          source?: string | null
+          used_at?: string | null
+          used_order_id?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          email?: string
+          expires_at?: string | null
+          full_name?: string | null
+          id?: string
+          source?: string | null
+          used_at?: string | null
+          used_order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupons_used_order_id_fkey"
+            columns: ["used_order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
         ]
@@ -753,11 +803,13 @@ export type Database = {
           base_invoice_xml_url: string | null
           base_sales_order_id: number | null
           code: string
+          coupon_code: string | null
           created_at: string
           customer_address: Json | null
           customer_email: string
           customer_name: string
           customer_phone: string
+          discount_cents: number
           id: string
           items: Json
           me_label_url: string | null
@@ -800,11 +852,13 @@ export type Database = {
           base_invoice_xml_url?: string | null
           base_sales_order_id?: number | null
           code: string
+          coupon_code?: string | null
           created_at?: string
           customer_address?: Json | null
           customer_email: string
           customer_name: string
           customer_phone: string
+          discount_cents?: number
           id?: string
           items: Json
           me_label_url?: string | null
@@ -847,11 +901,13 @@ export type Database = {
           base_invoice_xml_url?: string | null
           base_sales_order_id?: number | null
           code?: string
+          coupon_code?: string | null
           created_at?: string
           customer_address?: Json | null
           customer_email?: string
           customer_name?: string
           customer_phone?: string
+          discount_cents?: number
           id?: string
           items?: Json
           me_label_url?: string | null
@@ -1547,12 +1603,23 @@ export type Database = {
         }[]
       }
       claim_guest_orders: { Args: never; Returns: number }
+      create_signup_coupon: {
+        Args: { p_email: string; p_name?: string; p_source?: string }
+        Returns: {
+          code: string
+          discount_percent: number
+          email: string
+          expires_at: string
+          full_name: string
+        }[]
+      }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
       }
       gen_appointment_code: { Args: never; Returns: string }
       gen_certificate_code: { Args: never; Returns: string }
+      gen_coupon_suffix: { Args: never; Returns: string }
       gen_order_code: { Args: never; Returns: string }
       get_order_by_code: {
         Args: { p_code: string; p_email?: string }
@@ -1595,26 +1662,50 @@ export type Database = {
         Args: { p_lesson_id: string; p_watched_seconds?: number }
         Returns: undefined
       }
-      place_order: {
-        Args: {
-          p_customer_address?: Json
-          p_customer_email: string
-          p_customer_name: string
-          p_customer_phone: string
-          p_destination_cep?: string
-          p_items: Json
-          p_notes?: string
-          p_shipping_cents?: number
-          p_shipping_service_id?: string
-          p_shipping_service_label?: string
-        }
-        Returns: {
-          code: string
-          order_id: string
-          subtotal_cents: number
-          total_cents: number
-        }[]
-      }
+      place_order:
+        | {
+            Args: {
+              p_customer_address?: Json
+              p_customer_email: string
+              p_customer_name: string
+              p_customer_phone: string
+              p_destination_cep?: string
+              p_items: Json
+              p_notes?: string
+              p_shipping_cents?: number
+              p_shipping_service_id?: string
+              p_shipping_service_label?: string
+            }
+            Returns: {
+              code: string
+              order_id: string
+              subtotal_cents: number
+              total_cents: number
+            }[]
+          }
+        | {
+            Args: {
+              p_coupon_code?: string
+              p_customer_address?: Json
+              p_customer_email: string
+              p_customer_name: string
+              p_customer_phone: string
+              p_destination_cep?: string
+              p_items: Json
+              p_notes?: string
+              p_shipping_cents?: number
+              p_shipping_service_id?: string
+              p_shipping_service_label?: string
+            }
+            Returns: {
+              code: string
+              coupon_code: string
+              discount_cents: number
+              order_id: string
+              subtotal_cents: number
+              total_cents: number
+            }[]
+          }
       submit_quiz_attempt: {
         Args: { p_answers: Json; p_quiz_id: string }
         Returns: {
@@ -1624,6 +1715,15 @@ export type Database = {
           results: Json
           score: number
           total_questions: number
+        }[]
+      }
+      validate_coupon: {
+        Args: { p_code: string }
+        Returns: {
+          code: string
+          discount_percent: number
+          reason: string
+          valid: boolean
         }[]
       }
     }

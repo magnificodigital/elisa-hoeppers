@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Mail, Users, Stethoscope, CalendarClock, ChevronRight, MailCheck, Plug } from "lucide-react";
+import { Users, Stethoscope, CalendarClock, ChevronRight, Plug } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -13,11 +13,9 @@ export const Route = createFileRoute("/admin/configuracoes/")({
 });
 
 const sections = [
-  { to: "/admin/configuracoes/integracoes", icon: Plug, title: "Integrações", desc: "Mercado Pago, Asaas, Melhor Envio e Feed do Instagram." },
-  { to: "/admin/configuracoes/newsletter", icon: Mail, title: "Newsletter", desc: "Audience do Resend e captura de email." },
-  { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Emails", desc: "Logotipo, cor, assinatura e rodapé dos emails enviados." },
+  { to: "/admin/configuracoes/integracoes", icon: Plug, title: "Integrações", desc: "Pagamentos, envio, emails, newsletter, cupom e feed do Instagram." },
   { to: "/admin/configuracoes/usuarios", icon: Users, title: "Usuários", desc: "Lista de alunas e admins, convites e troca de role." },
-  { to: "/admin/configuracoes/diagnosticos", icon: Stethoscope, title: "Diagnósticos", desc: "Auto-check do MP e do Melhor Envio." },
+  { to: "/admin/configuracoes/diagnosticos", icon: Stethoscope, title: "Diagnósticos", desc: "Auto-check do Asaas e do Melhor Envio." },
   { to: "/admin/disponibilidade", icon: CalendarClock, title: "Disponibilidade", desc: "Horários da semana e períodos bloqueados." },
 ] as const;
 

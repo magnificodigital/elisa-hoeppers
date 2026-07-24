@@ -71,6 +71,7 @@ import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admi
 import { Route as AdminConfiguracoesIntegracoesRouteImport } from './routes/admin/configuracoes/integracoes'
 import { Route as AdminConfiguracoesEmailsRouteImport } from './routes/admin/configuracoes/emails'
 import { Route as AdminConfiguracoesDiagnosticosRouteImport } from './routes/admin/configuracoes/diagnosticos'
+import { Route as AdminConfiguracoesCupomRouteImport } from './routes/admin/configuracoes/cupom'
 import { Route as AdminConfiguracoesBaseRouteImport } from './routes/admin/configuracoes/base'
 import { Route as AdminConfiguracoesAsaasRouteImport } from './routes/admin/configuracoes/asaas'
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
@@ -399,6 +400,11 @@ const AdminConfiguracoesDiagnosticosRoute =
     path: '/admin/configuracoes/diagnosticos',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminConfiguracoesCupomRoute = AdminConfiguracoesCupomRouteImport.update({
+  id: '/admin/configuracoes/cupom',
+  path: '/admin/configuracoes/cupom',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminConfiguracoesBaseRoute = AdminConfiguracoesBaseRouteImport.update({
   id: '/admin/configuracoes/base',
   path: '/admin/configuracoes/base',
@@ -489,6 +495,7 @@ export interface FileRoutesByFullPath {
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/base': typeof AdminConfiguracoesBaseRoute
+  '/admin/configuracoes/cupom': typeof AdminConfiguracoesCupomRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -560,6 +567,7 @@ export interface FileRoutesByTo {
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/base': typeof AdminConfiguracoesBaseRoute
+  '/admin/configuracoes/cupom': typeof AdminConfiguracoesCupomRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -633,6 +641,7 @@ export interface FileRoutesById {
   '/admin/bodyoga-slides/$id': typeof AdminBodyogaSlidesIdRoute
   '/admin/configuracoes/asaas': typeof AdminConfiguracoesAsaasRoute
   '/admin/configuracoes/base': typeof AdminConfiguracoesBaseRoute
+  '/admin/configuracoes/cupom': typeof AdminConfiguracoesCupomRoute
   '/admin/configuracoes/diagnosticos': typeof AdminConfiguracoesDiagnosticosRoute
   '/admin/configuracoes/emails': typeof AdminConfiguracoesEmailsRoute
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
@@ -707,6 +716,7 @@ export interface FileRouteTypes {
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/base'
+    | '/admin/configuracoes/cupom'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -778,6 +788,7 @@ export interface FileRouteTypes {
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/base'
+    | '/admin/configuracoes/cupom'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -850,6 +861,7 @@ export interface FileRouteTypes {
     | '/admin/bodyoga-slides/$id'
     | '/admin/configuracoes/asaas'
     | '/admin/configuracoes/base'
+    | '/admin/configuracoes/cupom'
     | '/admin/configuracoes/diagnosticos'
     | '/admin/configuracoes/emails'
     | '/admin/configuracoes/integracoes'
@@ -922,6 +934,7 @@ export interface RootRouteChildren {
   AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
   AdminConfiguracoesAsaasRoute: typeof AdminConfiguracoesAsaasRoute
   AdminConfiguracoesBaseRoute: typeof AdminConfiguracoesBaseRoute
+  AdminConfiguracoesCupomRoute: typeof AdminConfiguracoesCupomRoute
   AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
   AdminConfiguracoesEmailsRoute: typeof AdminConfiguracoesEmailsRoute
   AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
@@ -1382,6 +1395,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesDiagnosticosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/configuracoes/cupom': {
+      id: '/admin/configuracoes/cupom'
+      path: '/admin/configuracoes/cupom'
+      fullPath: '/admin/configuracoes/cupom'
+      preLoaderRoute: typeof AdminConfiguracoesCupomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/configuracoes/base': {
       id: '/admin/configuracoes/base'
       path: '/admin/configuracoes/base'
@@ -1510,6 +1530,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminBodyogaSlidesIdRoute: AdminBodyogaSlidesIdRoute,
   AdminConfiguracoesAsaasRoute: AdminConfiguracoesAsaasRoute,
   AdminConfiguracoesBaseRoute: AdminConfiguracoesBaseRoute,
+  AdminConfiguracoesCupomRoute: AdminConfiguracoesCupomRoute,
   AdminConfiguracoesDiagnosticosRoute: AdminConfiguracoesDiagnosticosRoute,
   AdminConfiguracoesEmailsRoute: AdminConfiguracoesEmailsRoute,
   AdminConfiguracoesIntegracoesRoute: AdminConfiguracoesIntegracoesRoute,
@@ -1536,13 +1557,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

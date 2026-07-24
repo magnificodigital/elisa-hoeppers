@@ -41,6 +41,7 @@ function SlidesList() {
         display_order: order,
         is_active: false,
         duration_seconds: 7,
+        coupon_capture_enabled: false,
       });
     },
     onSuccess: (s) => {
