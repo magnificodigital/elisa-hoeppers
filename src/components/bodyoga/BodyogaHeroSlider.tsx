@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { listActiveSlides, type Slide } from "@/lib/shop";
 import { isVideoUrl } from "@/lib/storage";
 import heroBg from "@/assets/bodyoga/hero-combined-v3.jpg";
+import { CouponCaptureDialog } from "@/components/bodyoga/CouponCaptureDialog";
 
 /** The original, default hero — kept as the main (first) slide. */
 function DefaultHero() {
