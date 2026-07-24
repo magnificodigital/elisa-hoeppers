@@ -69,7 +69,7 @@ function LoginPage() {
         >
 
 
-          <div className="flex flex-col items-center mb-8">
+          <div className="flex flex-col items-center mb-4">
             <BodyogaLogo variant="full" tone="cream" size={68} />
           </div>
 
