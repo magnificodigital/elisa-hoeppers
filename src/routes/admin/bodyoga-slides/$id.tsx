@@ -62,6 +62,7 @@ function SlideEditPage() {
         display_order: slide.display_order,
         is_active: slide.is_active,
         duration_seconds: slide.duration_seconds ?? 7,
+        coupon_capture_enabled: slide.coupon_capture_enabled ?? false,
       });
     }
   }, [slide]);
