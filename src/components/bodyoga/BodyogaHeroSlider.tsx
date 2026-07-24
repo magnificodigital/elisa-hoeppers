@@ -101,9 +101,10 @@ function handleAnchorClick(e: React.MouseEvent<HTMLAnchorElement>, href?: string
 
 
 /** Video slide — renders a background video (native mp4 file or YouTube embed) from a slide. */
-function VideoSlide({ slide }: { slide: Slide }) {
+function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: () => void }) {
   const videoUrl = slide.video_url!;
   const isFile = isVideoUrl(videoUrl) || videoUrl.startsWith("/__l5e/");
+  const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
   return (
     <>
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
@@ -125,12 +126,11 @@ function VideoSlide({ slide }: { slide: Slide }) {
             frameBorder={0}
           />
         )}
-        {/* Blocks all hover controls (play/pause/seek) from appearing */}
         <div className="absolute inset-0 z-10" />
       </div>
 
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
-      {slide.media_href && (
+      {slide.media_href && !capturesCoupon && (
         <a
           href={slide.media_href}
           onClick={(e) => handleAnchorClick(e, slide.media_href)}
@@ -142,13 +142,23 @@ function VideoSlide({ slide }: { slide: Slide }) {
 
       <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-center min-h-[85vh]">
         {slide.cta_label && (
-          <a
-            href={slide.cta_href || "/agendar"}
-            onClick={(e) => handleAnchorClick(e, slide.cta_href)}
-            className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-          >
-            {slide.cta_label}
-          </a>
+          capturesCoupon ? (
+            <button
+              type="button"
+              onClick={onCouponClick}
+              className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+            >
+              {slide.cta_label}
+            </button>
+          ) : (
+            <a
+              href={slide.cta_href || "/agendar"}
+              onClick={(e) => handleAnchorClick(e, slide.cta_href)}
+              className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+            >
+              {slide.cta_label}
+            </a>
+          )
         )}
       </div>
     </>
