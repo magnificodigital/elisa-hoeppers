@@ -258,7 +258,96 @@ function UserRowCard({ user: u }: { user: UserRow }) {
         variant="destructive"
         onConfirm={() => remove.mutate()}
       />
+      <SetPasswordDialog open={pwOpen} onOpenChange={setPwOpen} user={u} />
     </div>
+  );
+}
+
+function SetPasswordDialog({
+  open,
+  onOpenChange,
+  user,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  user: UserRow;
+}) {
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+
+  const save = useMutation({
+    mutationFn: () => setUserPassword(user.id, password),
+    onSuccess: () => {
+      toast.success("Senha atualizada");
+      setPassword("");
+      onOpenChange(false);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  function gen() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+    let p = "";
+    for (let i = 0; i < 12; i++) p += chars[Math.floor(Math.random() * chars.length)];
+    setPassword(p);
+    setShowPass(true);
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Definir nova senha</DialogTitle>
+          <DialogDescription>
+            Nova senha para <span className="font-medium">{user.email}</span>. Passe as credenciais para a pessoa depois.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex gap-2 mt-2">
+          <div className="relative flex-1">
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type={showPass ? "text" : "password"}
+              placeholder="Mínimo 6 caracteres"
+              className="w-full border border-border rounded-md px-3 py-2 pr-10 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPass(!showPass)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-primary-dark"
+              aria-label={showPass ? "Esconder senha" : "Mostrar senha"}
+            >
+              {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={gen}
+            className="border border-border rounded-md px-3 py-2 text-xs text-primary-dark hover:bg-cream transition whitespace-nowrap"
+          >
+            Gerar
+          </button>
+        </div>
+        {save.error && <p className="text-xs text-red-700 mt-2">{(save.error as Error).message}</p>}
+        <DialogFooter className="mt-4">
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            className="text-sm text-primary-dark/60 hover:text-primary transition px-4 py-2"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            onClick={() => save.mutate()}
+            disabled={save.isPending || password.length < 6}
+            className="bg-primary text-white px-5 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60"
+          >
+            {save.isPending ? "Salvando…" : "Salvar senha"}
+          </button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
