@@ -15,8 +15,11 @@ export const Route = createFileRoute("/sobre")({
         property: "og:description",
         content: "Conheça Elisa Hoeppers: professora de Hatha e Vinyasa Yoga há 18 anos.",
       },
-      { property: "og:image", content: "/images/home/bio/elisa-perfil.png" },
+      { property: "og:image", content: "https://bodyogaoficial.com.br/images/home/bio/elisa-perfil.png" },
+      { name: "twitter:image", content: "https://bodyogaoficial.com.br/images/home/bio/elisa-perfil.png" },
+      { property: "og:url", content: "https://bodyogaoficial.com.br/sobre" },
     ],
+    links: [{ rel: "canonical", href: "https://bodyogaoficial.com.br/sobre" }],
   }),
   component: Sobre,
 });

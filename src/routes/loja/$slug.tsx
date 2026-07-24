@@ -13,21 +13,48 @@ export const Route = createFileRoute("/loja/$slug")({
     if (!product) throw notFound();
     return { product };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.product.name ?? "Produto"} — Loja Elisa Hoeppers` },
-      { name: "description", content: loaderData?.product.short_description ?? "" },
-      { property: "og:title", content: loaderData?.product.name ?? "" },
-      {
-        property: "og:description",
-        content: loaderData?.product.short_description ?? "",
-      },
-      {
-        property: "og:image",
-        content: loaderData?.product.gallery?.[0]?.url ?? "",
-      },
-    ],
-  }),
+  head: ({ loaderData, params }) => {
+    const p = loaderData?.product;
+    const url = `https://bodyogaoficial.com.br/loja/${params.slug}`;
+    const image = p?.gallery?.[0]?.url;
+    return {
+      meta: [
+        { title: `${p?.name ?? "Produto"} — Loja BODYOGA` },
+        { name: "description", content: p?.short_description ?? "" },
+        { property: "og:title", content: p?.name ?? "" },
+        { property: "og:description", content: p?.short_description ?? "" },
+        { property: "og:type", content: "product" },
+        { property: "og:url", content: url },
+        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: p
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Product",
+                name: p.name,
+                description: p.short_description ?? undefined,
+                image: image ? [image] : undefined,
+                url,
+                brand: p.brand ? { "@type": "Brand", name: p.brand } : undefined,
+                offers: {
+                  "@type": "Offer",
+                  price: (p.price_cents / 100).toFixed(2),
+                  priceCurrency: "BRL",
+                  availability: p.in_stock
+                    ? "https://schema.org/InStock"
+                    : "https://schema.org/OutOfStock",
+                  url,
+                },
+              }),
+            },
+          ]
+        : [],
+    };
+  },
   notFoundComponent: () => (
     <Layout>
       <div className="max-w-[1170px] mx-auto px-4 py-24 text-center">

@@ -17,13 +17,21 @@ export const Route = createFileRoute("/loja/")({
   }),
   head: () => ({
     meta: [
-      { title: "Shop — Elisa Hoeppers" },
+      { title: "Loja BODYOGA — Óleos essenciais, sprays e difusores" },
       {
         name: "description",
         content:
           "Óleos essenciais, sprays, difusores, pesinhos BODYOGA e mais — produtos organizados por rituais e selecionados por Elisa Hoeppers.",
       },
+      { property: "og:title", content: "Loja BODYOGA — Rituais de aromaterapia" },
+      {
+        property: "og:description",
+        content: "Óleos essenciais, sprays e difusores feitos à mão em pequenos lotes para corpo, mente e ambiente.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://bodyogaoficial.com.br/loja" },
     ],
+    links: [{ rel: "canonical", href: "https://bodyogaoficial.com.br/loja" }],
   }),
   component: ShopListing,
 });

@@ -9,16 +9,44 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!post) throw notFound();
     return { post };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.post.title} — Elisa Hoeppers` },
-      { name: "description", content: loaderData?.post.excerpt ?? "" },
-      { property: "og:title", content: loaderData?.post.title },
-      { property: "og:description", content: loaderData?.post.excerpt ?? undefined },
-      { property: "og:image", content: loaderData?.post.cover_image ?? undefined },
-      { property: "og:type", content: "article" },
-    ],
-  }),
+  head: ({ loaderData, params }) => {
+    const post = loaderData?.post;
+    const url = `https://bodyogaoficial.com.br/blog/${params.slug}`;
+    return {
+      meta: [
+        { title: `${post?.title ?? "Post"} — Blog BODYOGA` },
+        { name: "description", content: post?.excerpt ?? "" },
+        { property: "og:title", content: post?.title ?? "" },
+        { property: "og:description", content: post?.excerpt ?? "" },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
+        ...(post?.cover_image
+          ? [
+              { property: "og:image", content: post.cover_image },
+              { name: "twitter:image", content: post.cover_image },
+            ]
+          : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: post
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Article",
+                headline: post.title,
+                description: post.excerpt ?? undefined,
+                image: post.cover_image ? [post.cover_image] : undefined,
+                url,
+                author: { "@type": "Person", name: "Elisa Hoeppers" },
+                publisher: { "@type": "Organization", name: "BODYOGA" },
+              }),
+            },
+          ]
+        : [],
+    };
+  },
   component: BlogPost,
 });
 

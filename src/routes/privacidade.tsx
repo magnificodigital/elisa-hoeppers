@@ -5,7 +5,7 @@ export const Route = createFileRoute("/privacidade")({
   head: () => ({
     meta: [
       { title: "Política de Privacidade — Elisa Hoeppers" },
-      { name: "description", content: "Como tratamos seus dados pessoais." },
+      { name: "description", content: "Como coletamos, usamos e protegemos seus dados pessoais em conformidade com a LGPD no site da Elisa Hoeppers." },
     ],
   }),
   component: PrivacyPage,

@@ -1,0 +1,19 @@
+# BODYOGA — Elisa Hoeppers
+
+> Rituais artesanais de aromaterapia e yoga com Elisa Hoeppers: óleos essenciais, sprays, difusores e acessórios para equilibrar corpo, mente e ambiente.
+
+BODYOGA é a marca autoral de Elisa Hoeppers, professora de Hatha e Vinyasa Yoga há 18 anos. O site reúne loja de produtos naturais feitos à mão em pequenos lotes, aulas online, agendamento de aulas presenciais e conteúdos sobre yoga, meditação e aromaterapia.
+
+## Pages
+
+- [Home](/): Rituais para corpo, mente e ambiente em equilíbrio.
+- [Sobre](/sobre): Trajetória e formação de Elisa Hoeppers.
+- [Loja](/loja): Óleos essenciais, sprays, difusores e acessórios BODYOGA.
+- [Aulas / Cursos](/cursos): Aulas online de yoga, meditação e BODYOGA.
+- [Blog](/blog): Dicas sobre yoga, meditação e aromaterapia.
+- [Agende sua aula](/agende-sua-aula): Reserve uma aula presencial ou online.
+
+## Optional
+
+- [Política de Privacidade](/privacidade): Como tratamos seus dados pessoais.
+- [Termos de Uso](/termos): Termos que regem o uso do site, aulas e loja.

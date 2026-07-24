@@ -16,6 +16,9 @@ function DefaultHero() {
           alt="Produtos BODYOGA"
           className="absolute inset-0 h-full w-full object-cover object-center"
           loading="eager"
+          fetchPriority="high"
+          width={1200}
+          height={1600}
         />
         <div className="absolute inset-0 pt-40 pb-24 flex items-center justify-center">
           <a
@@ -175,6 +178,9 @@ function CustomSlide({ slide }: { slide: Slide }) {
             alt={slide.title}
             className="absolute inset-0 h-full w-full object-cover object-center"
             loading="eager"
+            fetchPriority="high"
+            width={1200}
+            height={1600}
           />
         )}
         {slide.cta_label && (
