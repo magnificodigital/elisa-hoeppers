@@ -20,7 +20,6 @@ export const Route = createFileRoute("/sobre")({
       { property: "og:url", content: "https://bodyogaoficial.com.br/sobre" },
     ],
     links: [{ rel: "canonical", href: "https://bodyogaoficial.com.br/sobre" }],
-    ],
   }),
   component: Sobre,
 });
