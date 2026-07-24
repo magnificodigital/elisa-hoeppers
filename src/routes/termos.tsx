@@ -5,7 +5,7 @@ export const Route = createFileRoute("/termos")({
   head: () => ({
     meta: [
       { title: "Termos de Uso — Elisa Hoeppers" },
-      { name: "description", content: "Termos que regem o uso do site, aulas e loja." },
+      { name: "description", content: "Termos e condições que regem o uso do site, agendamento de aulas, cursos online e compras na loja da Elisa Hoeppers." },
     ],
   }),
   component: TermsPage,
