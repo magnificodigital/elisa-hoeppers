@@ -9,9 +9,14 @@ export const Route = createFileRoute("/blog/")({
   }),
   head: () => ({
     meta: [
-      { title: "Dicas e Novidades — Elisa Hoeppers" },
-      { name: "description", content: "Dicas sobre yoga, meditação e aromaterapia com Elisa Hoeppers." },
+      { title: "Dicas e Novidades — Blog BODYOGA" },
+      { name: "description", content: "Dicas sobre yoga, meditação e aromaterapia com Elisa Hoeppers — inspiração para o seu ritual diário." },
+      { property: "og:title", content: "Blog BODYOGA — Dicas de yoga e aromaterapia" },
+      { property: "og:description", content: "Textos e novidades sobre yoga, meditação e aromaterapia com Elisa Hoeppers." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://bodyogaoficial.com.br/blog" },
     ],
+    links: [{ rel: "canonical", href: "https://bodyogaoficial.com.br/blog" }],
   }),
   component: BlogListing,
 });
