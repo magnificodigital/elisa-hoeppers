@@ -262,31 +262,35 @@ function CheckoutPage() {
     return true;
   }
 
-  async function submitOrder(method: "whatsapp" | "mercadopago") {
+  async function submitOrder() {
     setSubmitError(null);
     setAccountError(null);
 
-    // Não deixa MP prosseguir se ME está ativo mas o frete não foi calculado/selecionado
-    if (method === "mercadopago" && meEnabled && (shippingError || !selectedShipping)) {
-      setSubmitError("Selecione uma opção de frete válida antes de pagar.");
+    if (!asaasEnabled) {
+      setSubmitError("Pagamento online indisponível no momento.");
       return;
     }
 
-    // Asaas exige CPF/CNPJ
-    if (method === "mercadopago" && asaasEnabled) {
-      const clean = form.cpfCnpj.replace(/\D/g, "");
-      if (clean.length !== 11 && clean.length !== 14) {
-        setSubmitError("Informe um CPF ou CNPJ válido pra emissão da nota fiscal.");
-        return;
-      }
+    if (meEnabled && !selectedShipping) {
+      setSubmitError("Selecione uma opção de frete antes de continuar.");
+      return;
+    }
+    if (meEnabled && shippingError) {
+      setSubmitError("Corrija o problema de frete antes de continuar.");
+      return;
+    }
+
+    const clean = form.cpfCnpj.replace(/\D/g, "");
+    if (clean.length !== 11 && clean.length !== 14) {
+      setSubmitError("Informe um CPF ou CNPJ válido pra emissão da nota fiscal.");
+      return;
     }
 
     const accountOk = await maybeCreateAccount();
     if (!accountOk) return;
 
-
     try {
-      setSubmitting(method);
+      setSubmitting("processing");
 
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
       const addressPayload = form.street
@@ -298,11 +302,9 @@ function CheckoutPage() {
             district: form.district,
             city: city ?? "",
             state: state ?? "",
-            cpf_cnpj: form.cpfCnpj.replace(/\D/g, ""),
+            cpf_cnpj: clean,
           }
-        : form.cpfCnpj
-          ? { cpf_cnpj: form.cpfCnpj.replace(/\D/g, "") }
-          : null;
+        : { cpf_cnpj: clean };
 
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
@@ -322,7 +324,6 @@ function CheckoutPage() {
       const row = Array.isArray(data) ? data[0] : data;
       const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
 
-      // Salva o endereço no perfil da cliente logada (ou recém-criada no checkout)
       const { data: { session: addrSession } } = await supabase.auth.getSession();
       const addrUserId = addrSession?.user?.id;
       if (addrUserId && (saveThisAddress || !user) && form.street) {
@@ -347,9 +348,6 @@ function CheckoutPage() {
           .then(() => qc.invalidateQueries({ queryKey: ["profile", addrUserId] }));
       }
 
-
-
-
       track("order_created", {
         order_code: orderResult.code,
         total_brl: Number((orderResult.total_cents / 100).toFixed(2)),
@@ -360,46 +358,21 @@ function CheckoutPage() {
         body: { type: "order", record_id: orderResult.order_id },
       }).catch((e) => console.error("email failed:", e));
 
-      if (method === "mercadopago") {
-        if (asaasEnabled) {
-          // PIX transparente via Asaas — cliente vê QR na página do pedido
-          const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
-            body: { order_id: orderResult.order_id },
-          });
-          if (payErr) throw payErr;
-          if ((payData as any)?.error) throw new Error((payData as any).error);
-          clear();
-          navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
-          return;
-        }
+      const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
+        body: { order_id: orderResult.order_id, billing_type: "PIX" },
+      });
+      if (payErr) throw payErr;
+      if ((payData as any)?.error) throw new Error((payData as any).error);
 
-        const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
-          body: { order_id: orderResult.order_id },
-        });
-        if (payErr) throw payErr;
-        const initPoint = (payData as { init_point?: string })?.init_point;
-        if (!initPoint) throw new Error("Falha ao criar pagamento");
-        clear();
-        window.location.href = initPoint;
-        return;
-      }
-
-      await supabase.from("orders").update({ payment_method: "whatsapp" }).eq("id", orderResult.order_id);
       clear();
-      // Logado → vai pra lista de pedidos (com highlight do pedido novo)
-      // Guest → vai pra página do pedido
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        navigate({ to: "/painel/pedidos", search: { highlight: orderResult.code } });
-      } else {
-        navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
-      }
+      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
     } catch (err) {
       setSubmitError(friendlyError((err as Error).message));
     } finally {
       setSubmitting(null);
     }
   }
+
 
   async function handleCardSubmit(card: CardData) {
     setCardError(null);
