@@ -223,7 +223,9 @@ serve(async (req: Request) => {
 
     // ===== MODO TESTE: manda só pra um endereço =====
     if (test_email) {
-      const html = wrap(b.body_html.replace(/\{\{first_name\}\}/g, "Teste"));
+      const personalized = b.body_html.replace(/\{\{first_name\}\}/g, "Teste");
+      const isFullDoc = /<(!doctype|html)[\s>]/i.test(personalized.trim().slice(0, 200));
+      const html = isFullDoc ? personalized : wrap(personalized);
       const ok = await sendOne(test_email, `[TESTE] ${b.subject}`, html);
       return new Response(JSON.stringify({ ok, test: true }), {
         status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
