@@ -222,6 +222,16 @@ function UserRowCard({ user: u }: { user: UserRow }) {
 
       <button
         type="button"
+        onClick={() => setPwOpen(true)}
+        className="text-primary-dark/40 hover:text-primary p-1.5"
+        aria-label="Definir nova senha"
+        title="Definir nova senha"
+      >
+        <KeyRound size={16} />
+      </button>
+
+      <button
+        type="button"
         onClick={() => setDeleteOpen(true)}
         disabled={remove.isPending}
         className="text-red-600/60 hover:text-red-700 p-1.5 disabled:opacity-50"
