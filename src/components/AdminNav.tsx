@@ -13,6 +13,7 @@ import {
   LogOut,
   HelpCircle,
   FileText,
+  Mail,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -31,11 +32,13 @@ const NAV_ITEMS: NavLeaf[] = [
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
   { to: "/admin/site", label: "WebSite", icon: Sparkles },
   { to: "/admin/posts", label: "Posts", icon: Newspaper },
+  { to: "/admin/broadcast", label: "Emails", icon: Mail },
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
   { to: "/admin/ajuda", label: "Tutoriais", icon: HelpCircle },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
+
 
 export function AdminNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
