@@ -253,6 +253,7 @@ export type Database = {
           body_html: string
           created_at: string
           created_by: string | null
+          design_json: Json | null
           failed_count: number | null
           id: string
           segment_id: string | null
@@ -262,11 +263,13 @@ export type Database = {
           sent_count: number | null
           status: string
           subject: string
+          template_id: string | null
         }
         Insert: {
           body_html: string
           created_at?: string
           created_by?: string | null
+          design_json?: Json | null
           failed_count?: number | null
           id?: string
           segment_id?: string | null
@@ -276,11 +279,13 @@ export type Database = {
           sent_count?: number | null
           status?: string
           subject: string
+          template_id?: string | null
         }
         Update: {
           body_html?: string
           created_at?: string
           created_by?: string | null
+          design_json?: Json | null
           failed_count?: number | null
           id?: string
           segment_id?: string | null
@@ -290,8 +295,17 @@ export type Database = {
           sent_count?: number | null
           status?: string
           subject?: string
+          template_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "broadcasts_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       certificates: {
         Row: {
@@ -456,6 +470,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      email_templates: {
+        Row: {
+          created_at: string
+          design_json: Json
+          html: string
+          id: string
+          is_system: boolean
+          name: string
+          subject: string
+          system_key: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          design_json?: Json
+          html?: string
+          id?: string
+          is_system?: boolean
+          name: string
+          subject?: string
+          system_key?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          design_json?: Json
+          html?: string
+          id?: string
+          is_system?: boolean
+          name?: string
+          subject?: string
+          system_key?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       enrollments: {
         Row: {
