@@ -147,7 +147,7 @@ function BookingPage() {
                     </div>
                     {s.is_group ? <Users className="w-5 h-5 text-primary/60" /> : <UserIcon className="w-5 h-5 text-primary/60" />}
                   </div>
-                  <h3 className="font-display text-xl text-primary-dark mb-2">{s.title}</h3>
+                  <h2 className="font-display text-xl text-primary-dark mb-2">{s.title}</h2>
                   {s.description && <p className="text-sm text-[var(--text-muted)] mb-4">{s.description}</p>}
                   <div className="flex items-center justify-between text-sm">
                     <span className="inline-flex items-center gap-1 text-[var(--text-muted)]">
