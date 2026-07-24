@@ -236,14 +236,22 @@ function CustomSlide({ slide }: { slide: Slide }) {
 
 
 export function BodyogaHeroSlider() {
-  const { data: slides } = useQuery({
+  const { data: slides, isPending } = useQuery({
     queryKey: ["bodyoga-slides-active"],
     queryFn: listActiveSlides,
   });
 
+  if (isPending) {
+    return (
+      <section className="relative overflow-hidden bg-bodyoga-cream -mt-24 pt-24">
+        <div className="min-h-[85vh]" />
+      </section>
+    );
+  }
+
   // Render DB slides; fall back to the built-in default hero when there are none.
   // A slide with a video_url renders as a video slide; otherwise as a custom slide.
-  const dbSlides = slides ?? [];
+  const dbSlides = slides;
   const items: ReactNode[] =
     dbSlides.length > 0
       ? dbSlides.map((s) =>
