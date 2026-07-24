@@ -4,6 +4,7 @@ import { Download, Loader2, Search, Trash2, UserCheck, UserX } from "lucide-reac
 import {
   listSubscribers, setSubscribed, deleteSubscriber, exportSubscribersCSV,
 } from "@/lib/subscribers";
+import { SettingsCategory } from "@/components/admin/SettingsCategory";
 import { toast } from "sonner";
 
 export function InscritosTab() {
