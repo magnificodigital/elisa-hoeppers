@@ -114,10 +114,10 @@ function CheckoutPage() {
 
 
   useEffect(() => {
-    getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
     getSetting("asaas_enabled").then((v) => setAsaasEnabled(v === "true")).catch(() => setAsaasEnabled(false));
   }, []);
+
 
   useEffect(() => {
     setSelectedShipping(null);
