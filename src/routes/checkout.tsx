@@ -88,12 +88,12 @@ function CheckoutPage() {
     }
   }, [user, profile]);
 
-  const [submitting, setSubmitting] = useState<"whatsapp" | "mercadopago" | "processing" | null>(null);
+  const [submitting, setSubmitting] = useState<"processing" | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"pix" | "credit_card">("pix");
   const [cardError, setCardError] = useState<string | null>(null);
-  const [mpEnabled, setMpEnabled] = useState(false);
   const [asaasEnabled, setAsaasEnabled] = useState(false);
+
   const [cepLoading, setCepLoading] = useState(false);
   const [cepFilled, setCepFilled] = useState(false);
 
@@ -114,10 +114,10 @@ function CheckoutPage() {
 
 
   useEffect(() => {
-    getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
     getSetting("asaas_enabled").then((v) => setAsaasEnabled(v === "true")).catch(() => setAsaasEnabled(false));
   }, []);
+
 
   useEffect(() => {
     setSelectedShipping(null);
@@ -262,31 +262,35 @@ function CheckoutPage() {
     return true;
   }
 
-  async function submitOrder(method: "whatsapp" | "mercadopago") {
+  async function submitOrder() {
     setSubmitError(null);
     setAccountError(null);
 
-    // Não deixa MP prosseguir se ME está ativo mas o frete não foi calculado/selecionado
-    if (method === "mercadopago" && meEnabled && (shippingError || !selectedShipping)) {
-      setSubmitError("Selecione uma opção de frete válida antes de pagar.");
+    if (!asaasEnabled) {
+      setSubmitError("Pagamento online indisponível no momento.");
       return;
     }
 
-    // Asaas exige CPF/CNPJ
-    if (method === "mercadopago" && asaasEnabled) {
-      const clean = form.cpfCnpj.replace(/\D/g, "");
-      if (clean.length !== 11 && clean.length !== 14) {
-        setSubmitError("Informe um CPF ou CNPJ válido pra emissão da nota fiscal.");
-        return;
-      }
+    if (meEnabled && !selectedShipping) {
+      setSubmitError("Selecione uma opção de frete antes de continuar.");
+      return;
+    }
+    if (meEnabled && shippingError) {
+      setSubmitError("Corrija o problema de frete antes de continuar.");
+      return;
+    }
+
+    const clean = form.cpfCnpj.replace(/\D/g, "");
+    if (clean.length !== 11 && clean.length !== 14) {
+      setSubmitError("Informe um CPF ou CNPJ válido pra emissão da nota fiscal.");
+      return;
     }
 
     const accountOk = await maybeCreateAccount();
     if (!accountOk) return;
 
-
     try {
-      setSubmitting(method);
+      setSubmitting("processing");
 
       const [city, state] = form.cityState.split("/").map((s) => s.trim());
       const addressPayload = form.street
@@ -298,11 +302,9 @@ function CheckoutPage() {
             district: form.district,
             city: city ?? "",
             state: state ?? "",
-            cpf_cnpj: form.cpfCnpj.replace(/\D/g, ""),
+            cpf_cnpj: clean,
           }
-        : form.cpfCnpj
-          ? { cpf_cnpj: form.cpfCnpj.replace(/\D/g, "") }
-          : null;
+        : { cpf_cnpj: clean };
 
       const { data, error } = await supabase.rpc("place_order", {
         p_items: items.map((i) => ({ product_id: i.product_id, qty: i.qty })),
@@ -322,7 +324,6 @@ function CheckoutPage() {
       const row = Array.isArray(data) ? data[0] : data;
       const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
 
-      // Salva o endereço no perfil da cliente logada (ou recém-criada no checkout)
       const { data: { session: addrSession } } = await supabase.auth.getSession();
       const addrUserId = addrSession?.user?.id;
       if (addrUserId && (saveThisAddress || !user) && form.street) {
@@ -347,9 +348,6 @@ function CheckoutPage() {
           .then(() => qc.invalidateQueries({ queryKey: ["profile", addrUserId] }));
       }
 
-
-
-
       track("order_created", {
         order_code: orderResult.code,
         total_brl: Number((orderResult.total_cents / 100).toFixed(2)),
@@ -360,46 +358,21 @@ function CheckoutPage() {
         body: { type: "order", record_id: orderResult.order_id },
       }).catch((e) => console.error("email failed:", e));
 
-      if (method === "mercadopago") {
-        if (asaasEnabled) {
-          // PIX transparente via Asaas — cliente vê QR na página do pedido
-          const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
-            body: { order_id: orderResult.order_id },
-          });
-          if (payErr) throw payErr;
-          if ((payData as any)?.error) throw new Error((payData as any).error);
-          clear();
-          navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
-          return;
-        }
+      const { data: payData, error: payErr } = await supabase.functions.invoke("asaas-create-payment", {
+        body: { order_id: orderResult.order_id, billing_type: "PIX" },
+      });
+      if (payErr) throw payErr;
+      if ((payData as any)?.error) throw new Error((payData as any).error);
 
-        const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
-          body: { order_id: orderResult.order_id },
-        });
-        if (payErr) throw payErr;
-        const initPoint = (payData as { init_point?: string })?.init_point;
-        if (!initPoint) throw new Error("Falha ao criar pagamento");
-        clear();
-        window.location.href = initPoint;
-        return;
-      }
-
-      await supabase.from("orders").update({ payment_method: "whatsapp" }).eq("id", orderResult.order_id);
       clear();
-      // Logado → vai pra lista de pedidos (com highlight do pedido novo)
-      // Guest → vai pra página do pedido
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        navigate({ to: "/painel/pedidos", search: { highlight: orderResult.code } });
-      } else {
-        navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
-      }
+      navigate({ to: "/pedido/$code", params: { code: orderResult.code } });
     } catch (err) {
       setSubmitError(friendlyError((err as Error).message));
     } finally {
       setSubmitting(null);
     }
   }
+
 
   async function handleCardSubmit(card: CardData) {
     setCardError(null);
@@ -843,7 +816,7 @@ function CheckoutPage() {
                   </span>
                 </div>
               </div>
-              {mpEnabled && meEnabled && shippingError && (
+              {asaasEnabled && meEnabled && shippingError && (
                 <p className="text-xs text-red-700 mb-3 text-center">
                   ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
@@ -893,33 +866,37 @@ function CheckoutPage() {
                 </div>
               )}
 
-              {(!asaasEnabled || paymentMethod === "pix") && (
+              {asaasEnabled && paymentMethod === "pix" && (
                 <button
                   type="button"
-                  onClick={() => submitOrder("mercadopago")}
+                  onClick={submitOrder}
                   disabled={
                     submitting !== null ||
-                    !mpEnabled ||
                     (meEnabled && !!shippingError) ||
                     (meEnabled && !selectedShipping && shippingOpts.length > 0)
                   }
                   className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
                 >
-                  {submitting === "mercadopago" || submitting === "processing" ? "Processando…" : "Finalizar Compra"}
+                  {submitting === "processing" ? "Gerando PIX..." : "Gerar QR Code PIX"}
                 </button>
               )}
 
-              {!mpEnabled && (
-                <p className="text-xs text-red-700 mt-2 text-center">
-                  Pagamento online indisponível no momento. Entre em contato pelo WhatsApp.
-                </p>
+              {!asaasEnabled && (
+                <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mt-3 text-center">
+                  <p className="text-xs text-amber-900">
+                    ⚠️ Pagamento online indisponível no momento. Entre em contato pelo WhatsApp pra finalizar sua compra.
+                  </p>
+                </div>
               )}
               {submitError && (
                 <p className="text-red-700 text-sm mt-3">{submitError}</p>
               )}
-              <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                Pague online com cartão, PIX ou boleto pelo Mercado Pago.
-              </p>
+              {asaasEnabled && (
+                <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
+                  🔒 Pagamento seguro. Aceita PIX e cartão de crédito.
+                </p>
+              )}
+
               <div className="flex items-center justify-center gap-2 mt-2 flex-wrap">
                 {/* Visa */}
                 <span className="inline-flex items-center justify-center h-6 w-10 rounded border border-border bg-white">
