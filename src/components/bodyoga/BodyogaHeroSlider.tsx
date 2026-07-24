@@ -168,6 +168,7 @@ function CustomSlide({ slide }: { slide: Slide }) {
       {/* MOBILE: imagem dos produtos com botão centralizado */}
 
       <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
+        <h1 className="sr-only">{slide.title}</h1>
         {slide.image_url && (
           <img
             src={slide.image_url}
