@@ -1,10 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { ChevronLeft, Users, UserPlus, Trash2, Key, UserCog, ShieldCheck, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, Users, UserPlus, Trash2, Key, KeyRound, UserCog, ShieldCheck, Eye, EyeOff } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   listUsers,
@@ -13,6 +21,7 @@ import {
   createUser,
   deleteUser,
   sendPasswordResetForUser,
+  setUserPassword,
   type UserRow,
 } from "@/lib/users";
 
