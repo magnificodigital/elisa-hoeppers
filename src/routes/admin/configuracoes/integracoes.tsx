@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Plug, Wallet, Truck, Instagram, FileText, Mail, MailCheck, Gift } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plug, Wallet, Truck, Instagram, FileText, Mail, MailCheck, Gift, CreditCard } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -13,13 +13,14 @@ export const Route = createFileRoute("/admin/configuracoes/integracoes")({
 });
 
 const integrations = [
-  { to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas", desc: "Gateway com PIX e cartão transparente." },
+  { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Gateway padrão — PIX, Cartão, Apple Pay, Google Pay." },
   { to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/site", icon: Instagram, title: "Feed do Instagram", desc: "Feed automático da home via Behold e handle do perfil." },
   { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Integração Resend", desc: "Status da API key e domínio de envio." },
   { to: "/admin/broadcast", icon: Mail, title: "Emails & Newsletter", desc: "Campanhas, templates, layout, automáticos e inscritos." },
   { to: "/admin/configuracoes/cupom", icon: Gift, title: "Cupom de boas-vindas", desc: "Modal de captura no banner, desconto e email automático." },
+  { to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas (dormente)", desc: "Não em uso. Pagamentos passam pelo Mercado Pago." },
 ] as const;
 
 

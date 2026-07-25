@@ -34,7 +34,27 @@ function Page() {
             Abrir painel Asaas ↗
           </a>
 
+          <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <p className="text-sm font-semibold text-amber-900 mb-1">
+                  Asaas não é mais o gateway ativo
+                </p>
+                <p className="text-xs text-amber-800 leading-relaxed">
+                  Todos os pagamentos novos passam pelo <strong>Mercado Pago</strong> (que suporta
+                  Apple Pay e Google Pay). As configurações abaixo ficam mantidas pra suportar
+                  webhooks atrasados de pedidos antigos.
+                </p>
+                <p className="text-xs text-amber-800 mt-2">
+                  Pra reativar Asaas como gateway principal, ative <code className="bg-amber-100 px-1 rounded">asaas_enabled</code> e desative <code className="bg-amber-100 px-1 rounded">mp_enabled</code> nas configs.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white rounded-xl p-6 shadow-sm">
+
             <SettingsCategory category="asaas" />
           </div>
 

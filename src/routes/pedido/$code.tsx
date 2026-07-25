@@ -29,10 +29,6 @@ type Order = {
   payment_method_type: string | null;
   payment_installments: number | null;
   created_at: string;
-  asaas_pix_qr_code_image?: string | null;
-  asaas_pix_qr_code_copy_paste?: string | null;
-  asaas_pix_expires_at?: string | null;
-  asaas_invoice_url?: string | null;
   base_invoice_number?: string | null;
   base_invoice_status?: string | null;
   base_invoice_danfe_url?: string | null;
@@ -478,83 +474,3 @@ function OrderPage() {
   );
 }
 
-function PixPaymentBlock({ order }: { order: Order }) {
-  const [copied, setCopied] = useState(false);
-  const [countdown, setCountdown] = useState<string>("");
-
-  // Polling: recarrega a página a cada 8s pra pegar confirmação do webhook
-  useEffect(() => {
-    const timer = setInterval(() => {
-      window.location.reload();
-    }, 8000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!order.asaas_pix_expires_at) return;
-    const update = () => {
-      const remaining = new Date(order.asaas_pix_expires_at as string).getTime() - Date.now();
-      if (remaining <= 0) {
-        setCountdown("Expirado");
-        return;
-      }
-      const mins = Math.floor(remaining / 60000);
-      const secs = Math.floor((remaining % 60000) / 1000);
-      setCountdown(`${mins}:${String(secs).padStart(2, "0")}`);
-    };
-    update();
-    const t = setInterval(update, 1000);
-    return () => clearInterval(t);
-  }, [order.asaas_pix_expires_at]);
-
-  function copy() {
-    if (!order.asaas_pix_qr_code_copy_paste) return;
-    navigator.clipboard.writeText(order.asaas_pix_qr_code_copy_paste);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
-  return (
-    <div className="bg-white rounded-xl border border-primary/30 p-6 mb-6">
-      <div className="text-center mb-4">
-        <h2 className="font-display text-2xl text-primary-dark mb-1">Pague com PIX</h2>
-        <p className="text-sm text-primary-dark/70">
-          Escaneie o QR code ou copie o código pra pagar no app do seu banco
-        </p>
-        {countdown && (
-          <p className="text-xs text-primary-dark/60 mt-2">
-            Expira em <span className="font-mono font-medium">{countdown}</span>
-          </p>
-        )}
-      </div>
-
-      <div className="flex justify-center mb-4">
-        <img
-          src={`data:image/png;base64,${order.asaas_pix_qr_code_image}`}
-          alt="QR Code PIX"
-          className="w-64 h-64 border border-border rounded-lg"
-        />
-      </div>
-
-      <button
-        onClick={copy}
-        className="w-full bg-primary text-cream py-3 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
-      >
-        {copied ? "✓ Copiado!" : "Copiar código PIX"}
-      </button>
-
-      <div className="mt-4 p-3 bg-cream/60 rounded-lg">
-        <p className="text-[10px] uppercase tracking-widest text-primary-dark/60 mb-1">
-          Código copia e cola
-        </p>
-        <p className="text-xs font-mono text-primary-dark break-all leading-relaxed">
-          {order.asaas_pix_qr_code_copy_paste}
-        </p>
-      </div>
-
-      <p className="text-xs text-primary-dark/60 text-center mt-4">
-        📱 Assim que pagar, a página atualiza automaticamente
-      </p>
-    </div>
-  );
-}
