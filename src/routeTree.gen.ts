@@ -62,6 +62,7 @@ import { Route as AdminAjudaIndexRouteImport } from './routes/admin/ajuda.index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as ApiPublicMediaRouteImport } from './routes/api/public/media'
 import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/public/instagram-feed[.]xml'
+import { Route as AdminSiteSeoRouteImport } from './routes/admin/site.seo'
 import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
@@ -349,6 +350,11 @@ const ApiPublicInstagramFeedDotxmlRoute =
     path: '/api/public/instagram-feed.xml',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminSiteSeoRoute = AdminSiteSeoRouteImport.update({
+  id: '/admin/site/seo',
+  path: '/admin/site/seo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSiteMenuRoute = AdminSiteMenuRouteImport.update({
   id: '/admin/site/menu',
   path: '/admin/site/menu',
@@ -513,6 +519,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
+  '/admin/site/seo': typeof AdminSiteSeoRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -586,6 +593,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
+  '/admin/site/seo': typeof AdminSiteSeoRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -661,6 +669,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
+  '/admin/site/seo': typeof AdminSiteSeoRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -737,6 +746,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/admin/site/menu'
+    | '/admin/site/seo'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -810,6 +820,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/admin/site/menu'
+    | '/admin/site/seo'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -884,6 +895,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
     | '/admin/site/menu'
+    | '/admin/site/seo'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -958,6 +970,7 @@ export interface RootRouteChildren {
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
   AdminSiteMenuRoute: typeof AdminSiteMenuRoute
+  AdminSiteSeoRoute: typeof AdminSiteSeoRoute
   ApiPublicInstagramFeedDotxmlRoute: typeof ApiPublicInstagramFeedDotxmlRoute
   ApiPublicMediaRoute: typeof ApiPublicMediaRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
@@ -1345,6 +1358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicInstagramFeedDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/site/seo': {
+      id: '/admin/site/seo'
+      path: '/admin/site/seo'
+      fullPath: '/admin/site/seo'
+      preLoaderRoute: typeof AdminSiteSeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/site/menu': {
       id: '/admin/site/menu'
       path: '/admin/site/menu'
@@ -1562,6 +1582,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
   AdminSiteMenuRoute: AdminSiteMenuRoute,
+  AdminSiteSeoRoute: AdminSiteSeoRoute,
   ApiPublicInstagramFeedDotxmlRoute: ApiPublicInstagramFeedDotxmlRoute,
   ApiPublicMediaRoute: ApiPublicMediaRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
@@ -1578,13 +1599,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

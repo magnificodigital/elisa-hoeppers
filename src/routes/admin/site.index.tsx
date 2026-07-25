@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { GalleryHorizontal, Menu } from "lucide-react";
+import { GalleryHorizontal, Menu, Search } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -24,6 +24,12 @@ const OPTIONS = [
     label: "Menu de navegação",
     description: "Escolha o que aparece no header e no footer, e de que lado.",
     icon: Menu,
+  },
+  {
+    to: "/admin/site/seo",
+    label: "SEO",
+    description: "Título e descrição padrão, imagem de compartilhamento, GA/GTM e verificação do Search Console.",
+    icon: Search,
   },
 ] as const;
 
