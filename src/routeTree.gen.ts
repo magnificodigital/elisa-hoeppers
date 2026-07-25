@@ -35,6 +35,7 @@ import { Route as PainelPerguntasRouteImport } from './routes/painel/perguntas'
 import { Route as PainelPerfilRouteImport } from './routes/painel/perfil'
 import { Route as PainelPedidosRouteImport } from './routes/painel/pedidos'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
+import { Route as PagamentoCodeRouteImport } from './routes/pagamento.$code'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
@@ -209,6 +210,11 @@ const PainelPedidosRoute = PainelPedidosRouteImport.update({
 const PainelCertificadosRoute = PainelCertificadosRouteImport.update({
   id: '/painel/certificados',
   path: '/painel/certificados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagamentoCodeRoute = PagamentoCodeRouteImport.update({
+  id: '/pagamento/$code',
+  path: '/pagamento/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LojaSlugRoute = LojaSlugRouteImport.update({
@@ -477,6 +483,7 @@ export interface FileRoutesByFullPath {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
   '/painel/perfil': typeof PainelPerfilRoute
@@ -549,6 +556,7 @@ export interface FileRoutesByTo {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
   '/painel/perfil': typeof PainelPerfilRoute
@@ -623,6 +631,7 @@ export interface FileRoutesById {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
   '/painel/perfil': typeof PainelPerfilRoute
@@ -698,6 +707,7 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
     | '/painel/perfil'
@@ -770,6 +780,7 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
     | '/painel/perfil'
@@ -843,6 +854,7 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
     | '/painel/perfil'
@@ -917,6 +929,7 @@ export interface RootRouteChildren {
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
   LojaSlugRoute: typeof LojaSlugRoute
+  PagamentoCodeRoute: typeof PagamentoCodeRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelPedidosRoute: typeof PainelPedidosRoute
   PainelPerfilRoute: typeof PainelPerfilRoute
@@ -1141,6 +1154,13 @@ declare module '@tanstack/react-router' {
       path: '/painel/certificados'
       fullPath: '/painel/certificados'
       preLoaderRoute: typeof PainelCertificadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pagamento/$code': {
+      id: '/pagamento/$code'
+      path: '/pagamento/$code'
+      fullPath: '/pagamento/$code'
+      preLoaderRoute: typeof PagamentoCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loja/$slug': {
@@ -1513,6 +1533,7 @@ const rootRouteChildren: RootRouteChildren = {
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
   LojaSlugRoute: LojaSlugRoute,
+  PagamentoCodeRoute: PagamentoCodeRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelPedidosRoute: PainelPedidosRoute,
   PainelPerfilRoute: PainelPerfilRoute,
