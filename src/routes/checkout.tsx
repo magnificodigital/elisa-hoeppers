@@ -112,7 +112,7 @@ function CheckoutPage() {
 
   useEffect(() => {
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
-    getSetting("asaas_enabled").then((v) => setAsaasEnabled(v === "true")).catch(() => setAsaasEnabled(false));
+    getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
   }, []);
 
 
