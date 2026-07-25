@@ -70,6 +70,38 @@ function SettingField({ setting }: { setting: AppSetting }) {
     return <CarrierSelectorField setting={setting} value={value} setValue={setValue} save={save} />;
   }
 
+  if (setting.key === "seo_default_og_image") {
+    return (
+      <div>
+        <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1.5">
+          {setting.label ?? setting.key}
+        </label>
+        <ImageUploader
+          value={value || null}
+          onChange={(url) => {
+            const next = url ?? "";
+            setValue(next);
+            updateSetting(setting.key, next)
+              .then(() => {
+                qc.invalidateQueries({ queryKey: ["app-settings"] });
+                toast.success("Imagem OG salva (1200×630)");
+              })
+              .catch((e: Error) => toast.error(e.message));
+          }}
+          folder="seo"
+          aspectRatio="1200/630"
+        />
+        {setting.description && (
+          <p className="text-xs text-primary-dark/60 mt-1.5">{setting.description}</p>
+        )}
+        <p className="text-[11px] text-primary-dark/50 mt-1">
+          A imagem enviada é automaticamente recortada e otimizada para 1200×630px.
+        </p>
+      </div>
+    );
+  }
+
+
   const masked = setting.is_secret && !show;
 
   return (
