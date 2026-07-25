@@ -113,6 +113,7 @@ function TemplateEditor({
       </div>
       <EmailBuilder
         initialDesign={template.design_json}
+        initialHtml={template.html}
         saving={saving}
         onSave={(design, html) => onSave({ name, subject, design_json: design, html })}
       />

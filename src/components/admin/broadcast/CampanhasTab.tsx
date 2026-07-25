@@ -181,6 +181,7 @@ export function CampanhasTab() {
           <label className={labelCls}>Corpo do email (drag-and-drop)</label>
           <EmailBuilder
             initialDesign={design}
+            initialHtml={html}
             onSave={(d, h) => { setDesign(d); setHtml(h); setFeedback({ kind: "ok", text: "Rascunho pronto — agora envie teste ou dispare o envio." }); }}
           />
         </div>
