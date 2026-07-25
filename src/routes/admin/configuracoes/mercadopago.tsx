@@ -31,12 +31,22 @@ function Page() {
           <a href="https://www.mercadopago.com.br/developers/panel" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline inline-block mb-6">
             Abrir painel MP ↗
           </a>
-          <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
-            <p className="text-sm text-amber-900">
-              ⚠️ Mercado Pago não está mais em uso. Todos os pagamentos passam pelo Asaas.
-              Configurações abaixo mantidas apenas pra referência histórica.
-            </p>
+          <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-xl">✅</span>
+              <div>
+                <p className="text-sm font-semibold text-emerald-900 mb-1">
+                  Gateway de pagamento ativo
+                </p>
+                <p className="text-xs text-emerald-800 leading-relaxed">
+                  O Mercado Pago é o processador padrão da loja. Aceita <strong>cartão de crédito
+                  e débito, PIX, Apple Pay, Google Pay e boleto</strong>. Mantenha o toggle "Ativado"
+                  ligado e as chaves preenchidas.
+                </p>
+              </div>
+            </div>
           </div>
+
 
 
           <div className="bg-white rounded-xl p-6 shadow-sm">
