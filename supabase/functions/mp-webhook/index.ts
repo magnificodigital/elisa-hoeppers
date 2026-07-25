@@ -189,6 +189,9 @@ serve(async (req) => {
     const newStatus = mapStatus(payment.status);
     const patch: Record<string, unknown> = {
       payment_id: String(payment.id),
+      mp_payment_id: String(payment.id),
+      mp_payment_status: payment.status,
+      mp_payment_method: payment.payment_method_id ?? payment.payment_type_id ?? null,
       status: newStatus,
       payment_method_type: payment.payment_type_id ?? null,
       payment_installments: payment.installments ?? null,
