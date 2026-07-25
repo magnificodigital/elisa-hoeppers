@@ -105,6 +105,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children:
           "window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }",
       },
+      {
+        async: true,
+        src: "https://www.googletagmanager.com/gtag/js?id=G-P23P1WM8K3",
+      },
+      {
+        children:
+          "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-P23P1WM8K3');",
+      },
     ],
   }),
   shellComponent: RootShell,
