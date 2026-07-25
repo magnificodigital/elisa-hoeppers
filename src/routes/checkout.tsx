@@ -423,7 +423,7 @@ function CheckoutPage() {
                   </Field>
                 </div>
 
-                {asaasEnabled && (
+                {mpEnabled && (
                   <Field label="CPF ou CNPJ *">
                     <input
                       value={form.cpfCnpj}
