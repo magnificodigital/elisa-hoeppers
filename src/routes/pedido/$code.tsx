@@ -29,10 +29,6 @@ type Order = {
   payment_method_type: string | null;
   payment_installments: number | null;
   created_at: string;
-  asaas_pix_qr_code_image?: string | null;
-  asaas_pix_qr_code_copy_paste?: string | null;
-  asaas_pix_expires_at?: string | null;
-  asaas_invoice_url?: string | null;
   base_invoice_number?: string | null;
   base_invoice_status?: string | null;
   base_invoice_danfe_url?: string | null;
