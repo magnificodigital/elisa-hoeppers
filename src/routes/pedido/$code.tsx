@@ -290,10 +290,18 @@ function OrderPage() {
               </Link>
             </div>
           )}
-          {order.status === "pending" && order.asaas_pix_qr_code_image && (
-            <PixPaymentBlock order={order} />
+          {order.status === "pending" && (
+            <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 flex items-center justify-between gap-3 flex-wrap">
+              <span>Seu pedido ainda não foi pago.</span>
+              <Link
+                to="/pagamento/$code"
+                params={{ code: order.code }}
+                className="inline-block bg-primary text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition"
+              >
+                Finalizar pagamento
+              </Link>
+            </div>
           )}
-          {order.status === "pending" && !order.asaas_pix_qr_code_image && order.payment_method_type !== "credit_card" && <PaymentCountdown order={order} />}
           {banner && (
             <div className={`mb-6 rounded-lg border px-4 py-3 text-sm ${banner.cls}`}>
               {banner.text}
