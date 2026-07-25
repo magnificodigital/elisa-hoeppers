@@ -2,7 +2,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Save, Eye, EyeOff } from "lucide-react";
 import { listSettings, updateSetting, type AppSetting } from "@/lib/settings";
+import { ImageUploader } from "@/components/ImageUploader";
 import { toast } from "sonner";
+
 
 export function SettingsCategory({ category }: { category: string }) {
   const { data: settings, isLoading } = useQuery({
