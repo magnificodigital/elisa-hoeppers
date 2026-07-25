@@ -203,6 +203,20 @@ serve(async (req) => {
       .update({ order_id: orderId })
       .eq("payment_id", String(payment.id));
 
+    if (newStatus === "confirmed") {
+      supabase.functions.invoke("send-notification", {
+        body: { type: "order", record_id: orderId },
+      }).catch((e) => console.error("email dispatch failed:", e));
+
+      const baseEnabled = await getSetting("base_enabled");
+      if (baseEnabled === "true") {
+        supabase.functions.invoke("base-emit-invoice", {
+          body: { order_id: orderId },
+        }).catch((e) => console.error("NFe emit falhou:", e));
+      }
+    }
+
+
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jsonHeaders });
   } catch (err) {
     console.error(err);
