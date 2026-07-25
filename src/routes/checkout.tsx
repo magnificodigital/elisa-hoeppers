@@ -730,59 +730,13 @@ function CheckoutPage() {
                   </span>
                 </div>
               </div>
-              {asaasEnabled && meEnabled && shippingError && (
+              {mpEnabled && meEnabled && shippingError && (
                 <p className="text-xs text-red-700 mb-3 text-center">
                   ⚠️ Não conseguimos calcular o frete. Verifique o CEP e tente novamente.
                 </p>
               )}
 
-              {asaasEnabled && (
-                <div className="mb-4">
-                  <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-2">
-                    Método de pagamento
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 mb-4">
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("pix")}
-                      className={`p-3 rounded-lg border-2 transition text-left ${
-                        paymentMethod === "pix"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/40"
-                      }`}
-                    >
-                      <div className="mb-0.5 h-5 flex items-center">
-                        <img src={pixIcon.url} alt="PIX" className="h-5 w-auto" />
-                      </div>
-                      <p className="font-medium text-xs text-primary-dark">PIX</p>
-                      <p className="text-[10px] text-primary-dark/60">Imediato</p>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod("credit_card")}
-                      className={`p-3 rounded-lg border-2 transition text-left ${
-                        paymentMethod === "credit_card"
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/40"
-                      }`}
-                    >
-                      <div className="text-xl mb-0.5">💳</div>
-                      <p className="font-medium text-xs text-primary-dark">Cartão</p>
-                      <p className="text-[10px] text-primary-dark/60">Até 12×</p>
-                    </button>
-                  </div>
-                  {paymentMethod === "credit_card" && (
-                    <CardPaymentForm
-                      totalCents={totalCents}
-                      onSubmit={handleCardSubmit}
-                      loading={submitting === "processing"}
-                      error={cardError}
-                    />
-                  )}
-                </div>
-              )}
-
-              {asaasEnabled && paymentMethod === "pix" && (
+              {mpEnabled ? (
                 <button
                   type="button"
                   onClick={submitOrder}
@@ -793,17 +747,16 @@ function CheckoutPage() {
                   }
                   className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
                 >
-                  {submitting === "processing" ? "Gerando PIX..." : "Gerar QR Code PIX"}
+                  {submitting === "processing" ? "Preparando pagamento..." : "Continuar para pagamento"}
                 </button>
-              )}
-
-              {!asaasEnabled && (
+              ) : (
                 <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mt-3 text-center">
                   <p className="text-xs text-amber-900">
                     ⚠️ Pagamento online indisponível no momento. Entre em contato pelo WhatsApp pra finalizar sua compra.
                   </p>
                 </div>
               )}
+
               {submitError && (
                 <p className="text-red-700 text-sm mt-3">{submitError}</p>
               )}
