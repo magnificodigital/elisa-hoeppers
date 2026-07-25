@@ -760,9 +760,9 @@ function CheckoutPage() {
               {submitError && (
                 <p className="text-red-700 text-sm mt-3">{submitError}</p>
               )}
-              {asaasEnabled && (
+              {mpEnabled && (
                 <p className="text-[10px] text-[var(--text-muted)] text-center mt-3 leading-relaxed">
-                  🔒 Pagamento seguro. Aceita PIX e cartão de crédito.
+                  🔒 Pagamento seguro. PIX, cartão, Apple Pay e Google Pay.
                 </p>
               )}
 
