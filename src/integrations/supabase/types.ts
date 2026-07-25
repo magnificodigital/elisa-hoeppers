@@ -865,6 +865,10 @@ export type Database = {
           me_label_url: string | null
           me_order_id: string | null
           me_status: string | null
+          mp_payment_id: string | null
+          mp_payment_method: string | null
+          mp_payment_status: string | null
+          mp_preference_id: string | null
           notes: string | null
           paid_at: string | null
           payment_id: string | null
@@ -914,6 +918,10 @@ export type Database = {
           me_label_url?: string | null
           me_order_id?: string | null
           me_status?: string | null
+          mp_payment_id?: string | null
+          mp_payment_method?: string | null
+          mp_payment_status?: string | null
+          mp_preference_id?: string | null
           notes?: string | null
           paid_at?: string | null
           payment_id?: string | null
@@ -963,6 +971,10 @@ export type Database = {
           me_label_url?: string | null
           me_order_id?: string | null
           me_status?: string | null
+          mp_payment_id?: string | null
+          mp_payment_method?: string | null
+          mp_payment_status?: string | null
+          mp_preference_id?: string | null
           notes?: string | null
           paid_at?: string | null
           payment_id?: string | null
