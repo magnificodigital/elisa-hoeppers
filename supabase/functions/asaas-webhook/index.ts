@@ -65,14 +65,16 @@ serve(async (req) => {
         body: { type: "order", record_id: order.id },
       }).catch((e) => console.error("email dispatch failed:", e));
 
-      // Emite NFe automaticamente (se Base ERP habilitado)
-      const baseEnabled = await getSetting("base_enabled");
-      if (baseEnabled === "true") {
-        supabase.functions.invoke("base-emit-invoice", {
-          body: { order_id: order.id },
-        }).catch((e) => console.error("NFe dispatch failed:", e));
-      }
+      // NFe agora é disparada pelo mp-webhook. Asaas não mais.
+      // (Se um dia voltar Asaas como gateway ativo, descomenta:)
+      // const baseEnabled = await getSetting("base_enabled");
+      // if (baseEnabled === "true") {
+      //   supabase.functions.invoke("base-emit-invoice", {
+      //     body: { order_id: order.id },
+      //   }).catch((e) => console.error("NFe dispatch failed:", e));
+      // }
     }
+
 
     return new Response(JSON.stringify({ ok: true, event, newStatus }), { status: 200 });
   } catch (err) {
