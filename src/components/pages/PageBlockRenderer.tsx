@@ -75,7 +75,7 @@ export function PageBlockView({ block }: { block: PageBlock }) {
         3: "text-2xl md:text-3xl",
         4: "text-xl md:text-2xl",
       };
-      const Tag = (`h${p.level ?? 2}` as unknown) as keyof JSX.IntrinsicElements;
+      const Tag = `h${p.level ?? 2}` as "h1" | "h2" | "h3" | "h4";
       return (
         <Section style={block.style}>
           <Tag className={`font-display text-primary-dark ${sizes[p.level ?? 2] ?? sizes[2]} ${ALIGN[p.align ?? "left"]}`}>
