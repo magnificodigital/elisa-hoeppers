@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeVars } from '@/components/ThemeVars';
 import { FloatingCart } from "@/components/FloatingCart";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { CookieBanner } from "@/components/CookieBanner";
@@ -141,7 +142,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <ThemeVars />
         <Outlet />
+
         <FloatingCart />
         <WhatsAppButton />
         <CookieBanner />

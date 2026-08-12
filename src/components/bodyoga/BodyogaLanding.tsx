@@ -21,7 +21,52 @@ import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
 import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Slide } from "@/lib/shop";
+import { getSetting } from "@/lib/settings";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
+
+const INTRO_DEFAULTS: Record<string, string> = {
+  home_intro_title: "BODYOGA é a\nfusão entre *yoga* e\ncuidado consciente.",
+  home_intro_p1: "Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.",
+  home_intro_p2:
+    "Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.",
+  home_intro_cta_label: "Harmonia & Equilíbrio",
+  home_intro_cta_href: "/sobre",
+  home_intro_image: "/images/home/bodyoga/bodyoga-left.png",
+};
+
+async function fetchIntro(): Promise<Record<string, string>> {
+  const keys = Object.keys(INTRO_DEFAULTS);
+  const entries = await Promise.all(
+    keys.map(async (k) => {
+      try {
+        const v = await getSetting(k);
+        return [k, v && v.trim() ? v : INTRO_DEFAULTS[k]] as const;
+      } catch {
+        return [k, INTRO_DEFAULTS[k]] as const;
+      }
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
+/** Renderiza quebras de linha e *itálico* do título configurável. */
+function renderIntroTitle(text: string) {
+  return text.split("\n").map((line, i) => (
+    <span key={i}>
+      {i > 0 && <br />}
+      {line.split(/(\*[^*]+\*)/g).map((part, j) =>
+        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
+          <span key={j} className="italic">
+            {part.slice(1, -1)}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  ));
+}
+
 
 
 
@@ -54,7 +99,15 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
     queryFn: listActiveRituals,
   });
 
+  const { data: introData } = useQuery({
+    queryKey: ["home-intro"],
+    queryFn: fetchIntro,
+    staleTime: 5 * 60 * 1000,
+  });
+  const intro = introData ?? INTRO_DEFAULTS;
+
   const ritualProducts = products ?? [];
+
 
   return (
     <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
@@ -94,7 +147,7 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
             <div className="md:col-span-6 relative">
               <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
                 <img
-                  src="/images/home/bodyoga/bodyoga-left.png"
+                  src={intro.home_intro_image || INTRO_DEFAULTS.home_intro_image}
                   alt="Elisa Hoeppers com os pesinhos BODYOGA"
                   className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
                   loading="lazy"
@@ -106,29 +159,36 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
             {/* Conteúdo de texto */}
             <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
-                BODYOGA é a <br />fusão entre <span className="italic">yoga</span> e <br />cuidado consciente.
+                {renderIntroTitle(intro.home_intro_title)}
               </h2>
 
               <div className="space-y-6 max-w-md">
-                <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed">
-                  Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.
-                </p>
-                <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide">
-                  Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.
-                </p>
+                {intro.home_intro_p1 && (
+                  <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">
+                    {intro.home_intro_p1}
+                  </p>
+                )}
+                {intro.home_intro_p2 && (
+                  <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide whitespace-pre-line">
+                    {intro.home_intro_p2}
+                  </p>
+                )}
               </div>
 
-              <div>
-                <Link
-                  to="/sobre"
-                  className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-                >
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
-                    Harmonia &amp; Equilíbrio
-                  </span>
-                </Link>
-              </div>
+              {intro.home_intro_cta_label && (
+                <div>
+                  <a
+                    href={intro.home_intro_cta_href || "/sobre"}
+                    className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                  >
+                    <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
+                      {intro.home_intro_cta_label}
+                    </span>
+                  </a>
+                </div>
+              )}
             </div>
+
           </div>
         </div>
       </section>
