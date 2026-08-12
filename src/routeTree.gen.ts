@@ -64,6 +64,7 @@ import { Route as ApiPublicMediaRouteImport } from './routes/api/public/media'
 import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/public/instagram-feed[.]xml'
 import { Route as AdminSiteSeoRouteImport } from './routes/admin/site.seo'
 import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
+import { Route as AdminSiteHomeRouteImport } from './routes/admin/site.home'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
 import { Route as AdminConfiguracoesSiteRouteImport } from './routes/admin/configuracoes/site'
@@ -360,6 +361,11 @@ const AdminSiteMenuRoute = AdminSiteMenuRouteImport.update({
   path: '/admin/site/menu',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSiteHomeRoute = AdminSiteHomeRouteImport.update({
+  id: '/admin/site/home',
+  path: '/admin/site/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
   id: '/admin/produtos/$id',
   path: '/admin/produtos/$id',
@@ -518,6 +524,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
@@ -592,6 +599,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
@@ -668,6 +676,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
@@ -745,6 +754,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
     | '/api/public/instagram-feed.xml'
@@ -819,6 +829,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
     | '/api/public/instagram-feed.xml'
@@ -894,6 +905,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
     | '/api/public/instagram-feed.xml'
@@ -969,6 +981,7 @@ export interface RootRouteChildren {
   AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
+  AdminSiteHomeRoute: typeof AdminSiteHomeRoute
   AdminSiteMenuRoute: typeof AdminSiteMenuRoute
   AdminSiteSeoRoute: typeof AdminSiteSeoRoute
   ApiPublicInstagramFeedDotxmlRoute: typeof ApiPublicInstagramFeedDotxmlRoute
@@ -1372,6 +1385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSiteMenuRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/site/home': {
+      id: '/admin/site/home'
+      path: '/admin/site/home'
+      fullPath: '/admin/site/home'
+      preLoaderRoute: typeof AdminSiteHomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/produtos/$id': {
       id: '/admin/produtos/$id'
       path: '/admin/produtos/$id'
@@ -1581,6 +1601,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminConfiguracoesSiteRoute: AdminConfiguracoesSiteRoute,
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
+  AdminSiteHomeRoute: AdminSiteHomeRoute,
   AdminSiteMenuRoute: AdminSiteMenuRoute,
   AdminSiteSeoRoute: AdminSiteSeoRoute,
   ApiPublicInstagramFeedDotxmlRoute: ApiPublicInstagramFeedDotxmlRoute,
