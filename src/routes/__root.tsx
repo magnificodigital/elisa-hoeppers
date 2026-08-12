@@ -141,7 +141,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <ThemeVars />
         <Outlet />
+
         <FloatingCart />
         <WhatsAppButton />
         <CookieBanner />
