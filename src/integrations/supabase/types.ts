@@ -1003,6 +1003,51 @@ export type Database = {
           },
         ]
       }
+      pages: {
+        Row: {
+          content_md: string
+          created_at: string
+          display_order: number
+          hero_image: string | null
+          id: string
+          is_published: boolean
+          seo_description: string | null
+          seo_title: string | null
+          show_in_menu: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content_md?: string
+          created_at?: string
+          display_order?: number
+          hero_image?: string | null
+          id?: string
+          is_published?: boolean
+          seo_description?: string | null
+          seo_title?: string | null
+          show_in_menu?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content_md?: string
+          created_at?: string
+          display_order?: number
+          hero_image?: string | null
+          id?: string
+          is_published?: boolean
+          seo_description?: string | null
+          seo_title?: string | null
+          show_in_menu?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           author_name: string | null
