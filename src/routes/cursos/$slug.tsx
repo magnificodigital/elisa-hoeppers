@@ -13,7 +13,7 @@ import { formatPriceBRL } from "@/lib/shop";
 import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/cursos/$slug")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { status?: string } => ({
     status: typeof s.status === "string" ? s.status : undefined,
   }),
   loader: async ({ params }) => {
@@ -219,7 +219,7 @@ function CourseDetail() {
                     <p className="text-2xl font-semibold text-primary-dark mb-4">
                       {!isPaid
                         ? "Grátis"
-                        : formatPriceBRL(course.price_cents)}
+                        : formatPriceBRL(course.price_cents ?? 0)}
                     </p>
 
                     {/* SEM LOGIN */}
@@ -234,7 +234,7 @@ function CourseDetail() {
                         className="block w-full text-center bg-primary text-white py-3 rounded-lg text-sm font-semibold uppercase tracking-wider hover:bg-primary-dark transition"
                       >
                         {isPaid
-                          ? `Fazer login pra comprar · ${formatPriceBRL(course.price_cents)}`
+                          ? `Fazer login pra comprar · ${formatPriceBRL(course.price_cents ?? 0)}`
                           : "Entrar para matricular"}
                       </button>
                     )}
@@ -248,7 +248,7 @@ function CourseDetail() {
                       >
                         {buy.isPending
                           ? "Redirecionando…"
-                          : `Comprar curso · ${formatPriceBRL(course.price_cents)}`}
+                          : `Comprar curso · ${formatPriceBRL(course.price_cents ?? 0)}`}
                       </button>
                     )}
 

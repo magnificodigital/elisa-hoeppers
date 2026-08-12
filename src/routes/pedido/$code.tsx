@@ -90,7 +90,7 @@ function PaymentCountdown({ order }: { order: Order }) {
 }
 
 export const Route = createFileRoute("/pedido/$code")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { status?: string; email?: string } => ({
     status: typeof s.status === "string" ? s.status : undefined,
     email: typeof s.email === "string" ? s.email : undefined,
   }),

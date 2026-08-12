@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import { listPublishedPosts } from "@/lib/blog";
 
 export const Route = createFileRoute("/blog/")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { tag?: string } => ({
     tag: typeof s.tag === "string" ? s.tag : undefined,
   }),
   head: () => ({
