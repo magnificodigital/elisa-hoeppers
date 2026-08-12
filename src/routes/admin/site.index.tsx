@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { GalleryHorizontal, Menu, Search } from "lucide-react";
+import { FileText, GalleryHorizontal, Home, Menu, Palette, Search } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -20,6 +20,24 @@ const OPTIONS = [
     icon: GalleryHorizontal,
   },
   {
+    to: "/admin/site/home",
+    label: "Conteúdo da Home",
+    description: "Textos, botão e imagem da seção de apresentação da página inicial.",
+    icon: Home,
+  },
+  {
+    to: "/admin/site/paginas",
+    label: "Páginas",
+    description: "Edite as páginas de conteúdo e crie novas páginas do site.",
+    icon: FileText,
+  },
+  {
+    to: "/admin/site/cores",
+    label: "Cores",
+    description: "Altere as cores da marca aplicadas em todo o site.",
+    icon: Palette,
+  },
+  {
     to: "/admin/site/menu",
     label: "Menu de navegação",
     description: "Escolha o que aparece no header e no footer, e de que lado.",
@@ -32,6 +50,8 @@ const OPTIONS = [
     icon: Search,
   },
 ] as const;
+
+
 
 
 function SitePage() {
