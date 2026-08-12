@@ -1,10 +1,12 @@
 import { supabase } from "./supabase";
+import type { PageBlock } from "./page-blocks";
 
 export type SitePage = {
   id: string;
   slug: string;
   title: string;
   content_md: string;
+  content_blocks: PageBlock[];
   hero_image: string | null;
   seo_title: string | null;
   seo_description: string | null;

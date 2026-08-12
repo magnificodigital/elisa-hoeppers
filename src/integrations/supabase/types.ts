@@ -1005,6 +1005,7 @@ export type Database = {
       }
       pages: {
         Row: {
+          content_blocks: Json
           content_md: string
           created_at: string
           display_order: number
@@ -1019,6 +1020,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          content_blocks?: Json
           content_md?: string
           created_at?: string
           display_order?: number
@@ -1033,6 +1035,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          content_blocks?: Json
           content_md?: string
           created_at?: string
           display_order?: number

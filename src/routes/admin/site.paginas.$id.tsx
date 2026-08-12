@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ImageUploader } from "@/components/ImageUploader";
-import { MarkdownContent } from "@/components/MarkdownContent";
+import { PageBuilder } from "@/components/admin/PageBuilder";
+import { markdownToBlocks, type PageBlock } from "@/lib/page-blocks";
 import { getPage, updatePage, slugify, type SitePage } from "@/lib/pages";
 
 export const Route = createFileRoute("/admin/site/paginas/$id")({
@@ -18,50 +19,23 @@ export const Route = createFileRoute("/admin/site/paginas/$id")({
   ),
 });
 
-const TOOLS: { label: string; wrap: (s: string) => string }[] = [
-  { label: "Título", wrap: (s) => `## ${s || "Título"}` },
-  { label: "Subtítulo", wrap: (s) => `### ${s || "Subtítulo"}` },
-  { label: "Negrito", wrap: (s) => `**${s || "texto"}**` },
-  { label: "Itálico", wrap: (s) => `*${s || "texto"}*` },
-  { label: "Lista", wrap: (s) => (s ? s.split("\n").map((l) => `- ${l}`).join("\n") : "- item") },
-  { label: "Link", wrap: (s) => `[${s || "texto"}](https://)` },
-  { label: "Imagem", wrap: () => `![](https://)` },
-  { label: "Citação", wrap: (s) => `> ${s || "citação"}` },
-  { label: "Divisória", wrap: () => `---` },
-];
-
 function PageEditor() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
   const { data, isLoading } = useQuery({ queryKey: ["page", id], queryFn: () => getPage(id) });
 
   const [form, setForm] = useState<Partial<SitePage>>({});
+  const [blocks, setBlocks] = useState<PageBlock[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (data) setForm(data);
+    if (!data) return;
+    setForm(data);
+    const existing = Array.isArray(data.content_blocks) ? data.content_blocks : [];
+    setBlocks(existing.length > 0 ? existing : markdownToBlocks(data.content_md ?? ""));
   }, [data]);
 
   const set = (patch: Partial<SitePage>) => setForm((f) => ({ ...f, ...patch }));
-
-  const applyTool = (tool: (typeof TOOLS)[number]) => {
-    const el = document.getElementById("page-content") as HTMLTextAreaElement | null;
-    const content = form.content_md ?? "";
-    if (!el) {
-      set({ content_md: `${content}\n\n${tool.wrap("")}` });
-      return;
-    }
-    const start = el.selectionStart;
-    const end = el.selectionEnd;
-    const selected = content.slice(start, end);
-    const replacement = tool.wrap(selected);
-    const next = content.slice(0, start) + replacement + content.slice(end);
-    set({ content_md: next });
-    requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(start + replacement.length, start + replacement.length);
-    });
-  };
 
   const save = async () => {
     if (!form.title?.trim()) return toast.error("Informe o título");
@@ -73,6 +47,7 @@ function PageEditor() {
         title: form.title.trim(),
         slug: finalSlug,
         content_md: form.content_md ?? "",
+        content_blocks: blocks,
         hero_image: form.hero_image ?? null,
         seo_title: form.seo_title ?? null,
         seo_description: form.seo_description ?? null,
@@ -117,7 +92,7 @@ function PageEditor() {
   return (
     <Layout>
       <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-4">
           <div className="flex items-center justify-between mb-5 gap-3">
             <Link to="/admin/site/paginas" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition">
               <ArrowLeft size={16} /> Voltar para Páginas
@@ -134,8 +109,8 @@ function PageEditor() {
 
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-6">Editar página</h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <div className="lg:col-span-2 space-y-4">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-5">
+            <div className="xl:col-span-3 space-y-4">
               <div className="bg-white rounded-xl p-5 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
@@ -149,33 +124,11 @@ function PageEditor() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1">Conteúdo</label>
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {TOOLS.map((t) => (
-                      <button
-                        key={t.label}
-                        type="button"
-                        onClick={() => applyTool(t)}
-                        className="text-[11px] px-2.5 py-1 rounded-full border border-border text-primary-dark hover:bg-cream transition"
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                  <textarea
-                    id="page-content"
-                    rows={18}
-                    value={form.content_md ?? ""}
-                    onChange={(e) => set({ content_md: e.target.value })}
-                    className={`${inputCls} font-mono text-xs leading-relaxed`}
-                  />
-                </div>
               </div>
 
-              <div className="bg-white rounded-xl p-5">
-                <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-3">Prévia</p>
-                <MarkdownContent content={form.content_md ?? ""} />
+              <div className="bg-white rounded-xl p-4">
+                <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-3">Construtor de página</p>
+                <PageBuilder blocks={blocks} onChange={setBlocks} />
               </div>
             </div>
 

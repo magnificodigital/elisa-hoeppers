@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import Layout from "@/components/Layout";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import { PageBlocksRenderer } from "@/components/pages/PageBlockRenderer";
 import { getPageBySlug } from "@/lib/pages";
 
 export const Route = createFileRoute("/p/$slug")({
@@ -56,6 +57,7 @@ export const Route = createFileRoute("/p/$slug")({
 
 function PublicPage() {
   const { page } = Route.useLoaderData();
+  const hasBlocks = Array.isArray(page.content_blocks) && page.content_blocks.length > 0;
 
   return (
     <Layout>
@@ -65,12 +67,20 @@ function PublicPage() {
           <div className="absolute inset-0 bg-primary-dark/35" />
         </section>
       )}
-      <section className="py-16 md:py-24 bg-cream">
-        <div className="max-w-[720px] mx-auto px-4 md:px-6">
-          <h1 className="font-display text-3xl md:text-5xl text-primary-dark mb-8">{page.title}</h1>
-          <MarkdownContent content={page.content_md} />
-        </div>
-      </section>
+      <div className="bg-cream pb-16 md:pb-24">
+        <section className="pt-16 md:pt-24">
+          <div className="max-w-[860px] mx-auto px-4 md:px-6">
+            <h1 className="font-display text-3xl md:text-5xl text-primary-dark">{page.title}</h1>
+          </div>
+        </section>
+        {hasBlocks ? (
+          <PageBlocksRenderer blocks={page.content_blocks} />
+        ) : (
+          <div className="max-w-[720px] mx-auto px-4 md:px-6 pt-8">
+            <MarkdownContent content={page.content_md} />
+          </div>
+        )}
+      </div>
     </Layout>
   );
 }
