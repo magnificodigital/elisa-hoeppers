@@ -123,33 +123,11 @@ function PageEditor() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1">Conteúdo</label>
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {TOOLS.map((t) => (
-                      <button
-                        key={t.label}
-                        type="button"
-                        onClick={() => applyTool(t)}
-                        className="text-[11px] px-2.5 py-1 rounded-full border border-border text-primary-dark hover:bg-cream transition"
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                  <textarea
-                    id="page-content"
-                    rows={18}
-                    value={form.content_md ?? ""}
-                    onChange={(e) => set({ content_md: e.target.value })}
-                    className={`${inputCls} font-mono text-xs leading-relaxed`}
-                  />
-                </div>
               </div>
 
-              <div className="bg-white rounded-xl p-5">
-                <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-3">Prévia</p>
-                <MarkdownContent content={form.content_md ?? ""} />
+              <div className="bg-white rounded-xl p-4">
+                <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-3">Construtor de página</p>
+                <PageBuilder blocks={blocks} onChange={setBlocks} />
               </div>
             </div>
 
