@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FileText, GalleryHorizontal, Home, Menu, Palette, Search } from "lucide-react";
+import { FileText, GalleryHorizontal, Home, Menu, MessageCircle, Palette, Search } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
