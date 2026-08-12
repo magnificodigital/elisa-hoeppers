@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { ImageUploader } from "@/components/ImageUploader";
-import { MarkdownContent } from "@/components/MarkdownContent";
+import { PageBuilder } from "@/components/admin/PageBuilder";
+import { markdownToBlocks, type PageBlock } from "@/lib/page-blocks";
 import { getPage, updatePage, slugify, type SitePage } from "@/lib/pages";
 
 export const Route = createFileRoute("/admin/site/paginas/$id")({
