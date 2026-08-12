@@ -709,7 +709,7 @@ export function PageBuilder({ blocks, onChange }: { blocks: PageBlock[]; onChang
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)] gap-5 items-start">
         <aside className="bg-white rounded-xl p-3 lg:sticky lg:top-4 max-h-[80vh] overflow-y-auto">
           <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-2">Blocos</p>
           <p className="text-[10px] text-primary-dark/50 mb-3">Arraste para a página ou clique para adicionar no final.</p>
