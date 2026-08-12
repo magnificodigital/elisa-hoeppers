@@ -12,7 +12,7 @@ import {
 } from "@/lib/shop";
 
 export const Route = createFileRoute("/loja/")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { brand?: string } => ({
     brand: typeof s.brand === "string" ? s.brand : undefined,
   }),
   head: () => ({

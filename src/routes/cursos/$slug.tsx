@@ -13,7 +13,7 @@ import { formatPriceBRL } from "@/lib/shop";
 import { WishlistButton } from "@/components/WishlistButton";
 
 export const Route = createFileRoute("/cursos/$slug")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { status?: string } => ({
     status: typeof s.status === "string" ? s.status : undefined,
   }),
   loader: async ({ params }) => {

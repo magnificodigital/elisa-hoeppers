@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/cadastro-de-alunos")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { email?: string } => ({
     email: typeof s.email === "string" ? s.email : undefined,
   }),
   head: () => ({ meta: [{ title: "Cadastro de alunos — Elisa Hoeppers" }] }),

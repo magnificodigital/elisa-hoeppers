@@ -13,7 +13,7 @@ import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
 import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/painel/pedidos")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { highlight?: string } => ({
     highlight: typeof s.highlight === "string" ? s.highlight : undefined,
   }),
   head: () => ({ meta: [{ title: "Meus pedidos — Elisa Hoeppers" }] }),
