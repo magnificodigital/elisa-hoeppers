@@ -47,6 +47,7 @@ function PageEditor() {
         title: form.title.trim(),
         slug: finalSlug,
         content_md: form.content_md ?? "",
+        content_blocks: blocks,
         hero_image: form.hero_image ?? null,
         seo_title: form.seo_title ?? null,
         seo_description: form.seo_description ?? null,
