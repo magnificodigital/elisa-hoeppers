@@ -63,6 +63,7 @@ import { Route as AdminAjudaIndexRouteImport } from './routes/admin/ajuda.index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as ApiPublicMediaRouteImport } from './routes/api/public/media'
 import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/public/instagram-feed[.]xml'
+import { Route as AdminSiteWhatsappRouteImport } from './routes/admin/site.whatsapp'
 import { Route as AdminSiteSeoRouteImport } from './routes/admin/site.seo'
 import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
 import { Route as AdminSiteHomeRouteImport } from './routes/admin/site.home'
@@ -360,6 +361,11 @@ const ApiPublicInstagramFeedDotxmlRoute =
     path: '/api/public/instagram-feed.xml',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminSiteWhatsappRoute = AdminSiteWhatsappRouteImport.update({
+  id: '/admin/site/whatsapp',
+  path: '/admin/site/whatsapp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSiteSeoRoute = AdminSiteSeoRouteImport.update({
   id: '/admin/site/seo',
   path: '/admin/site/seo',
@@ -553,6 +559,7 @@ export interface FileRoutesByFullPath {
   '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
+  '/admin/site/whatsapp': typeof AdminSiteWhatsappRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -632,6 +639,7 @@ export interface FileRoutesByTo {
   '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
+  '/admin/site/whatsapp': typeof AdminSiteWhatsappRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -713,6 +721,7 @@ export interface FileRoutesById {
   '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
+  '/admin/site/whatsapp': typeof AdminSiteWhatsappRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -795,6 +804,7 @@ export interface FileRouteTypes {
     | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
+    | '/admin/site/whatsapp'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -874,6 +884,7 @@ export interface FileRouteTypes {
     | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
+    | '/admin/site/whatsapp'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -954,6 +965,7 @@ export interface FileRouteTypes {
     | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
+    | '/admin/site/whatsapp'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -1034,6 +1046,7 @@ export interface RootRouteChildren {
   AdminSiteHomeRoute: typeof AdminSiteHomeRoute
   AdminSiteMenuRoute: typeof AdminSiteMenuRoute
   AdminSiteSeoRoute: typeof AdminSiteSeoRoute
+  AdminSiteWhatsappRoute: typeof AdminSiteWhatsappRoute
   ApiPublicInstagramFeedDotxmlRoute: typeof ApiPublicInstagramFeedDotxmlRoute
   ApiPublicMediaRoute: typeof ApiPublicMediaRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
@@ -1430,6 +1443,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicInstagramFeedDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/site/whatsapp': {
+      id: '/admin/site/whatsapp'
+      path: '/admin/site/whatsapp'
+      fullPath: '/admin/site/whatsapp'
+      preLoaderRoute: typeof AdminSiteWhatsappRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/site/seo': {
       id: '/admin/site/seo'
       path: '/admin/site/seo'
@@ -1686,6 +1706,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSiteHomeRoute: AdminSiteHomeRoute,
   AdminSiteMenuRoute: AdminSiteMenuRoute,
   AdminSiteSeoRoute: AdminSiteSeoRoute,
+  AdminSiteWhatsappRoute: AdminSiteWhatsappRoute,
   ApiPublicInstagramFeedDotxmlRoute: ApiPublicInstagramFeedDotxmlRoute,
   ApiPublicMediaRoute: ApiPublicMediaRoute,
   PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,

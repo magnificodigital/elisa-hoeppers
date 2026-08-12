@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FileText, GalleryHorizontal, Home, Menu, Palette, Search } from "lucide-react";
+import { FileText, GalleryHorizontal, Home, Menu, MessageCircle, Palette, Search } from "lucide-react";
 import Layout from "@/components/Layout";
 import { AdminGuard } from "@/components/AdminGuard";
 
@@ -48,6 +48,12 @@ const OPTIONS = [
     label: "SEO",
     description: "Título e descrição padrão, imagem de compartilhamento, GA/GTM e verificação do Search Console.",
     icon: Search,
+  },
+  {
+    to: "/admin/site/whatsapp",
+    label: "Botão do WhatsApp",
+    description: "Número, mensagem inicial, texto do balão, posição e ativar/desativar.",
+    icon: MessageCircle,
   },
 ] as const;
 
