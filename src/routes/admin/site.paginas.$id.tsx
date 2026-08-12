@@ -92,7 +92,7 @@ function PageEditor() {
   return (
     <Layout>
       <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-4">
           <div className="flex items-center justify-between mb-5 gap-3">
             <Link to="/admin/site/paginas" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition">
               <ArrowLeft size={16} /> Voltar para Páginas
@@ -109,8 +109,8 @@ function PageEditor() {
 
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-6">Editar página</h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <div className="lg:col-span-2 space-y-4">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-5">
+            <div className="xl:col-span-3 space-y-4">
               <div className="bg-white rounded-xl p-5 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
