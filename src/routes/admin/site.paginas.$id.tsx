@@ -91,8 +91,8 @@ function PageEditor() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
-        <div className="max-w-[1400px] mx-auto px-4">
+      <section className="py-6 md:py-8 bg-cream min-h-[70vh]">
+        <div className="w-full px-0">
           <div className="flex items-center justify-between mb-5 gap-3">
             <Link to="/admin/site/paginas" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition">
               <ArrowLeft size={16} /> Voltar para Páginas
