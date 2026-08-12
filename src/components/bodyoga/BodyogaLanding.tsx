@@ -21,7 +21,52 @@ import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
 import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Slide } from "@/lib/shop";
+import { getSetting } from "@/lib/settings";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
+
+const INTRO_DEFAULTS: Record<string, string> = {
+  home_intro_title: "BODYOGA é a\nfusão entre *yoga* e\ncuidado consciente.",
+  home_intro_p1: "Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.",
+  home_intro_p2:
+    "Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.",
+  home_intro_cta_label: "Harmonia & Equilíbrio",
+  home_intro_cta_href: "/sobre",
+  home_intro_image: "/images/home/bodyoga/bodyoga-left.png",
+};
+
+async function fetchIntro(): Promise<Record<string, string>> {
+  const keys = Object.keys(INTRO_DEFAULTS);
+  const entries = await Promise.all(
+    keys.map(async (k) => {
+      try {
+        const v = await getSetting(k);
+        return [k, v && v.trim() ? v : INTRO_DEFAULTS[k]] as const;
+      } catch {
+        return [k, INTRO_DEFAULTS[k]] as const;
+      }
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
+/** Renderiza quebras de linha e *itálico* do título configurável. */
+function renderIntroTitle(text: string) {
+  return text.split("\n").map((line, i) => (
+    <span key={i}>
+      {i > 0 && <br />}
+      {line.split(/(\*[^*]+\*)/g).map((part, j) =>
+        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
+          <span key={j} className="italic">
+            {part.slice(1, -1)}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  ));
+}
+
 
 
 
