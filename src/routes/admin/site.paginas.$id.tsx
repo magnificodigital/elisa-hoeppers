@@ -19,50 +19,23 @@ export const Route = createFileRoute("/admin/site/paginas/$id")({
   ),
 });
 
-const TOOLS: { label: string; wrap: (s: string) => string }[] = [
-  { label: "Título", wrap: (s) => `## ${s || "Título"}` },
-  { label: "Subtítulo", wrap: (s) => `### ${s || "Subtítulo"}` },
-  { label: "Negrito", wrap: (s) => `**${s || "texto"}**` },
-  { label: "Itálico", wrap: (s) => `*${s || "texto"}*` },
-  { label: "Lista", wrap: (s) => (s ? s.split("\n").map((l) => `- ${l}`).join("\n") : "- item") },
-  { label: "Link", wrap: (s) => `[${s || "texto"}](https://)` },
-  { label: "Imagem", wrap: () => `![](https://)` },
-  { label: "Citação", wrap: (s) => `> ${s || "citação"}` },
-  { label: "Divisória", wrap: () => `---` },
-];
-
 function PageEditor() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
   const { data, isLoading } = useQuery({ queryKey: ["page", id], queryFn: () => getPage(id) });
 
   const [form, setForm] = useState<Partial<SitePage>>({});
+  const [blocks, setBlocks] = useState<PageBlock[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (data) setForm(data);
+    if (!data) return;
+    setForm(data);
+    const existing = Array.isArray(data.content_blocks) ? data.content_blocks : [];
+    setBlocks(existing.length > 0 ? existing : markdownToBlocks(data.content_md ?? ""));
   }, [data]);
 
   const set = (patch: Partial<SitePage>) => setForm((f) => ({ ...f, ...patch }));
-
-  const applyTool = (tool: (typeof TOOLS)[number]) => {
-    const el = document.getElementById("page-content") as HTMLTextAreaElement | null;
-    const content = form.content_md ?? "";
-    if (!el) {
-      set({ content_md: `${content}\n\n${tool.wrap("")}` });
-      return;
-    }
-    const start = el.selectionStart;
-    const end = el.selectionEnd;
-    const selected = content.slice(start, end);
-    const replacement = tool.wrap(selected);
-    const next = content.slice(0, start) + replacement + content.slice(end);
-    set({ content_md: next });
-    requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(start + replacement.length, start + replacement.length);
-    });
-  };
 
   const save = async () => {
     if (!form.title?.trim()) return toast.error("Informe o título");
