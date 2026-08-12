@@ -65,6 +65,7 @@ import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/p
 import { Route as AdminSiteSeoRouteImport } from './routes/admin/site.seo'
 import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
 import { Route as AdminSiteHomeRouteImport } from './routes/admin/site.home'
+import { Route as AdminSiteCoresRouteImport } from './routes/admin/site.cores'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
 import { Route as AdminConfiguracoesSiteRouteImport } from './routes/admin/configuracoes/site'
@@ -366,6 +367,11 @@ const AdminSiteHomeRoute = AdminSiteHomeRouteImport.update({
   path: '/admin/site/home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSiteCoresRoute = AdminSiteCoresRouteImport.update({
+  id: '/admin/site/cores',
+  path: '/admin/site/cores',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
   id: '/admin/produtos/$id',
   path: '/admin/produtos/$id',
@@ -524,6 +530,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/cores': typeof AdminSiteCoresRoute
   '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
@@ -599,6 +606,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/cores': typeof AdminSiteCoresRoute
   '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
@@ -676,6 +684,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/site/cores': typeof AdminSiteCoresRoute
   '/admin/site/home': typeof AdminSiteHomeRoute
   '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
@@ -754,6 +763,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/cores'
     | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
@@ -829,6 +839,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/cores'
     | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
@@ -905,6 +916,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/site/cores'
     | '/admin/site/home'
     | '/admin/site/menu'
     | '/admin/site/seo'
@@ -981,6 +993,7 @@ export interface RootRouteChildren {
   AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
+  AdminSiteCoresRoute: typeof AdminSiteCoresRoute
   AdminSiteHomeRoute: typeof AdminSiteHomeRoute
   AdminSiteMenuRoute: typeof AdminSiteMenuRoute
   AdminSiteSeoRoute: typeof AdminSiteSeoRoute
@@ -1392,6 +1405,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSiteHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/site/cores': {
+      id: '/admin/site/cores'
+      path: '/admin/site/cores'
+      fullPath: '/admin/site/cores'
+      preLoaderRoute: typeof AdminSiteCoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/produtos/$id': {
       id: '/admin/produtos/$id'
       path: '/admin/produtos/$id'
@@ -1601,6 +1621,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminConfiguracoesSiteRoute: AdminConfiguracoesSiteRoute,
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
+  AdminSiteCoresRoute: AdminSiteCoresRoute,
   AdminSiteHomeRoute: AdminSiteHomeRoute,
   AdminSiteMenuRoute: AdminSiteMenuRoute,
   AdminSiteSeoRoute: AdminSiteSeoRoute,
