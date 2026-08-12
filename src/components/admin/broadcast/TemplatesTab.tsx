@@ -57,14 +57,23 @@ export function TemplatesTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-primary-dark/60">Templates reutilizáveis com editor visual. Use-os ao criar uma campanha.</p>
-        <button onClick={() => create.mutate()} disabled={create.isPending}
-          className="inline-flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
-          {create.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
-          Novo template
-        </button>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm text-primary-dark/60">Templates reutilizáveis com editor visual em blocos. Use-os ao criar uma campanha.</p>
+        <div className="flex items-center gap-2">
+          <button onClick={() => { if (confirm("Restaurar os templates padrão em blocos? O conteúdo atual deles será substituído.")) restore.mutate(); }}
+            disabled={restore.isPending}
+            className="inline-flex items-center gap-1.5 border border-border text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-white transition disabled:opacity-60">
+            {restore.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
+            Restaurar padrão
+          </button>
+          <button onClick={() => create.mutate()} disabled={create.isPending}
+            className="inline-flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
+            {create.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
+            Novo template
+          </button>
+        </div>
       </div>
+
 
       {isLoading ? (
         <div className="flex items-center justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
