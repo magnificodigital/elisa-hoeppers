@@ -308,7 +308,7 @@ export async function restoreDefaultTemplates(): Promise<number> {
       subject: p.subject,
       design_json: buildPresetDesign(p),
       html: buildPresetHtml(p),
-      is_system: true,
+      is_system: p.system_key !== "blank",
       system_key: p.system_key,
     };
     const { data: existing } = await (supabase as any)
