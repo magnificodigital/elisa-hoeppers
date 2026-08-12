@@ -147,7 +147,7 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
             <div className="md:col-span-6 relative">
               <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
                 <img
-                  src="/images/home/bodyoga/bodyoga-left.png"
+                  src={intro.home_intro_image || INTRO_DEFAULTS.home_intro_image}
                   alt="Elisa Hoeppers com os pesinhos BODYOGA"
                   className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
                   loading="lazy"
@@ -159,29 +159,36 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
             {/* Conteúdo de texto */}
             <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
-                BODYOGA é a <br />fusão entre <span className="italic">yoga</span> e <br />cuidado consciente.
+                {renderIntroTitle(intro.home_intro_title)}
               </h2>
 
               <div className="space-y-6 max-w-md">
-                <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed">
-                  Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.
-                </p>
-                <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide">
-                  Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.
-                </p>
+                {intro.home_intro_p1 && (
+                  <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">
+                    {intro.home_intro_p1}
+                  </p>
+                )}
+                {intro.home_intro_p2 && (
+                  <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide whitespace-pre-line">
+                    {intro.home_intro_p2}
+                  </p>
+                )}
               </div>
 
-              <div>
-                <Link
-                  to="/sobre"
-                  className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-                >
-                  <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
-                    Harmonia &amp; Equilíbrio
-                  </span>
-                </Link>
-              </div>
+              {intro.home_intro_cta_label && (
+                <div>
+                  <a
+                    href={intro.home_intro_cta_href || "/sobre"}
+                    className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                  >
+                    <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
+                      {intro.home_intro_cta_label}
+                    </span>
+                  </a>
+                </div>
+              )}
             </div>
+
           </div>
         </div>
       </section>
