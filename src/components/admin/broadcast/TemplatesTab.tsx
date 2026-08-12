@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Plus, Trash2, Loader2, ArrowLeft } from "lucide-react";
+import { Plus, Trash2, Loader2, ArrowLeft, RotateCcw } from "lucide-react";
 import {
   listTemplates, createTemplate, updateTemplate, deleteTemplate, type EmailTemplate,
 } from "@/lib/email-templates";
+import { restoreDefaultTemplates } from "@/lib/email-template-presets";
 import { EmailBuilder } from "@/components/admin/EmailBuilder";
 import { toast } from "sonner";
 
@@ -19,11 +20,21 @@ export function TemplatesTab() {
     onSuccess: (t) => { qc.invalidateQueries({ queryKey: ["email-templates"] }); setEditing(t); },
   });
 
+  const restore = useMutation({
+    mutationFn: restoreDefaultTemplates,
+    onSuccess: (n) => {
+      qc.invalidateQueries({ queryKey: ["email-templates"] });
+      toast.success(`${n} templates padrão restaurados em blocos`);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const del = useMutation({
     mutationFn: (id: string) => deleteTemplate(id),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["email-templates"] }); toast.success("Template removido"); },
     onError: (e: Error) => toast.error(e.message),
   });
+
 
   if (editing) {
     return (
