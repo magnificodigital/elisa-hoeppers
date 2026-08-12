@@ -3,31 +3,26 @@ import { supabase } from "./supabase";
 /** Chaves de cor editáveis no admin e as variáveis CSS que cada uma controla. */
 export const THEME_VARS: Record<string, { label: string; fallback: string; vars: string[] }> = {
   theme_primary: {
-    label: "Verde principal",
+    label: "Verde (marca)",
     fallback: "#3B4F30",
-    vars: ["--primary", "--bodyoga-green", "--foreground", "--ring"],
-  },
-  theme_primary_dark: {
-    label: "Verde escuro",
-    fallback: "#334C31",
-    vars: ["--primary-dark", "--text"],
+    vars: [
+      "--primary",
+      "--primary-dark",
+      "--bodyoga-green",
+      "--bodyoga-brown",
+      "--accent-blue",
+      "--accent-teal",
+      "--foreground",
+      "--ring",
+    ],
   },
   theme_cream: {
     label: "Creme (fundo)",
-    fallback: "#F6E9D6",
-    vars: ["--cream", "--bodyoga-cream", "--background"],
-  },
-  theme_sand: {
-    label: "Areia",
-    fallback: "#DBCCBF",
-    vars: ["--sand", "--border"],
-  },
-  theme_peach: {
-    label: "Pêssego",
-    fallback: "#FFD7AC",
-    vars: ["--peach"],
+    fallback: "#F7F0E5",
+    vars: ["--cream", "--cream-rose", "--bodyoga-cream", "--background"],
   },
 };
+
 
 export const THEME_KEYS = Object.keys(THEME_VARS);
 
