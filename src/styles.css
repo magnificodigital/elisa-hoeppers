@@ -63,24 +63,26 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #F6E9D6;
+  /* Paleta oficial: apenas dois tons de marca + neutros de texto */
+  --background: #F7F0E5;
   --foreground: #3B4F30;
   --primary: #3B4F30;
-  --primary-dark: #334C31;
-  --cream: #F6E9D6;
-  --sand: #DBCCBF;
-  --cream-rose: #F2E9E3;
-  --peach: #FFD7AC;
-  --peach-light: #F5D7BA;
-  --accent-blue: #204050;
-  --accent-teal: #227179;
-  --text: #334C31;
-  --text-muted: #7A7A7A;
+  --primary-dark: #3B4F30;
+  --cream: #F7F0E5;
+  --sand: #E7DDCC;
+  --cream-rose: #F7F0E5;
+  --peach: #E7DDCC;
+  --peach-light: #EFE7D8;
+  --accent-blue: #3B4F30;
+  --accent-teal: #3B4F30;
+  --text: #2B2B2B;
+  --text-muted: #6B6B6B;
   /* shadcn mappings */
   --card: #FFFFFF;
-  --border: #DBCCBF;
+  --border: #E7DDCC;
   --ring: #3B4F30;
 }
+
 
 @theme inline {
   --radius-xl: 0.75rem;
