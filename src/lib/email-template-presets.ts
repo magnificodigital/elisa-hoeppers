@@ -131,7 +131,6 @@ const row = (contents: any[], backgroundColor = "") => ({
     },
   ],
   values: {
-    displayCondition: null,
     columns: false,
     backgroundColor,
     columnsBackgroundColor: "",
