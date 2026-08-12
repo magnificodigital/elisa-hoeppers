@@ -99,7 +99,15 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
     queryFn: listActiveRituals,
   });
 
+  const { data: introData } = useQuery({
+    queryKey: ["home-intro"],
+    queryFn: fetchIntro,
+    staleTime: 5 * 60 * 1000,
+  });
+  const intro = introData ?? INTRO_DEFAULTS;
+
   const ritualProducts = products ?? [];
+
 
   return (
     <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
