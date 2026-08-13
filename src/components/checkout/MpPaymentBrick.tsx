@@ -149,6 +149,24 @@ export function MpPaymentBrick({
     };
   }, [publicKey, preferenceId, amountCents, orderCode, payerEmail]);
 
+  useEffect(() => {
+    if (!pix) return;
+    const interval = setInterval(async () => {
+      const { data } = await supabase
+        .from("orders")
+        .select("status")
+        .eq("code", orderCode)
+        .maybeSingle();
+      if (data?.status === "confirmed") {
+        clearInterval(interval);
+        navigate({ to: "/pedido/$code", params: { code: orderCode }, search: { status: "success" } as any });
+      }
+    }, 4000);
+    // para de checar depois de 15 min pra não rodar pra sempre
+    const stop = setTimeout(() => clearInterval(interval), 15 * 60 * 1000);
+    return () => { clearInterval(interval); clearTimeout(stop); };
+  }, [pix, orderCode, navigate]);
+
   if (pix) {
     return (
       <div className="text-center">
