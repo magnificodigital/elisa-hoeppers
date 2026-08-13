@@ -213,7 +213,7 @@ serve(async (req) => {
 
     const items = (itemsFromDb ?? []).map((it) => ({
       id: String(it.product_id),
-      title: it.title,
+      title: it.name ?? it.title ?? "Produto",
       quantity: it.qty,
       unit_price: it.unit_price_cents / 100,
       currency_id: "BRL",
