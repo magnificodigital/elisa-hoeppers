@@ -192,23 +192,6 @@ function ProfilePage() {
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(11) 99999-9999" className={inputCls} />
               </div>
 
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1.5">URL da foto (opcional)</label>
-                <input value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)} placeholder="https://..." className={inputCls} />
-                {avatarUrl && (
-                  <img
-                    src={avatarUrl}
-                    alt="Preview da foto"
-                    className="mt-3 w-20 h-20 rounded-full object-cover border border-border"
-                    onError={(e) => (e.currentTarget.style.display = "none")}
-                  />
-                )}
-              </div>
-
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1.5">Bio (opcional)</label>
-                <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={3} className={inputCls} />
-              </div>
             </div>
 
             <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border">
