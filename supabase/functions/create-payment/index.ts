@@ -30,7 +30,95 @@ serve(async (req) => {
     const accessToken = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
     if (!accessToken) throw new Error("MP Access Token não configurado");
 
-    const { order_id, order_code } = await req.json();
+    const body = await req.json();
+    const { order_id, order_code } = body;
+
+    // MODO PROCESSAR PAGAMENTO (chamado pelo Payment Brick)
+    if (body.action === "process") {
+      const { formData } = body;
+      if (!order_code || !formData) {
+        return new Response(JSON.stringify({ error: "dados incompletos" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const { data: order } = await supabase
+        .from("orders")
+        .select("id, code, total_cents, status, customer_email")
+        .eq("code", order_code)
+        .maybeSingle();
+      if (!order) {
+        return new Response(JSON.stringify({ error: "Pedido não encontrado" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (order.status === "confirmed") {
+        return new Response(JSON.stringify({ status: "approved", already: true }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const payBody: any = {
+        transaction_amount: Number(formData.transaction_amount ?? order.total_cents / 100),
+        description: `Pedido ${order.code} - BODYOGA`,
+        payment_method_id: formData.payment_method_id,
+        payer: formData.payer ?? { email: order.customer_email },
+        external_reference: order.code,
+        notification_url: `${SUPABASE_URL}/functions/v1/mp-webhook`,
+        metadata: { order_code: order.code },
+        ...(formData.token ? { token: formData.token } : {}),
+        ...(formData.installments ? { installments: formData.installments } : {}),
+        ...(formData.issuer_id ? { issuer_id: formData.issuer_id } : {}),
+      };
+
+      const payResp = await fetch("https://api.mercadopago.com/v1/payments", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          "X-Idempotency-Key": `${order.code}-${Date.now()}`,
+        },
+        body: JSON.stringify(payBody),
+      });
+      const payment = await payResp.json();
+      if (!payResp.ok) {
+        console.error("MP payment error:", payment);
+        return new Response(JSON.stringify({ error: payment.message ?? "Falha no Mercado Pago" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      await supabase
+        .from("orders")
+        .update({
+          mp_payment_id: String(payment.id),
+          mp_payment_status: payment.status,
+          mp_payment_method: payment.payment_method_id,
+          status: payment.status === "approved" ? "confirmed" : order.status,
+        })
+        .eq("id", order.id);
+
+      const result: any = {
+        status: payment.status,
+        status_detail: payment.status_detail,
+        id: payment.id,
+      };
+      const tx = payment.point_of_interaction?.transaction_data;
+      if (tx) {
+        result.pix = {
+          qr_code: tx.qr_code,
+          qr_base64: tx.qr_code_base64,
+          ticket_url: tx.ticket_url,
+        };
+      }
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (!order_id && !order_code) throw new Error("order_id ou order_code obrigatório");
 
     const q = supabase.from("orders").select("*");

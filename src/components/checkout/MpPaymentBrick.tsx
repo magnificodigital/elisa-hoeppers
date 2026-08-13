@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
-import { processMpPayment } from "@/lib/payments.functions";
+import { supabase } from "@/lib/supabase";
 
 declare global {
   interface Window {
@@ -34,10 +33,9 @@ export function MpPaymentBrick({
   const [loading, setLoading] = useState(true);
   const [initError, setInitError] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrBase64?: string; qrCode?: string } | null>(null);
-  const process = useServerFn(processMpPayment);
 
-  const cbRef = useRef({ onSuccess, onPending, onError, process });
-  cbRef.current = { onSuccess, onPending, onError, process };
+  const cbRef = useRef({ onSuccess, onPending, onError });
+  cbRef.current = { onSuccess, onPending, onError };
 
   useEffect(() => {
     let cancelled = false;
@@ -88,11 +86,13 @@ export function MpPaymentBrick({
               if (cancelled) return;
               setLoading(false);
             },
-            onSubmit: async ({ formData }: any) => {
+            onSubmit: async ({ formData, selectedPaymentMethod }: any) => {
               try {
-                const res: any = await cbRef.current.process({
-                  data: { order_code: orderCode, formData },
+                const { data, error: fnErr } = await supabase.functions.invoke("create-payment", {
+                  body: { action: "process", order_code: orderCode, formData, selectedPaymentMethod },
                 });
+                if (fnErr) throw new Error(fnErr.message);
+                const res: any = data;
                 if (res?.error) throw new Error(res.error);
 
                 if (res?.pix?.qr_base64 || res?.pix?.qr_code) {
