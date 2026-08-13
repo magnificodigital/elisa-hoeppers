@@ -362,7 +362,6 @@ function CheckoutPage() {
       if (payErr) throw payErr;
       if ((payData as any)?.error) throw new Error((payData as any).error);
 
-      clear();
       navigate({ to: "/pagamento/$code", params: { code: orderResult.code } });
     } catch (err) {
       setSubmitError(friendlyError((err as Error).message));
