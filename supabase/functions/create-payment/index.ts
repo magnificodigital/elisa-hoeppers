@@ -76,12 +76,9 @@ serve(async (req) => {
         });
       }
 
-      // Supomos a tabela "order_items" baseada no contexto (se falhar, ajustamos o schema real)
-      // Nota: o sistema usa 'order_items' para pedidos conforme verificado em fluxos anteriores
-      const { data: items } = await supabase
-        .from("order_items")
-        .select("product_id, qty, unit_price_cents, title")
-        .eq("order_id", order.id);
+      // Os itens estão na coluna 'items' (jsonb) da tabela 'orders'
+      const items = (order.items ?? []) as any[];
+
 
       if (order.status === "confirmed") {
         return new Response(JSON.stringify({ status: "approved", already: true }), {
@@ -101,7 +98,7 @@ serve(async (req) => {
       const additional_info: Record<string, unknown> = {
         items: (items ?? []).map((it) => ({
           id: String(it.product_id),
-          title: it.title ?? `Produto ${it.product_id}`,
+          title: it.name ?? it.title ?? `Produto ${it.product_id}`,
           quantity: it.qty,
           unit_price: (it.unit_price_cents ?? 0) / 100,
           category_id: "others",
@@ -211,14 +208,12 @@ serve(async (req) => {
       }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const { data: itemsFromDb } = await supabase
-      .from("order_items")
-      .select("product_id, qty, unit_price_cents, title")
-      .eq("order_id", order.id);
+    const itemsFromDb = (order.items ?? []) as any[];
+
 
     const items = (itemsFromDb ?? []).map((it) => ({
       id: String(it.product_id),
-      title: it.title,
+      title: it.name ?? it.title ?? "Produto",
       quantity: it.qty,
       unit_price: it.unit_price_cents / 100,
       currency_id: "BRL",
