@@ -101,13 +101,20 @@ function PagamentoPage() {
                 publicKey={publicKey}
                 preferenceId={order.mp_preference_id!}
                 amountCents={order.total_cents}
+                orderCode={order.code}
+                payerEmail={order.customer_email ?? undefined}
                 onSuccess={(_paymentId) => {
-                  toast.success("Pagamento processado!");
+                  clear();
+                  toast.success("Pagamento aprovado!");
                   navigate({
                     to: "/pedido/$code",
                     params: { code: order.code },
                     search: { status: "success" } as any,
                   });
+                }}
+                onPending={() => {
+                  clear();
+                  navigate({ to: "/pedido/$code", params: { code: order.code } });
                 }}
                 onError={(msg) => setError(msg)}
               />
