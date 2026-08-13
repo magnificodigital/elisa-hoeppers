@@ -30,10 +30,11 @@ serve(async (req) => {
     const accessToken = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
     if (!accessToken) throw new Error("MP Access Token não configurado");
 
-    const { order_id } = await req.json();
-    if (!order_id) throw new Error("order_id obrigatório");
+    const { order_id, order_code } = await req.json();
+    if (!order_id && !order_code) throw new Error("order_id ou order_code obrigatório");
 
-    const { data: order, error } = await supabase.from("orders").select("*").eq("id", order_id).maybeSingle();
+    const q = supabase.from("orders").select("*");
+    const { data: order, error } = await (order_id ? q.eq("id", order_id) : q.eq("code", order_code)).maybeSingle();
     if (error || !order) throw new Error("Pedido não encontrado");
     if (order.status !== "pending") throw new Error("Pedido não está pendente");
 
