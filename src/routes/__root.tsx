@@ -98,6 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       { src: "https://sdk.mercadopago.com/js/v2" },
+      { src: "https://www.mercadopago.com/v2/security.js", view: "checkout" as any },
       {
         defer: true,
         ["data-domain"]: "hoepppers.lovable.app,elisahoeppers.com.br",

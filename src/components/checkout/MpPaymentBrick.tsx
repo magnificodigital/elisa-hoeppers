@@ -88,8 +88,9 @@ export function MpPaymentBrick({
             },
             onSubmit: async ({ formData, selectedPaymentMethod }: any) => {
               try {
+                const deviceId = (window as any).MP_DEVICE_SESSION_ID ?? null;
                 const { data, error: fnErr } = await supabase.functions.invoke("create-payment", {
-                  body: { action: "process", order_code: orderCode, formData, selectedPaymentMethod },
+                  body: { action: "process", order_code: orderCode, formData, selectedPaymentMethod, device_id: deviceId },
                 });
                 if (fnErr) throw new Error(fnErr.message);
                 const res: any = data;
