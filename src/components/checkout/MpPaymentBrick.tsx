@@ -33,10 +33,9 @@ export function MpPaymentBrick({
   const [loading, setLoading] = useState(true);
   const [initError, setInitError] = useState<string | null>(null);
   const [pix, setPix] = useState<{ qrBase64?: string; qrCode?: string } | null>(null);
-  const process = useServerFn(processMpPayment);
 
-  const cbRef = useRef({ onSuccess, onPending, onError, process });
-  cbRef.current = { onSuccess, onPending, onError, process };
+  const cbRef = useRef({ onSuccess, onPending, onError });
+  cbRef.current = { onSuccess, onPending, onError };
 
   useEffect(() => {
     let cancelled = false;
