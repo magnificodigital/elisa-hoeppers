@@ -22,13 +22,33 @@ async function getSetting(key: string): Promise<string | null> {
   return ((data?.value as string | null) ?? null)?.trim() || null;
 }
 
+// Access Token: tabela segura (gerenciada pelo admin) → env → app_settings (legado)
+async function getAccessToken(): Promise<string> {
+  const { data } = await supabase
+    .from("payment_secrets")
+    .select("value")
+    .eq("key", "mp_access_token")
+    .maybeSingle();
+  const fromDb = (data?.value as string | undefined)?.trim();
+  if (fromDb) return fromDb;
+  // @ts-ignore - Deno
+  const fromEnv = (Deno.env.get("MP_ACCESS_TOKEN") ?? "").trim();
+  if (fromEnv) return fromEnv;
+  return (await getSetting("mp_access_token")) ?? "";
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    // @ts-ignore - Deno
-    const accessToken = Deno.env.get("MP_ACCESS_TOKEN") ?? await getSetting("mp_access_token");
-    if (!accessToken) throw new Error("MP Access Token não configurado");
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      return new Response(JSON.stringify({ error: "Access Token do Mercado Pago não configurado." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
 
     const body = await req.json();
     const { order_id, order_code } = body;
