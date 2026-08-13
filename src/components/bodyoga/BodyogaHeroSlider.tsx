@@ -110,6 +110,7 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
         {isFile ? (
           <video
+            key={videoUrl}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
             src={videoUrl}
             autoPlay
