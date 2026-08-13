@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { processMpPayment } from "@/lib/payments.functions";
 
 declare global {
   interface Window {
@@ -11,20 +13,36 @@ type Props = {
   publicKey: string;
   preferenceId: string;
   amountCents: number;
+  orderCode: string;
+  payerEmail?: string;
   onSuccess: (paymentId: string) => void;
+  onPending?: (paymentId: string) => void;
   onError: (msg: string) => void;
 };
 
-export function MpPaymentBrick({ publicKey, preferenceId, amountCents, onSuccess, onError }: Props) {
+export function MpPaymentBrick({
+  publicKey,
+  preferenceId,
+  amountCents,
+  orderCode,
+  payerEmail,
+  onSuccess,
+  onPending,
+  onError,
+}: Props) {
   const brickRef = useRef<any>(null);
   const [loading, setLoading] = useState(true);
   const [initError, setInitError] = useState<string | null>(null);
+  const [pix, setPix] = useState<{ qrBase64?: string; qrCode?: string } | null>(null);
+  const process = useServerFn(processMpPayment);
+
+  const cbRef = useRef({ onSuccess, onPending, onError, process });
+  cbRef.current = { onSuccess, onPending, onError, process };
 
   useEffect(() => {
     let cancelled = false;
 
     async function waitForMpSdk(): Promise<any> {
-      // Injeta o script se ainda não existir
       if (!window.MercadoPago && !document.querySelector('script[src="https://sdk.mercadopago.com/js/v2"]')) {
         const s = document.createElement("script");
         s.src = "https://sdk.mercadopago.com/js/v2";
@@ -53,6 +71,7 @@ export function MpPaymentBrick({ publicKey, preferenceId, amountCents, onSuccess
           initialization: {
             amount: amountCents / 100,
             preferenceId: preferenceId,
+            ...(payerEmail ? { payer: { email: payerEmail } } : {}),
           },
           customization: {
             paymentMethods: {
@@ -69,16 +88,34 @@ export function MpPaymentBrick({ publicKey, preferenceId, amountCents, onSuccess
               if (cancelled) return;
               setLoading(false);
             },
-            onSubmit: async (_data: any) => {
-              // Bricks processa o pagamento internamente via preferenceId.
-              return new Promise((resolve) => resolve(true));
+            onSubmit: async ({ formData }: any) => {
+              try {
+                const res: any = await cbRef.current.process({
+                  data: { order_code: orderCode, formData },
+                });
+                if (res?.error) throw new Error(res.error);
+
+                if (res?.pix?.qr_base64 || res?.pix?.qr_code) {
+                  setPix({ qrBase64: res.pix.qr_base64, qrCode: res.pix.qr_code });
+                  return;
+                }
+                if (res?.status === "approved") {
+                  cbRef.current.onSuccess(String(res.id ?? ""));
+                  return;
+                }
+                if (res?.status === "pending" || res?.status === "in_process") {
+                  cbRef.current.onPending?.(String(res.id ?? ""));
+                  return;
+                }
+                throw new Error("Pagamento não aprovado. Tente outro método ou cartão.");
+              } catch (e) {
+                cbRef.current.onError((e as Error).message ?? "Falha ao processar pagamento");
+                throw e;
+              }
             },
             onError: (error: any) => {
               console.error("Bricks error:", error);
-              onError(error?.message ?? "Erro ao processar pagamento");
-            },
-            onPaymentMethodReceived: (data: any) => {
-              console.log("Método selecionado:", data);
+              cbRef.current.onError(error?.message ?? "Erro ao processar pagamento");
             },
           },
         };
@@ -94,7 +131,7 @@ export function MpPaymentBrick({ publicKey, preferenceId, amountCents, onSuccess
         if (!cancelled) {
           setInitError((e as Error).message);
           setLoading(false);
-          onError((e as Error).message);
+          cbRef.current.onError((e as Error).message);
         }
       }
     }
@@ -107,7 +144,34 @@ export function MpPaymentBrick({ publicKey, preferenceId, amountCents, onSuccess
         try { brickRef.current.unmount(); } catch {}
       }
     };
-  }, [publicKey, preferenceId, amountCents, onError]);
+  }, [publicKey, preferenceId, amountCents, orderCode, payerEmail]);
+
+  if (pix) {
+    return (
+      <div className="text-center">
+        <p className="text-sm text-primary-dark mb-3">Escaneie o QR Code no app do seu banco</p>
+        {pix.qrBase64 && (
+          <img
+            src={`data:image/png;base64,${pix.qrBase64}`}
+            alt="QR Code PIX"
+            className="mx-auto w-56 h-56 object-contain"
+          />
+        )}
+        {pix.qrCode && (
+          <>
+            <p className="text-xs text-primary-dark/70 mt-4 mb-1">Ou copie o código PIX:</p>
+            <textarea
+              readOnly
+              value={pix.qrCode}
+              onFocus={(e) => e.currentTarget.select()}
+              className="w-full text-xs p-2 border border-border rounded resize-none h-20"
+            />
+          </>
+        )}
+        <p className="text-xs mt-3 text-primary">Após o pagamento, a confirmação é automática.</p>
+      </div>
+    );
+  }
 
   if (initError) {
     return (
