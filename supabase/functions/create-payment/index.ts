@@ -76,12 +76,9 @@ serve(async (req) => {
         });
       }
 
-      // Supomos a tabela "order_items" baseada no contexto (se falhar, ajustamos o schema real)
-      // Nota: o sistema usa 'order_items' para pedidos conforme verificado em fluxos anteriores
-      const { data: items } = await supabase
-        .from("order_items")
-        .select("product_id, qty, unit_price_cents, title")
-        .eq("order_id", order.id);
+      // Os itens estão na coluna 'items' (jsonb) da tabela 'orders'
+      const items = (order.items ?? []) as any[];
+
 
       if (order.status === "confirmed") {
         return new Response(JSON.stringify({ status: "approved", already: true }), {
