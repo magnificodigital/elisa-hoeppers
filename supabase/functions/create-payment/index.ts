@@ -208,10 +208,8 @@ serve(async (req) => {
       }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const { data: itemsFromDb } = await supabase
-      .from("order_items")
-      .select("product_id, qty, unit_price_cents, title")
-      .eq("order_id", order.id);
+    const itemsFromDb = (order.items ?? []) as any[];
+
 
     const items = (itemsFromDb ?? []).map((it) => ({
       id: String(it.product_id),
