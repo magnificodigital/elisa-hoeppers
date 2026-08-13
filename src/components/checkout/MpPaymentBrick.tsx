@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/lib/supabase";
 
 declare global {
