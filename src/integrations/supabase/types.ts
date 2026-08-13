@@ -1772,50 +1772,29 @@ export type Database = {
         Args: { p_lesson_id: string; p_watched_seconds?: number }
         Returns: undefined
       }
-      place_order:
-        | {
-            Args: {
-              p_customer_address?: Json
-              p_customer_email: string
-              p_customer_name: string
-              p_customer_phone: string
-              p_destination_cep?: string
-              p_items: Json
-              p_notes?: string
-              p_shipping_cents?: number
-              p_shipping_service_id?: string
-              p_shipping_service_label?: string
-            }
-            Returns: {
-              code: string
-              order_id: string
-              subtotal_cents: number
-              total_cents: number
-            }[]
-          }
-        | {
-            Args: {
-              p_coupon_code?: string
-              p_customer_address?: Json
-              p_customer_email: string
-              p_customer_name: string
-              p_customer_phone: string
-              p_destination_cep?: string
-              p_items: Json
-              p_notes?: string
-              p_shipping_cents?: number
-              p_shipping_service_id?: string
-              p_shipping_service_label?: string
-            }
-            Returns: {
-              code: string
-              coupon_code: string
-              discount_cents: number
-              order_id: string
-              subtotal_cents: number
-              total_cents: number
-            }[]
-          }
+      place_order: {
+        Args: {
+          p_coupon_code?: string
+          p_customer_address?: Json
+          p_customer_email: string
+          p_customer_name: string
+          p_customer_phone: string
+          p_destination_cep?: string
+          p_items: Json
+          p_notes?: string
+          p_shipping_cents?: number
+          p_shipping_service_id?: string
+          p_shipping_service_label?: string
+        }
+        Returns: {
+          code: string
+          coupon_code: string
+          discount_cents: number
+          order_id: string
+          subtotal_cents: number
+          total_cents: number
+        }[]
+      }
       submit_quiz_attempt: {
         Args: { p_answers: Json; p_quiz_id: string }
         Returns: {
