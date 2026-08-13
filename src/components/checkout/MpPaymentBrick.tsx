@@ -30,6 +30,7 @@ export function MpPaymentBrick({
   onPending,
   onError,
 }: Props) {
+  const navigate = useNavigate();
   const brickRef = useRef<any>(null);
   const [loading, setLoading] = useState(true);
   const [initError, setInitError] = useState<string | null>(null);
