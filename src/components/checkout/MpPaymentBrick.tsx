@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { useServerFn } from "@tanstack/react-start";
-import { processMpPayment } from "@/lib/payments.functions";
+import { supabase } from "@/lib/supabase";
 
 declare global {
   interface Window {
