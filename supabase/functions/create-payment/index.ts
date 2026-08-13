@@ -49,13 +49,12 @@ serve(async (req) => {
       });
     }
 
-
     const body = await req.json();
-    const { order_id, order_code } = body;
+    const { order_id, order_code, device_id } = body;
 
     // MODO PROCESSAR PAGAMENTO (chamado pelo Payment Brick)
     if (body.action === "process") {
-      const { formData } = body;
+      const { formData, selectedPaymentMethod } = body;
       if (!order_code || !formData) {
         return new Response(JSON.stringify({ error: "dados incompletos" }), {
           status: 400,
@@ -63,43 +62,98 @@ serve(async (req) => {
         });
       }
 
+      // 2a) Busca os itens do pedido (pra montar additional_info.items)
       const { data: order } = await supabase
         .from("orders")
-        .select("id, code, total_cents, status, customer_email")
+        .select("id, code, total_cents, status, customer_name, customer_email, customer_phone, shipping_cents, customer_address")
         .eq("code", order_code)
         .maybeSingle();
+        
       if (!order) {
         return new Response(JSON.stringify({ error: "Pedido não encontrado" }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
+
+      // Supomos a tabela "order_items" baseada no contexto (se falhar, ajustamos o schema real)
+      // Nota: o sistema usa 'order_items' para pedidos conforme verificado em fluxos anteriores
+      const { data: items } = await supabase
+        .from("order_items")
+        .select("product_id, qty, unit_price_cents, title")
+        .eq("order_id", order.id);
+
       if (order.status === "confirmed") {
         return new Response(JSON.stringify({ status: "approved", already: true }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
 
+      // Documento (CPF) — vem do formData ou do endereço
+      const addr = (order.customer_address ?? {}) as any;
+      const cpf = formData.payer?.identification?.number ?? addr.cpf_cnpj ?? "";
+
+      // Nome do pagador separado
+      const fullName = (order.customer_name ?? "").trim();
+      const firstName = fullName.split(" ")[0] ?? "";
+      const lastName = fullName.split(" ").slice(1).join(" ") || firstName;
+
+      const additional_info: Record<string, unknown> = {
+        items: (items ?? []).map((it) => ({
+          id: String(it.product_id),
+          title: it.title ?? `Produto ${it.product_id}`,
+          quantity: it.qty,
+          unit_price: (it.unit_price_cents ?? 0) / 100,
+          category_id: "others",
+        })),
+        payer: {
+          first_name: firstName,
+          last_name: lastName,
+          phone: order.customer_phone ? { number: String(order.customer_phone).replace(/\D/g, "") } : undefined,
+          address: addr.cep ? {
+            zip_code: String(addr.cep).replace(/\D/g, ""),
+            street_name: addr.street ?? "",
+            street_number: addr.number ? Number(String(addr.number).replace(/\D/g, "")) || undefined : undefined,
+          } : undefined,
+        },
+        shipments: order.shipping_cents ? { receiver_address: {
+          zip_code: String(addr.cep ?? "").replace(/\D/g, ""),
+          street_name: addr.street ?? "",
+          street_number: addr.number ? Number(String(addr.number).replace(/\D/g, "")) || undefined : undefined,
+        }} : undefined,
+      };
+
       const payBody: any = {
         transaction_amount: Number(formData.transaction_amount ?? order.total_cents / 100),
         description: `Pedido ${order.code} - BODYOGA`,
         payment_method_id: formData.payment_method_id,
-        payer: formData.payer ?? { email: order.customer_email },
+        payer: {
+          ...formData.payer,
+          first_name: formData.payer?.first_name ?? firstName,
+          last_name: formData.payer?.last_name ?? lastName,
+        },
         external_reference: order.code,
+        statement_descriptor: "BODYOGA",
         notification_url: `${SUPABASE_URL}/functions/v1/mp-webhook`,
+        additional_info,
         metadata: { order_code: order.code },
         ...(formData.token ? { token: formData.token } : {}),
         ...(formData.installments ? { installments: formData.installments } : {}),
         ...(formData.issuer_id ? { issuer_id: formData.issuer_id } : {}),
       };
 
+      const headers: Record<string, string> = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        "X-Idempotency-Key": `${order.code}-${Date.now()}`,
+      };
+      
+      // Device ID — item de MAIOR peso no score de qualidade
+      if (device_id) headers["X-meli-session-id"] = device_id;
+
       const payResp = await fetch("https://api.mercadopago.com/v1/payments", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-          "X-Idempotency-Key": `${order.code}-${Date.now()}`,
-        },
+        headers,
         body: JSON.stringify(payBody),
       });
       const payment = await payResp.json();
@@ -116,6 +170,7 @@ serve(async (req) => {
         .update({
           mp_payment_id: String(payment.id),
           mp_payment_status: payment.status,
+          mp_payment_status_detail: payment.status_detail,
           mp_payment_method: payment.payment_method_id,
           status: payment.status === "approved" ? "confirmed" : order.status,
         })
@@ -139,6 +194,7 @@ serve(async (req) => {
       });
     }
 
+    // Fluxo de criação de Preferência (se houver order_id/order_code)
     if (!order_id && !order_code) throw new Error("order_id ou order_code obrigatório");
 
     const q = supabase.from("orders").select("*");
@@ -146,7 +202,7 @@ serve(async (req) => {
     if (error || !order) throw new Error("Pedido não encontrado");
     if (order.status !== "pending") throw new Error("Pedido não está pendente");
 
-    // Idempotência: se já tem preference, retorna a mesma
+    // Idempotência
     if (order.mp_preference_id) {
       return new Response(JSON.stringify({
         ok: true,
@@ -155,9 +211,14 @@ serve(async (req) => {
       }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    const items = (order.items as any[]).map((it) => ({
-      id: it.product_id,
-      title: it.name,
+    const { data: itemsFromDb } = await supabase
+      .from("order_items")
+      .select("product_id, qty, unit_price_cents, title")
+      .eq("order_id", order.id);
+
+    const items = (itemsFromDb ?? []).map((it) => ({
+      id: String(it.product_id),
+      title: it.title,
       quantity: it.qty,
       unit_price: it.unit_price_cents / 100,
       currency_id: "BRL",
