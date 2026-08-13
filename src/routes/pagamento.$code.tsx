@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { formatPriceBRL } from "@/lib/shop";
 import { MpPaymentBrick } from "@/components/checkout/MpPaymentBrick";
 import { getSetting } from "@/lib/settings";
+import { useCart } from "@/lib/cart";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/pagamento/$code")({
@@ -43,6 +44,7 @@ export const Route = createFileRoute("/pagamento/$code")({
 function PagamentoPage() {
   const { order } = Route.useLoaderData();
   const navigate = useNavigate();
+  const { clear } = useCart();
   const [publicKey, setPublicKey] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
@@ -101,13 +103,20 @@ function PagamentoPage() {
                 publicKey={publicKey}
                 preferenceId={order.mp_preference_id!}
                 amountCents={order.total_cents}
+                orderCode={order.code}
+                payerEmail={order.customer_email ?? undefined}
                 onSuccess={(_paymentId) => {
-                  toast.success("Pagamento processado!");
+                  clear();
+                  toast.success("Pagamento aprovado!");
                   navigate({
                     to: "/pedido/$code",
                     params: { code: order.code },
                     search: { status: "success" } as any,
                   });
+                }}
+                onPending={() => {
+                  clear();
+                  navigate({ to: "/pedido/$code", params: { code: order.code } });
                 }}
                 onError={(msg) => setError(msg)}
               />

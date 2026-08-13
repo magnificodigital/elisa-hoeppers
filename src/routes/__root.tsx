@@ -97,6 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", type: "image/png", href: "/favicon.png" }
     ],
     scripts: [
+      { src: "https://sdk.mercadopago.com/js/v2" },
       {
         defer: true,
         ["data-domain"]: "hoepppers.lovable.app,elisahoeppers.com.br",
