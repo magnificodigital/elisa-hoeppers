@@ -142,7 +142,7 @@
 .bodyoga-scope {
   --bodyoga-green: #3B4F30;
   --bodyoga-cream: #F7F0E5;
-  --bodyoga-brown: #3B4F30;
+  --bodyoga-brown: #3B4F30; /* Alinhado ao verde conforme solicitado */
 }
 
 .bg-bodyoga-green { background-color: var(--bodyoga-green); }
