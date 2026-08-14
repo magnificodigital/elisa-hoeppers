@@ -73,7 +73,7 @@ function CoresPage() {
                     type="color"
                     value={values[key] ?? cfg.fallback}
                     onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
-                    className="w-12 h-12 rounded-lg border border-border cursor-pointer bg-white"
+                    className="w-12 h-12 rounded-lg border border-border cursor-pointer bg-bodyoga-cream"
                     aria-label={cfg.label}
                   />
                   <div className="flex-1 min-w-0">
