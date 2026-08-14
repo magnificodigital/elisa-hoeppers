@@ -6,6 +6,7 @@ import { getProductBySlug, formatPriceBRL, firstImage, createReservation, type P
 import { isVideoUrl } from "@/lib/storage";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
@@ -323,91 +324,106 @@ function AddToCartButton({ product }: { product: Product }) {
 }
 
 function ReservationForm({ product }: { product: Product }) {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [qty, setQty] = useState(1);
-  const [notes, setNotes] = useState("");
+  const [waitEmail, setWaitEmail] = useState("");
+  const [waitWhatsapp, setWaitWhatsapp] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (!name.trim()) return setError("Informe seu nome.");
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setError("Informe um e-mail válido.");
+    setSuccess(null);
+    
+    if (!waitEmail.trim()) return setError("Informe seu e-mail.");
+    if (!waitWhatsapp.trim()) return setError("Informe seu WhatsApp.");
+    
     setSubmitting(true);
     try {
-      await createReservation({
+      const { error: insertError } = await supabase.from("product_waitlist").insert({
         product_id: product.id,
-        customer_name: name,
-        customer_email: email,
-        customer_phone: phone,
-        quantity: qty,
-        notes,
+        email: waitEmail,
+        whatsapp: waitWhatsapp,
       });
-      setDone(true);
+
+      if (insertError) {
+        if (insertError.code === "23505") {
+          setSuccess("Você já está na lista! Vamos te avisar. 💛");
+        } else {
+          setError("Não foi possível cadastrar. Tente novamente.");
+        }
+        return;
+      }
+
+      // Notifica o admin
+      supabase.functions.invoke("send-notification", {
+        body: { 
+          type: "waitlist_signup", 
+          payload: { 
+            product_id: product.id, 
+            product_name: product.name, 
+            email: waitEmail, 
+            whatsapp: waitWhatsapp 
+          } 
+        },
+      }).catch(() => {});
+
+      setSuccess("Pronto! Vamos te avisar por email assim que chegar. 💛");
     } catch (err) {
-      setError((err as Error).message ?? "Erro ao enviar reserva.");
+      setError("Erro ao processar sua solicitação.");
     } finally {
       setSubmitting(false);
     }
   }
 
-  if (done) {
+  if (success) {
     return (
-      <div className="text-center bg-cream/60 border border-border rounded-2xl px-5 py-6">
-        <p className="text-primary-dark font-medium">Reserva enviada! 🌿</p>
-        <p className="text-sm text-[var(--text-muted)] mt-1">
-          Avisaremos você por e-mail assim que este produto voltar ao estoque.
-        </p>
+      <div className="bg-sand/50 border border-primary/10 rounded-2xl p-6 text-center animate-in fade-in zoom-in duration-300">
+        <p className="text-primary-dark font-medium">{success}</p>
       </div>
-    );
-  }
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
-      >
-        Fazer reserva
-      </button>
     );
   }
 
   const inputCls =
-    "w-full border border-border rounded-xl px-4 py-2.5 text-sm text-primary-dark focus:outline-none focus:border-primary";
+    "w-full bg-white border border-border rounded-xl px-4 py-3 text-sm text-primary-dark focus:outline-none focus:border-primary transition shadow-sm";
 
   return (
-    <form onSubmit={submit} className="space-y-3 text-left bg-cream/40 border border-border rounded-2xl p-5">
-      <p className="text-sm text-[var(--text-muted)]">
-        Deixe seus dados e avisamos assim que <strong>{product.name}</strong> voltar ao estoque.
-      </p>
-      <input className={inputCls} placeholder="Seu nome" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} />
-      <input className={inputCls} type="email" placeholder="Seu e-mail" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} />
-      <input className={inputCls} placeholder="WhatsApp (opcional)" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={30} />
-      <div className="flex items-center gap-3">
-        <span className="text-xs uppercase tracking-widest text-primary-dark">Qtd</span>
-        <div className="inline-flex items-center border border-border rounded-full overflow-hidden bg-white">
-          <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} className="w-8 h-8 text-primary-dark">−</button>
-          <span className="w-8 text-center text-sm text-primary-dark">{qty}</span>
-          <button type="button" onClick={() => setQty(qty + 1)} className="w-8 h-8 text-primary-dark">+</button>
-        </div>
+    <div className="bg-sand/30 border border-border rounded-2xl p-6 space-y-4">
+      <div className="space-y-1">
+        <p className="text-primary-dark font-medium">😔 Esgotado no momento</p>
+        <p className="text-xs text-[var(--text-muted)]">
+          Quer ser avisada assim que voltar? Deixa seu contato:
+        </p>
       </div>
-      <textarea className={inputCls} placeholder="Observações (opcional)" value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={500} rows={2} />
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={submitting}
-        className="block w-full text-center bg-primary text-white py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
-      >
-        {submitting ? "Enviando…" : "Enviar reserva"}
-      </button>
-    </form>
+      
+      <form onSubmit={submit} className="space-y-3">
+        <input
+          type="email"
+          placeholder="Seu e-mail"
+          value={waitEmail}
+          onChange={(e) => setWaitEmail(e.target.value)}
+          required
+          className={inputCls}
+        />
+        <input
+          type="tel"
+          placeholder="Seu WhatsApp"
+          value={waitWhatsapp}
+          onChange={(e) => setWaitWhatsapp(e.target.value)}
+          required
+          className={inputCls}
+        />
+        {error && <p className="text-[10px] text-red-600 font-medium">{error}</p>}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-primary-dark transition disabled:opacity-50 shadow-md"
+        >
+          {submitting ? "Enviando..." : "Avise-me quando chegar"}
+        </button>
+      </form>
+    </div>
   );
 }
+
 

@@ -5,6 +5,7 @@ import { Plus, ImageOff, Instagram, Copy, Check } from "lucide-react";
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { listAllProductsForAdmin, formatPriceBRL, firstImage, createProduct } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/produtos/")({
   head: () => ({ meta: [{ title: "Admin — Produtos" }] }),
@@ -20,6 +21,23 @@ function AdminProductsList() {
   const { data: products, isLoading } = useQuery({
     queryKey: ["admin-products"],
     queryFn: listAllProductsForAdmin,
+  });
+
+  const { data: waitlists } = useQuery({
+    queryKey: ["all-waitlists"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("product_waitlist")
+        .select("product_id")
+        .eq("notified", false);
+      if (error) throw error;
+      
+      const counts: Record<string, number> = {};
+      data.forEach(item => {
+        counts[item.product_id] = (counts[item.product_id] || 0) + 1;
+      });
+      return counts;
+    },
   });
 
   const create = useMutation({
@@ -108,6 +126,14 @@ function AdminProductsList() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-sm font-medium text-primary-dark">{formatPriceBRL(p.price_cents)}</p>
+                  {waitlists && waitlists[p.id] > 0 && (
+                    <div className="flex items-center gap-1 mt-1 justify-end">
+                      <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+                      <span className="text-[10px] font-bold text-primary uppercase tracking-tighter">
+                        {waitlists[p.id]} na fila
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <Link
                   to="/admin/produtos/$id"

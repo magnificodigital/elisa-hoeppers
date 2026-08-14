@@ -463,6 +463,63 @@ async function handleProjectRequest(recordId: string, payload?: any) {
   await sendEmail(ELISA_EMAIL, `🎯 Nova solicitação de projeto personalizado — ${request.name}`, elisaHtml);
 }
 
+async function handleWaitlistSignup(payload: any) {
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>🔔 Novo interessado na lista de espera</h1>
+      <p><span class="label">Produto</span><br/>${payload.product_name}</p>
+      <p><span class="label">Interessado</span><br/>${payload.email}<br/>${payload.whatsapp}</p>
+      <a class="btn" href="${SITE_URL}/admin/produtos">Ver no admin</a>
+    </div>
+  `);
+
+  await sendEmail(ELISA_EMAIL, `🔔 Novo interessado na lista de espera — ${payload.product_name}`, elisaHtml);
+}
+
+async function handleWaitlistRestock(productId: string) {
+  const { data: product } = await supabase
+    .from("products")
+    .select("id, name, slug")
+    .eq("id", productId)
+    .single();
+
+  if (!product) throw new Error("Product not found for waitlist restock");
+
+  const { data: subs } = await supabase
+    .from("product_waitlist")
+    .select("id, email")
+    .eq("product_id", productId)
+    .eq("notified", false);
+
+  if (!subs || subs.length === 0) return { notified: 0 };
+
+  for (const s of subs) {
+    const html = wrap(`
+      <div class="card">
+        <h1>💛 ${product.name} já está disponível!</h1>
+        <p>Boas notícias! O produto que você esperava voltou ao estoque:</p>
+        <h2 style="margin: 20px 0;">${product.name}</h2>
+        <a class="btn" href="${SITE_URL}/loja/${product.slug}">Garanta o seu agora →</a>
+        <p style="margin-top: 24px;" class="muted">Corre que pode esgotar de novo. 💛<br/>Equipe BODYOGA</p>
+      </div>
+    `);
+
+    await sendEmail(s.email, `💛 ${product.name} já está disponível!`, html)
+      .catch(err => console.error(`Waitlist email to ${s.email} failed:`, err));
+  }
+
+  await supabase
+    .from("product_waitlist")
+    .update({ 
+      notified: true, 
+      notified_at: new Date().toISOString() 
+    })
+    .eq("product_id", productId)
+    .eq("notified", false);
+
+  return { notified: subs.length };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -476,6 +533,8 @@ serve(async (req) => {
       });
     }
 
+    let result: any = { ok: true };
+
     if (type === "booking") await handleBooking(record_id);
     else if (type === "order") await handleOrder(record_id);
     else if (type === "course_completed") await handleCourseCompleted(record_id);
@@ -485,13 +544,15 @@ serve(async (req) => {
     else if (type === "course_purchased") await handleCoursePurchased(record_id);
     else if (type === "invoice_ready") await handleInvoiceReady(record_id);
     else if (type === "project_request") await handleProjectRequest(record_id, payload);
+    else if (type === "waitlist_signup") await handleWaitlistSignup(payload);
+    else if (type === "waitlist_restock") result = await handleWaitlistRestock(payload?.product_id || record_id);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
 
-    return new Response(JSON.stringify({ ok: true }), {
+    return new Response(JSON.stringify(result), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

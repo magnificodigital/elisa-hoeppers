@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
@@ -97,10 +98,14 @@ function ProductEditPage() {
   }, [product]);
 
   const save = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const pct = discountPct === "" ? 0 : Math.min(99, Math.max(0, Number(discountPct)));
       const compareAt = pct > 0 ? Math.round(form.price_cents / (1 - pct / 100)) : null;
-      return updateProduct(id, {
+      
+      const previousStock = product?.in_stock;
+      const newStock = form.in_stock;
+
+      const result = await updateProduct(id, {
         name: form.name,
         slug: form.slug,
         sku: form.sku.trim() || null,
@@ -125,6 +130,15 @@ function ProductEditPage() {
         unit_of_measure: form.unit_of_measure.trim() || null,
         gross_weight_kg: form.gross_weight_kg === "" ? null : Number(form.gross_weight_kg),
       });
+
+      // Se saiu de esgotado (false) pra disponível (true), avisa a lista
+      if (!previousStock && newStock) {
+        supabase.functions.invoke("send-notification", {
+          body: { type: "waitlist_restock", payload: { product_id: id } },
+        }).catch(err => console.error("restock notification failed:", err));
+      }
+
+      return result;
     },
     onSuccess: () => {
       toast.success("Produto atualizado");
@@ -141,6 +155,35 @@ function ProductEditPage() {
       qc.invalidateQueries({ queryKey: ["admin-products"] });
       navigate({ to: "/admin/produtos" });
     },
+  });
+
+  const { data: waitlistCount } = useQuery({
+    queryKey: ["product-waitlist-count", id],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("product_waitlist")
+        .select("*", { count: "exact", head: true })
+        .eq("product_id", id)
+        .eq("notified", false);
+      if (error) throw error;
+      return count || 0;
+    },
+    enabled: !!id,
+  });
+
+  const notifyWaitlist = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("send-notification", {
+        body: { type: "waitlist_restock", payload: { product_id: id } },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(`${data?.notified ?? 0} pessoas da lista de espera foram avisadas.`);
+      qc.invalidateQueries({ queryKey: ["product-waitlist-count", id] });
+    },
+    onError: (err: Error) => toast.error(err.message),
   });
 
 
@@ -169,6 +212,25 @@ function ProductEditPage() {
             <ChevronLeft className="w-3.5 h-3.5" /> Voltar
           </Link>
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mt-3 mb-6">Editar produto</h1>
+
+          {waitlistCount !== undefined && waitlistCount > 0 && (
+            <div className="bg-sand p-4 rounded-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-border/50">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">📋</span>
+                <p className="text-sm text-primary-dark font-medium">
+                  Lista de espera: <span className="text-primary">{waitlistCount}</span> interessados aguardando aviso.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => notifyWaitlist.mutate()}
+                disabled={notifyWaitlist.isPending}
+                className="bg-primary text-white px-5 py-2 rounded-full text-[10px] uppercase tracking-wider font-bold hover:bg-primary-dark transition disabled:opacity-50 whitespace-nowrap"
+              >
+                {notifyWaitlist.isPending ? "Avisando..." : "Avisar lista agora"}
+              </button>
+            </div>
+          )}
 
           <form
             onSubmit={(e) => { e.preventDefault(); save.mutate(); }}
