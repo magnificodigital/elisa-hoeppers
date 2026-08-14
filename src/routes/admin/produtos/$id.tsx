@@ -157,6 +157,35 @@ function ProductEditPage() {
     },
   });
 
+  const { data: waitlistCount } = useQuery({
+    queryKey: ["product-waitlist-count", id],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("product_waitlist")
+        .select("*", { count: "exact", head: true })
+        .eq("product_id", id)
+        .eq("notified", false);
+      if (error) throw error;
+      return count || 0;
+    },
+    enabled: !!id,
+  });
+
+  const notifyWaitlist = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("send-notification", {
+        body: { type: "waitlist_restock", payload: { product_id: id } },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(`${data?.notified ?? 0} pessoas da lista de espera foram avisadas.`);
+      qc.invalidateQueries({ queryKey: ["product-waitlist-count", id] });
+    },
+    onError: (err: Error) => toast.error(err.message),
+  });
+
 
 
 
