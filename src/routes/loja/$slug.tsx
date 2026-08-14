@@ -1,9 +1,10 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
+import { ChevronLeft, MessageCircle, ShieldCheck, ArrowLeft, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, createReservation, type Product } from "@/lib/shop";
 import { isVideoUrl } from "@/lib/storage";
+import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
 import { supabase } from "@/lib/supabase";
