@@ -59,10 +59,10 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
           <span className="md:hidden">
-            <BodyogaLogo variant="full" size={52} tone={green ? "cream" : "green"} />
+            <BodyogaLogo variant="full" size={32} tone={green ? "cream" : "green"} className="max-w-[140px] object-contain w-auto h-auto" />
           </span>
           <span className="hidden md:block">
-            <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} />
+            <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} className="max-w-[200px] object-contain w-auto h-auto" />
           </span>
         </Link>
 
@@ -110,35 +110,40 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-t border-bodyoga-green/20 px-4 py-6 space-y-4 bg-bodyoga-cream flex flex-col items-center text-center">
-          {navItems.map((item) => (
-            <Link
-              key={item.id}
-              to={item.href}
-              onClick={() => setOpen(false)}
-              className="block text-sm uppercase tracking-[0.18em] text-bodyoga-green"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Link
-            to={user ? "/painel" : "/login"}
-            onClick={() => setOpen(false)}
-            className="flex items-center justify-center gap-2 text-sm uppercase tracking-[0.18em] text-bodyoga-green"
-          >
-            <User className="w-5 h-5" />
-            {user ? "Painel" : "Conta"}
-          </Link>
-          <Link
-            to="/carrinho"
-            onClick={() => setOpen(false)}
-            className="flex items-center justify-center gap-2 text-sm uppercase tracking-[0.18em] text-bodyoga-green"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            Carrinho
-          </Link>
-
-
+        <div className="md:hidden border-t border-bodyoga-green/5 px-6 py-10 bg-bodyoga-cream/98 backdrop-blur-md flex flex-col items-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col items-center gap-6 w-full max-w-[280px]">
+            {navItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                onClick={() => setOpen(false)}
+                className="block text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors py-1"
+              >
+                {item.label}
+              </Link>
+            ))}
+            
+            <div className="w-8 h-[1px] bg-bodyoga-green/10 my-2" />
+            
+            <div className="flex flex-col gap-5 w-full">
+              <Link
+                to={user ? "/painel" : "/login"}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center gap-3 text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors"
+              >
+                <User className="w-4 h-4 stroke-[1.5]" />
+                {user ? "Painel" : "Minha Conta"}
+              </Link>
+              <Link
+                to="/carrinho"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center gap-3 text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors"
+              >
+                <ShoppingCart className="w-4 h-4 stroke-[1.5]" />
+                Carrinho
+              </Link>
+            </div>
+          </div>
         </div>
       )}
     </header>
