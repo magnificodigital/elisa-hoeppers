@@ -98,10 +98,14 @@ function ProductEditPage() {
   }, [product]);
 
   const save = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const pct = discountPct === "" ? 0 : Math.min(99, Math.max(0, Number(discountPct)));
       const compareAt = pct > 0 ? Math.round(form.price_cents / (1 - pct / 100)) : null;
-      return updateProduct(id, {
+      
+      const previousStock = product?.in_stock;
+      const newStock = form.in_stock;
+
+      const result = await updateProduct(id, {
         name: form.name,
         slug: form.slug,
         sku: form.sku.trim() || null,
@@ -126,6 +130,15 @@ function ProductEditPage() {
         unit_of_measure: form.unit_of_measure.trim() || null,
         gross_weight_kg: form.gross_weight_kg === "" ? null : Number(form.gross_weight_kg),
       });
+
+      // Se saiu de esgotado (false) pra disponível (true), avisa a lista
+      if (!previousStock && newStock) {
+        supabase.functions.invoke("send-notification", {
+          body: { type: "waitlist_restock", payload: { product_id: id } },
+        }).catch(err => console.error("restock notification failed:", err));
+      }
+
+      return result;
     },
     onSuccess: () => {
       toast.success("Produto atualizado");
