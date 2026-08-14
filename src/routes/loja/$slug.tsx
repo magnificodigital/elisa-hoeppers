@@ -172,7 +172,7 @@ function ProductDetail() {
 
               <div className="mt-8 space-y-3 text-sm text-[var(--text-muted)]">
                 <p className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4" /> Pagamento via PIX ou cartão
+                  <ShieldCheck className="w-4 h-4" /> Pagamento via Pix, Cartão ou SmartWallet
                 </p>
                 <div className="flex items-center justify-center md:justify-start gap-2 w-fit">
                   {/* Visa */}
