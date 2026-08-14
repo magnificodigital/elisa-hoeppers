@@ -22,6 +22,7 @@ export type Profile = {
   avatar_url: string | null;
   bio: string | null;
   phone: string | null;
+  cpf_cnpj: string | null;
   saved_addresses: SavedAddress[];
   notify_order_updates: boolean;
   notify_marketing: boolean;
@@ -49,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = useCallback(async (uid: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("id, role, full_name, avatar_url, bio, phone, saved_addresses, notify_order_updates, notify_marketing")
+      .select("id, role, full_name, avatar_url, bio, phone, cpf_cnpj, saved_addresses, notify_order_updates, notify_marketing")
       .eq("id", uid)
       .maybeSingle();
     setProfile((data as Profile | null) ?? null);

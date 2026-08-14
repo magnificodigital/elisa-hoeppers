@@ -84,6 +84,7 @@ function CheckoutPage() {
         name: f.name || profile?.full_name || user.email?.split("@")[0] || "",
         email: f.email || user.email || "",
         phone: f.phone || profile?.phone || "",
+        cpfCnpj: f.cpfCnpj || profile?.cpf_cnpj || "",
       }));
     }
   }, [user, profile]);
