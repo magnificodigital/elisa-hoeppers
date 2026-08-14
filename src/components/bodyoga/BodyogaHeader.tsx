@@ -100,7 +100,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden"
+          className="md:hidden relative z-50 p-2 -mr-2"
           style={green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
@@ -110,8 +110,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-t border-bodyoga-green/5 px-6 py-10 bg-bodyoga-cream/98 backdrop-blur-md flex flex-col items-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="flex flex-col items-center gap-6 w-full max-w-[280px]">
+        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-cream/98 backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col items-center gap-6 w-full max-w-[280px] pt-20">
             {navItems.map((item) => (
               <Link
                 key={item.id}
