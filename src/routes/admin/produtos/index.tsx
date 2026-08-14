@@ -5,6 +5,7 @@ import { Plus, ImageOff, Instagram, Copy, Check } from "lucide-react";
 import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { listAllProductsForAdmin, formatPriceBRL, firstImage, createProduct } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/produtos/")({
   head: () => ({ meta: [{ title: "Admin — Produtos" }] }),
