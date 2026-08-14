@@ -213,6 +213,25 @@ function ProductEditPage() {
           </Link>
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mt-3 mb-6">Editar produto</h1>
 
+          {waitlistCount !== undefined && waitlistCount > 0 && (
+            <div className="bg-sand p-4 rounded-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-border/50">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">📋</span>
+                <p className="text-sm text-primary-dark font-medium">
+                  Lista de espera: <span className="text-primary">{waitlistCount}</span> interessados aguardando aviso.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => notifyWaitlist.mutate()}
+                disabled={notifyWaitlist.isPending}
+                className="bg-primary text-white px-5 py-2 rounded-full text-[10px] uppercase tracking-wider font-bold hover:bg-primary-dark transition disabled:opacity-50 whitespace-nowrap"
+              >
+                {notifyWaitlist.isPending ? "Avisando..." : "Avisar lista agora"}
+              </button>
+            </div>
+          )}
+
           <form
             onSubmit={(e) => { e.preventDefault(); save.mutate(); }}
             className="bg-white rounded-lg p-6 md:p-8 space-y-5"
