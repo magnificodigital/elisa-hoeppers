@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Bookmark } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
   isInWishlist,
