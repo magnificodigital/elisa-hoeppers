@@ -174,15 +174,15 @@ function ProductDetail() {
                 <p className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4" /> Pagamento via PIX ou cartão
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center md:justify-start gap-2 bg-white p-2 rounded-lg border border-border w-fit">
                   {/* Visa */}
-                  <span className="inline-flex items-center justify-center h-7 w-11 rounded border border-border bg-white">
+                  <span className="inline-flex items-center justify-center h-7 w-11">
                     <svg viewBox="0 0 48 16" className="h-3" aria-label="Visa" role="img">
                       <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fontStyle="italic" fill="#1A1F71">VISA</text>
                     </svg>
                   </span>
                   {/* Mastercard */}
-                  <span className="inline-flex items-center justify-center h-7 w-11 rounded border border-border bg-white">
+                  <span className="inline-flex items-center justify-center h-7 w-11">
                     <svg viewBox="0 0 40 24" className="h-5" aria-label="Mastercard" role="img">
                       <circle cx="16" cy="12" r="9" fill="#EB001B" />
                       <circle cx="24" cy="12" r="9" fill="#F79E1B" />
@@ -190,7 +190,7 @@ function ProductDetail() {
                     </svg>
                   </span>
                   {/* PIX */}
-                  <span className="inline-flex items-center justify-center h-7 w-11 rounded border border-border bg-white">
+                  <span className="inline-flex items-center justify-center h-7 w-11">
                     <svg viewBox="0 0 48 16" className="h-3" aria-label="Pix" role="img">
                       <text x="0" y="13" fontFamily="Arial, sans-serif" fontSize="14" fontWeight="700" fill="#32BCAD">Pix</text>
                     </svg>

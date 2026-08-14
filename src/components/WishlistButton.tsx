@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Bookmark } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
   isInWishlist,
@@ -57,13 +57,13 @@ export function WishlistButton({
       }}
       disabled={toggle.isPending}
       className={`inline-flex items-center gap-2 text-sm transition ${
-        inList ? "text-primary" : "text-primary-dark/70 hover:text-primary-dark"
+        inList ? "text-red-500" : "text-primary-dark/70 hover:text-primary-dark"
       } ${className}`}
       aria-label={
         inList ? "Remover da lista de desejos" : "Adicionar à lista de desejos"
       }
     >
-      <Bookmark className={`w-4 h-4 ${inList ? "fill-primary" : ""}`} />
+      <Heart className={`w-4 h-4 ${inList ? "fill-red-500 text-red-500" : ""}`} />
       <span>{inList ? "Salvo" : label}</span>
     </button>
   );
