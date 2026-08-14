@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ProjetosPersonalizadosRouteImport } from './routes/projetos-personalizados'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PerfumistaRouteImport } from './routes/perfumista'
 import { Route as LoginRouteImport } from './routes/login'
@@ -102,6 +103,11 @@ const SobreRoute = SobreRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjetosPersonalizadosRoute = ProjetosPersonalizadosRouteImport.update({
+  id: '/projetos-personalizados',
+  path: '/projetos-personalizados',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
@@ -506,6 +512,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
@@ -586,6 +593,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
@@ -668,6 +676,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
@@ -751,6 +760,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/privacidade'
+    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
@@ -831,6 +841,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/privacidade'
+    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
@@ -912,6 +923,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/privacidade'
+    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
@@ -994,6 +1006,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PerfumistaRoute: typeof PerfumistaRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
+  ProjetosPersonalizadosRoute: typeof ProjetosPersonalizadosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
@@ -1084,6 +1097,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projetos-personalizados': {
+      id: '/projetos-personalizados'
+      path: '/projetos-personalizados'
+      fullPath: '/projetos-personalizados'
+      preLoaderRoute: typeof ProjetosPersonalizadosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidade': {
@@ -1654,6 +1674,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PerfumistaRoute: PerfumistaRoute,
   PrivacidadeRoute: PrivacidadeRoute,
+  ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
