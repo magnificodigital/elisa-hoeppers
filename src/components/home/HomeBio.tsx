@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 const HomeBio = () => {
   return (
-    <section className="py-20 md:py-28 bg-cream">
+    <section className="py-20 md:py-28 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <img
           src="/images/home/bio/elisa-perfil.png"

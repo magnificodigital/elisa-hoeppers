@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 const HomeOils = () => {
   return (
-    <section className="py-20 md:py-32 bg-cream">
+    <section className="py-20 md:py-32 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-16 md:gap-24">
         <div className="flex-1 order-2 md:order-1">
           <h2 className="font-display text-4xl md:text-[2.75rem] text-primary-dark mb-8 leading-tight">

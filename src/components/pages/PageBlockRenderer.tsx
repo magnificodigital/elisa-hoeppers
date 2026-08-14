@@ -3,9 +3,9 @@ import type { PageBlock, BlockStyle } from "@/lib/page-blocks";
 
 const BG: Record<string, string> = {
   transparent: "",
-  cream: "bg-cream",
+  cream: "bg-bodyoga-cream",
   white: "bg-white",
-  sand: "bg-sand",
+  sand: "bg-bodyoga-cream",
   primary: "bg-primary text-white",
 };
 

@@ -5,7 +5,7 @@ import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
 
-const CREAM = "#FEF2D4";
+
 
 export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const navItems = [...leftItems, ...rightItems];
 
 
-  const linkStyle = green ? { color: CREAM } : undefined;
+  const linkStyle = green ? { color: "var(--bodyoga-cream)" } : undefined;
   const linkClass = green
     ? "text-xs font-medium uppercase tracking-[0.18em] hover:opacity-70 transition"
     : "text-xs font-medium uppercase tracking-[0.18em] text-bodyoga-green hover:opacity-70 transition";
@@ -82,7 +82,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
             to={user ? "/painel" : "/login"}
             aria-label={user ? "Painel" : "Entrar"}
             className="hover:opacity-70 transition"
-            style={green ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+            style={green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
           >
             <User className="w-5 h-5" />
           </Link>
@@ -90,7 +90,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
             to="/carrinho"
             aria-label="Carrinho"
             className="hover:opacity-70 transition"
-            style={green ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+            style={green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
           >
             <ShoppingCart className="w-5 h-5" />
           </Link>
@@ -101,7 +101,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden"
-          style={green ? { color: CREAM } : { color: "var(--bodyoga-green)" }}
+          style={green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

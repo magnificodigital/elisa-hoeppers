@@ -38,7 +38,7 @@ const HomeInstagram = () => {
 
 
   return (
-    <section className="py-20 md:py-24 bg-cream">
+    <section className="py-20 md:py-24 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
         <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
           Acompanhe{" "}
@@ -59,7 +59,7 @@ const HomeInstagram = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3">
           {isLoading &&
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square bg-sand/50 animate-pulse rounded-md" />
+              <div key={i} className="aspect-square bg-bodyoga-green/5 animate-pulse rounded-md" />
             ))}
 
           {(isError || (!isLoading && posts.length === 0)) &&
@@ -119,7 +119,7 @@ function PostThumbnail({ post }: { post: BeholdPost }) {
       href={post.permalink}
       target="_blank"
       rel="noreferrer"
-      className="block aspect-square overflow-hidden rounded-md group relative bg-sand/30"
+      className="block aspect-square overflow-hidden rounded-md group relative bg-bodyoga-green/5"
     >
       <img
         src={thumb}
