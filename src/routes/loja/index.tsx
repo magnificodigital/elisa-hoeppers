@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import Layout from "@/components/Layout";
+import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
 import {
   listProducts,
   listActiveRituals,
@@ -162,24 +163,12 @@ function ShopListing() {
                       className="group block"
                     >
                       <div className="relative aspect-square overflow-hidden rounded-lg bg-sand">
-                        {firstImage(p) && (
-                          <img
-                            src={firstImage(p)!}
-                            alt={p.name}
-                            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${secondImage(p) ? "group-hover:opacity-0" : ""}`}
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        )}
-                        {secondImage(p) && (
-                          <img
-                            src={secondImage(p)!}
-                            alt={p.name}
-                            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        )}
+                        <GaleriaProduto 
+                          images={p.gallery?.map(g => g.url) || []} 
+                          alt={p.name}
+                          showControls={false}
+                        />
+
 
                         {!p.in_stock && (
                           <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">
