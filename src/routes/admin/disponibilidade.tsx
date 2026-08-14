@@ -38,7 +38,7 @@ function AvailabilityPage() {
           </p>
 
           {/* Semanal */}
-          <div className="bg-white rounded-xl p-6 shadow-sm mb-8">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20 mb-8">
             <h2 className="font-display text-xl text-primary-dark mb-1">Horários da semana</h2>
             <p className="text-sm text-[var(--text-muted)] mb-5">
               Defina os horários em que você atende cada dia.
@@ -51,7 +51,7 @@ function AvailabilityPage() {
           </div>
 
           {/* Bloqueios */}
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20">
             <h2 className="font-display text-xl text-primary-dark mb-1">Períodos bloqueados</h2>
             <p className="text-sm text-[var(--text-muted)] mb-5">
               Adicione períodos em que você não atende (mesmo nos dias da semana liberados).

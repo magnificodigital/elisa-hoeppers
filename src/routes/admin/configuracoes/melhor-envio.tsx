@@ -32,7 +32,7 @@ function Page() {
             Abrir Permissões no Melhor Envio ↗
           </a>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20">
             <SettingsCategory category="melhorenvio" />
           </div>
 

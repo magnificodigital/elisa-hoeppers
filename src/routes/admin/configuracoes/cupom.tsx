@@ -35,7 +35,7 @@ function Page() {
             O cupom é único por email, enviado automaticamente e válido apenas na primeira compra.
           </p>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20">
             <SettingsCategory category="cupom" />
           </div>
 

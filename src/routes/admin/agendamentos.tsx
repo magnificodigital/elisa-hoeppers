@@ -83,7 +83,7 @@ function AdminAppointments() {
                 className={`shrink-0 px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
                   filter === f.id
                     ? "bg-primary text-white"
-                    : "bg-white text-primary-dark border border-border hover:border-primary"
+                    : "bg-white text-primary-dark border border-border/20 hover:border-primary"
                 }`}
               >
                 {f.label}
@@ -234,7 +234,7 @@ function AppointmentCard({ appointment: a }: { appointment: AppointmentWithServi
   );
 
   return (
-    <div className="bg-white rounded-lg p-5 md:p-6 shadow-sm">
+    <div className="bg-white rounded-lg p-5 md:p-6 shadow-none border border-border/20">
       <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1.3fr_auto] gap-5 md:gap-6">
         {/* Esquerda: aula */}
         <div>

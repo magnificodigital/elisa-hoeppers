@@ -36,11 +36,11 @@ function Page() {
             compartilhado em redes sociais e WhatsApp.
           </p>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20">
             <SettingsCategory category="seo" />
           </div>
 
-          <div className="mt-6 bg-white rounded-xl p-6 shadow-sm">
+          <div className="mt-6 bg-white rounded-xl p-6 shadow-none border border-border/20">
             <h2 className="font-display text-xl text-primary-dark mb-3">Ferramentas úteis</h2>
             <ul className="space-y-2 text-sm text-primary-dark/80">
               <li className="flex items-start gap-2">

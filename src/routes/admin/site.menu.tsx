@@ -121,7 +121,7 @@ function MenuPage() {
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-xl shadow-sm p-5"
+                  className="bg-white rounded-xl shadow-none border border-border/20 p-5"
                 >
                   <div className="flex flex-col gap-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
