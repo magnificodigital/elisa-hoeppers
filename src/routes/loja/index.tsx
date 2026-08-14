@@ -39,7 +39,7 @@ export const Route = createFileRoute("/loja/")({
 
 function ShopListing() {
   const { brand: brandFilter } = Route.useSearch();
-  const [activeRitual, setActiveRitual] = useState<string>("");
+  const [activeRitual, setActiveRitual] = useState<string | null>(null);
   const [showOutOfStock, setShowOutOfStock] = useState(true);
 
   const { data: products, isLoading } = useQuery({
