@@ -123,23 +123,23 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
               </Link>
             ))}
             
-            <div className="w-8 h-[1px] bg-bodyoga-green/10 my-2" />
+            <div className="w-12 h-[1px] bg-bodyoga-cream/20 my-4" />
             
-            <div className="flex flex-col gap-5 w-full">
+            <div className="flex flex-col gap-6 w-full">
               <Link
                 to={user ? "/painel" : "/login"}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-3 text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors"
+                className="flex items-center justify-center gap-4 text-base font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
-                <User className="w-4 h-4 stroke-[1.5]" />
+                <User className="w-5 h-5 stroke-[2]" />
                 {user ? "Painel" : "Minha Conta"}
               </Link>
               <Link
                 to="/carrinho"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-3 text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors"
+                className="flex items-center justify-center gap-4 text-base font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
-                <ShoppingCart className="w-4 h-4 stroke-[1.5]" />
+                <ShoppingCart className="w-5 h-5 stroke-[2]" />
                 Carrinho
               </Link>
             </div>
