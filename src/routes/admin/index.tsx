@@ -281,7 +281,7 @@ function AdminHome() {
                 <Link
                   key={s.to}
                   to={s.to}
-                  className="bg-white rounded-xl p-5 shadow-sm hover:shadow-lg transition flex items-start gap-4 group"
+                  className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
                 >
                   <div className="w-11 h-11 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
