@@ -100,11 +100,11 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden relative z-50 p-2 -mr-2"
-          style={green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
+          className="md:hidden relative z-50 p-2 ml-auto"
+          style={open || green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
       </div>
 
