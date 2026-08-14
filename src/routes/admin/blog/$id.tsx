@@ -138,7 +138,7 @@ function PostEditPage() {
               e.preventDefault();
               save.mutate();
             }}
-            className="bg-white rounded-lg p-6 md:p-8 space-y-5"
+            className="bg-white rounded-lg p-6 md:p-8 space-y-5 shadow-none border border-border/20"
           >
             <Field label="Título">
               <input

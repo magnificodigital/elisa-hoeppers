@@ -44,7 +44,7 @@ function CourseLessonsPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-[var(--surface-cream)] min-h-screen">
+      <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
         <div className="container mx-auto px-6 max-w-4xl">
           <Link to="/admin/cursos" className="text-xs uppercase tracking-widest text-primary hover:opacity-70">← Voltar</Link>
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mt-3">{course?.title ?? "—"}</h1>
@@ -64,7 +64,7 @@ function CourseLessonsPage() {
                 />
               ))}
               {(modules?.length ?? 0) === 0 && (
-                <p className="text-[var(--text-muted)] text-sm bg-white rounded-lg p-4">
+                <p className="text-[var(--text-muted)] text-sm bg-white rounded-lg p-4 shadow-none border border-border/20">
                   Nenhum módulo ainda. Aulas sem módulo aparecem agrupadas como "Outras aulas" no curso.
                 </p>
               )}
@@ -111,7 +111,7 @@ function ModuleRow({ module: m, index, total, onChanged }: { module: Module; ind
   });
 
   return (
-    <div className="bg-white rounded-lg p-3 flex items-center gap-2">
+    <div className="bg-white rounded-lg p-3 flex items-center gap-2 shadow-none border border-border/20">
       <GripVertical className="w-4 h-4 text-primary-dark/30 shrink-0" />
       {editing ? (
         <>
@@ -165,7 +165,7 @@ function NewModuleForm({ courseId, nextOrder, onCreated }: { courseId: string; n
     );
   }
   return (
-    <form onSubmit={(e) => { e.preventDefault(); if (title.trim()) create.mutate(); }} className="bg-white rounded-lg p-3 flex gap-2 items-center">
+    <form onSubmit={(e) => { e.preventDefault(); if (title.trim()) create.mutate(); }} className="bg-white rounded-lg p-3 flex gap-2 items-center shadow-none border border-border/20">
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Nome do módulo" autoFocus
         className="flex-1 border border-border rounded-md px-3 py-1.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
       <button type="submit" disabled={create.isPending || !title.trim()} className="bg-primary text-white px-4 py-1.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition disabled:opacity-60">
@@ -207,7 +207,7 @@ function LessonRow({ lesson, modules, onChanged }: { lesson: LessonAdmin; module
 
   if (!editing) {
     return (
-      <div className="bg-white rounded-lg p-4 flex items-center gap-4">
+      <div className="bg-white rounded-lg p-4 flex items-center gap-4 shadow-none border border-border/20">
         <span className="text-xs text-[var(--text-muted)] font-mono w-8">
           {String(lesson.display_order).padStart(2, "0")}
         </span>
@@ -231,7 +231,7 @@ function LessonRow({ lesson, modules, onChanged }: { lesson: LessonAdmin; module
   }
 
   return (
-    <div className="bg-white rounded-lg p-5 space-y-3 border border-primary/30">
+    <div className="bg-white rounded-lg p-5 space-y-3 border border-border/20 shadow-none">
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1">Título</label>
@@ -340,7 +340,7 @@ function NewLessonForm({ courseId, nextOrder, modules, onCreated }: { courseId: 
   }
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); create.mutate(); }} className="bg-white rounded-lg p-5 space-y-3 border border-primary/30">
+    <form onSubmit={(e) => { e.preventDefault(); create.mutate(); }} className="bg-white rounded-lg p-5 space-y-3 border border-border/20 shadow-none">
       <h3 className="font-display text-lg text-primary-dark">Nova aula</h3>
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título da aula" required className={inputCls} />
       <input value={youtubeInput} onChange={(e) => setYoutubeInput(e.target.value)} placeholder="URL ou ID do YouTube" className={inputCls} />

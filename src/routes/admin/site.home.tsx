@@ -76,7 +76,7 @@ function HomeContentPage() {
               <Loader2 className="w-6 h-6 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="bg-white rounded-xl p-6 space-y-5">
+            <div className="bg-white rounded-xl p-6 space-y-5 shadow-none border border-border/20">
               {FIELDS.map((f) => (
                 <div key={f.key}>
                   <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1">{f.label}</label>

@@ -121,7 +121,7 @@ function SlideEditPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-[var(--surface-cream)] min-h-screen">
+      <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
         <div className="container mx-auto px-6 max-w-2xl">
           <Link to="/admin/bodyoga-slides" className="text-xs uppercase tracking-widest text-primary hover:opacity-70 inline-flex items-center gap-1">
             <ChevronLeft className="w-3.5 h-3.5" /> Voltar
@@ -130,7 +130,7 @@ function SlideEditPage() {
 
           <form
             onSubmit={(e) => { e.preventDefault(); save.mutate(); }}
-            className="bg-white rounded-lg p-6 md:p-8 space-y-5"
+            className="bg-white rounded-lg p-6 md:p-8 space-y-5 shadow-none border border-border/20"
           >
             <Field label="Título">
               <textarea required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} rows={2} className={inputCls} />
