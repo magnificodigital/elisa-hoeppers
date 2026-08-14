@@ -174,7 +174,7 @@ function ProductDetail() {
                 <p className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4" /> Pagamento via PIX ou cartão
                 </p>
-                <div className="flex items-center justify-center md:justify-start gap-2 bg-white p-2 rounded-lg border border-border w-fit">
+                <div className="flex items-center justify-center md:justify-start gap-2 w-fit">
                   {/* Visa */}
                   <span className="inline-flex items-center justify-center h-7 w-11">
                     <svg viewBox="0 0 48 16" className="h-3" aria-label="Visa" role="img">
