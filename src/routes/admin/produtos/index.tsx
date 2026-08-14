@@ -126,6 +126,14 @@ function AdminProductsList() {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-sm font-medium text-primary-dark">{formatPriceBRL(p.price_cents)}</p>
+                  {waitlists && waitlists[p.id] > 0 && (
+                    <div className="flex items-center gap-1 mt-1 justify-end">
+                      <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+                      <span className="text-[10px] font-bold text-primary uppercase tracking-tighter">
+                        {waitlists[p.id]} na fila
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <Link
                   to="/admin/produtos/$id"
