@@ -37,7 +37,8 @@ import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
-import { listProducts, listActiveRituals, formatPriceBRL, firstImage, type Product, type Slide } from "@/lib/shop";
+import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
+import { listProducts, listActiveRituals, formatPriceBRL, type Product, type Slide } from "@/lib/shop";
 import { getSetting } from "@/lib/settings";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
 
@@ -249,7 +250,6 @@ function RitualCategories({ products }: { products: Product[] }) {
 
 
 function BodyogaProductCard({ product, noBorder = false }: { product: Product; noBorder?: boolean }) {
-  const img = firstImage(product);
   const [main, sub] = product.name.split("—").map((s) => s.trim());
 
   return (
@@ -259,19 +259,11 @@ function BodyogaProductCard({ product, noBorder = false }: { product: Product; n
       className={`group block bg-bodyoga-cream rounded-2xl overflow-hidden transition ${noBorder ? "" : "border border-bodyoga-brown/15 hover:border-bodyoga-brown/40"}`}
     >
       <div className="relative aspect-square overflow-hidden bg-bodyoga-green/5">
-        {img ? (
-          <img
-            src={img}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            onError={hideOnError}
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Leaf className="w-10 h-10 text-bodyoga-green/30" />
-          </div>
-        )}
+        <GaleriaProduto 
+          images={product.gallery?.map(g => g.url) || []} 
+          alt={product.name}
+          showControls={false}
+        />
       </div>
       <div className="p-6">
         {sub && (
