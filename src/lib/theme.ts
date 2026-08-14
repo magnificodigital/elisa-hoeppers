@@ -19,7 +19,7 @@ export const THEME_VARS: Record<string, { label: string; fallback: string; vars:
   theme_cream: {
     label: "Creme (fundo)",
     fallback: "#F7F0E5",
-    vars: ["--cream", "--cream-rose", "--bodyoga-cream", "--background"],
+    vars: ["--cream", "--cream-rose", "--bodyoga-cream", "--background", "--card"],
   },
 };
 
