@@ -62,7 +62,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
             <BodyogaLogo variant="full" size={32} tone={green ? "cream" : "green"} className="max-w-[140px] object-contain w-auto h-auto" />
           </span>
           <span className="hidden md:block">
-            <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} className="max-w-[200px] object-contain" />
+            <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} className="max-w-[200px] object-contain w-auto h-auto" />
           </span>
         </Link>
 
