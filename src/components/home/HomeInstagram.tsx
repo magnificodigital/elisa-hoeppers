@@ -38,7 +38,7 @@ const HomeInstagram = () => {
 
 
   return (
-    <section className="py-20 md:py-24 bg-cream">
+    <section className="py-20 md:py-24 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
         <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
           Acompanhe{" "}

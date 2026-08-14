@@ -105,7 +105,7 @@
 
 @layer base {
   body {
-    background-color: var(--color-cream);
+    background-color: var(--bodyoga-cream);
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }

@@ -13,7 +13,7 @@ const HomeBlog = () => {
   if (visible.length === 0) return null;
 
   return (
-    <section className="py-20 md:py-28 bg-cream">
+    <section className="py-20 md:py-28 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
         <SectionTitle subtitle="Encontre a harmonia e as boas energias que você precisa">
           Dicas e Novidades
