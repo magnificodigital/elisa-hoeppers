@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { isVideoUrl } from "@/lib/storage";
 
-export function GaleriaProduto({ images, alt }: { images: string[]; alt: string }) {
+export function GaleriaProduto({ images, alt, showControls = true }: { images: string[]; alt: string; showControls?: boolean }) {
   const imgs = (images ?? []).filter(Boolean);
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -67,7 +67,7 @@ export function GaleriaProduto({ images, alt }: { images: string[]; alt: string 
         })}
 
         {/* Indicadores (dots) */}
-        {imgs.length > 1 && (
+        {showControls && imgs.length > 1 && (
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
             {imgs.map((_, i) => (
               <button
@@ -85,7 +85,7 @@ export function GaleriaProduto({ images, alt }: { images: string[]; alt: string 
       </div>
 
       {/* Miniaturas */}
-      {imgs.length > 1 && (
+      {showControls && imgs.length > 1 && (
         <div className="mt-3 flex gap-2">
           {imgs.map((src, i) => (
             <button
