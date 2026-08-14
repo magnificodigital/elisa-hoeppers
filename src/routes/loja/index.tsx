@@ -88,17 +88,6 @@ function ShopListing() {
       products: baseList.filter((p) => productRituals(p).includes(r.id)),
     }));
 
-    if (!activeRitual) {
-      const orphans = baseList.filter((p) => productRituals(p).length === 0);
-      if (orphans.length > 0) {
-        result.push({
-          id: "__others__",
-          title: "Outros produtos",
-          description: null,
-          products: orphans,
-        });
-      }
-    }
     return result.filter((g) => g.products.length > 0);
   }, [rituals, baseList, activeRitual]);
 
