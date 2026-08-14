@@ -110,14 +110,14 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-cream/98 backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="flex flex-col items-center gap-6 w-full max-w-[280px] pt-20">
+        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-green backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col items-center gap-8 w-full max-w-[280px] pt-10">
             {navItems.map((item) => (
               <Link
                 key={item.id}
                 to={item.href}
                 onClick={() => setOpen(false)}
-                className="block text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors py-1"
+                className="block text-lg font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
               >
                 {item.label}
               </Link>
