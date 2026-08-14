@@ -133,6 +133,24 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
         </div>
       </section>
 
+      {/* CTA PROJETOS PERSONALIZADOS */}
+      <section className="bg-bodyoga-green text-bodyoga-cream py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 text-center space-y-8">
+          <div className="space-y-4">
+            <h2 className="font-display text-3xl md:text-5xl lg:text-6xl">Sua marca tem um cheiro.</h2>
+            <p className="text-xl md:text-2xl font-light opacity-90 italic">Vamos criá-lo juntos.</p>
+          </div>
+          <div>
+            <Link
+              to="/projetos-personalizados"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-bodyoga-cream text-bodyoga-green rounded-full text-[11px] uppercase tracking-[0.3em] font-bold hover:opacity-90 transition shadow-xl"
+            >
+              Solicitar projeto <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* RITUAIS POR CATEGORIA */}
       {(rituals ?? []).length > 0 && (
         <RitualCategories products={ritualProducts} />

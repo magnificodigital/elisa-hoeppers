@@ -14,6 +14,7 @@ import {
   HelpCircle,
   FileText,
   Mail,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -28,6 +29,7 @@ const NAV_ITEMS: NavLeaf[] = [
   { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   { to: "/admin/pedidos", label: "Pedidos", icon: Package },
+  { to: "/admin/solicitacoes", label: "Solicitações", icon: MessageSquare },
   { to: "/admin/notas-fiscais", label: "Notas Fiscais", icon: FileText },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
   { to: "/admin/site", label: "WebSite", icon: Sparkles },

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ProjetosPersonalizadosRouteImport } from './routes/projetos-personalizados'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PerfumistaRouteImport } from './routes/perfumista'
 import { Route as LoginRouteImport } from './routes/login'
@@ -41,6 +42,7 @@ import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as AdminSolicitacoesRouteImport } from './routes/admin/solicitacoes'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
 import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
@@ -102,6 +104,11 @@ const SobreRoute = SobreRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjetosPersonalizadosRoute = ProjetosPersonalizadosRouteImport.update({
+  id: '/projetos-personalizados',
+  path: '/projetos-personalizados',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
@@ -247,6 +254,11 @@ const CertificadoCodeRoute = CertificadoCodeRouteImport.update({
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSolicitacoesRoute = AdminSolicitacoesRouteImport.update({
+  id: '/admin/solicitacoes',
+  path: '/admin/solicitacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSocialRoute = AdminSocialRouteImport.update({
@@ -506,6 +518,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
@@ -521,6 +534,7 @@ export interface FileRoutesByFullPath {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
+  '/admin/solicitacoes': typeof AdminSolicitacoesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -586,6 +600,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
@@ -601,6 +616,7 @@ export interface FileRoutesByTo {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
+  '/admin/solicitacoes': typeof AdminSolicitacoesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -668,6 +684,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
+  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
@@ -683,6 +700,7 @@ export interface FileRoutesById {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
+  '/admin/solicitacoes': typeof AdminSolicitacoesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -751,6 +769,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/privacidade'
+    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
@@ -766,6 +785,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
+    | '/admin/solicitacoes'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -831,6 +851,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/privacidade'
+    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
@@ -846,6 +867,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
+    | '/admin/solicitacoes'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -912,6 +934,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/perfumista'
     | '/privacidade'
+    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
@@ -927,6 +950,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
+    | '/admin/solicitacoes'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -994,6 +1018,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PerfumistaRoute: typeof PerfumistaRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
+  ProjetosPersonalizadosRoute: typeof ProjetosPersonalizadosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
@@ -1009,6 +1034,7 @@ export interface RootRouteChildren {
   AdminPostsRoute: typeof AdminPostsRoute
   AdminReservasRoute: typeof AdminReservasRoute
   AdminSocialRoute: typeof AdminSocialRoute
+  AdminSolicitacoesRoute: typeof AdminSolicitacoesRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
@@ -1084,6 +1110,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projetos-personalizados': {
+      id: '/projetos-personalizados'
+      path: '/projetos-personalizados'
+      fullPath: '/projetos-personalizados'
+      preLoaderRoute: typeof ProjetosPersonalizadosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidade': {
@@ -1287,6 +1320,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/solicitacoes': {
+      id: '/admin/solicitacoes'
+      path: '/admin/solicitacoes'
+      fullPath: '/admin/solicitacoes'
+      preLoaderRoute: typeof AdminSolicitacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/social': {
@@ -1654,6 +1694,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PerfumistaRoute: PerfumistaRoute,
   PrivacidadeRoute: PrivacidadeRoute,
+  ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
@@ -1669,6 +1710,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPostsRoute: AdminPostsRoute,
   AdminReservasRoute: AdminReservasRoute,
   AdminSocialRoute: AdminSocialRoute,
+  AdminSolicitacoesRoute: AdminSolicitacoesRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,

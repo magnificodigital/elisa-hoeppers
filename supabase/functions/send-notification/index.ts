@@ -434,23 +434,48 @@ async function handleInvoiceReady(recordId: string) {
     .catch((e) => console.error("invoice email failed:", e));
 }
 
+async function handleProjectRequest(recordId: string, payload?: any) {
+  let request = payload;
+  if (!request && recordId) {
+    const { data } = await supabase
+      .from("custom_project_requests")
+      .select("*")
+      .eq("id", recordId)
+      .maybeSingle();
+    request = data;
+  }
+  if (!request) throw new Error("project request not found");
 
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>🎯 Nova solicitação de projeto</h1>
+      <p><span class="label">Cliente</span><br/>${request.name}<br/>${request.email}<br/>${request.whatsapp}</p>
+      <p><span class="label">Empresa</span><br/>${request.company || "Não informada"}</p>
+      <p><span class="label">Tipo de Projeto</span><br/>${request.project_type}</p>
+      <h2>Brief / Descrição</h2>
+      <p style="white-space:pre-line;">${request.brief}</p>
+      ${request.quantity_estimate ? `<p><span class="label">Quantidade</span><br/>${request.quantity_estimate}</p>` : ""}
+      ${request.deadline ? `<p><span class="label">Prazo</span><br/>${request.deadline}</p>` : ""}
+      <a class="btn" href="${SITE_URL}/admin/solicitacoes">Ver no admin</a>
+    </div>
+  `);
 
-
-
+  await sendEmail(ELISA_EMAIL, `🎯 Nova solicitação de projeto personalizado — ${request.name}`, elisaHtml);
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     await loadEmailBranding();
-    const { type, record_id } = await req.json();
-    if (!type || !record_id) {
-      return new Response(JSON.stringify({ error: "type and record_id required" }), {
+    const { type, record_id, payload } = await req.json();
+    if (!type) {
+      return new Response(JSON.stringify({ error: "type required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
     if (type === "booking") await handleBooking(record_id);
     else if (type === "order") await handleOrder(record_id);
     else if (type === "course_completed") await handleCourseCompleted(record_id);
@@ -459,6 +484,7 @@ serve(async (req) => {
     else if (type === "order_completed") await handleOrderCompleted(record_id);
     else if (type === "course_purchased") await handleCoursePurchased(record_id);
     else if (type === "invoice_ready") await handleInvoiceReady(record_id);
+    else if (type === "project_request") await handleProjectRequest(record_id, payload);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,
