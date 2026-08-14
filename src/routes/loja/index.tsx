@@ -49,7 +49,14 @@ function ShopListing() {
 
   const { data: rituals } = useQuery({
     queryKey: ["rituals", "active"],
-    queryFn: () => listActiveRituals(),
+    queryFn: async () => {
+      const data = await listActiveRituals();
+      // Set the first ritual as active by default if none is selected
+      if (data && data.length > 0 && activeRitual === null) {
+        setActiveRitual(data[0].id);
+      }
+      return data;
+    },
   });
 
   const baseList = useMemo(() => {
