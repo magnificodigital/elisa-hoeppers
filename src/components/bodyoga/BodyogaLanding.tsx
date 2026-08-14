@@ -1,5 +1,22 @@
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { CustomProjectForm } from "@/components/projetos/CustomProjectForm";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   Leaf,
@@ -32,6 +49,9 @@ const INTRO_DEFAULTS: Record<string, string> = {
   home_intro_cta_label: "Harmonia & Equilíbrio",
   home_intro_cta_href: "/sobre",
   home_intro_image: "/images/home/bodyoga/bodyoga-left.png",
+  home_custom_projects_title: "Sua marca tem um cheiro.",
+  home_custom_projects_subtitle: "Vamos criá-lo juntos.",
+  home_custom_projects_cta: "Solicitar projeto",
 };
 
 async function fetchIntro(): Promise<Record<string, string>> {
@@ -89,6 +109,8 @@ function hideOnError(e: React.SyntheticEvent<HTMLImageElement>) {
 }
 
 export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = {}) {
+  const isMobile = useIsMobile();
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const { data: products } = useQuery({
     queryKey: ["bodyoga-products"],
     queryFn: () => listProducts({ onlyInStock: false }),
@@ -137,16 +159,49 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
       <section className="bg-bodyoga-green text-bodyoga-cream py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-6 text-center space-y-8">
           <div className="space-y-4">
-            <h2 className="font-display text-3xl md:text-5xl lg:text-6xl">Sua marca tem um cheiro.</h2>
-            <p className="text-xl md:text-2xl font-light opacity-90 italic">Vamos criá-lo juntos.</p>
+            <h2 className="font-display text-3xl md:text-5xl lg:text-6xl">{intro.home_custom_projects_title}</h2>
+            <p className="text-xl md:text-2xl font-light opacity-90 italic">{intro.home_custom_projects_subtitle}</p>
           </div>
           <div>
-            <Link
-              to="/projetos-personalizados"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-bodyoga-cream text-bodyoga-green rounded-full text-[11px] uppercase tracking-[0.3em] font-bold hover:opacity-90 transition shadow-xl"
-            >
-              Solicitar projeto <ArrowRight className="w-4 h-4" />
-            </Link>
+            {isMobile ? (
+              <Drawer open={isProjectModalOpen} onOpenChange={setIsProjectModalOpen}>
+                <DrawerTrigger asChild>
+                  <button className="inline-flex items-center gap-2 px-8 py-4 bg-bodyoga-cream text-bodyoga-green rounded-full text-[11px] uppercase tracking-[0.3em] font-bold hover:opacity-90 transition shadow-xl cursor-pointer">
+                    {intro.home_custom_projects_cta} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </DrawerTrigger>
+                <DrawerContent className="bg-bodyoga-cream border-none max-h-[90vh]">
+                  <DrawerHeader className="text-center px-6 pt-8">
+                    <DrawerTitle className="font-display text-2xl text-bodyoga-green">
+                      {intro.home_custom_projects_title}
+                    </DrawerTitle>
+                    <p className="text-sm opacity-70 mt-2">{intro.home_custom_projects_subtitle}</p>
+                  </DrawerHeader>
+                  <div className="px-6 pb-12 overflow-y-auto">
+                    <CustomProjectForm onSuccess={() => setTimeout(() => setIsProjectModalOpen(false), 2000)} />
+                  </div>
+                </DrawerContent>
+              </Drawer>
+            ) : (
+              <Dialog open={isProjectModalOpen} onOpenChange={setIsProjectModalOpen}>
+                <DialogTrigger asChild>
+                  <button className="inline-flex items-center gap-2 px-8 py-4 bg-bodyoga-cream text-bodyoga-green rounded-full text-[11px] uppercase tracking-[0.3em] font-bold hover:opacity-90 transition shadow-xl cursor-pointer">
+                    {intro.home_custom_projects_cta} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-bodyoga-cream border-none sm:max-w-[600px] p-0 overflow-hidden">
+                  <div className="p-8 md:p-12 overflow-y-auto max-h-[90vh]">
+                    <DialogHeader className="text-center mb-8">
+                      <DialogTitle className="font-display text-3xl md:text-4xl text-bodyoga-green">
+                        {intro.home_custom_projects_title}
+                      </DialogTitle>
+                      <p className="text-lg opacity-70 mt-2">{intro.home_custom_projects_subtitle}</p>
+                    </DialogHeader>
+                    <CustomProjectForm onSuccess={() => setTimeout(() => setIsProjectModalOpen(false), 2000)} />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         </div>
       </section>
