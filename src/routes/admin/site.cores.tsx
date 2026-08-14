@@ -66,7 +66,7 @@ function CoresPage() {
               <Loader2 className="w-6 h-6 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="bg-white rounded-xl p-6 space-y-5">
+            <div className="bg-bodyoga-cream rounded-xl p-6 space-y-5 border border-border/20">
               {Object.entries(THEME_VARS).map(([key, cfg]) => (
                 <div key={key} className="flex items-center gap-4">
                   <input
