@@ -6,6 +6,7 @@ import { getProductBySlug, formatPriceBRL, firstImage, createReservation, type P
 import { isVideoUrl } from "@/lib/storage";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
