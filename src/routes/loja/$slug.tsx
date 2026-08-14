@@ -1,9 +1,10 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronLeft, MessageCircle, ShieldCheck } from "lucide-react";
+import { ChevronLeft, MessageCircle, ShieldCheck, ArrowLeft, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, createReservation, type Product } from "@/lib/shop";
 import { isVideoUrl } from "@/lib/storage";
+import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
 import { supabase } from "@/lib/supabase";
@@ -80,7 +81,6 @@ export const Route = createFileRoute("/loja/$slug")({
 
 function ProductDetail() {
   const { product } = Route.useLoaderData();
-  const [activeImage, setActiveImage] = useState(0);
 
   const wppMessage = encodeURIComponent(
     `Oi Elisa! Tenho interesse no ${product.name} (${formatPriceBRL(product.price_cents)}). Como faço pra comprar?`
@@ -101,51 +101,12 @@ function ProductDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             {/* Galeria */}
             <div>
-              <div className="relative aspect-square rounded-lg overflow-hidden bg-sand">
-                {product.gallery?.[activeImage] && (
-                  isVideoUrl(product.gallery[activeImage].url) ? (
-                    <video
-                      src={product.gallery[activeImage].url}
-                      className="w-full h-full object-cover"
-                      controls
-                      playsInline
-                    />
-                  ) : (
-                    <img
-                      src={product.gallery[activeImage].url}
-                      alt={product.gallery[activeImage].alt ?? product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  )
-                )}
-                {!product.in_stock && (
-                  <span className="absolute top-4 right-4 bg-primary-dark text-white text-xs px-3 py-1 rounded-md tracking-wide">
+              <GaleriaProduto images={product.gallery?.map(g => g.url) ?? []} alt={product.name} />
+              {!product.in_stock && (
+                <div className="mt-4 text-center">
+                  <span className="bg-primary-dark text-white text-xs px-3 py-1 rounded-md tracking-wide">
                     Fora De Estoque
                   </span>
-                )}
-              </div>
-
-              {product.gallery && product.gallery.length > 1 && (
-                <div className="grid grid-cols-5 gap-2 mt-3">
-                  {product.gallery.map((img: { url: string; alt?: string }, i: number) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      className={`aspect-square rounded-md overflow-hidden border-2 ${
-                        i === activeImage ? "border-primary" : "border-transparent"
-                      }`}
-                    >
-                      {isVideoUrl(img.url) ? (
-                        <video src={img.url} className="w-full h-full object-cover" muted playsInline />
-                      ) : (
-                        <img
-                          src={img.url}
-                          alt={img.alt ?? ""}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </button>
-                  ))}
                 </div>
               )}
             </div>
