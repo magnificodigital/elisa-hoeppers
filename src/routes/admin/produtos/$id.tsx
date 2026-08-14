@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
+import { supabase } from "@/lib/supabase";
 import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
