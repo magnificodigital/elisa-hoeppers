@@ -127,7 +127,7 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
             title={slide.title}
             allow="autoplay; encrypted-media"
             frameBorder={0}
-            {...({ "data-wxt-ignore": "true" } as any)}
+            data-wxt-ignore="true"
           />
         )}
         <div className="absolute inset-0 z-10" />
