@@ -12,7 +12,7 @@ const HomeShop = () => {
   const visible = (products ?? []).slice(0, 6);
 
   return (
-    <section className="py-20 md:py-28 bg-cream">
+    <section className="py-20 md:py-28 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
         <SectionTitle>Shop</SectionTitle>
 

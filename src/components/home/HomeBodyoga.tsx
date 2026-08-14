@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 const HomeBodyoga = () => {
   return (
-    <section className="py-20 md:py-28 bg-cream overflow-hidden">
+    <section className="py-20 md:py-28 bg-bodyoga-cream overflow-hidden">
       <div className="w-full relative flex flex-col md:flex-row items-center justify-between min-h-[500px] md:min-h-[600px]">
         {/* Foto lateral esquerda - colada na borda */}
         <div className="hidden md:block absolute left-0 top-0 bottom-0 w-[25%] lg:w-[28%]">

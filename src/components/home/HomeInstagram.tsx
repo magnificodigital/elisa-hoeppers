@@ -59,7 +59,7 @@ const HomeInstagram = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3">
           {isLoading &&
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="aspect-square bg-sand/50 animate-pulse rounded-md" />
+              <div key={i} className="aspect-square bg-bodyoga-green/5 animate-pulse rounded-md" />
             ))}
 
           {(isError || (!isLoading && posts.length === 0)) &&
@@ -119,7 +119,7 @@ function PostThumbnail({ post }: { post: BeholdPost }) {
       href={post.permalink}
       target="_blank"
       rel="noreferrer"
-      className="block aspect-square overflow-hidden rounded-md group relative bg-sand/30"
+      className="block aspect-square overflow-hidden rounded-md group relative bg-bodyoga-green/5"
     >
       <img
         src={thumb}
