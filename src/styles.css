@@ -64,13 +64,13 @@
 :root {
   --radius: 0.625rem;
   /* Paleta oficial BODYOGA: apenas Verde (#3B4F30) e Areia/Creme (#F7F0E5) */
-  --background: #F7F0E5;
+  --background: #e2d4c1;
   --foreground: #3B4F30;
   --primary: #3B4F30;
   --primary-dark: #3B4F30;
-  --cream: #F7F0E5;
-  --sand: #F7F0E5;
-  --cream-rose: #F7F0E5;
+  --cream: #e2d4c1;
+  --sand: #e2d4c1;
+  --cream-rose: #e2d4c1;
   --peach: #F7F0E5;
   --peach-light: #F7F0E5;
   --accent-blue: #3B4F30;
@@ -78,7 +78,7 @@
   --text: #3B4F30;
   --text-muted: #3B4F30;
   /* shadcn mappings */
-  --card: #F7F0E5;
+  --card: #e2d4c1;
   --border: #3B4F30;
   --ring: #3B4F30;
 }
@@ -141,7 +141,7 @@
 /* ============ BODYOGA palette (escopado) ============ */
 .bodyoga-scope {
   --bodyoga-green: #3B4F30;
-  --bodyoga-cream: #F7F0E5;
+  --bodyoga-cream: #e2d4c1;
   --bodyoga-brown: #3B4F30; /* Alinhado ao verde conforme solicitado */
 }
 
