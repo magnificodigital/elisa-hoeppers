@@ -29,9 +29,6 @@ const FIELDS: { key: string; label: string; hint?: string; type: "textarea" | "t
   { key: "home_intro_cta_label", label: "Texto do botão", hint: "Deixe vazio para esconder o botão.", type: "text" },
   { key: "home_intro_cta_href", label: "Link do botão", hint: "Ex.: /sobre", type: "text" },
   { key: "home_intro_image", label: "Imagem da seção", type: "image" },
-  { key: "home_custom_projects_title", label: "Projetos: Título", type: "text" },
-  { key: "home_custom_projects_subtitle", label: "Projetos: Subtítulo", type: "text" },
-  { key: "home_custom_projects_cta", label: "Projetos: Texto do botão", type: "text" },
 ];
 
 function HomeContentPage() {
