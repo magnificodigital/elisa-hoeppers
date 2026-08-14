@@ -39,7 +39,7 @@ export const Route = createFileRoute("/loja/")({
 
 function ShopListing() {
   const { brand: brandFilter } = Route.useSearch();
-  const [activeRitual, setActiveRitual] = useState<string>("");
+  const [activeRitual, setActiveRitual] = useState<string | null>(null);
   const [showOutOfStock, setShowOutOfStock] = useState(true);
 
   const { data: products, isLoading } = useQuery({
@@ -49,7 +49,14 @@ function ShopListing() {
 
   const { data: rituals } = useQuery({
     queryKey: ["rituals", "active"],
-    queryFn: () => listActiveRituals(),
+    queryFn: async () => {
+      const data = await listActiveRituals();
+      // Set the first ritual as active by default if none is selected
+      if (data && data.length > 0 && activeRitual === null) {
+        setActiveRitual(data[0].id);
+      }
+      return data;
+    },
   });
 
   const baseList = useMemo(() => {
@@ -81,17 +88,6 @@ function ShopListing() {
       products: baseList.filter((p) => productRituals(p).includes(r.id)),
     }));
 
-    if (!activeRitual) {
-      const orphans = baseList.filter((p) => productRituals(p).length === 0);
-      if (orphans.length > 0) {
-        result.push({
-          id: "__others__",
-          title: "Outros produtos",
-          description: null,
-          products: orphans,
-        });
-      }
-    }
     return result.filter((g) => g.products.length > 0);
   }, [rituals, baseList, activeRitual]);
 
@@ -107,7 +103,7 @@ function ShopListing() {
             {(rituals ?? []).map((r) => (
               <button
                 key={r.id}
-                onClick={() => setActiveRitual(activeRitual === r.id ? "" : r.id)}
+                onClick={() => setActiveRitual(r.id)}
                 className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
                   activeRitual === r.id
                     ? "bg-primary text-white"
