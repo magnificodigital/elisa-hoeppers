@@ -98,7 +98,7 @@ function AdminProjectRequests() {
           {isLoading ? (
             <div className="text-center py-20 opacity-50">Carregando solicitações...</div>
           ) : !requests?.length ? (
-            <div className="bg-white/50 border border-[#3B4F30]/5 rounded-3xl p-12 text-center">
+            <div className="bg-white/50 border border-[#3B4F30]/5 rounded-3xl p-12 text-center shadow-none">
               <p className="text-[#3B4F30]/60">Nenhuma solicitação encontrada neste filtro.</p>
             </div>
           ) : (
@@ -152,7 +152,7 @@ function RequestCard({ request: req }: { request: any }) {
   const statusInfo = STATUS_OPTIONS.find(s => s.id === req.status) || STATUS_OPTIONS[0];
 
   return (
-    <div className="bg-white rounded-3xl overflow-hidden border border-[#3B4F30]/5 shadow-sm transition hover:shadow-md">
+    <div className="bg-white rounded-3xl overflow-hidden border border-border/20 shadow-none transition hover:shadow-md">
       <div className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
           <div className="space-y-1">

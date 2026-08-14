@@ -89,7 +89,7 @@ function DiagPage() {
               </div>
 
               {data.test_preference.ok && data.test_preference.init_point && (
-                <div className="mt-6 bg-white rounded-xl p-5 shadow-sm">
+                <div className="mt-6 bg-white rounded-xl p-5 shadow-none border border-border/20">
                   <p className="text-sm text-primary-dark/70 mb-3">
                     🎉 Teste passou. Abra o link abaixo numa janela anônima pra ver a tela de pagamento do MP de
                     verdade (R$ 1,00 — não pague, é só pra visualizar):

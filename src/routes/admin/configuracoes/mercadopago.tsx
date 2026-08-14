@@ -138,7 +138,7 @@ function Page() {
             Abrir painel MP ↗
           </a>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm space-y-6">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20 space-y-6">
             <SettingsCategory category="mercadopago" />
             <AccessTokenCard publicKey={publicKey} />
           </div>

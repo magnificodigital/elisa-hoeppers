@@ -89,7 +89,7 @@ function WhatsAppSettingsPage() {
               <Loader2 className="w-6 h-6 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="bg-white rounded-xl p-5 md:p-6 space-y-5">
+            <div className="bg-white rounded-xl p-5 md:p-6 space-y-5 shadow-none border border-border/20">
               <label className="flex items-center gap-2 text-sm text-primary-dark">
                 <input
                   type="checkbox"

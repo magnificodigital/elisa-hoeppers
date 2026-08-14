@@ -53,7 +53,7 @@ function SlidesList() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-[var(--surface-cream)] min-h-screen">
+      <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
         <div className="container mx-auto px-6 max-w-3xl">
           <div className="flex items-center justify-between mb-6">
             <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Slides</h1>
@@ -82,7 +82,7 @@ function SlidesList() {
                   <Link
                     to="/admin/bodyoga-slides/$id"
                     params={{ id: s.id }}
-                    className="flex items-center gap-4 bg-white rounded-lg p-4 hover:shadow-sm transition"
+                    className="flex items-center gap-4 bg-white rounded-lg p-4 hover:shadow-sm transition shadow-none border border-border/20"
                   >
                     <GripVertical className="w-4 h-4 text-[var(--text-muted)] shrink-0" />
                     <span className="text-xs text-[var(--text-muted)] w-6 shrink-0 text-center">{s.display_order}</span>

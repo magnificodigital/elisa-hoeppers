@@ -119,7 +119,7 @@ function CustomersPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar por nome, email ou telefone…"
-                className="w-full pl-9 pr-3 py-2 rounded-md border border-primary-dark/15 bg-bodyoga-cream text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full pl-9 pr-3 py-2 rounded-md border border-primary-dark/15 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -130,8 +130,8 @@ function CustomersPage() {
                   onClick={() => setFilter(f.key)}
                   className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
                     filter === f.key
-                      ? "bg-primary text-white"
-                      : "bg-bodyoga-cream text-primary-dark/70 hover:bg-cream-dark"
+                       ? "bg-primary text-white"
+                       : "bg-white text-primary-dark/70 hover:bg-cream-dark"
                   }`}
                 >
                   {f.label}
@@ -143,7 +143,7 @@ function CustomersPage() {
           {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
 
           {!isLoading && filtered.length === 0 && (
-            <div className="bg-bodyoga-cream rounded-xl p-8 text-center border border-border/20">
+            <div className="bg-white rounded-xl p-8 text-center border border-border/20">
               <p className="text-primary-dark/60">Nenhum cliente encontrado.</p>
             </div>
           )}
@@ -161,7 +161,7 @@ function CustomersPage() {
 
 function CustomerRow({ c }: { c: AdminCustomer }) {
   return (
-    <div className="bg-bodyoga-cream border border-border/20 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="bg-white border border-border/20 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div className="min-w-0">
         <p className="font-medium text-primary-dark truncate">{c.name ?? "(sem nome)"}</p>
         <p className="text-xs text-primary-dark/60 truncate">{c.email}</p>

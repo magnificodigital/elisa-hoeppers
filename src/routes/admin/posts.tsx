@@ -33,7 +33,7 @@ function PostsHome() {
                 <Link
                   key={o.to}
                   to={o.to}
-                  className="bg-white rounded-xl p-5 shadow-sm hover:shadow-lg transition flex items-start gap-4 group"
+                  className="bg-white rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
                 >
                   <div className="w-11 h-11 rounded-full bg-cream flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />

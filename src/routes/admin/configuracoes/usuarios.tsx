@@ -125,7 +125,7 @@ function Page() {
           {error && <p className="text-sm text-red-700">{(error as Error).message}</p>}
 
           {!isLoading && filtered.length === 0 && (
-            <div className="bg-white rounded-xl p-8 text-center shadow-sm">
+            <div className="bg-white rounded-xl p-8 text-center shadow-none border border-border/20">
               <p className="text-primary-dark/60">Nenhum usuário encontrado.</p>
             </div>
           )}
@@ -178,7 +178,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
         : "bg-cream text-primary-dark";
 
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm flex items-center gap-3">
+    <div className="bg-white rounded-xl p-4 shadow-none border border-border/20 flex items-center gap-3">
       <div className="w-11 h-11 rounded-full bg-cream flex items-center justify-center shrink-0 overflow-hidden">
         {u.avatar_url ? (
           <img src={u.avatar_url} alt="" className="w-full h-full object-cover" />
@@ -366,7 +366,7 @@ function InviteForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
   });
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm mb-4">
+    <div className="bg-white rounded-xl p-6 shadow-none border border-border/20 mb-4">
       <h2 className="font-display text-xl text-primary-dark mb-4">Convidar usuário</h2>
       <div className="space-y-3">
         <input
@@ -458,7 +458,7 @@ function CreateForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
   }
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm mb-4">
+    <div className="bg-white rounded-xl p-6 shadow-none border border-border/20 mb-4">
       <h2 className="font-display text-xl text-primary-dark mb-1">Criar usuário</h2>
       <p className="text-xs text-primary-dark/60 mb-4">
         Cria a conta na hora com email confirmado. Passe as credenciais para a pessoa — ela já consegue entrar.

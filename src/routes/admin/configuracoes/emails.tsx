@@ -73,7 +73,7 @@ function Page() {
             <Link to="/admin/broadcast" className="text-primary underline">Emails &amp; Broadcast</Link>.
           </p>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm space-y-5">
+          <div className="bg-white rounded-xl p-6 shadow-none border border-border/20 space-y-5">
             <div className="flex items-start gap-3 pb-4 border-b border-border">
               <CheckCircle2 className="w-5 h-5 text-primary mt-0.5" />
               <div>

@@ -150,7 +150,7 @@ function AdminHome() {
           )}
 
           {actionsTotal > 0 && (
-            <div className="mb-8 bg-bodyoga-cream border border-primary/30 rounded-xl p-5 shadow-none">
+            <div className="mb-8 bg-white border border-primary/30 rounded-xl p-5 shadow-none">
               <h2 className="font-display text-lg text-primary-dark mb-3 flex items-center gap-2">🎯 Ações necessárias</h2>
               <div className="space-y-2 text-sm">
                 {actions!.pending_orders > 0 && (
@@ -281,7 +281,7 @@ function AdminHome() {
                 <Link
                   key={s.to}
                   to={s.to}
-                  className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
+                  className="bg-white rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
                 >
                   <div className="w-11 h-11 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
@@ -316,7 +316,7 @@ function AdminHome() {
 
 function KpiCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none">
+    <div className="bg-white rounded-xl p-5 border border-border/20 shadow-none">
       <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-primary-dark/60 mb-2">
         {icon}
         {label}
@@ -337,7 +337,7 @@ function TopList({
   items: Array<{ label: string; count: number; href?: string }>;
 }) {
   return (
-    <div className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none">
+    <div className="bg-white rounded-xl p-5 border border-border/20 shadow-none">
       <div className="flex items-center gap-2 mb-4">
         {icon}
         <h3 className="font-display text-lg text-primary-dark">{title}</h3>

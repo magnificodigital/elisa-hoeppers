@@ -49,7 +49,7 @@ function Page() {
                 <Link
                   key={s.to}
                   to={s.to}
-                  className="bg-white rounded-xl p-6 shadow-sm flex items-start gap-3 hover:shadow-lg transition group"
+                  className="bg-white rounded-xl p-6 shadow-none border border-border/20 flex items-start gap-3 hover:shadow-lg transition group"
                 >
                   <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
