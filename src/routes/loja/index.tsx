@@ -103,7 +103,7 @@ function ShopListing() {
             {(rituals ?? []).map((r) => (
               <button
                 key={r.id}
-                onClick={() => setActiveRitual(activeRitual === r.id ? "" : r.id)}
+                onClick={() => setActiveRitual(r.id)}
                 className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
                   activeRitual === r.id
                     ? "bg-primary text-white"
