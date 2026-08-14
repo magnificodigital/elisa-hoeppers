@@ -1236,6 +1236,44 @@ export type Database = {
           },
         ]
       }
+      product_waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          notified: boolean
+          notified_at: string | null
+          product_id: string
+          whatsapp: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          notified?: boolean
+          notified_at?: string | null
+          product_id: string
+          whatsapp: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          notified?: boolean
+          notified_at?: string | null
+          product_id?: string
+          whatsapp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_waitlist_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           base_product_id: number | null
