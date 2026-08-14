@@ -111,35 +111,35 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
       {/* Mobile drawer */}
       {open && (
         <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-green backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="flex flex-col items-center gap-8 w-full max-w-[280px] pt-10">
+          <div className="flex flex-col items-center gap-6 w-full max-w-[280px] pt-10">
             {navItems.map((item) => (
               <Link
                 key={item.id}
                 to={item.href}
                 onClick={() => setOpen(false)}
-                className="block text-lg font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
+                className="block text-sm font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
               >
                 {item.label}
               </Link>
             ))}
             
-            <div className="w-12 h-[1px] bg-bodyoga-cream/20 my-4" />
+            <div className="w-8 h-[1px] bg-bodyoga-cream/20 my-2" />
             
-            <div className="flex flex-col gap-6 w-full">
+            <div className="flex flex-col gap-5 w-full">
               <Link
                 to={user ? "/painel" : "/login"}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-4 text-base font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
+                className="flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
-                <User className="w-5 h-5 stroke-[2]" />
+                <User className="w-4 h-4 stroke-[1.5]" />
                 {user ? "Painel" : "Minha Conta"}
               </Link>
               <Link
                 to="/carrinho"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-4 text-base font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
+                className="flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
-                <ShoppingCart className="w-5 h-5 stroke-[2]" />
+                <ShoppingCart className="w-4 h-4 stroke-[1.5]" />
                 Carrinho
               </Link>
             </div>
