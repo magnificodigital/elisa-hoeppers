@@ -23,6 +23,23 @@ function AdminProductsList() {
     queryFn: listAllProductsForAdmin,
   });
 
+  const { data: waitlists } = useQuery({
+    queryKey: ["all-waitlists"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("product_waitlist")
+        .select("product_id")
+        .eq("notified", false);
+      if (error) throw error;
+      
+      const counts: Record<string, number> = {};
+      data.forEach(item => {
+        counts[item.product_id] = (counts[item.product_id] || 0) + 1;
+      });
+      return counts;
+    },
+  });
+
   const create = useMutation({
     mutationFn: async () => {
       const order = (products?.length ?? 0) + 1;
