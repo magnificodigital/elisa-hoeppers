@@ -14,6 +14,7 @@ import {
   HelpCircle,
   FileText,
   Mail,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
