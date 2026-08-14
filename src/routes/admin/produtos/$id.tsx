@@ -337,38 +337,52 @@ function ProductEditPage() {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Imagens / vídeos (até 3)</label>
-              <div className="flex flex-wrap gap-4">
-                {form.gallery.map((img, i) => (
-                  <ImageUploader
-                    key={i}
-                    value={img.url}
-                    folder="products"
-                    allowVideo
-                    onChange={(url) => {
-                      if (url) {
-                        const next = [...form.gallery];
-                        next[i] = { url, alt: form.name };
-                        setForm({ ...form, gallery: next });
-                      } else {
-                        setForm({ ...form, gallery: form.gallery.filter((_, idx) => idx !== i) });
-                      }
-                    }}
-                  />
-                ))}
-                {form.gallery.length < 3 && (
-                  <ImageUploader
-                    value={null}
-                    folder="products"
-                    label="Adicionar"
-                    allowVideo
-                    onChange={(url) => {
-                      if (url) setForm({ ...form, gallery: [...form.gallery, { url, alt: form.name }] });
-                    }}
-                  />
-                )}
+              <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Mídias do Produto (até 3, a primeira é a capa)</label>
+              <div className="grid grid-cols-3 gap-4">
+                {[0, 1, 2].map((i) => {
+                  const img = form.gallery[i];
+                  return (
+                    <div key={i} className="relative group">
+                      <ImageUploader
+                        value={img?.url || null}
+                        folder="products"
+                        allowVideo
+                        label={i === 0 ? "Capa" : `Imagem ${i + 1}`}
+                        onChange={(url) => {
+                          const next = [...form.gallery];
+                          if (url) {
+                            next[i] = { url, alt: form.name };
+                          } else {
+                            next.splice(i, 1);
+                          }
+                          setForm({ ...form, gallery: next.filter(Boolean).slice(0, 3) });
+                        }}
+                      />
+                      {img && (
+                        <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex flex-col gap-1">
+                            {i > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const next = [...form.gallery];
+                                  [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                                  setForm({ ...form, gallery: next });
+                                }}
+                                className="bg-white/80 p-1 rounded-full hover:bg-white shadow"
+                                title="Mover para esquerda"
+                              >
+                                <ChevronLeft className="w-3 h-3" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-              <p className="text-[10px] text-[var(--text-muted)] mt-2">Até 3 mídias. Imagens (máx 8MB) ou vídeos (máx 50MB). Para remover, clique no X.</p>
+              <p className="text-[10px] text-[var(--text-muted)] mt-2">Até 3 mídias. A primeira imagem da lista será usada como capa nos cards da loja.</p>
 
             </div>
 
