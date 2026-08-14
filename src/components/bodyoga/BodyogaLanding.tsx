@@ -149,9 +149,9 @@ export function BodyogaLanding({ initialSlides }: { initialSlides?: Slide[] } = 
             loading="lazy"
           />
           <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug">
-            Corpo, mente e ambiente
+            Equilíbrio para o corpo,
             <br />
-            em equilíbrio.
+            mente e ambiente.
           </p>
         </div>
       </section>
