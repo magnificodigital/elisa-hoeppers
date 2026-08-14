@@ -108,7 +108,18 @@ export async function listActiveRituals(): Promise<Ritual[]> {
     .eq("is_active", true)
     .order("display_order", { ascending: true });
   if (error) throw error;
-  return ((data ?? []) as Ritual[]).map(withRitualMedia);
+  
+  const rituals = (data ?? []) as Ritual[];
+  const entries = await Promise.all(
+    rituals.map(async (r) => {
+      const { getSetting } = await import("./settings");
+      const key = `ritual_${r.slug.toLowerCase().replace(/[^a-z0-9]/g, "_")}_label`;
+      const label = await getSetting(key);
+      return { ...r, title: label && label.trim() ? label : r.title };
+    })
+  );
+  
+  return entries.map(withRitualMedia);
 }
 
 export async function listAllRitualsForAdmin(): Promise<Ritual[]> {

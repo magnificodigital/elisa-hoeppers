@@ -32,7 +32,7 @@ export function GaleriaProduto({ images, alt, showControls = true }: { images: s
     <div className="w-full">
       {/* Palco com crossfade */}
       <div
-        className="relative w-full aspect-square rounded-2xl overflow-hidden bg-[var(--surface-muted,#f3f0e9)]"
+        className="relative w-full aspect-square rounded-2xl overflow-hidden bg-[var(--surface-muted,#f3f0e9)] group"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -59,7 +59,7 @@ export function GaleriaProduto({ images, alt, showControls = true }: { images: s
                   src={src}
                   alt={`${alt} — imagem ${i + 1}`}
                   loading={i === 0 ? "eager" : "lazy"}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               )}
             </div>

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import Layout from "@/components/Layout";
+import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
 import {
   listProducts,
   listActiveRituals,
@@ -38,7 +39,7 @@ export const Route = createFileRoute("/loja/")({
 
 function ShopListing() {
   const { brand: brandFilter } = Route.useSearch();
-  const [activeRitual, setActiveRitual] = useState<string>("all");
+  const [activeRitual, setActiveRitual] = useState<string>("");
   const [showOutOfStock, setShowOutOfStock] = useState(true);
 
   const { data: products, isLoading } = useQuery({
@@ -71,7 +72,7 @@ function ShopListing() {
   // Groups to render: each active ritual with its products, then "others".
   const groups = useMemo(() => {
     const activeRituals = (rituals ?? []).filter(
-      (r) => activeRitual === "all" || r.id === activeRitual,
+      (r) => !activeRitual || r.id === activeRitual,
     );
     const result = activeRituals.map((r) => ({
       id: r.id,
@@ -80,7 +81,7 @@ function ShopListing() {
       products: baseList.filter((p) => productRituals(p).includes(r.id)),
     }));
 
-    if (activeRitual === "all") {
+    if (!activeRitual) {
       const orphans = baseList.filter((p) => productRituals(p).length === 0);
       if (orphans.length > 0) {
         result.push({
@@ -102,20 +103,11 @@ function ShopListing() {
 
           {/* Filtros por ritual */}
           <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
-            <button
-              onClick={() => setActiveRitual("all")}
-              className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
-                activeRitual === "all"
-                  ? "bg-primary text-white"
-                  : "bg-white text-primary-dark border border-border hover:border-primary"
-              }`}
-            >
-              Todos
-            </button>
+
             {(rituals ?? []).map((r) => (
               <button
                 key={r.id}
-                onClick={() => setActiveRitual(r.id)}
+                onClick={() => setActiveRitual(activeRitual === r.id ? "" : r.id)}
                 className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
                   activeRitual === r.id
                     ? "bg-primary text-white"
@@ -171,24 +163,12 @@ function ShopListing() {
                       className="group block"
                     >
                       <div className="relative aspect-square overflow-hidden rounded-lg bg-sand">
-                        {firstImage(p) && (
-                          <img
-                            src={firstImage(p)!}
-                            alt={p.name}
-                            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${secondImage(p) ? "group-hover:opacity-0" : ""}`}
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        )}
-                        {secondImage(p) && (
-                          <img
-                            src={secondImage(p)!}
-                            alt={p.name}
-                            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        )}
+                        <GaleriaProduto 
+                          images={p.gallery?.map(g => g.url) || []} 
+                          alt={p.name}
+                          showControls={false}
+                        />
+
 
                         {!p.in_stock && (
                           <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">
