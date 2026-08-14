@@ -100,46 +100,46 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden relative z-50 p-2 -mr-2"
-          style={green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
+          className="md:hidden relative z-50 p-2 ml-auto"
+          style={open || green ? { color: "var(--bodyoga-cream)" } : { color: "var(--bodyoga-green)" }}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
       </div>
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-cream/98 backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="flex flex-col items-center gap-6 w-full max-w-[280px] pt-20">
+        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-green backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex flex-col items-center gap-8 w-full max-w-[280px] pt-10">
             {navItems.map((item) => (
               <Link
                 key={item.id}
                 to={item.href}
                 onClick={() => setOpen(false)}
-                className="block text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors py-1"
+                className="block text-lg font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
               >
                 {item.label}
               </Link>
             ))}
             
-            <div className="w-8 h-[1px] bg-bodyoga-green/10 my-2" />
+            <div className="w-12 h-[1px] bg-bodyoga-cream/20 my-4" />
             
-            <div className="flex flex-col gap-5 w-full">
+            <div className="flex flex-col gap-6 w-full">
               <Link
                 to={user ? "/painel" : "/login"}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-3 text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors"
+                className="flex items-center justify-center gap-4 text-base font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
-                <User className="w-4 h-4 stroke-[1.5]" />
+                <User className="w-5 h-5 stroke-[2]" />
                 {user ? "Painel" : "Minha Conta"}
               </Link>
               <Link
                 to="/carrinho"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-3 text-[13px] font-normal uppercase tracking-[0.22em] text-bodyoga-green/90 hover:text-bodyoga-green transition-colors"
+                className="flex items-center justify-center gap-4 text-base font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
-                <ShoppingCart className="w-4 h-4 stroke-[1.5]" />
+                <ShoppingCart className="w-5 h-5 stroke-[2]" />
                 Carrinho
               </Link>
             </div>
