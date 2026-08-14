@@ -83,6 +83,7 @@ function CheckoutPage() {
         ...f,
         name: f.name || profile?.full_name || user.email?.split("@")[0] || "",
         email: f.email || user.email || "",
+        phone: f.phone || profile?.phone || "",
       }));
     }
   }, [user, profile]);
@@ -451,7 +452,7 @@ function CheckoutPage() {
                           Quero criar uma conta com esse email
                         </span>
                         <span className="block text-xs text-[var(--text-muted)] mt-0.5">
-                          Permite acompanhar pedidos em "Meu painel" e comprar mais rápido na próxima vez.
+                          Permite acompanhar pedidos em "Meu painel" e que você não precise preencher novamente seus dados na próxima compra.
                         </span>
                       </div>
                     </label>
