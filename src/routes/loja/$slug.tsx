@@ -81,7 +81,6 @@ export const Route = createFileRoute("/loja/$slug")({
 
 function ProductDetail() {
   const { product } = Route.useLoaderData();
-  const [activeImage, setActiveImage] = useState(0);
 
   const wppMessage = encodeURIComponent(
     `Oi Elisa! Tenho interesse no ${product.name} (${formatPriceBRL(product.price_cents)}). Como faço pra comprar?`
