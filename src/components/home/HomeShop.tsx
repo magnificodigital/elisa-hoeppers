@@ -30,13 +30,11 @@ const HomeShop = () => {
               className="group block"
             >
               <div className="relative aspect-square overflow-hidden rounded-lg bg-sand">
-                <div className="w-full h-full group-hover:scale-105 transition-transform duration-500">
-                  <GaleriaProduto 
-                    images={p.gallery?.map(g => g.url) || []} 
-                    alt={p.name}
-                    showControls={false}
-                  />
-                </div>
+                <GaleriaProduto 
+                  images={p.gallery?.map(g => g.url) || []} 
+                  alt={p.name}
+                  showControls={false}
+                />
 
                 {!p.in_stock && (
                   <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide z-20">

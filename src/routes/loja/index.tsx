@@ -38,7 +38,7 @@ export const Route = createFileRoute("/loja/")({
 
 function ShopListing() {
   const { brand: brandFilter } = Route.useSearch();
-  const [activeRitual, setActiveRitual] = useState<string>("all");
+  const [activeRitual, setActiveRitual] = useState<string>("");
   const [showOutOfStock, setShowOutOfStock] = useState(true);
 
   const { data: products, isLoading } = useQuery({
@@ -71,7 +71,7 @@ function ShopListing() {
   // Groups to render: each active ritual with its products, then "others".
   const groups = useMemo(() => {
     const activeRituals = (rituals ?? []).filter(
-      (r) => activeRitual === "all" || r.id === activeRitual,
+      (r) => !activeRitual || r.id === activeRitual,
     );
     const result = activeRituals.map((r) => ({
       id: r.id,
@@ -80,7 +80,7 @@ function ShopListing() {
       products: baseList.filter((p) => productRituals(p).includes(r.id)),
     }));
 
-    if (activeRitual === "all") {
+    if (!activeRitual) {
       const orphans = baseList.filter((p) => productRituals(p).length === 0);
       if (orphans.length > 0) {
         result.push({
@@ -102,16 +102,7 @@ function ShopListing() {
 
           {/* Filtros por ritual */}
           <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
-            <button
-              onClick={() => setActiveRitual("all")}
-              className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
-                activeRitual === "all"
-                  ? "bg-primary text-white"
-                  : "bg-white text-primary-dark border border-border hover:border-primary"
-              }`}
-            >
-              Todos
-            </button>
+
             {(rituals ?? []).map((r) => (
               <button
                 key={r.id}
