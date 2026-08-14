@@ -92,7 +92,7 @@ function AdminOrders() {
                 key={f.id}
                 onClick={() => setFilter(f.id)}
                 className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition ${
-                  filter === f.id ? "bg-primary text-white" : "bg-bodyoga-cream text-primary-dark border border-border/20 hover:border-primary"
+                  filter === f.id ? "bg-primary text-white" : "bg-white text-primary-dark border border-border/20 hover:border-primary"
                 }`}
               >
                 {f.label}
@@ -105,7 +105,7 @@ function AdminOrders() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar por código, nome, email ou telefone..."
-              className="w-full border border-border/20 rounded-full px-5 py-2.5 bg-bodyoga-cream text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full border border-border/20 rounded-full px-5 py-2.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {searchQuery && (
               <p className="text-xs text-primary-dark/60 mt-2">
@@ -134,7 +134,7 @@ function AdminOrders() {
           {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
 
           {!isLoading && filteredOrders.length === 0 && (
-            <div className="bg-bodyoga-cream border border-border/20 rounded-lg p-10 text-center">
+            <div className="bg-white border border-border/20 rounded-lg p-10 text-center">
               <p className="text-[var(--text-muted)]">Nenhum pedido neste filtro.</p>
             </div>
           )}
@@ -315,7 +315,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
   );
 
   return (
-    <div className={`bg-bodyoga-cream border border-border/20 rounded-lg p-5 md:p-6 shadow-none transition ${isSelected ? "ring-2 ring-primary" : ""}`}>
+    <div className={`bg-white border border-border/20 rounded-lg p-5 md:p-6 shadow-none transition ${isSelected ? "ring-2 ring-primary" : ""}`}>
       <div className="flex items-start gap-3 mb-4">
         <input
           type="checkbox"

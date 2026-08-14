@@ -66,14 +66,14 @@ function CoresPage() {
               <Loader2 className="w-6 h-6 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="bg-bodyoga-cream rounded-xl p-6 space-y-5 border border-border/20">
+            <div className="bg-white rounded-xl p-6 space-y-5 border border-border/20">
               {Object.entries(THEME_VARS).map(([key, cfg]) => (
                 <div key={key} className="flex items-center gap-4">
                   <input
                     type="color"
                     value={values[key] ?? cfg.fallback}
                     onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
-                    className="w-12 h-12 rounded-lg border border-border cursor-pointer bg-bodyoga-cream"
+                    className="w-12 h-12 rounded-lg border border-border cursor-pointer bg-white"
                     aria-label={cfg.label}
                   />
                   <div className="flex-1 min-w-0">
@@ -81,7 +81,7 @@ function CoresPage() {
                     <input
                       value={values[key] ?? ""}
                       onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
-                      className="mt-1 w-36 border border-border rounded-md px-2 py-1 text-xs font-mono text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary bg-bodyoga-cream"
+                      className="mt-1 w-36 border border-border rounded-md px-2 py-1 text-xs font-mono text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary bg-white"
                     />
                   </div>
                   <button

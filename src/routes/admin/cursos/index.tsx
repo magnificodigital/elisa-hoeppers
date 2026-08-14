@@ -58,7 +58,7 @@ function AdminCursosList() {
           {isLoading && <p className="text-[var(--text-muted)]">Carregando…</p>}
 
           {!isLoading && (courses ?? []).length === 0 && (
-            <div className="bg-bodyoga-cream border border-border/20 rounded-lg p-10 text-center">
+            <div className="bg-white border border-border/20 rounded-lg p-10 text-center">
               <p className="text-[var(--text-muted)] mb-4">Nenhum curso ainda.</p>
               <button
                 onClick={() => setShowNew(true)}
@@ -71,7 +71,7 @@ function AdminCursosList() {
 
           <div className="grid gap-4">
             {(courses ?? []).map((c) => (
-              <div key={c.id} className="bg-bodyoga-cream border border-border/20 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-none">
+              <div key={c.id} className="bg-white border border-border/20 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center gap-4 shadow-none">
                 {c.cover_image && (
                   <img src={c.cover_image} alt="" className="w-full sm:w-24 h-40 sm:h-20 object-cover rounded" />
                 )}

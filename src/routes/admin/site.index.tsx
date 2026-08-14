@@ -75,7 +75,7 @@ function SitePage() {
                 <Link
                   key={opt.to}
                   to={opt.to}
-                  className="bg-bodyoga-cream rounded-xl p-6 border border-border/20 flex items-start gap-3 hover:shadow-lg transition group"
+                  className="bg-white rounded-xl p-6 border border-border/20 flex items-start gap-3 hover:shadow-lg transition group"
                 >
                   <div className="w-10 h-10 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
