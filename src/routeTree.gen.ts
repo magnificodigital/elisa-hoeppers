@@ -42,6 +42,7 @@ import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as AdminSolicitacoesRouteImport } from './routes/admin/solicitacoes'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
 import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
 import { Route as AdminPostsRouteImport } from './routes/admin/posts'
@@ -253,6 +254,11 @@ const CertificadoCodeRoute = CertificadoCodeRouteImport.update({
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSolicitacoesRoute = AdminSolicitacoesRouteImport.update({
+  id: '/admin/solicitacoes',
+  path: '/admin/solicitacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSocialRoute = AdminSocialRouteImport.update({
@@ -528,6 +534,7 @@ export interface FileRoutesByFullPath {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
+  '/admin/solicitacoes': typeof AdminSolicitacoesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -609,6 +616,7 @@ export interface FileRoutesByTo {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
+  '/admin/solicitacoes': typeof AdminSolicitacoesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -692,6 +700,7 @@ export interface FileRoutesById {
   '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
+  '/admin/solicitacoes': typeof AdminSolicitacoesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -776,6 +785,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
+    | '/admin/solicitacoes'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -857,6 +867,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
+    | '/admin/solicitacoes'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -939,6 +950,7 @@ export interface FileRouteTypes {
     | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
+    | '/admin/solicitacoes'
     | '/blog/$slug'
     | '/certificado/$code'
     | '/cursos/$slug'
@@ -1022,6 +1034,7 @@ export interface RootRouteChildren {
   AdminPostsRoute: typeof AdminPostsRoute
   AdminReservasRoute: typeof AdminReservasRoute
   AdminSocialRoute: typeof AdminSocialRoute
+  AdminSolicitacoesRoute: typeof AdminSolicitacoesRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
@@ -1307,6 +1320,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/solicitacoes': {
+      id: '/admin/solicitacoes'
+      path: '/admin/solicitacoes'
+      fullPath: '/admin/solicitacoes'
+      preLoaderRoute: typeof AdminSolicitacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/social': {
@@ -1690,6 +1710,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPostsRoute: AdminPostsRoute,
   AdminReservasRoute: AdminReservasRoute,
   AdminSocialRoute: AdminSocialRoute,
+  AdminSolicitacoesRoute: AdminSolicitacoesRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
