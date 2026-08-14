@@ -81,7 +81,7 @@ function CoresPage() {
                     <input
                       value={values[key] ?? ""}
                       onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
-                      className="mt-1 w-36 border border-border rounded-md px-2 py-1 text-xs font-mono text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="mt-1 w-36 border border-border rounded-md px-2 py-1 text-xs font-mono text-primary-dark focus:outline-none focus:ring-2 focus:ring-primary bg-bodyoga-cream"
                     />
                   </div>
                   <button
