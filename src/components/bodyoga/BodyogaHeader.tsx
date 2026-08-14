@@ -37,7 +37,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
       className="fixed top-0 inset-x-0 z-40 transition-colors duration-300"
       style={green ? { backgroundColor: "var(--bodyoga-green)" } : undefined}
     >
-      <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-end md:justify-between h-24">
+      <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 flex items-center justify-between h-24">
 
         {/* Left nav */}
         <nav className="hidden md:flex flex-1 items-center justify-end gap-8 md:pr-12">
