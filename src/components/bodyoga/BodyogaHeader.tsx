@@ -5,7 +5,7 @@ import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
 
-const CREAM = "#FEF2D4";
+
 
 export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }) {
   const [open, setOpen] = useState(false);
