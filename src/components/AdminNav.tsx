@@ -58,7 +58,7 @@ export function AdminNav() {
     exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
 
   return (
-    <nav className="rounded-3xl bg-white shadow-[0_10px_40px_-15px_rgba(59,79,48,0.25)] p-4 md:p-5">
+    <nav className="rounded-3xl bg-bodyoga-cream shadow-none p-4 md:p-5 border border-border/20">
       <ul className="flex flex-col gap-1">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;

@@ -50,7 +50,7 @@ const Layout = ({ children, noTopPadding = false, transparentHeader = false }: L
             <div className="min-w-0 flex-1">
               <button
                 onClick={toggleNav}
-                className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs uppercase tracking-widest text-primary-dark shadow-sm hover:bg-white/80 transition"
+                className="mb-4 inline-flex items-center gap-2 rounded-full bg-bodyoga-cream px-4 py-2 text-xs uppercase tracking-widest text-primary-dark border border-border/20 shadow-none hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
               >
                 {collapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
                 {collapsed ? "Mostrar menu" : "Recolher menu"}

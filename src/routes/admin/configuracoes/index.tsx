@@ -22,7 +22,7 @@ const sections = [
 function ConfigIndex() {
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-bodyoga-cream min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Configurações</h1>
           <p className="text-primary-dark/70 mb-10">Selecione abaixo o que deseja configurar.</p>
@@ -34,9 +34,9 @@ function ConfigIndex() {
                 <Link
                   key={s.to}
                   to={s.to}
-                  className="bg-white rounded-xl p-6 shadow-sm flex items-start gap-3 hover:shadow-lg transition group"
+                  className="bg-bodyoga-cream rounded-xl p-6 border border-border/20 shadow-none flex items-start gap-3 hover:shadow-lg transition group"
                 >
-                  <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">

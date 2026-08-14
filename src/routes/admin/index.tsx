@@ -118,7 +118,7 @@ function AdminHome() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-bodyoga-cream min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Admin</h1>
           <p className="text-primary-dark/70 mb-6">Visão geral do site nos últimos 30 dias.</p>
@@ -150,7 +150,7 @@ function AdminHome() {
           )}
 
           {actionsTotal > 0 && (
-            <div className="mb-8 bg-white border border-primary/30 rounded-xl p-5">
+            <div className="mb-8 bg-bodyoga-cream border border-primary/30 rounded-xl p-5 shadow-none">
               <h2 className="font-display text-lg text-primary-dark mb-3 flex items-center gap-2">🎯 Ações necessárias</h2>
               <div className="space-y-2 text-sm">
                 {actions!.pending_orders > 0 && (
@@ -281,9 +281,9 @@ function AdminHome() {
                 <Link
                   key={s.to}
                   to={s.to}
-                  className="bg-white rounded-xl p-5 shadow-sm hover:shadow-lg transition flex items-start gap-4 group"
+                  className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
                 >
-                  <div className="w-11 h-11 rounded-full bg-cream flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
                   </div>
                   <div>
@@ -316,7 +316,7 @@ function AdminHome() {
 
 function KpiCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm">
+    <div className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none">
       <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-primary-dark/60 mb-2">
         {icon}
         {label}
@@ -337,7 +337,7 @@ function TopList({
   items: Array<{ label: string; count: number; href?: string }>;
 }) {
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm">
+    <div className="bg-bodyoga-cream rounded-xl p-5 border border-border/20 shadow-none">
       <div className="flex items-center gap-2 mb-4">
         {icon}
         <h3 className="font-display text-lg text-primary-dark">{title}</h3>
@@ -348,7 +348,7 @@ function TopList({
         <ol className="space-y-2">
           {items.map((it, i) => (
             <li key={i} className="flex items-center gap-3 text-sm">
-              <span className="w-6 h-6 rounded-full bg-cream flex items-center justify-center text-xs font-medium text-primary shrink-0">
+              <span className="w-6 h-6 rounded-full bg-bodyoga-green/10 flex items-center justify-center text-xs font-medium text-primary shrink-0">
                 {i + 1}
               </span>
               {it.href ? (
