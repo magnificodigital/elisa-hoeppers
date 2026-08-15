@@ -9,7 +9,7 @@ const CREAM_FILTER =
 export function BodyogaLogo({
   variant = "icon",
   className = "",
-  size = 48,
+  size,
   tone = "green",
 }: {
   variant?: "icon" | "full";
@@ -25,7 +25,7 @@ export function BodyogaLogo({
         alt="BODYOGA"
         className={`w-auto ${className}`}
         style={{
-          height: size,
+          height: size ?? undefined,
           filter: tone === "cream" ? CREAM_FILTER : undefined,
         }}
       />
@@ -37,7 +37,7 @@ export function BodyogaLogo({
       src={iconAsset.url}
       alt="BODYOGA"
       className={`w-auto ${className}`}
-      style={{ height: size }}
+      style={{ height: size ?? 48 }}
     />
   );
 }
