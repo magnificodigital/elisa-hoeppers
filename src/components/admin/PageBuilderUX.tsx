@@ -425,7 +425,7 @@ function BlockIcon({ type, size = 16 }: { type: BlockType, size?: number }) {
     case 'yoga-classes': return <Calendar size={size} />;
     case 'columns': return <Columns size={size} />;
     case 'shortcut-banner': return <Layout size={size} />;
-    case 'spacer': return <Minus size={size} />;
+    case 'spacer': return <MoveHorizontal size={size} />;
     default: return <Square size={size} />;
   }
 }
