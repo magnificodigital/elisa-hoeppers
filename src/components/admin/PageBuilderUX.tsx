@@ -318,6 +318,52 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
           <input type="text" className={inputCls} value={value ?? ''} onChange={(e) => onChange(e.target.value)} placeholder="/loja ou #produtos" />
         </div>
       );
+    case 'list': {
+      const items: any[] = Array.isArray(value) ? value : [];
+      const itemFields: any[] = field.itemFields ?? [];
+      const addItem = () => {
+        const blank: any = {};
+        itemFields.forEach((f) => { blank[f.key] = f.type === 'boolean' ? false : ''; });
+        onChange([...items, blank]);
+      };
+      const updateItem = (idx: number, key: string, val: any) => {
+        onChange(items.map((it, i) => (i === idx ? { ...it, [key]: val } : it)));
+      };
+      const removeItem = (idx: number) => onChange(items.filter((_, i) => i !== idx));
+      const moveItem = (idx: number, dir: -1 | 1) => {
+        const j = idx + dir;
+        if (j < 0 || j >= items.length) return;
+        const copy = [...items];
+        [copy[idx], copy[j]] = [copy[j], copy[idx]];
+        onChange(copy);
+      };
+      return (
+        <div className="space-y-3">
+          {items.length === 0 && <p className="text-xs text-gray-400 italic">Nenhum item ainda.</p>}
+          {items.map((item, idx) => (
+            <div key={idx} className="border border-border rounded-lg p-3 bg-gray-50 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-primary-dark/40">Item {idx + 1}</span>
+                <div className="flex items-center gap-1">
+                  <button type="button" onClick={() => moveItem(idx, -1)} disabled={idx === 0} className="px-1.5 text-gray-400 hover:text-primary disabled:opacity-30" title="Subir">↑</button>
+                  <button type="button" onClick={() => moveItem(idx, 1)} disabled={idx === items.length - 1} className="px-1.5 text-gray-400 hover:text-primary disabled:opacity-30" title="Descer">↓</button>
+                  <button type="button" onClick={() => removeItem(idx)} className="px-1.5 text-gray-400 hover:text-red-500" title="Remover">✕</button>
+                </div>
+              </div>
+              {itemFields.map((f) => (
+                <div key={f.key} className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-widest text-primary-dark/60 font-bold">{f.label}</label>
+                  <FieldInput field={f} value={item?.[f.key]} onChange={(val) => updateItem(idx, f.key, val)} />
+                </div>
+              ))}
+            </div>
+          ))}
+          <button type="button" onClick={addItem} className="w-full py-2 border-2 border-dashed border-primary/30 rounded-lg text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5 transition">
+            + Adicionar item
+          </button>
+        </div>
+      );
+    }
     default:
       return <p className="text-xs text-red-500 italic">Tipo "{field.type}" não implementado</p>;
   }
