@@ -15,8 +15,8 @@ const sections = [
 
 function ConfigIndex() {
   return (
-    <section className="bg-background min-h-[70vh]">
-        <div className="max-w-3xl mx-auto px-4">
+    <div className="bg-background min-h-[70vh]">
+      <div className="max-w-3xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Configurações</h1>
           <p className="text-primary-dark/70 mb-10">Selecione abaixo o que deseja configurar.</p>
 
@@ -41,7 +41,7 @@ function ConfigIndex() {
               );
             })}
           </div>
-        </div>
-      </section>
+      </div>
+    </div>
   );
 }

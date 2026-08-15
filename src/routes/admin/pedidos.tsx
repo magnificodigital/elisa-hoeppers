@@ -145,6 +145,7 @@ function AdminOrders() {
       </div>
     </div>
   );
+}
   );
 }
 

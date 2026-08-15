@@ -303,6 +303,7 @@ function AdminHome() {
           )}
     </div>
   );
+}
   );
 }
 
