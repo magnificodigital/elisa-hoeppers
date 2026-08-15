@@ -127,7 +127,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center gap-4">
              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5F3EE] border border-[#3B4F30]/5 text-[13px] text-[#3B4F30]/80">
                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-               Admin: {profile?.first_name || 'Usuário'}
+               Admin: {profile?.email?.split('@')[0] || 'Usuário'}
              </div>
           </div>
         </header>
