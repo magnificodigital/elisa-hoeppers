@@ -356,6 +356,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     defaults: {},
     fields: []
   },
+
   "booking-form": {
     type: "booking-form",
     label: "Formulário de Agendamento",

@@ -156,7 +156,8 @@ function IconSelector({ icon, className }: { icon: string, className?: string })
   }
 }
 
-function renderIntroTitle(text: string) {
+export function renderIntroTitle(text: string) {
+  if (!text) return null;
   return text.split("\n").map((line, i) => (
     <span key={i}>
       {i > 0 && <br />}
@@ -172,6 +173,7 @@ function renderIntroTitle(text: string) {
     </span>
   ));
 }
+
 
 function DatePicker({ selectedDate, onChange }: { selectedDate: Date; onChange: (d: Date) => void }) {
   const days = Array.from({ length: 14 }, (_, i) => {

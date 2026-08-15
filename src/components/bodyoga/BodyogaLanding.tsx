@@ -71,23 +71,8 @@ async function fetchIntro(): Promise<Record<string, string>> {
   return Object.fromEntries(entries);
 }
 
-/** Renderiza quebras de linha e *itálico* do título configurável. */
-function renderIntroTitle(text: string) {
-  return text.split("\n").map((line, i) => (
-    <span key={i}>
-      {i > 0 && <br />}
-      {line.split(/(\*[^*]+\*)/g).map((part, j) =>
-        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
-          <span key={j} className="italic">
-            {part.slice(1, -1)}
-          </span>
-        ) : (
-          part
-        )
-      )}
-    </span>
-  ));
-}
+import { renderIntroTitle } from "@/components/admin/RenderBlocks";
+
 
 
 
