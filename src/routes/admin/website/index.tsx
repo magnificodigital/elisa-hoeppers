@@ -14,7 +14,11 @@ import {
   Bell, 
   Menu as MenuIcon,
   Copy,
-  LayoutDashboard
+  LayoutDashboard,
+  Palette,
+  MessageCircle,
+  Search,
+  GalleryHorizontal
 } from "lucide-react";
 import { toast } from "sonner";
 import { createPage, deletePage, listPages, slugify, updatePage, type SitePage } from "@/lib/pages";
@@ -104,64 +108,51 @@ function WebsiteAdminPage() {
             </div>
           </div>
 
-          <Tabs defaultValue="pages" onValueChange={setActiveTab} className="w-full">
-            <TabsList className="bg-white/50 border border-border p-1 rounded-xl mb-6">
-              <TabsTrigger value="pages" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                <Globe className="w-4 h-4 mr-2" />
-                Páginas do site
-              </TabsTrigger>
-              <TabsTrigger value="landing" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                
-                Landing pages
-              </TabsTrigger>
-              <TabsTrigger value="blog" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                <FileText className="w-4 h-4 mr-2" />
-                Blog
-              </TabsTrigger>
-              <TabsTrigger value="notices" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                <Bell className="w-4 h-4 mr-2" />
-                Avisos
-              </TabsTrigger>
-            </TabsList>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+            <WebsiteOption 
+              to="/admin/site/menu"
+              label="Menu"
+              description="Header e Footer"
+              icon={MenuIcon}
+            />
+            <WebsiteOption 
+              to="/admin/site/cores"
+              label="Cores"
+              description="Identidade Visual"
+              icon={Palette}
+            />
+            <WebsiteOption 
+              to="/admin/site/whatsapp"
+              label="Botão WhatsApp"
+              description="Configurar Botão"
+              icon={MessageCircle}
+            />
+            <WebsiteOption 
+              to="/admin/site/seo"
+              label="SEO"
+              description="Busca e Social"
+              icon={Search}
+            />
+            <WebsiteOption 
+              to="/admin/bodyoga-slides"
+              label="Slides"
+              description="Banners do Topo"
+              icon={GalleryHorizontal}
+            />
+          </div>
 
-            <TabsContent value="pages">
-               <PageTable 
-                  pages={pages} 
-                  isLoading={isLoading} 
-                  onDelete={(id: string) => del.mutate(id)}
-                  onSetHome={setAsHome}
-                  onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
-                  onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
-               />
-            </TabsContent>
-
-            <TabsContent value="landing">
-               <PageTable 
-                  pages={landingPages} 
-                  isLoading={isLoading} 
-                  onDelete={(id: string) => del.mutate(id)}
-               />
-            </TabsContent>
-
-            <TabsContent value="blog">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Blog e Posts</h3>
-                <p className="text-primary-dark/60 mb-6">Use a seção de Posts para gerenciar o blog.</p>
-                <Link to="/admin/blog" className="text-primary hover:underline uppercase text-xs tracking-widest font-bold">
-                   Ir para Posts
-                </Link>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="notices">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <Bell className="w-12 h-12 text-primary/20 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Avisos do Site</h3>
-                <p className="text-primary-dark/60">Em breve: Gerencie banners de aviso e popups.</p>
-              </div>
-            </TabsContent>
-          </Tabs>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-display text-2xl text-primary-dark">Páginas do Site</h2>
+          </div>
+          
+          <PageTable 
+            pages={pages} 
+            isLoading={isLoading} 
+            onDelete={(id: string) => del.mutate(id)}
+            onSetHome={setAsHome}
+            onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
+            onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
+          />
 
           <div className="mt-8 bg-white rounded-2xl border border-border p-6 shadow-sm">
              <h3 className="text-sm font-bold uppercase tracking-widest text-primary-dark/60 mb-4 flex items-center gap-2">
@@ -194,6 +185,25 @@ function WebsiteAdminPage() {
           </div>
       </div>
     </div>
+  );
+}
+
+function WebsiteOption({ to, label, description, icon: Icon }: any) {
+  return (
+    <Link
+      to={to}
+      className="bg-white rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
+    >
+      <div className="w-11 h-11 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
+        <Icon size={20} className="text-primary" />
+      </div>
+      <div>
+        <h3 className="font-display text-lg text-primary-dark mb-1 group-hover:text-primary transition">
+          {label}
+        </h3>
+        <p className="text-sm text-primary-dark/60">{description}</p>
+      </div>
+    </Link>
   );
 }
 
