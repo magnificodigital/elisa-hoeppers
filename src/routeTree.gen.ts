@@ -56,6 +56,7 @@ import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagno
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
+import { Route as AdminBlogRouteRouteImport } from './routes/admin/blog/route'
 import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
@@ -327,6 +328,11 @@ const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   path: '/agendamentos',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminBlogRouteRoute = AdminBlogRouteRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminSiteIndexRoute = AdminSiteIndexRouteImport.update({
   id: '/site/',
   path: '/site/',
@@ -353,9 +359,9 @@ const AdminBodyogaSlidesIndexRoute = AdminBodyogaSlidesIndexRouteImport.update({
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => AdminRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminBlogRouteRoute,
 } as any)
 const AdminAjudaIndexRoute = AdminAjudaIndexRouteImport.update({
   id: '/ajuda/',
@@ -523,6 +529,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin/blog': typeof AdminBlogRouteRouteWithChildren
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -688,6 +695,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin/blog': typeof AdminBlogRouteRouteWithChildren
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -773,6 +781,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
+    | '/admin/blog'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -937,6 +946,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
+    | '/admin/blog'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -1374,6 +1384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/site/': {
       id: '/admin/site/'
       path: '/site'
@@ -1411,10 +1428,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/blog/': {
       id: '/admin/blog/'
-      path: '/blog'
+      path: '/'
       fullPath: '/admin/blog/'
       preLoaderRoute: typeof AdminBlogIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
+      parentRoute: typeof AdminBlogRouteRoute
     }
     '/admin/ajuda/': {
       id: '/admin/ajuda/'
@@ -1615,6 +1632,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminBlogRouteRouteChildren {
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+}
+
+const AdminBlogRouteRouteChildren: AdminBlogRouteRouteChildren = {
+  AdminBlogIndexRoute: AdminBlogIndexRoute,
+}
+
+const AdminBlogRouteRouteWithChildren = AdminBlogRouteRoute._addFileChildren(
+  AdminBlogRouteRouteChildren,
+)
+
 interface AdminCursosIdAulasRouteChildren {
   AdminCursosIdAulasLessonIdQuizRoute: typeof AdminCursosIdAulasLessonIdQuizRoute
 }
@@ -1627,6 +1656,7 @@ const AdminCursosIdAulasRouteWithChildren =
   AdminCursosIdAulasRoute._addFileChildren(AdminCursosIdAulasRouteChildren)
 
 interface AdminRouteRouteChildren {
+  AdminBlogRouteRoute: typeof AdminBlogRouteRouteWithChildren
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
@@ -1661,7 +1691,6 @@ interface AdminRouteRouteChildren {
   AdminSiteSeoRoute: typeof AdminSiteSeoRoute
   AdminSiteWhatsappRoute: typeof AdminSiteWhatsappRoute
   AdminAjudaIndexRoute: typeof AdminAjudaIndexRoute
-  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminBodyogaSlidesIndexRoute: typeof AdminBodyogaSlidesIndexRoute
   AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
@@ -1674,6 +1703,7 @@ interface AdminRouteRouteChildren {
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminBlogRouteRoute: AdminBlogRouteRouteWithChildren,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
@@ -1708,7 +1738,6 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminSiteSeoRoute: AdminSiteSeoRoute,
   AdminSiteWhatsappRoute: AdminSiteWhatsappRoute,
   AdminAjudaIndexRoute: AdminAjudaIndexRoute,
-  AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminBodyogaSlidesIndexRoute: AdminBodyogaSlidesIndexRoute,
   AdminConfiguracoesIndexRoute: AdminConfiguracoesIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
