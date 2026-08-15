@@ -35,7 +35,7 @@ const HomeHero = () => {
             <div className="absolute inset-0 bg-black/30" />
             <div className="relative z-10 h-full flex items-center justify-center">
               <Link
-                to="/agende-sua-aula"
+                to="/p/agende-sua-aula"
                 className="bg-primary/80 backdrop-blur-sm text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary transition"
               >
                 AGENDE SUA AULA
@@ -63,7 +63,7 @@ const HomeHero = () => {
                 Corpo forte, mente tranquila.
               </p>
               <Link
-                to="/bodyoga"
+                to="/p/bodyoga"
                 className="bg-white text-primary-dark px-10 py-3 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-primary-dark hover:text-white transition"
               >
                 SAIBA MAIS

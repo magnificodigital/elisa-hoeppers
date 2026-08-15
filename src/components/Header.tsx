@@ -81,7 +81,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
           </Link>
           {!user && (
             <Link
-              to="/cadastro-de-alunos"
+              to="/p/cadastro-de-alunos"
               className={`border px-6 py-2 rounded-full text-[11px] tracking-[0.15em] uppercase transition-all font-semibold ${ctaBorder}`}
             >
               INSCREVA-SE
@@ -113,7 +113,7 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
             ))}
             {!user && (
               <Link
-                to="/cadastro-de-alunos"
+                to="/p/cadastro-de-alunos"
                 className="border border-primary text-primary px-6 py-2 rounded-full text-[11px] tracking-widest text-center uppercase"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
