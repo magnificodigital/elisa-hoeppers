@@ -1,14 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, GalleryHorizontal, Home, Menu, MessageCircle, Palette, Search } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 
 export const Route = createFileRoute("/admin/site/")({
   head: () => ({ meta: [{ title: "Admin — Site" }] }),
   component: () => (
-    <AdminGuard>
+    
       <SitePage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -62,7 +60,7 @@ const OPTIONS = [
 
 function SitePage() {
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Site</h1>
@@ -94,7 +92,7 @@ function SitePage() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

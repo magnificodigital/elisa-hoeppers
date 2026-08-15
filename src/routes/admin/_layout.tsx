@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { StaffGuard } from "@/components/StaffGuard";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 
 export const Route = createFileRoute("/admin/_layout")({
@@ -8,10 +7,10 @@ export const Route = createFileRoute("/admin/_layout")({
 
 function AdminLayoutWrapper() {
   return (
-    <StaffGuard>
+    
       <AdminLayout>
         <Outlet />
       </AdminLayout>
-    </StaffGuard>
+    
   );
 }

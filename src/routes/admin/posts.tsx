@@ -1,14 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, Share2, Mail } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 
 export const Route = createFileRoute("/admin/posts")({
   head: () => ({ meta: [{ title: "Posts — Admin" }] }),
   component: () => (
-    <StaffGuard>
+    
       <PostsHome />
-    </StaffGuard>
+    
   ),
 });
 
@@ -20,7 +18,7 @@ const options = [
 
 function PostsHome() {
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Posts</h1>
@@ -50,6 +48,6 @@ function PostsHome() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

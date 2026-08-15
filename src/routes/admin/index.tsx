@@ -20,8 +20,6 @@ import {
   Truck,
 } from "lucide-react";
 
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { AdminSearchBar } from "@/components/AdminSearchBar";
 import { getDashboardStats } from "@/lib/analytics";
 import { supabase } from "@/lib/supabase";

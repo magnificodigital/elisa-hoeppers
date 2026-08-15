@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Bell, Mail, Phone, Trash2 } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import {
   listReservationsForAdmin,
   updateReservationStatus,
@@ -14,9 +12,9 @@ import {
 export const Route = createFileRoute("/admin/reservas")({
   head: () => ({ meta: [{ title: "Admin — Reservas" }] }),
   component: () => (
-    <StaffGuard>
+    
       <ReservationsPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -52,7 +50,7 @@ function ReservationsPage() {
   const list = (reservations ?? []).filter((r) => filter === "all" || r.status === filter);
 
   return (
-    <Layout>
+    
       <section className="max-w-4xl mx-auto px-4 md:px-6 py-10">
         <div className="flex items-center gap-3 mb-6">
           <Bell className="w-6 h-6 text-primary" />
@@ -139,6 +137,6 @@ function ReservationsPage() {
           </div>
         )}
       </section>
-    </Layout>
+    
   );
 }

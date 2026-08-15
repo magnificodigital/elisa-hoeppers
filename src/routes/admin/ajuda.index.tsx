@@ -1,16 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Search, Clock, ChevronRight } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { tutorials, categories } from "@/data/tutorials";
 
 export const Route = createFileRoute("/admin/ajuda/")({
   head: () => ({ meta: [{ title: "Admin — Ajuda" }] }),
   component: () => (
-    <AdminGuard>
+    
       <Page />
-    </AdminGuard>
+    
   ),
 });
 
@@ -30,7 +28,7 @@ function Page() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">
@@ -113,6 +111,6 @@ function Page() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

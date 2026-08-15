@@ -15,16 +15,14 @@ import {
   Clock
 } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/solicitacoes")({
   head: () => ({ meta: [{ title: "Admin — Solicitações de Projetos" }] }),
   component: () => (
-    <StaffGuard>
+    
       <AdminProjectRequests />
-    </StaffGuard>
+    
   ),
 });
 
@@ -58,7 +56,7 @@ function AdminProjectRequests() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-[#F7F0E5] min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center gap-3 mb-2">
@@ -110,7 +108,7 @@ function AdminProjectRequests() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

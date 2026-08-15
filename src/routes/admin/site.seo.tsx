@@ -1,21 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Search, ExternalLink } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
 
 export const Route = createFileRoute("/admin/site/seo")({
   head: () => ({ meta: [{ title: "Admin — SEO" }] }),
   component: () => (
-    <AdminGuard>
+    
       <Page />
-    </AdminGuard>
+    
   ),
 });
 
 function Page() {
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-2xl mx-auto px-4">
           <Link
@@ -102,6 +100,6 @@ function Page() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

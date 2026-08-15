@@ -3,16 +3,14 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { listSettings, updateSetting } from "@/lib/settings";
 
 export const Route = createFileRoute("/admin/site/whatsapp")({
   head: () => ({ meta: [{ title: "Admin — Botão do WhatsApp" }] }),
   component: () => (
-    <AdminGuard>
+    
       <WhatsAppSettingsPage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -70,7 +68,7 @@ function WhatsAppSettingsPage() {
   }`;
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
@@ -180,6 +178,6 @@ function WhatsAppSettingsPage() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }

@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save, ExternalLink, Loader2, Globe, Settings, Eye } from "lucide-react";
 import { toast } from "sonner";
 import BaseLayout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { getPage, updatePage, type SitePage } from "@/lib/pages";
 import { PageBuilderUX } from "@/components/admin/PageBuilderUX";
 import { useState, useEffect } from "react";
@@ -12,9 +11,9 @@ import { Switch } from "@/components/ui/switch";
 export const Route = createFileRoute("/admin/site/paginas/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar Página" }] }),
   component: () => (
-    <AdminGuard>
+    
       <EditPageBuilder />
-    </AdminGuard>
+    
   ),
 });
 

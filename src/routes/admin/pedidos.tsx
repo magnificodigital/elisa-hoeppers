@@ -3,8 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
 import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";

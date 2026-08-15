@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCircle, XCircle, AlertCircle, RefreshCw, ExternalLink } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { supabase } from "@/lib/supabase";
 
 type Check = {
@@ -26,9 +24,9 @@ async function fetchDiag(): Promise<DiagResult> {
 export const Route = createFileRoute("/admin/diagnostico-pagamentos")({
   head: () => ({ meta: [{ title: "Admin — Diagnóstico MP" }] }),
   component: () => (
-    <AdminGuard>
+    
       <DiagPage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -43,7 +41,7 @@ function DiagPage() {
   const hasError = data?.checks.some((c) => c.status === "error") ?? false;
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
@@ -108,7 +106,7 @@ function DiagPage() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

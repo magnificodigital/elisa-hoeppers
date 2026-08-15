@@ -1,8 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Save, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import {
   PAGE_OPTIONS,
   DEFAULT_NAV_CONFIG,
@@ -18,9 +16,9 @@ import {
 export const Route = createFileRoute("/admin/site/menu")({
   head: () => ({ meta: [{ title: "Admin — Menu" }] }),
   component: () => (
-    <AdminGuard>
+    
       <MenuPage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -97,7 +95,7 @@ function MenuPage() {
   };
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
@@ -213,6 +211,6 @@ function MenuPage() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }

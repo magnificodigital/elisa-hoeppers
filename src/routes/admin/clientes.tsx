@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Users, Download, Search, Mail, GraduationCap, UserCheck } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { listCustomers, type AdminCustomer } from "@/lib/admin";
 
 function csvEscape(v: string | number | null): string {
@@ -21,9 +19,9 @@ type Filter = "all" | "subscribed" | "not_subscribed" | "account" | "guest";
 export const Route = createFileRoute("/admin/clientes")({
   head: () => ({ meta: [{ title: "Admin — Clientes" }] }),
   component: () => (
-    <AdminGuard>
+    
       <CustomersPage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -90,7 +88,7 @@ function CustomersPage() {
   ];
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between mb-2 gap-4 flex-wrap">
@@ -155,7 +153,7 @@ function CustomersPage() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

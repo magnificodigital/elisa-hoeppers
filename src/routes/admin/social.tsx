@@ -1,20 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Share2, ArrowLeft } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 
 export const Route = createFileRoute("/admin/social")({
   head: () => ({ meta: [{ title: "Admin — Social Posts" }] }),
   component: () => (
-    <AdminGuard>
+    
       <SocialPostsPage />
-    </AdminGuard>
+    
   ),
 });
 
 function SocialPostsPage() {
   return (
-    <Layout>
+    
       <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-10">
         <Link
           to="/admin/posts"
@@ -38,6 +36,6 @@ function SocialPostsPage() {
           </p>
         </div>
       </div>
-    </Layout>
+    
   );
 }
