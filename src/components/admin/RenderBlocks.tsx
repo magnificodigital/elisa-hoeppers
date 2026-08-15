@@ -4,7 +4,7 @@ import HomeInstagram from "../home/HomeInstagram";
 import { useQuery } from "@tanstack/react-query";
 import { listProducts, formatPriceBRL, type Product } from "@/lib/shop";
 import { ShoppingCart } from "lucide-react";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@/lib/cart";
 import { toast } from "sonner";
 
 interface RenderBlocksProps {
