@@ -59,28 +59,37 @@ function HomeHeroBlock() {
   return <BodyogaHeroSlider initialSlides={slides ?? []} />;
 }
 
-function HomeRitualsBlock({ columns = 3, title, selection = "all" }: { columns?: number, title?: string, selection?: string }) {
-  const { data: products } = useQuery({ 
-    queryKey: ["bodyoga-products", selection], 
-    queryFn: () => listProducts({ 
+function HomeRitualsBlock({ columns = 3, title, subtitle, selection = "all", bg = "cream" }: { columns?: number, title?: string, subtitle?: string, selection?: string, bg?: string }) {
+  const { data: products } = useQuery({
+    queryKey: ["bodyoga-products", selection],
+    queryFn: () => listProducts({
       onlyInStock: false,
       featured: selection === "featured"
-    }) 
+    })
   });
-  
-  const gridCols = columns === 1 ? "grid-cols-1" : 
-                   columns === 2 ? "grid-cols-1 md:grid-cols-2" : 
+
+  const gridCols = columns === 1 ? "grid-cols-1" :
+                   columns === 2 ? "grid-cols-1 md:grid-cols-2" :
                    columns === 4 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" :
                    "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
 
+  const bgClass = bg === "white" ? "bg-white" : bg === "soft" ? "bg-bodyoga-green/5" : "bg-bodyoga-cream";
+
   return (
-    <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
+    <section id="rituais" className={`${bgClass} scroll-mt-24`}>
       <span id="produtos" className="block -mt-24 pt-24" aria-hidden />
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-20">
-        {title && (
-          <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green text-center mb-12">
-            {title}
-          </h2>
+        {(title || subtitle) && (
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            {title && (
+              <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green">
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="text-bodyoga-green/70 mt-3">{subtitle}</p>
+            )}
+          </div>
         )}
         <div className={`grid ${gridCols} gap-4 md:gap-8`}>
           {(products ?? []).map((p) => (
@@ -395,7 +404,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             );
 
           case "products":
-            return <HomeRitualsBlock key={block.id} columns={p.columns} title={p.title} selection={p.selection} />;
+            return <HomeRitualsBlock key={block.id} columns={p.columns} title={p.title} subtitle={p.subtitle} selection={p.selection} bg={p.bg} />;
 
           case "categories":
             return (
@@ -590,12 +599,15 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                   <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug whitespace-pre-line">
                     {p.title}
                   </p>
+                  {p.subtitle && (
+                    <p className="mt-3 text-bodyoga-green/70 max-w-xl">{p.subtitle}</p>
+                  )}
                 </div>
               </section>
             );
 
           case "home-rituals":
-            return <HomeRitualsBlock key={block.id} />;
+            return <HomeRitualsBlock key={block.id} columns={p.columns} title={p.title} subtitle={p.subtitle} selection={p.selection} bg={p.bg} />;
 
           case "home-intro":
             return (

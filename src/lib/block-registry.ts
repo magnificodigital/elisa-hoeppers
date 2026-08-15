@@ -95,8 +95,10 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     defaults: { title: "Nossos Produtos", selection: "all", columns: 3 },
     fields: [
       { key: "title", label: "Título da seção", type: "text" },
+      { key: "subtitle", label: "Subtítulo", type: "text" },
       { key: "selection", label: "Seleção", type: "select", options: [{label: "Todos", value: "all"}, {label: "Destaques", value: "featured"}] },
       { key: "columns", label: "Colunas", type: "number" },
+      { key: "bg", label: "Fundo", type: "select", options: [{label: "Branco", value: "white"}, {label: "Creme", value: "cream"}] },
     ]
   },
   categories: {
@@ -318,15 +320,22 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     },
     fields: [
       { key: "icon", label: "Ícone", type: "image" },
-      { key: "title", label: "Frase", type: "textarea" }
+      { key: "title", label: "Frase", type: "textarea" },
+      { key: "subtitle", label: "Subtítulo", type: "text" }
     ]
   },
   "home-rituals": {
     type: "home-rituals",
     label: "Rituais (Produtos)",
-    desc: "Grade com todos os produtos",
-    defaults: {},
-    fields: []
+    desc: "Grade de produtos",
+    defaults: { columns: 3, selection: "all", bg: "cream" },
+    fields: [
+      { key: "title", label: "Título da seção", type: "text" },
+      { key: "subtitle", label: "Subtítulo", type: "text" },
+      { key: "selection", label: "Quais produtos", type: "select", options: [{ label: "Todos", value: "all" }, { label: "Destaques", value: "featured" }] },
+      { key: "columns", label: "Colunas", type: "number" },
+      { key: "bg", label: "Fundo", type: "select", options: [{ label: "Creme", value: "cream" }, { label: "Branco", value: "white" }, { label: "Verde claro", value: "soft" }] }
+    ]
   },
   "home-intro": {
     type: "home-intro",
