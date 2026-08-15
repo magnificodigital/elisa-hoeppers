@@ -49,7 +49,7 @@ export const BodyogaLanding = ({ initialSlides }: { initialSlides?: any[] }) => 
           <div className="mt-16">
             <Link 
               to="/loja"
-              className="inline-flex items-center gap-2 border border-bodyoga-green text-bodyoga-green px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
+              className="inline-flex items-center gap-2 border border-bodyoga-green text-bodyoga-green px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
             >
               Ver todos os produtos <ArrowRight size={14} />
             </Link>
