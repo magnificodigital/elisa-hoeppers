@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
+import { listPages } from "@/lib/pages";
+import { useQuery } from "@tanstack/react-query";
 
 
 
@@ -12,6 +14,21 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
   const navConfig = useNavConfig();
+  const { data: dbPages } = useQuery({ queryKey: ["pages-active-menu"], queryFn: listPages });
+
+  const dynamicItems = useMemo(() => {
+    if (!dbPages) return [];
+    return dbPages
+      .filter(p => p.in_menu && p.status === 'active')
+      .map(p => ({
+        id: p.id,
+        label: p.title.toUpperCase(),
+        href: `/p/${p.slug}`,
+        header: "left" as const, // Defaulting to left for header
+        footer: "left" as const,
+        order: p.menu_order ?? 99
+      }));
+  }, [dbPages]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -24,7 +41,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
   const leftItems = itemsFor(navConfig, "header", "left");
   const rightItems = itemsFor(navConfig, "header", "right");
-  const navItems = [...leftItems, ...rightItems];
+  const navItems = [...leftItems, ...dynamicItems, ...rightItems];
 
 
   const linkStyle = green ? { color: "var(--bodyoga-cream)" } : undefined;
@@ -44,7 +61,17 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
           {leftItems.map((item) => (
             <Link
               key={item.id}
-              to={item.href}
+              to={item.href as any}
+              className={linkClass}
+              style={linkStyle}
+            >
+              {item.label}
+            </Link>
+          ))}
+          {dynamicItems.map((item) => (
+            <Link
+              key={item.id}
+              to={item.href as any}
               className={linkClass}
               style={linkStyle}
             >
@@ -71,7 +98,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
           {rightItems.map((item) => (
             <Link
               key={item.id}
-              to={item.href}
+              to={item.href as any}
               className={linkClass}
               style={linkStyle}
             >
@@ -131,7 +158,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
             {navItems.map((item) => (
               <Link
                 key={item.id}
-                to={item.href}
+                to={item.href as any}
                 onClick={() => setOpen(false)}
                 className="block text-sm font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
               >
