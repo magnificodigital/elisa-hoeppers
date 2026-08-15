@@ -87,7 +87,6 @@ import { Route as AdminConfiguracoesAsaasRouteImport } from './routes/admin/conf
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin/blog.$id'
 import { Route as AdminAjudaSlugRouteImport } from './routes/admin/ajuda/$slug'
-import { Route as AdminSitePaginasIndexRouteImport } from './routes/admin/site.paginas.index'
 import { Route as AdminSitePaginasIdRouteImport } from './routes/admin/site.paginas.$id'
 import { Route as AdminCursosIdEditarRouteImport } from './routes/admin/cursos/$id/editar'
 import { Route as AdminCursosIdAulasRouteImport } from './routes/admin/cursos/$id/aulas'
@@ -492,11 +491,6 @@ const AdminAjudaSlugRoute = AdminAjudaSlugRouteImport.update({
   path: '/ajuda/$slug',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminSitePaginasIndexRoute = AdminSitePaginasIndexRouteImport.update({
-  id: '/site/paginas/',
-  path: '/site/paginas/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
 const AdminSitePaginasIdRoute = AdminSitePaginasIdRouteImport.update({
   id: '/site/paginas/$id',
   path: '/site/paginas/$id',
@@ -601,7 +595,6 @@ export interface FileRoutesByFullPath {
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
-  '/admin/site/paginas/': typeof AdminSitePaginasIndexRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
 }
 export interface FileRoutesByTo {
@@ -683,7 +676,6 @@ export interface FileRoutesByTo {
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
-  '/admin/site/paginas': typeof AdminSitePaginasIndexRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
 }
 export interface FileRoutesById {
@@ -769,7 +761,6 @@ export interface FileRoutesById {
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
-  '/admin/site/paginas/': typeof AdminSitePaginasIndexRoute
   '/admin/cursos/$id/aulas/$lessonId/quiz': typeof AdminCursosIdAulasLessonIdQuizRoute
 }
 export interface FileRouteTypes {
@@ -856,7 +847,6 @@ export interface FileRouteTypes {
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
-    | '/admin/site/paginas/'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -938,7 +928,6 @@ export interface FileRouteTypes {
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
-    | '/admin/site/paginas'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
   id:
     | '__root__'
@@ -1023,7 +1012,6 @@ export interface FileRouteTypes {
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
-    | '/admin/site/paginas/'
     | '/admin/cursos/$id/aulas/$lessonId/quiz'
   fileRoutesById: FileRoutesById
 }
@@ -1613,13 +1601,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAjudaSlugRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/site/paginas/': {
-      id: '/admin/site/paginas/'
-      path: '/site/paginas'
-      fullPath: '/admin/site/paginas/'
-      preLoaderRoute: typeof AdminSitePaginasIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/admin/site/paginas/$id': {
       id: '/admin/site/paginas/$id'
       path: '/site/paginas/$id'
@@ -1720,7 +1701,6 @@ interface AdminRouteRouteChildren {
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
   AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
   AdminSitePaginasIdRoute: typeof AdminSitePaginasIdRoute
-  AdminSitePaginasIndexRoute: typeof AdminSitePaginasIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
@@ -1767,7 +1747,6 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
   AdminSitePaginasIdRoute: AdminSitePaginasIdRoute,
-  AdminSitePaginasIndexRoute: AdminSitePaginasIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
