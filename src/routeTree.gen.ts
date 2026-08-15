@@ -9,10 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProjetosPersonalizadosRouteImport } from './routes/projetos-personalizados'
-import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
@@ -93,11 +91,6 @@ import { Route as AdminWebsiteAvisosEditarIdRouteImport } from './routes/admin/w
 import { Route as AdminWebsiteAvisosIdLeadsRouteImport } from './routes/admin/website.avisos.$id.leads'
 import { Route as AdminCursosIdAulasLessonIdQuizRouteImport } from './routes/admin/cursos/$id/aulas/$lessonId/quiz'
 
-const TermosRoute = TermosRouteImport.update({
-  id: '/termos',
-  path: '/termos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -106,11 +99,6 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ProjetosPersonalizadosRoute = ProjetosPersonalizadosRouteImport.update({
   id: '/projetos-personalizados',
   path: '/projetos-personalizados',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacidadeRoute = PrivacidadeRouteImport.update({
-  id: '/privacidade',
-  path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -531,10 +519,8 @@ export interface FileRoutesByFullPath {
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/privacidade': typeof PrivacidadeRoute
   '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
@@ -614,10 +600,8 @@ export interface FileRoutesByTo {
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/privacidade': typeof PrivacidadeRoute
   '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -699,10 +683,8 @@ export interface FileRoutesById {
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/privacidade': typeof PrivacidadeRoute
   '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
@@ -786,10 +768,8 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/privacidade'
     | '/projetos-personalizados'
     | '/sitemap.xml'
-    | '/termos'
     | '/admin/agendamentos'
     | '/admin/blog'
     | '/admin/broadcast'
@@ -869,10 +849,8 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/privacidade'
     | '/projetos-personalizados'
     | '/sitemap.xml'
-    | '/termos'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -953,10 +931,8 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/privacidade'
     | '/projetos-personalizados'
     | '/sitemap.xml'
-    | '/termos'
     | '/admin/agendamentos'
     | '/admin/blog'
     | '/admin/broadcast'
@@ -1039,10 +1015,8 @@ export interface RootRouteChildren {
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
   LoginRoute: typeof LoginRoute
-  PrivacidadeRoute: typeof PrivacidadeRoute
   ProjetosPersonalizadosRoute: typeof ProjetosPersonalizadosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  TermosRoute: typeof TermosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
@@ -1067,13 +1041,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/termos': {
-      id: '/termos'
-      path: '/termos'
-      fullPath: '/termos'
-      preLoaderRoute: typeof TermosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -1086,13 +1053,6 @@ declare module '@tanstack/react-router' {
       path: '/projetos-personalizados'
       fullPath: '/projetos-personalizados'
       preLoaderRoute: typeof ProjetosPersonalizadosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacidade': {
-      id: '/privacidade'
-      path: '/privacidade'
-      fullPath: '/privacidade'
-      preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -1799,10 +1759,8 @@ const rootRouteChildren: RootRouteChildren = {
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
   LoginRoute: LoginRoute,
-  PrivacidadeRoute: PrivacidadeRoute,
   ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  TermosRoute: TermosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
