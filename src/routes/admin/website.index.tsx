@@ -219,7 +219,7 @@ function PageTable({ pages, isLoading, onDelete, onSetHome, onToggleMenu, onUpda
                     <FileText className="w-5 h-5 text-primary/40" />
                     <div>
                       <p className="text-sm font-medium text-primary-dark">{p.title}</p>
-                      <p className="text-xs text-primary-dark/40">/p/{p.slug}</p>
+                      <p className="text-xs text-primary-dark/40">/{p.slug}</p>
                     </div>
                   </div>
                 </td>
@@ -269,7 +269,7 @@ function PageTable({ pages, isLoading, onDelete, onSetHome, onToggleMenu, onUpda
                       <Pencil className="w-3.5 h-3.5" /> Editar
                     </a>
                     <a 
-                      href={`/p/${p.slug}`} 
+                      href={`/${p.slug}`}
                       target="_blank" 
                       rel="noreferrer" 
                       className="p-2 text-primary-dark/40 hover:text-primary transition"

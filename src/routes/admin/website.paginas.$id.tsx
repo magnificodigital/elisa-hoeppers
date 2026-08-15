@@ -68,7 +68,7 @@ function EditPageBuilder() {
             </Link>
             <div>
               <h1 className="text-sm font-bold text-primary-dark">{page.title}</h1>
-              <p className="text-[10px] text-primary-dark/40 uppercase tracking-widest">/p/{page.slug}</p>
+              <p className="text-[10px] text-primary-dark/40 uppercase tracking-widest">/{page.slug}</p>
             </div>
           </div>
 
@@ -90,9 +90,9 @@ function EditPageBuilder() {
             <div className="h-6 w-[1px] bg-border" />
 
             <div className="flex items-center gap-2">
-              <a 
-                href={`/p/${page.slug}`} 
-                target="_blank" 
+              <a
+                href={`/${page.slug}`}
+                target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest text-primary hover:bg-primary/5 rounded-full transition"
               >
