@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Youtube, MessageCircle } from "lucide-react";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
+import { BodyogaLogo } from "./bodyoga/BodyogaLogo";
 
 
 
@@ -14,13 +15,8 @@ const Footer = () => {
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12">
           <div className="space-y-4">
-            <div className="h-20 w-64">
-              <img
-                src="/images/home/bodyoga/logo-bodyoga.png"
-                alt="BODYOGA"
-                className="h-20 w-auto"
-                style={{ filter: "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)" }}
-              />
+            <div className="flex items-center">
+              <BodyogaLogo variant="full" tone="cream" size={80} className="w-auto h-20" />
             </div>
           </div>
 
