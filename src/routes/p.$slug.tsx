@@ -4,7 +4,7 @@ import { RenderBlocks } from "@/components/admin/RenderBlocks";
 import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import Footer from "@/components/Footer";
 
-export const Route = createFileRoute("/$slug")({
+export const Route = createFileRoute("/p/$slug")({
   loader: async ({ params }) => {
     const page = await getPageBySlug(params.slug);
     if (!page || page.status !== "active") throw notFound();
