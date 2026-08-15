@@ -25,6 +25,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { toast } from "sonner";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
 
 interface RenderBlocksProps {
