@@ -28,7 +28,7 @@ export function CookieBanner() {
         <p className="text-xs md:text-sm leading-relaxed flex-1 pr-8 md:pr-0">
           Usamos cookies essenciais para o site funcionar e cookies analíticos opcionais para
           entender o uso geral. Saiba mais na nossa{" "}
-          <Link to="/p/privacidade" className="underline hover:text-peach">
+          <Link to={"/privacidade" as any} className="underline hover:text-peach">
             Política de Privacidade
           </Link>
           .
