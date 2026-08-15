@@ -46,7 +46,6 @@ import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 import { Route as AdminSolicitacoesRouteImport } from './routes/admin/solicitacoes'
 import { Route as AdminSocialRouteImport } from './routes/admin/social'
 import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
-import { Route as AdminPostsRouteImport } from './routes/admin/posts'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminNotasFiscaisRouteImport } from './routes/admin/notas-fiscais'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
@@ -275,11 +274,6 @@ const AdminSocialRoute = AdminSocialRouteImport.update({
 const AdminReservasRoute = AdminReservasRouteImport.update({
   id: '/reservas',
   path: '/reservas',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminPostsRoute = AdminPostsRouteImport.update({
-  id: '/posts',
-  path: '/posts',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPedidosRoute = AdminPedidosRouteImport.update({
@@ -539,7 +533,6 @@ export interface FileRoutesByFullPath {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
-  '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
   '/admin/solicitacoes': typeof AdminSolicitacoesRoute
@@ -621,7 +614,6 @@ export interface FileRoutesByTo {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
-  '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
   '/admin/solicitacoes': typeof AdminSolicitacoesRoute
@@ -706,7 +698,6 @@ export interface FileRoutesById {
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
-  '/admin/posts': typeof AdminPostsRoute
   '/admin/reservas': typeof AdminReservasRoute
   '/admin/social': typeof AdminSocialRoute
   '/admin/solicitacoes': typeof AdminSolicitacoesRoute
@@ -792,7 +783,6 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
-    | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
     | '/admin/solicitacoes'
@@ -874,7 +864,6 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
-    | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
     | '/admin/solicitacoes'
@@ -958,7 +947,6 @@ export interface FileRouteTypes {
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
-    | '/admin/posts'
     | '/admin/reservas'
     | '/admin/social'
     | '/admin/solicitacoes'
@@ -1316,13 +1304,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReservasRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/posts': {
-      id: '/admin/posts'
-      path: '/posts'
-      fullPath: '/admin/posts'
-      preLoaderRoute: typeof AdminPostsRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/admin/pedidos': {
       id: '/admin/pedidos'
       path: '/pedidos'
@@ -1656,7 +1637,6 @@ interface AdminRouteRouteChildren {
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminNotasFiscaisRoute: typeof AdminNotasFiscaisRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
-  AdminPostsRoute: typeof AdminPostsRoute
   AdminReservasRoute: typeof AdminReservasRoute
   AdminSocialRoute: typeof AdminSocialRoute
   AdminSolicitacoesRoute: typeof AdminSolicitacoesRoute
@@ -1704,7 +1684,6 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminInscritosRoute: AdminInscritosRoute,
   AdminNotasFiscaisRoute: AdminNotasFiscaisRoute,
   AdminPedidosRoute: AdminPedidosRoute,
-  AdminPostsRoute: AdminPostsRoute,
   AdminReservasRoute: AdminReservasRoute,
   AdminSocialRoute: AdminSocialRoute,
   AdminSolicitacoesRoute: AdminSolicitacoesRoute,
