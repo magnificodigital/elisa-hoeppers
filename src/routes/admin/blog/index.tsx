@@ -39,10 +39,10 @@ function AdminBlogList() {
     <div className="py-12 md:py-16 bg-background min-h-[70vh]">
       <div className="max-w-5xl mx-auto px-4">
           <Link
-            to="/admin/posts"
+            to="/admin"
             className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
           >
-            <ArrowLeft size={16} /> Voltar para Posts
+            <ArrowLeft size={16} /> Voltar para o Dashboard
           </Link>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
