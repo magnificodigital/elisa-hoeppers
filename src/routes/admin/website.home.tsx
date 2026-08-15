@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { ImageUploader } from "@/components/ImageUploader";
 import { listSettings, updateSetting } from "@/lib/settings";
 
-export const Route = createFileRoute("/admin/site/home")({
+export const Route = createFileRoute("/admin/website/home")({
   head: () => ({ meta: [{ title: "Admin — Conteúdo da Home" }] }),
   component: () => (
     

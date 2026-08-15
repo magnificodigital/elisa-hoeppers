@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { listSettings, updateSetting } from "@/lib/settings";
 import { THEME_VARS, THEME_KEYS, applyTheme, defaultTheme } from "@/lib/theme";
 
-export const Route = createFileRoute("/admin/site/cores")({
+export const Route = createFileRoute("/admin/website/cores")({
   head: () => ({ meta: [{ title: "Admin — Cores do site" }] }),
   component: () => (
     

@@ -56,7 +56,7 @@ import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminBlogRouteImport } from './routes/admin/blog'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
-import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
+import { Route as AdminWebsiteIndexRouteImport } from './routes/admin/website.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/configuracoes/index'
@@ -66,11 +66,11 @@ import { Route as AdminAjudaIndexRouteImport } from './routes/admin/ajuda.index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as ApiPublicMediaRouteImport } from './routes/api/public/media'
 import { Route as ApiPublicInstagramFeedDotxmlRouteImport } from './routes/api/public/instagram-feed[.]xml'
+import { Route as AdminWebsiteMenuRouteImport } from './routes/admin/website.menu'
+import { Route as AdminWebsiteHomeRouteImport } from './routes/admin/website.home'
+import { Route as AdminWebsiteCoresRouteImport } from './routes/admin/website.cores'
 import { Route as AdminSiteWhatsappRouteImport } from './routes/admin/site.whatsapp'
 import { Route as AdminSiteSeoRouteImport } from './routes/admin/site.seo'
-import { Route as AdminSiteMenuRouteImport } from './routes/admin/site.menu'
-import { Route as AdminSiteHomeRouteImport } from './routes/admin/site.home'
-import { Route as AdminSiteCoresRouteImport } from './routes/admin/site.cores'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
 import { Route as AdminConfiguracoesSiteRouteImport } from './routes/admin/configuracoes/site'
@@ -327,9 +327,9 @@ const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   path: '/agendamentos',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminSiteIndexRoute = AdminSiteIndexRouteImport.update({
-  id: '/site/',
-  path: '/site/',
+const AdminWebsiteIndexRoute = AdminWebsiteIndexRouteImport.update({
+  id: '/website/',
+  path: '/website/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProdutosIndexRoute = AdminProdutosIndexRouteImport.update({
@@ -378,6 +378,21 @@ const ApiPublicInstagramFeedDotxmlRoute =
     path: '/api/public/instagram-feed.xml',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminWebsiteMenuRoute = AdminWebsiteMenuRouteImport.update({
+  id: '/website/menu',
+  path: '/website/menu',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminWebsiteHomeRoute = AdminWebsiteHomeRouteImport.update({
+  id: '/website/home',
+  path: '/website/home',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminWebsiteCoresRoute = AdminWebsiteCoresRouteImport.update({
+  id: '/website/cores',
+  path: '/website/cores',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminSiteWhatsappRoute = AdminSiteWhatsappRouteImport.update({
   id: '/site/whatsapp',
   path: '/site/whatsapp',
@@ -386,21 +401,6 @@ const AdminSiteWhatsappRoute = AdminSiteWhatsappRouteImport.update({
 const AdminSiteSeoRoute = AdminSiteSeoRouteImport.update({
   id: '/site/seo',
   path: '/site/seo',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSiteMenuRoute = AdminSiteMenuRouteImport.update({
-  id: '/site/menu',
-  path: '/site/menu',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSiteHomeRoute = AdminSiteHomeRouteImport.update({
-  id: '/site/home',
-  path: '/site/home',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminSiteCoresRoute = AdminSiteCoresRouteImport.update({
-  id: '/site/cores',
-  path: '/site/cores',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
@@ -570,11 +570,11 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
-  '/admin/site/cores': typeof AdminSiteCoresRoute
-  '/admin/site/home': typeof AdminSiteHomeRoute
-  '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
   '/admin/site/whatsapp': typeof AdminSiteWhatsappRoute
+  '/admin/website/cores': typeof AdminWebsiteCoresRoute
+  '/admin/website/home': typeof AdminWebsiteHomeRoute
+  '/admin/website/menu': typeof AdminWebsiteMenuRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -584,7 +584,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
-  '/admin/site/': typeof AdminSiteIndexRoute
+  '/admin/website/': typeof AdminWebsiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
@@ -650,11 +650,11 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
-  '/admin/site/cores': typeof AdminSiteCoresRoute
-  '/admin/site/home': typeof AdminSiteHomeRoute
-  '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
   '/admin/site/whatsapp': typeof AdminSiteWhatsappRoute
+  '/admin/website/cores': typeof AdminWebsiteCoresRoute
+  '/admin/website/home': typeof AdminWebsiteHomeRoute
+  '/admin/website/menu': typeof AdminWebsiteMenuRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -664,7 +664,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos': typeof AdminCursosIndexRoute
   '/admin/produtos': typeof AdminProdutosIndexRoute
-  '/admin/site': typeof AdminSiteIndexRoute
+  '/admin/website': typeof AdminWebsiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
@@ -734,11 +734,11 @@ export interface FileRoutesById {
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
-  '/admin/site/cores': typeof AdminSiteCoresRoute
-  '/admin/site/home': typeof AdminSiteHomeRoute
-  '/admin/site/menu': typeof AdminSiteMenuRoute
   '/admin/site/seo': typeof AdminSiteSeoRoute
   '/admin/site/whatsapp': typeof AdminSiteWhatsappRoute
+  '/admin/website/cores': typeof AdminWebsiteCoresRoute
+  '/admin/website/home': typeof AdminWebsiteHomeRoute
+  '/admin/website/menu': typeof AdminWebsiteMenuRoute
   '/api/public/instagram-feed.xml': typeof ApiPublicInstagramFeedDotxmlRoute
   '/api/public/media': typeof ApiPublicMediaRoute
   '/painel/aula/$lessonId': typeof PainelAulaLessonIdRoute
@@ -748,7 +748,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/': typeof AdminConfiguracoesIndexRoute
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
-  '/admin/site/': typeof AdminSiteIndexRoute
+  '/admin/website/': typeof AdminWebsiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
@@ -819,11 +819,11 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
-    | '/admin/site/cores'
-    | '/admin/site/home'
-    | '/admin/site/menu'
     | '/admin/site/seo'
     | '/admin/site/whatsapp'
+    | '/admin/website/cores'
+    | '/admin/website/home'
+    | '/admin/website/menu'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -833,7 +833,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
-    | '/admin/site/'
+    | '/admin/website/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
@@ -899,11 +899,11 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
-    | '/admin/site/cores'
-    | '/admin/site/home'
-    | '/admin/site/menu'
     | '/admin/site/seo'
     | '/admin/site/whatsapp'
+    | '/admin/website/cores'
+    | '/admin/website/home'
+    | '/admin/website/menu'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -913,7 +913,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/cursos'
     | '/admin/produtos'
-    | '/admin/site'
+    | '/admin/website'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
@@ -982,11 +982,11 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
-    | '/admin/site/cores'
-    | '/admin/site/home'
-    | '/admin/site/menu'
     | '/admin/site/seo'
     | '/admin/site/whatsapp'
+    | '/admin/website/cores'
+    | '/admin/website/home'
+    | '/admin/website/menu'
     | '/api/public/instagram-feed.xml'
     | '/api/public/media'
     | '/painel/aula/$lessonId'
@@ -996,7 +996,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/'
     | '/admin/cursos/'
     | '/admin/produtos/'
-    | '/admin/site/'
+    | '/admin/website/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
@@ -1372,11 +1372,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/site/': {
-      id: '/admin/site/'
-      path: '/site'
-      fullPath: '/admin/site/'
-      preLoaderRoute: typeof AdminSiteIndexRouteImport
+    '/admin/website/': {
+      id: '/admin/website/'
+      path: '/website'
+      fullPath: '/admin/website/'
+      preLoaderRoute: typeof AdminWebsiteIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/produtos/': {
@@ -1442,6 +1442,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicInstagramFeedDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/website/menu': {
+      id: '/admin/website/menu'
+      path: '/website/menu'
+      fullPath: '/admin/website/menu'
+      preLoaderRoute: typeof AdminWebsiteMenuRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/website/home': {
+      id: '/admin/website/home'
+      path: '/website/home'
+      fullPath: '/admin/website/home'
+      preLoaderRoute: typeof AdminWebsiteHomeRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/website/cores': {
+      id: '/admin/website/cores'
+      path: '/website/cores'
+      fullPath: '/admin/website/cores'
+      preLoaderRoute: typeof AdminWebsiteCoresRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/site/whatsapp': {
       id: '/admin/site/whatsapp'
       path: '/site/whatsapp'
@@ -1454,27 +1475,6 @@ declare module '@tanstack/react-router' {
       path: '/site/seo'
       fullPath: '/admin/site/seo'
       preLoaderRoute: typeof AdminSiteSeoRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/site/menu': {
-      id: '/admin/site/menu'
-      path: '/site/menu'
-      fullPath: '/admin/site/menu'
-      preLoaderRoute: typeof AdminSiteMenuRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/site/home': {
-      id: '/admin/site/home'
-      path: '/site/home'
-      fullPath: '/admin/site/home'
-      preLoaderRoute: typeof AdminSiteHomeRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/site/cores': {
-      id: '/admin/site/cores'
-      path: '/site/cores'
-      fullPath: '/admin/site/cores'
-      preLoaderRoute: typeof AdminSiteCoresRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/produtos/$id': {
@@ -1667,17 +1667,17 @@ interface AdminRouteRouteChildren {
   AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
-  AdminSiteCoresRoute: typeof AdminSiteCoresRoute
-  AdminSiteHomeRoute: typeof AdminSiteHomeRoute
-  AdminSiteMenuRoute: typeof AdminSiteMenuRoute
   AdminSiteSeoRoute: typeof AdminSiteSeoRoute
   AdminSiteWhatsappRoute: typeof AdminSiteWhatsappRoute
+  AdminWebsiteCoresRoute: typeof AdminWebsiteCoresRoute
+  AdminWebsiteHomeRoute: typeof AdminWebsiteHomeRoute
+  AdminWebsiteMenuRoute: typeof AdminWebsiteMenuRoute
   AdminAjudaIndexRoute: typeof AdminAjudaIndexRoute
   AdminBodyogaSlidesIndexRoute: typeof AdminBodyogaSlidesIndexRoute
   AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
   AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
-  AdminSiteIndexRoute: typeof AdminSiteIndexRoute
+  AdminWebsiteIndexRoute: typeof AdminWebsiteIndexRoute
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
   AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
   AdminSitePaginasIdRoute: typeof AdminSitePaginasIdRoute
@@ -1712,17 +1712,17 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminConfiguracoesSiteRoute: AdminConfiguracoesSiteRoute,
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
-  AdminSiteCoresRoute: AdminSiteCoresRoute,
-  AdminSiteHomeRoute: AdminSiteHomeRoute,
-  AdminSiteMenuRoute: AdminSiteMenuRoute,
   AdminSiteSeoRoute: AdminSiteSeoRoute,
   AdminSiteWhatsappRoute: AdminSiteWhatsappRoute,
+  AdminWebsiteCoresRoute: AdminWebsiteCoresRoute,
+  AdminWebsiteHomeRoute: AdminWebsiteHomeRoute,
+  AdminWebsiteMenuRoute: AdminWebsiteMenuRoute,
   AdminAjudaIndexRoute: AdminAjudaIndexRoute,
   AdminBodyogaSlidesIndexRoute: AdminBodyogaSlidesIndexRoute,
   AdminConfiguracoesIndexRoute: AdminConfiguracoesIndexRoute,
   AdminCursosIndexRoute: AdminCursosIndexRoute,
   AdminProdutosIndexRoute: AdminProdutosIndexRoute,
-  AdminSiteIndexRoute: AdminSiteIndexRoute,
+  AdminWebsiteIndexRoute: AdminWebsiteIndexRoute,
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
   AdminSitePaginasIdRoute: AdminSitePaginasIdRoute,

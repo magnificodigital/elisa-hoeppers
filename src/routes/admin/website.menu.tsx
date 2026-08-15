@@ -13,7 +13,7 @@ import {
   type NavHref,
 } from "@/lib/nav-config";
 
-export const Route = createFileRoute("/admin/site/menu")({
+export const Route = createFileRoute("/admin/website/menu")({
   head: () => ({ meta: [{ title: "Admin — Menu" }] }),
   component: () => (
     
