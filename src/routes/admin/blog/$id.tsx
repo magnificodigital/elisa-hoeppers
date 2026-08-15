@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Save, Loader2, FileText, Image, Trash2, Globe, Calendar } from "lucide-react";
+import { ArrowLeft, Save, Loader2, FileText, Image, Trash2, Globe, Calendar, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { getPostForAdmin, updatePost, deletePost, type Post } from "@/lib/blog";
 import { useState, useEffect } from "react";
