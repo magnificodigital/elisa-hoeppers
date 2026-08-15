@@ -19,7 +19,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PainelIndexRouteImport } from './routes/painel/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
 import { Route as CursosIndexRouteImport } from './routes/cursos/index'
-import { Route as BodyogaIndexRouteImport } from './routes/bodyoga.index'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as PedidoCodeRouteImport } from './routes/pedido/$code'
@@ -135,11 +134,6 @@ const LojaIndexRoute = LojaIndexRouteImport.update({
 const CursosIndexRoute = CursosIndexRouteImport.update({
   id: '/cursos/',
   path: '/cursos/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BodyogaIndexRoute = BodyogaIndexRouteImport.update({
-  id: '/bodyoga/',
-  path: '/bodyoga/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -522,7 +516,6 @@ export interface FileRoutesByFullPath {
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
-  '/bodyoga/': typeof BodyogaIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
@@ -599,7 +592,6 @@ export interface FileRoutesByTo {
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
-  '/bodyoga': typeof BodyogaIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/loja': typeof LojaIndexRoute
   '/painel': typeof PainelIndexRoute
@@ -679,7 +671,6 @@ export interface FileRoutesById {
   '/pedido/$code': typeof PedidoCodeRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
-  '/bodyoga/': typeof BodyogaIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/loja/': typeof LojaIndexRoute
   '/painel/': typeof PainelIndexRoute
@@ -760,7 +751,6 @@ export interface FileRouteTypes {
     | '/pedido/$code'
     | '/admin/'
     | '/blog/'
-    | '/bodyoga/'
     | '/cursos/'
     | '/loja/'
     | '/painel/'
@@ -837,7 +827,6 @@ export interface FileRouteTypes {
     | '/pedido/$code'
     | '/admin'
     | '/blog'
-    | '/bodyoga'
     | '/cursos'
     | '/loja'
     | '/painel'
@@ -916,7 +905,6 @@ export interface FileRouteTypes {
     | '/pedido/$code'
     | '/admin/'
     | '/blog/'
-    | '/bodyoga/'
     | '/cursos/'
     | '/loja/'
     | '/painel/'
@@ -981,7 +969,6 @@ export interface RootRouteChildren {
   PainelWishlistRoute: typeof PainelWishlistRoute
   PedidoCodeRoute: typeof PedidoCodeRoute
   BlogIndexRoute: typeof BlogIndexRoute
-  BodyogaIndexRoute: typeof BodyogaIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
@@ -1060,13 +1047,6 @@ declare module '@tanstack/react-router' {
       path: '/cursos'
       fullPath: '/cursos/'
       preLoaderRoute: typeof CursosIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bodyoga/': {
-      id: '/bodyoga/'
-      path: '/bodyoga'
-      fullPath: '/bodyoga/'
-      preLoaderRoute: typeof BodyogaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -1683,7 +1663,6 @@ const rootRouteChildren: RootRouteChildren = {
   PainelWishlistRoute: PainelWishlistRoute,
   PedidoCodeRoute: PedidoCodeRoute,
   BlogIndexRoute: BlogIndexRoute,
-  BodyogaIndexRoute: BodyogaIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
