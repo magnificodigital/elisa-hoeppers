@@ -90,22 +90,11 @@ function WebsiteAdminPage() {
   return (
     <div className="bg-background min-h-[70vh]">
       <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div>
-              <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Site</h1>
-              <p className="text-primary-dark/70">
-                Gerencie o conteúdo visual, cores e páginas institucionais.
-              </p>
-            </div>
-            <div className="flex gap-2">
-               <Link
-                  to="/admin/website/home"
-                  className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm"
-                >
-                  <LayoutDashboard className="w-4 h-4" />
-                  Editar Home
-                </Link>
-            </div>
+          <div className="mb-8">
+            <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Site</h1>
+            <p className="text-primary-dark/70">
+              Gerencie o conteúdo visual, cores e páginas institucionais.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
