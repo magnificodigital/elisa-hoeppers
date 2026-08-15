@@ -13,7 +13,8 @@ import {
   HelpCircle, 
   Settings,
   Clock,
-  LayoutGrid
+  LayoutGrid,
+  Bell
 } from "lucide-react";
 
 export const ADMIN_NAV_ITEMS = [
