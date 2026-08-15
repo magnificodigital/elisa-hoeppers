@@ -15,11 +15,7 @@ import {
 
 export const Route = createFileRoute("/admin/agendamentos")({
   head: () => ({ meta: [{ title: "Admin — Agendamentos" }] }),
-  component: () => (
-    
-      <AdminAppointments />
-    
-  ),
+  component: () => <AdminAppointments />,
 });
 
 
@@ -51,8 +47,8 @@ function AdminAppointments() {
   });
 
   return (
-    
-      <section className="py-8 md:py-16 bg-background min-h-[70vh]">
+    <>
+      <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-2">
             <div className="flex items-center gap-3">
