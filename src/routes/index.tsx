@@ -42,7 +42,7 @@ function HomeRoute() {
     return (
       <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
         <BodyogaHeader alwaysGreen />
-        <RenderBlocks blocks={homePage.blocks || []} />
+        <RenderBlocks blocks={homePage.content_blocks || []} />
         <Footer />
       </div>
     );

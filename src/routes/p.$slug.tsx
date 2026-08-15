@@ -1,35 +1,39 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { getPageBySlug } from "@/lib/pages";
 import { RenderBlocks } from "@/components/admin/RenderBlocks";
-import BaseLayout from "@/components/Layout";
-import { notFound } from "@tanstack/react-router";
+import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
+import Footer from "@/components/Footer";
 
 export const Route = createFileRoute("/p/$slug")({
   loader: async ({ params }) => {
     const page = await getPageBySlug(params.slug);
-    if (!page) throw notFound();
+    if (!page || page.status !== "active") {
+      throw notFound();
+    }
     return page;
   },
-  head: ({ loaderData }) => ({
-    title: loaderData?.seo_title || `${loaderData?.title} — BODYOGA`,
+  component: PageView,
+  head: ({ loaderData: page }) => ({
+    title: `${page.title} — BODYOGA`,
     meta: [
-      { name: "description", content: loaderData?.seo_description || "" },
-      { property: "og:title", content: loaderData?.seo_title || loaderData?.title },
-      { property: "og:description", content: loaderData?.seo_description || "" },
-      { property: "og:image", content: loaderData?.og_image || "" },
+      { name: "description", content: page.seo_description || "" },
+      { property: "og:title", content: page.seo_title || page.title },
+      { property: "og:description", content: page.seo_description || "" },
+      { property: "og:image", content: page.og_image || "" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: PageComponent,
 });
 
-function PageComponent() {
+function PageView() {
   const page = Route.useLoaderData();
 
   return (
-    <BaseLayout>
-      <div className="min-h-screen bg-background">
-        <RenderBlocks blocks={page.blocks || []} />
-      </div>
-    </BaseLayout>
+    <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
+      <BodyogaHeader alwaysGreen />
+      <RenderBlocks blocks={page.content_blocks || []} />
+      <Footer />
+    </div>
   );
 }
