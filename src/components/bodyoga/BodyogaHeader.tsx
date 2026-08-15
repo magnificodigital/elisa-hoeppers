@@ -14,21 +14,6 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
   const navConfig = useNavConfig();
-  const { data: dbPages } = useQuery({ queryKey: ["pages-active-menu"], queryFn: listPages });
-
-  const dynamicItems = useMemo(() => {
-    if (!dbPages) return [];
-    return dbPages
-      .filter(p => p.in_menu && p.status === 'active')
-      .map(p => ({
-        id: p.id,
-        label: p.title.toUpperCase(),
-        href: `/p/${p.slug}`,
-        header: "left" as const, // Defaulting to left for header
-        footer: "left" as const,
-        order: p.menu_order ?? 99
-      }));
-  }, [dbPages]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -41,7 +26,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
   const leftItems = itemsFor(navConfig, "header", "left");
   const rightItems = itemsFor(navConfig, "header", "right");
-  const navItems = [...leftItems, ...dynamicItems, ...rightItems];
+  const navItems = [...leftItems, ...rightItems];
 
 
   const linkStyle = green ? { color: "var(--bodyoga-cream)" } : undefined;
