@@ -681,3 +681,59 @@ function WhatsAppTab() {
   );
 }
 
+function AvisosTab() {
+  const qc = useQueryClient();
+  const { data: logoSetting, isLoading: loadingLogo } = useQuery({ 
+    queryKey: ["setting", "logo_filter"], 
+    queryFn: () => listSettings("branding").then(s => s.find(x => x.key === "logo_filter"))
+  });
+  const [logoFilter, setLogoFilter] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (logoSetting) setLogoFilter(logoSetting.value || "");
+  }, [logoSetting]);
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await updateSetting("logo_filter", logoFilter);
+      await qc.invalidateQueries({ queryKey: ["setting", "logo_filter"] });
+      toast.success("Branding atualizado");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loadingLogo) return <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-2xl text-primary-dark">Avisos e Branding</h2>
+        <button onClick={save} disabled={saving} className="bg-primary text-white px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition flex items-center gap-2">
+          {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+          Salvar
+        </button>
+      </div>
+
+      <div className="bg-cream/5 rounded-xl border border-border p-6 space-y-6">
+        <div>
+          <label className="text-[10px] uppercase font-bold tracking-widest text-primary-dark/60 mb-2 block">CSS Filter do Logo (Header/Footer)</label>
+          <input
+            value={logoFilter}
+            onChange={(e) => setLogoFilter(e.target.value)}
+            placeholder="ex: brightness(0) invert(1)"
+            className="w-full border border-border rounded px-3 py-2 text-sm font-mono"
+          />
+          <p className="mt-2 text-[10px] text-primary-dark/40">
+            Use este campo para ajustar a cor do logo SVG/PNG via filtro CSS.
+            Padrão Creme: brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
