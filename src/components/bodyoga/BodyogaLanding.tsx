@@ -15,7 +15,7 @@ import { GaleriaProduto } from "../produto/GaleriaProduto";
 import { BodyogaProductCard } from "./BodyogaProductCard";
 import BodyogaHeroSlider from "./BodyogaHeroSlider";
 
-const BodyogaLanding = () => {
+export const BodyogaLanding = ({ initialSlides }: { initialSlides?: any[] }) => {
   const { data: products, isLoading } = useQuery({
     queryKey: ["products-landing"],
     queryFn: () => listProducts()
@@ -25,7 +25,7 @@ const BodyogaLanding = () => {
 
   return (
     <div className="bg-bodyoga-cream min-h-screen">
-      <BodyogaHeroSlider />
+      <BodyogaHeroSlider initialSlides={initialSlides} />
       
       {/* Products Section */}
       <section id="produtos" className="py-20 px-4">
@@ -93,4 +93,4 @@ const BodyogaLanding = () => {
   );
 };
 
-export default BodyogaLanding;
+
