@@ -96,7 +96,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   );
 
   return (
-    <div className="flex h-screen bg-[#F5F3EE] overflow-hidden bodyoga-scope">
+    <div className="flex h-screen bg-[#E2D4C1] overflow-hidden bodyoga-scope">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex md:w-64 md:flex-col shrink-0 border-r border-[#3B4F30]/10">
         <SidebarContent />
@@ -125,7 +125,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
 
           <div className="flex items-center gap-4">
-             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5F3EE] border border-[#3B4F30]/5 text-[13px] text-[#3B4F30]/80">
+             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E2D4C1] border border-[#3B4F30]/5 text-[13px] text-[#3B4F30]/80">
                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                Admin: {profile?.full_name || 'Usuário'}
              </div>
