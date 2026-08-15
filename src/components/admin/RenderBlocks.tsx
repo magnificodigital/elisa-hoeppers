@@ -22,11 +22,33 @@ import {
   Layout, 
   Star,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Globe,
+  Calendar,
+  GraduationCap,
+  Dumbbell,
+  ShoppingBag,
+  Instagram,
+  Youtube,
+  MessageCircle,
+  Video,
+  Users,
+  User as UserIcon,
+  MapPin,
+  ChevronRight,
+  Check
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
+import { CustomProjectForm } from "@/components/projetos/CustomProjectForm";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  listServices, listTakenSlots, bookAppointment, generateSlotsForDate,
+  listAvailabilityRules, listAvailabilityBlocks,
+  formatCurrencyBRL, formatTime, formatDate,
+  type Service,
+} from "@/lib/appointments";
 
 interface RenderBlocksProps {
   blocks: any[];
@@ -491,6 +513,22 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
 
           case "home-blog":
             return <HomeBlog key={block.id} />;
+
+          case "booking-form":
+            return <BookingFormBlock key={block.id} />;
+
+          case "custom-project-form":
+            return (
+              <section key={block.id} className="py-20 md:py-32">
+                <div className="container mx-auto px-6 max-w-2xl">
+                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
+                </div>
+              </section>
+            );
+
+          case "signup-form":
+            return <SignupFormBlock key={block.id} />;
+
 
           
           default:
