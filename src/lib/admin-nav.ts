@@ -13,7 +13,8 @@ import {
   HelpCircle, 
   Settings,
   Clock,
-  LayoutGrid
+  LayoutGrid,
+  Bell
 } from "lucide-react";
 
 export const ADMIN_NAV_ITEMS = [
@@ -31,6 +32,7 @@ export const ADMIN_NAV_ITEMS = [
   { group: "CONTEÚDO", items: [
     { to: "/admin/website", label: "WebSite", icon: Sparkles },
     { to: "/admin/blog", label: "Blog", icon: Newspaper },
+    { to: "/admin/website/avisos", label: "Avisos", icon: Bell },
     { to: "/admin/social", label: "Social", icon: LayoutGrid },
     { to: "/admin/broadcast", label: "Emails", icon: Mail },
   ]},

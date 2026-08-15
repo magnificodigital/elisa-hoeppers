@@ -139,6 +139,12 @@ function WebsiteAdminPage() {
               description="Banners do Topo"
               icon={GalleryHorizontal}
             />
+            <WebsiteOption 
+              to="/admin/website/avisos"
+              label="Avisos"
+              description="Popups e Promoções"
+              icon={Bell}
+            />
           </div>
 
           <div className="flex items-center justify-between mb-6">
