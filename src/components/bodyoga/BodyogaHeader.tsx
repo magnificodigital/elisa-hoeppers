@@ -92,11 +92,11 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
           to="/"
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
-          <img
-            src="/images/home/bodyoga/logo-bodyoga.png"
-            alt="BODYOGA"
-            className="h-14 md:h-20 w-auto object-contain"
-            style={{ filter: logoFilter }}
+          <BodyogaLogo 
+            variant="full" 
+            size={scrolled || alwaysGreen ? 64 : 80} 
+            tone={scrolled || alwaysGreen ? "cream" : "green"}
+            className="transition-all duration-300"
           />
         </Link>
 
