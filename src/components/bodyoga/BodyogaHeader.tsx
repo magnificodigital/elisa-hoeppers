@@ -94,7 +94,6 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         >
           <BodyogaLogo 
             variant="full" 
-            size={0} 
             tone={scrolled || alwaysGreen ? "cream" : "green"}
             className="md:h-20 h-14 w-auto transition-all duration-300"
           />
