@@ -32,7 +32,7 @@ const HomeBio = () => {
             </p>
           </div>
           <Link
-            to="/sobre"
+            to="/p/sobre"
             className="inline-block mt-8 bg-primary text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs hover:bg-primary-dark transition"
           >
             SAIBA MAIS
