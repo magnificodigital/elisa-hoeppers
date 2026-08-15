@@ -3,8 +3,28 @@ import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
 import { BodyogaProductCard } from "../bodyoga/BodyogaLanding";
 import HomeInstagram from "../home/HomeInstagram";
 import HomeBlog from "../home/HomeBlog";
-import { listActiveSlides, listProducts } from "@/lib/shop";
+import { listActiveSlides, listProducts, formatPriceBRL } from "@/lib/shop";
+import { listPublishedCourses } from "@/lib/courses";
 import { useQuery } from "@tanstack/react-query";
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
+import { 
+  Leaf, 
+  Heart, 
+  Sparkles, 
+  Flower2, 
+  Sprout, 
+  Clock, 
+  Layout, 
+  Star,
+  CheckCircle2,
+  ArrowRight
+} from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
 
 interface RenderBlocksProps {
