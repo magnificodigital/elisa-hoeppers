@@ -29,6 +29,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
       { property: "og:description", content: "Cosméticos naturais artesanais com óleos essenciais." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://bodyogaoficial.com.br" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
