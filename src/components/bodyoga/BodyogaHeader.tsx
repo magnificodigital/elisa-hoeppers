@@ -53,16 +53,6 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
               {item.label}
             </Link>
           ))}
-          {dynamicItems.map((item) => (
-            <Link
-              key={item.id}
-              to={item.href as any}
-              className={linkClass}
-              style={linkStyle}
-            >
-              {item.label}
-            </Link>
-          ))}
         </nav>
 
         {/* Centered logo */}
