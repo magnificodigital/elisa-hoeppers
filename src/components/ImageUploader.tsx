@@ -198,6 +198,7 @@ async function cropToAspect(file: File, aspectRatio: string): Promise<File> {
 
   // Reduz progressivamente dimensão e qualidade até ficar abaixo do limite.
   let maxW = 2400;
+  const isPng = file.type === "image/png"; // PNG preserva transparência (JPEG viraria fundo preto)
   for (let attempt = 0; attempt < 8; attempt++) {
     const outW = Math.max(1, Math.round(Math.min(sw, maxW)));
     const outH = Math.max(1, Math.round(outW / safeRatio));
@@ -211,11 +212,13 @@ async function cropToAspect(file: File, aspectRatio: string): Promise<File> {
 
     const quality = Math.max(0.5, 0.9 - attempt * 0.08);
     const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, "image/jpeg", quality)
+      isPng ? canvas.toBlob(resolve, "image/png") : canvas.toBlob(resolve, "image/jpeg", quality)
     );
 
     if (blob && blob.size <= MAX_BYTES) {
-      return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+      return isPng
+        ? new File([blob], `${baseName}.png`, { type: "image/png" })
+        : new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
     }
     maxW = Math.round(maxW * 0.8);
   }
