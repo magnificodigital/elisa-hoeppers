@@ -170,9 +170,9 @@ function ProductDetail() {
                 <WishlistButton itemType="product" itemId={product.id} />
               </div>
 
-              <div className="mt-8 space-y-3 text-sm text-[var(--text-muted)]">
+              <div className="mt-10 space-y-4 text-[10px] uppercase tracking-[0.15em] text-bodyoga-green/60">
                 <p className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4" /> Pagamento via Pix, Cartão ou SmartWallet
+                  <ShieldCheck className="w-3.5 h-3.5" /> Pagamento via Pix, Cartão ou SmartWallet
                 </p>
                 <div className="flex items-center justify-center md:justify-start gap-2 w-fit">
                   {/* Visa */}
