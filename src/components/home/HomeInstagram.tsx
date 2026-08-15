@@ -40,13 +40,13 @@ const HomeInstagram = () => {
   return (
     <section className="py-20 md:py-24 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-        <h3 className="text-center text-primary-dark font-medium text-base md:text-lg mb-8">
+        <h3 className="text-center text-bodyoga-green font-medium text-base md:text-lg mb-8 uppercase tracking-[0.2em]">
           Acompanhe{" "}
           <a
             href={instagramUrl}
             target="_blank"
             rel="noreferrer"
-            className="underline underline-offset-4 hover:text-primary"
+            className="underline underline-offset-4 hover:opacity-70 transition-opacity"
           >
             @{handle}
           </a>{" "}
@@ -87,14 +87,14 @@ const HomeInstagram = () => {
         </div>
 
         {/* CTA final */}
-        <div className="text-center mt-10">
+        <div className="text-center mt-12">
           <a
             href={instagramUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full uppercase tracking-[0.15em] text-xs hover:bg-primary-dark transition"
+            className="inline-flex items-center gap-2 bg-bodyoga-green text-bodyoga-cream px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition shadow-sm"
           >
-            <Instagram className="w-4 h-4" />
+            <Instagram className="w-3.5 h-3.5" />
             Seguir no Instagram
           </a>
         </div>
@@ -119,7 +119,7 @@ function PostThumbnail({ post }: { post: BeholdPost }) {
       href={post.permalink}
       target="_blank"
       rel="noreferrer"
-      className="block aspect-square overflow-hidden rounded-md group relative bg-bodyoga-green/5"
+      className="block aspect-square overflow-hidden rounded-xl group relative bg-bodyoga-green/5"
     >
       <img
         src={thumb}
@@ -137,7 +137,7 @@ function PostThumbnail({ post }: { post: BeholdPost }) {
       />
 
       {/* Overlay com contadores no hover */}
-      <div className="absolute inset-0 bg-primary-dark/0 group-hover:bg-primary-dark/40 transition-colors flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100">
+      <div className="absolute inset-0 bg-bodyoga-green/0 group-hover:bg-bodyoga-green/40 transition-colors flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100">
         {post.likeCount != null && (
           <span className="inline-flex items-center gap-1 text-cream text-sm font-semibold">
             <Heart className="w-4 h-4 fill-cream" />
