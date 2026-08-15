@@ -14,11 +14,7 @@ import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/pedidos")({
   head: () => ({ meta: [{ title: "Admin — Pedidos" }] }),
-  component: () => (
-    <StaffGuard>
-      <AdminOrders />
-    </StaffGuard>
-  ),
+  component: () => <AdminOrders />,
 });
 
 const FILTERS = [
@@ -72,8 +68,7 @@ function AdminOrders() {
   }
 
   return (
-    <Layout>
-      <section className="py-12 md:py-20 bg-background min-h-screen">
+    <section className="bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center gap-3 mb-2">
             <Package className="w-7 h-7 text-primary" />
@@ -151,7 +146,6 @@ function AdminOrders() {
           </div>
         </div>
       </section>
-    </Layout>
   );
 }
 
