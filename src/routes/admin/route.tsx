@@ -29,7 +29,7 @@ function AdminRoute() {
   // Enquanto carrega a sessão / sem acesso: mostra spinner (não desloga no refresh)
   if (loading || !user || !isStaff) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F5F3EE]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--admin-background)]">
         <Loader2 className="w-8 h-8 animate-spin text-[#3B4F30]" />
       </div>
     );

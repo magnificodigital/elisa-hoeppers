@@ -101,7 +101,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   );
 
   return (
-    <div className="flex h-screen bg-[#E2D4C1] overflow-hidden bodyoga-scope">
+    <div className="flex h-screen bg-[var(--admin-background)] overflow-hidden bodyoga-scope">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex md:w-64 md:flex-col shrink-0 border-r border-[#3B4F30]/10">
         <SidebarContent />
