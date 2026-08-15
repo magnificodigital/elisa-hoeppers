@@ -1,45 +1,34 @@
-# Plan - Visual Block Builder and Site Management Unification
+# Plano de Refatoração do Site Bodyoga (Visual Block Builder)
 
-Redesign the page management experience to be highly visual and intuitive for Elisa, using a 3-column "Block Builder" model and unifying all site-related configurations under a single tabbed interface at `/admin/website`.
+O objetivo é finalizar a transição para um sistema de edição visual baseado em blocos, garantindo que as configurações globais (SEO, WhatsApp, Cores) e o novo editor de páginas estejam plenamente integrados e funcionais.
 
-## User Improvements
-- **Visual Builder**: Edit pages by clicking blocks, seeing changes live, and adjusting properties in a side panel.
-- **Unified Hub**: Manage Pages, Slides, Colors, Menus, Notices, SEO, and WhatsApp in one place.
-- **Improved SEO**: Global SEO settings (fallbacks) and per-page control.
-- **WhatsApp Control**: Easy toggle and message configuration for the site-wide button.
+## Alterações Propostas
 
-## Technical Tasks
+### 1. Infraestrutura e API
+- **Banco de Dados**: Criar tabela `public.app_settings` (se ainda não existir completamente) com suporte a categorias (seo, whatsapp, aparencia) e RPC `get_public_setting` para leitura segura pelo cliente.
+- **Configurações**: Garantir que `src/lib/settings.ts` utilize o RPC para evitar erros de permissão em loaders e SSR.
 
-### 1. Database and Backend
-- [x] Create `app_settings` table for global SEO and WhatsApp configs.
-- [x] Seed initial default settings.
-- [ ] Update `src/lib/settings.ts` to support fetching/updating JSON settings.
-- [ ] Add `seo_title`, `seo_description`, `og_image` to the page editor.
+### 2. Gestão do Site (Admin)
+- **Hub Administrativo**: Refatorar `src/routes/admin/website.tsx` para centralizar:
+    - **Páginas**: Listagem e criação rápida.
+    - **Slides**: Edição do carrossel da home.
+    - **Cores**: Gestão dinâmica de temas.
+    - **Menu**: Configuração da navegação global.
+    - **SEO**: Metadados globais e scripts de analytics.
+    - **WhatsApp**: Configuração do botão flutuante.
+- **Editor de Páginas**: Aprimorar o builder lateral em `src/components/admin/PageBuilderUX.tsx` para incluir edição de SEO por página.
 
-### 2. Admin UI Unification (`/admin/website`)
-- [ ] Refactor `src/routes/admin/website.tsx` to include the following tabs:
-    - **Páginas do site**: The new visual table and "Nova Página" button.
-    - **Slides**: Integrate `src/routes/admin/bodyoga-slides/index.tsx`.
-    - **Cores**: Integrate `src/routes/admin/site.cores.tsx`.
-    - **Menus**: Integrate `src/routes/admin/site.menu.tsx`.
-    - **Avisos**: Integrate notices management.
-    - **SEO**: New UI to manage global SEO settings.
-    - **Botão do WhatsApp**: Integrate `src/routes/admin/site.whatsapp.tsx`.
+### 3. Renderização e Frontend
+- **Root Route**: Injetar scripts de Plausible/GTM e metadados SEO vindos das `app_settings` dinamicamente no `src/routes/__root.tsx`.
+- **Botão WhatsApp**: Ajustar `src/components/WhatsAppButton.tsx` para respeitar as configurações de posição, mensagem e visibilidade geridas no admin.
+- **Renderização de Blocos**: Atualizar `src/components/admin/RenderBlocks.tsx` com o componente `BodyogaProductCard` local e suporte a novos blocos (Produtos, Instagram, Hero, CTA).
+- **Fallback da Home**: Garantir que `src/routes/index.tsx` carregue prioritariamente a página marcada como `is_home` via Block Builder.
 
-### 3. Visual Page Editor
-- [ ] Enhance `src/components/admin/PageBuilderUX.tsx`:
-    - Improve block selection UI in the left palette.
-    - Ensure live preview accurately reflects all 24+ block types.
-    - Refine the property panel with dynamic inputs based on block schema.
-- [ ] Update block registry with all requested BODYOGA blocks (Timeline, Statistics, Author, etc.).
+### 4. Correções Visuais e UX
+- Corrigir tipagens e importações pendentes identificadas (ex: `useCart`).
+- Garantir que a paleta de cores aplicada via Admin reflita em todo o site através de variáveis CSS.
 
-### 4. Public Site Integration
-- [ ] Update `src/routes/__root.tsx` to inject SEO meta tags and Google Analytics/GTM scripts from `app_settings`.
-- [ ] Update `src/components/WhatsAppButton.tsx` to consume dynamic settings from `app_settings`.
-- [ ] Ensure catch-all route `/p/$slug` and Home (`/`) correctly resolve dynamic pages with SEO.
-
-## Technical Details
-- **Architecture**: Tabbed administration interface using Radix/Shadcn Tabs.
-- **State Management**: React Query for data fetching and invalidation.
-- **Builder Logic**: `dnd-kit` for reordering blocks (already partially implemented).
-- **SEO**: TanStack Router `head` functions combined with dynamic data.
+## Detalhes Técnicos
+- Uso de `createServerFn` para operações privilegiadas.
+- Migrações SQL com `GRANT` explícitos para garantir acesso da API Supabase.
+- Implementação de Zod para validação de esquemas de blocos JSONB.

@@ -15,7 +15,7 @@ export const Route = createFileRoute("/admin/bodyoga-slides/")({
   ),
 });
 
-function SlidesList() {
+export default function SlidesList() {
   const qc = useQueryClient();
   const navigate = useNavigate();
 
