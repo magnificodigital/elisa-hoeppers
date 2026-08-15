@@ -28,6 +28,7 @@ import { Route as PainelPerfilRouteImport } from './routes/painel/perfil'
 import { Route as PainelPedidosRouteImport } from './routes/painel/pedidos'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as PagamentoCodeRouteImport } from './routes/pagamento.$code'
+import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
@@ -177,6 +178,11 @@ const PainelCertificadosRoute = PainelCertificadosRouteImport.update({
 const PagamentoCodeRoute = PagamentoCodeRouteImport.update({
   id: '/pagamento/$code',
   path: '/pagamento/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PSlugRoute = PSlugRouteImport.update({
+  id: '/p/$slug',
+  path: '/p/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LojaSlugRoute = LojaSlugRouteImport.update({
@@ -492,6 +498,7 @@ export interface FileRoutesByFullPath {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/p/$slug': typeof PSlugRoute
   '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
@@ -566,6 +573,7 @@ export interface FileRoutesByTo {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/p/$slug': typeof PSlugRoute
   '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
@@ -643,6 +651,7 @@ export interface FileRoutesById {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
+  '/p/$slug': typeof PSlugRoute
   '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
@@ -721,6 +730,7 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/p/$slug'
     | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
@@ -795,6 +805,7 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/p/$slug'
     | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
@@ -871,6 +882,7 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
+    | '/p/$slug'
     | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
@@ -934,6 +946,7 @@ export interface RootRouteChildren {
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
   LojaSlugRoute: typeof LojaSlugRoute
+  PSlugRoute: typeof PSlugRoute
   PagamentoCodeRoute: typeof PagamentoCodeRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelPedidosRoute: typeof PainelPedidosRoute
@@ -1084,6 +1097,13 @@ declare module '@tanstack/react-router' {
       path: '/pagamento/$code'
       fullPath: '/pagamento/$code'
       preLoaderRoute: typeof PagamentoCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/p/$slug': {
+      id: '/p/$slug'
+      path: '/p/$slug'
+      fullPath: '/p/$slug'
+      preLoaderRoute: typeof PSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loja/$slug': {
@@ -1612,6 +1632,7 @@ const rootRouteChildren: RootRouteChildren = {
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
   LojaSlugRoute: LojaSlugRoute,
+  PSlugRoute: PSlugRoute,
   PagamentoCodeRoute: PagamentoCodeRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelPedidosRoute: PainelPedidosRoute,
