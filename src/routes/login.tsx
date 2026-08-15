@@ -112,7 +112,7 @@ function LoginPage() {
 
           <p className="text-center text-sm text-bodyoga-cream mt-7">
             Ainda não tem conta?{" "}
-            <Link to="/cadastro-de-alunos" className="underline hover:text-bodyoga-cream">
+            <Link to="/p/$slug" params={{ slug: "cadastro-de-alunos" }} className="underline hover:text-bodyoga-cream">
               Cadastre-se
             </Link>
           </p>
