@@ -210,19 +210,8 @@ function WebsiteAdminPage() {
             </TabsContent>
 
             <TabsContent value="notices">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <Bell className="w-12 h-12 text-primary/20 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Avisos do Site</h3>
-                <p className="text-primary-dark/60">Em breve: Gerencie banners de aviso e popups.</p>
-              </div>
-            </TabsContent>
-
-
-            <TabsContent value="notices">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <Bell className="w-12 h-12 text-primary/20 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Avisos do Site</h3>
-                <p className="text-primary-dark/60">Em breve: Gerencie banners de aviso e popups.</p>
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <AvisosTab />
               </div>
             </TabsContent>
           </Tabs>
