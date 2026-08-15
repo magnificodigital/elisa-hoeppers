@@ -10,17 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermosRouteImport } from './routes/termos'
-import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProjetosPersonalizadosRouteImport } from './routes/projetos-personalizados'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
-import { Route as PerfumistaRouteImport } from './routes/perfumista'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-alunos'
 import { Route as BodyogaRouteImport } from './routes/bodyoga'
-import { Route as BioRouteImport } from './routes/bio'
 import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
@@ -101,11 +98,6 @@ const TermosRoute = TermosRouteImport.update({
   path: '/termos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SobreRoute = SobreRouteImport.update({
-  id: '/sobre',
-  path: '/sobre',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -119,11 +111,6 @@ const ProjetosPersonalizadosRoute = ProjetosPersonalizadosRouteImport.update({
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PerfumistaRoute = PerfumistaRouteImport.update({
-  id: '/perfumista',
-  path: '/perfumista',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -149,11 +136,6 @@ const CadastroDeAlunosRoute = CadastroDeAlunosRouteImport.update({
 const BodyogaRoute = BodyogaRouteImport.update({
   id: '/bodyoga',
   path: '/bodyoga',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BioRoute = BioRouteImport.update({
-  id: '/bio',
-  path: '/bio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgendeSuaAulaRoute = AgendeSuaAulaRouteImport.update({
@@ -544,17 +526,14 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/$slug': typeof SlugRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
-  '/bio': typeof BioRoute
   '/bodyoga': typeof BodyogaRouteWithChildren
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
   '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -631,16 +610,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
-  '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
   '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
@@ -718,17 +694,14 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/$slug': typeof SlugRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
-  '/bio': typeof BioRoute
   '/bodyoga': typeof BodyogaRouteWithChildren
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/perfumista': typeof PerfumistaRoute
   '/privacidade': typeof PrivacidadeRoute
   '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -808,17 +781,14 @@ export interface FileRouteTypes {
     | '/admin'
     | '/$slug'
     | '/agende-sua-aula'
-    | '/bio'
     | '/bodyoga'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/perfumista'
     | '/privacidade'
     | '/projetos-personalizados'
     | '/sitemap.xml'
-    | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/blog'
@@ -895,16 +865,13 @@ export interface FileRouteTypes {
     | '/'
     | '/$slug'
     | '/agende-sua-aula'
-    | '/bio'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/perfumista'
     | '/privacidade'
     | '/projetos-personalizados'
     | '/sitemap.xml'
-    | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/broadcast'
@@ -981,17 +948,14 @@ export interface FileRouteTypes {
     | '/admin'
     | '/$slug'
     | '/agende-sua-aula'
-    | '/bio'
     | '/bodyoga'
     | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/perfumista'
     | '/privacidade'
     | '/projetos-personalizados'
     | '/sitemap.xml'
-    | '/sobre'
     | '/termos'
     | '/admin/agendamentos'
     | '/admin/blog'
@@ -1070,17 +1034,14 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   SlugRoute: typeof SlugRoute
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
-  BioRoute: typeof BioRoute
   BodyogaRoute: typeof BodyogaRouteWithChildren
   CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
   LoginRoute: typeof LoginRoute
-  PerfumistaRoute: typeof PerfumistaRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   ProjetosPersonalizadosRoute: typeof ProjetosPersonalizadosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
@@ -1113,13 +1074,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sobre': {
-      id: '/sobre'
-      path: '/sobre'
-      fullPath: '/sobre'
-      preLoaderRoute: typeof SobreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -1139,13 +1093,6 @@ declare module '@tanstack/react-router' {
       path: '/privacidade'
       fullPath: '/privacidade'
       preLoaderRoute: typeof PrivacidadeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/perfumista': {
-      id: '/perfumista'
-      path: '/perfumista'
-      fullPath: '/perfumista'
-      preLoaderRoute: typeof PerfumistaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -1181,13 +1128,6 @@ declare module '@tanstack/react-router' {
       path: '/bodyoga'
       fullPath: '/bodyoga'
       preLoaderRoute: typeof BodyogaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bio': {
-      id: '/bio'
-      path: '/bio'
-      fullPath: '/bio'
-      preLoaderRoute: typeof BioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agende-sua-aula': {
@@ -1854,17 +1794,14 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   SlugRoute: SlugRoute,
   AgendeSuaAulaRoute: AgendeSuaAulaRoute,
-  BioRoute: BioRoute,
   BodyogaRoute: BodyogaRouteWithChildren,
   CadastroDeAlunosRoute: CadastroDeAlunosRoute,
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
   LoginRoute: LoginRoute,
-  PerfumistaRoute: PerfumistaRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
