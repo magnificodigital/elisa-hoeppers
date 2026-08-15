@@ -131,7 +131,7 @@ function CustomersPage() {
                   className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
                     filter === f.key
                        ? "bg-primary text-white"
-                       : "bg-white text-primary-dark/70 hover:bg-background-dark"
+                       : "bg-white text-primary-dark/70 hover:bg-background"
                   }`}
                 >
                   {f.label}

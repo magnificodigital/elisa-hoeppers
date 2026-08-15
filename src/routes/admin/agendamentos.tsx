@@ -244,15 +244,15 @@ function AppointmentCard({ appointment: a }: { appointment: AppointmentWithServi
             </span>
             <StatusPill status={a.status} />
             {a.service.is_online ? (
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-background text-primary-dark px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-white/50 border border-border/10 text-primary-dark px-2 py-0.5 rounded-full">
                 <Video size={11} /> Online
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-background text-primary-dark px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-white/50 border border-border/10 text-primary-dark px-2 py-0.5 rounded-full">
                 <MapPin size={11} /> Presencial
               </span>
             )}
-            <span className="text-[10px] uppercase tracking-widest bg-background text-primary-dark px-2 py-0.5 rounded-full">
+            <span className="text-[10px] uppercase tracking-widest bg-white/50 border border-border/10 text-primary-dark px-2 py-0.5 rounded-full">
               {a.service.is_group ? "Grupo" : "Particular"}
             </span>
           </div>
