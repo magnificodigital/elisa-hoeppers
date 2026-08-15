@@ -97,7 +97,7 @@ function WebsiteAdminPage() {
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">WebSite</h1>
               <p className="text-primary-dark/70">
-                Gerencie as páginas e o conteúdo visual do seu site.
+                poder editar tudo.
               </p>
             </div>
             <div className="flex gap-2">
