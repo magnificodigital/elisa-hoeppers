@@ -56,6 +56,8 @@ import {
 import { useState } from "react";
 import { BLOCKS, createBlockInstance, type BlockType, type BlockDef } from "@/lib/block-registry";
 import { RenderBlocks } from "./RenderBlocks";
+import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
+import Footer from "@/components/Footer";
 import { ImageUploader } from "../ImageUploader";
 
 interface PageBuilderProps {
@@ -181,7 +183,12 @@ export function PageBuilderUX({ blocks, onChange }: PageBuilderProps) {
               viewMode === 'tablet' ? 'w-[768px]' : 'w-full max-w-[1200px]'
             }`}
           >
-            <DndContext 
+            {/* Moldura do site (menu) — visual, não interativo, pra o preview ficar fiel */}
+            <div className="pointer-events-none bodyoga-scope">
+              <BodyogaHeader alwaysGreen />
+            </div>
+
+            <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
               onDragStart={handleDragStart}
@@ -226,6 +233,11 @@ export function PageBuilderUX({ blocks, onChange }: PageBuilderProps) {
                 ) : null}
               </DragOverlay>
             </DndContext>
+
+            {/* Rodapé do site — visual, não interativo */}
+            <div className="pointer-events-none bodyoga-scope">
+              <Footer />
+            </div>
           </div>
         </div>
 
