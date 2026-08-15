@@ -135,10 +135,10 @@ function WebsiteAdminPage() {
                <PageTable 
                   pages={pages} 
                   isLoading={isLoading} 
-                  onDelete={(id) => del.mutate(id)}
+                  onDelete={(id: string) => del.mutate(id)}
                   onSetHome={setAsHome}
-                  onToggleMenu={(id, in_menu) => update.mutate({ id, patch: { in_menu } })}
-                  onUpdateOrder={(id, menu_order) => update.mutate({ id, patch: { menu_order } })}
+                  onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
+                  onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
                />
             </TabsContent>
 
@@ -146,7 +146,7 @@ function WebsiteAdminPage() {
                <PageTable 
                   pages={landingPages} 
                   isLoading={isLoading} 
-                  onDelete={(id) => del.mutate(id)}
+                  onDelete={(id: string) => del.mutate(id)}
                />
             </TabsContent>
 
