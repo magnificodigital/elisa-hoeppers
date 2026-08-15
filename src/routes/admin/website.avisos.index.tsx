@@ -67,7 +67,8 @@ function NoticesListPage() {
             </p>
           </div>
           <Link
-            to="/admin/website/avisos/novo"
+            to="/admin/website/avisos/editar/$id"
+            params={{ id: "novo" }}
             className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm"
           >
             <Plus className="w-4 h-4" />
