@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin/social")({
 
 function SocialPostsPage() {
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-10">
+    <div className="max-w-6xl mx-auto px-4 md:px-6 py-10 min-h-[70vh]">
       <Link
         to="/admin/posts"
         className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
