@@ -340,7 +340,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
     case 'boolean':
       return (
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
+          <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-bodyoga-green focus:ring-bodyoga-green" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
           <span className="text-sm text-primary-dark">Ativo</span>
         </label>
       );
