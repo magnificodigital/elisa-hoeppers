@@ -7,7 +7,7 @@ import { PageBuilderUX } from "@/components/admin/PageBuilderUX";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 
-export const Route = createFileRoute("/admin/site/paginas/$id")({
+export const Route = createFileRoute("/admin/website/paginas/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar Página" }] }),
   component: () => <EditPageBuilder />,
 });
@@ -60,7 +60,7 @@ function EditPageBuilder() {
         <header className="h-16 border-b border-border bg-white px-6 flex items-center justify-between z-30 shrink-0">
           <div className="flex items-center gap-4">
             <Link 
-              to="/admin/site" 
+              to="/admin/website" 
               className="p-2 hover:bg-gray-100 rounded-lg text-primary-dark/60 transition"
               title="Voltar"
             >

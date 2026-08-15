@@ -40,7 +40,7 @@ const sections = [
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
   { to: "/admin/reservas", icon: Bell, title: "Reservas", desc: "Reservas de produtos fora de estoque." },
   { to: "/admin/clientes", icon: Users, title: "Clientes", desc: "Veja seus clientes e quem está inscrito." },
-  { to: "/admin/site", icon: Sparkles, title: "Site", desc: "Páginas e Blog." },
+  { to: "/admin/website", icon: Sparkles, title: "Site", desc: "Páginas e Blog." },
   { to: "/admin/blog", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/social", icon: Share2, title: "Social Posts", desc: "Posts para as redes sociais." },
   { to: "/admin/broadcast", icon: Mail, title: "Emails", desc: "Envie email pra newsletter ou alunas." },

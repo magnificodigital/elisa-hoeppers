@@ -5,7 +5,7 @@ import { ArrowLeft, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
 import { listSettings, updateSetting } from "@/lib/settings";
 
-export const Route = createFileRoute("/admin/site/whatsapp")({
+export const Route = createFileRoute("/admin/website/whatsapp")({
   head: () => ({ meta: [{ title: "Admin — Botão do WhatsApp" }] }),
   component: () => (
     
@@ -72,7 +72,7 @@ function WhatsAppSettingsPage() {
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
-            to="/admin/site"
+            to="/admin/website"
             className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
           >
             <ArrowLeft size={16} /> Voltar para Site

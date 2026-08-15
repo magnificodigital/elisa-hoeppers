@@ -25,7 +25,7 @@ import { createPage, deletePage, listPages, slugify, updatePage, type SitePage }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 
-export const Route = createFileRoute("/admin/site/")({
+export const Route = createFileRoute("/admin/website/")({
   head: () => ({ meta: [{ title: "Admin — Gerenciar Site" }] }),
   component: () => <WebsiteAdminPage />,
 });
@@ -50,7 +50,7 @@ function WebsiteAdminPage() {
       qc.invalidateQueries({ queryKey: ["pages"] });
       setTitle("");
       setSlug("");
-      navigate({ to: "/admin/site/paginas/$id", params: { id: p.id } });
+      navigate({ to: "/admin/website/paginas/$id", params: { id: p.id } });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -99,7 +99,7 @@ function WebsiteAdminPage() {
             </div>
             <div className="flex gap-2">
                <Link
-                  to="/admin/site/home"
+                  to="/admin/website/home"
                   className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm"
                 >
                   <LayoutDashboard className="w-4 h-4" />
@@ -110,25 +110,25 @@ function WebsiteAdminPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
             <WebsiteOption 
-              to="/admin/site/menu"
+              to="/admin/website/menu"
               label="Menu"
               description="Header e Footer"
               icon={MenuIcon}
             />
             <WebsiteOption 
-              to="/admin/site/cores"
+              to="/admin/website/cores"
               label="Cores"
               description="Identidade Visual"
               icon={Palette}
             />
             <WebsiteOption 
-              to="/admin/site/whatsapp"
+              to="/admin/website/whatsapp"
               label="Botão WhatsApp"
               description="Configurar Botão"
               icon={MessageCircle}
             />
             <WebsiteOption 
-              to="/admin/site/seo"
+              to="/admin/website/seo"
               label="SEO"
               description="Busca e Social"
               icon={Search}
@@ -273,7 +273,7 @@ function PageTable({ pages, isLoading, onDelete, onSetHome, onToggleMenu, onUpda
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end items-center gap-2">
                     <Link 
-                      to="/admin/site/paginas/$id" 
+                      to="/admin/website/paginas/$id" 
                       params={{ id: p.id }}
                       className="p-2 text-primary-dark/40 hover:text-primary transition"
                       title="Editar"

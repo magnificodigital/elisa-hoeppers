@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Search, ExternalLink } from "lucide-react";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
 
-export const Route = createFileRoute("/admin/site/seo")({
+export const Route = createFileRoute("/admin/website/seo")({
   head: () => ({ meta: [{ title: "Admin — SEO" }] }),
   component: () => (
     
@@ -17,7 +17,7 @@ function Page() {
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-2xl mx-auto px-4">
           <Link
-            to="/admin/site"
+            to="/admin/website"
             className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6"
           >
             <ChevronLeft size={16} /> Voltar
