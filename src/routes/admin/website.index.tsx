@@ -50,7 +50,7 @@ function WebsiteAdminPage() {
       qc.invalidateQueries({ queryKey: ["pages"] });
       setTitle("");
       setSlug("");
-      navigate({ to: "/admin/site/paginas/$id", params: { id: p.id } });
+      navigate({ to: "/admin/website/paginas/$id", params: { id: p.id } });
     },
     onError: (e: Error) => toast.error(e.message),
   });
