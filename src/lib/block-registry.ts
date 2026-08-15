@@ -28,7 +28,10 @@ export type BlockType =
   | "home-opening"
   | "home-rituals"
   | "home-intro"
-  | "home-blog";
+  | "home-blog"
+  | "booking-form"
+  | "custom-project-form"
+  | "signup-form";
 
 export interface BlockDef {
   type: BlockType;
@@ -350,6 +353,27 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "home-blog",
     label: "Blog na Home",
     desc: "Últimos posts",
+    defaults: {},
+    fields: []
+  },
+  "booking-form": {
+    type: "booking-form",
+    label: "Formulário de Agendamento",
+    desc: "Widget completo de agendamento de aulas",
+    defaults: {},
+    fields: []
+  },
+  "custom-project-form": {
+    type: "custom-project-form",
+    label: "Formulário de Projetos Personalizados",
+    desc: "Widget de solicitação de projetos sob medida",
+    defaults: {},
+    fields: []
+  },
+  "signup-form": {
+    type: "signup-form",
+    label: "Formulário de Cadastro",
+    desc: "Widget de cadastro de novos alunos",
     defaults: {},
     fields: []
   },
