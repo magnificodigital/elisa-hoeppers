@@ -152,6 +152,7 @@ function RootComponent() {
         <WhatsAppButton />
         <CookieBanner />
         <Toaster position="top-right" expand richColors closeButton />
+        <SiteNoticePopup />
       </AuthProvider>
     </QueryClientProvider>
   );
