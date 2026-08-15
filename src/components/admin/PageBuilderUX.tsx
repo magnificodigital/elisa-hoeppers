@@ -485,7 +485,7 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
       {/* Block Outline */}
       <div 
         className={`absolute -inset-[2px] pointer-events-none transition-opacity rounded-[2px] ${
-          isSelected ? 'border-2 border-primary opacity-100 z-20' : 'border border-primary/20 opacity-0 group-hover:opacity-100 z-10'
+          isSelected ? 'border-2 border-bodyoga-green opacity-100 z-20' : 'border border-bodyoga-green/20 opacity-0 group-hover:opacity-100 z-10'
         }`}
       />
 
@@ -497,27 +497,27 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
           <div className="flex items-center bg-white border border-border shadow-sm rounded-lg overflow-hidden">
             <button 
               {...listeners} {...attributes}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition cursor-grab"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition cursor-grab"
             >
               <GripVertical size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
             >
               <ArrowUp size={14} />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
             >
               <ArrowDown size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
               onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
             >
               <Copy size={14} />
             </button>
