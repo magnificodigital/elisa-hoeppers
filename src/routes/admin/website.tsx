@@ -121,14 +121,8 @@ function WebsiteAdminPage() {
               </p>
             </div>
             <div className="flex gap-2">
-               <button
-                  onClick={() => create.mutate('site')}
-                  className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm"
-                >
-                  <Plus className="w-4 h-4" />
-                  Nova Página
-                </button>
             </div>
+
           </div>
 
           <Tabs defaultValue="pages" onValueChange={setActiveTab} className="w-full">
@@ -165,15 +159,25 @@ function WebsiteAdminPage() {
 
 
             <TabsContent value="pages">
-              <PageTable 
-                pages={pages} 
-                isLoading={isLoading} 
-                onDelete={(id: string) => del.mutate(id)}
-                onSetHome={setAsHome}
-                onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
-                onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
-              />
+              <div className="flex justify-end mb-4">
+                 <button
+                    onClick={() => create.mutate('site')}
+                    className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Nova Página
+                  </button>
+              </div>
+               <PageTable 
+                  pages={pages} 
+                  isLoading={isLoading} 
+                  onDelete={(id: string) => del.mutate(id)}
+                  onSetHome={setAsHome}
+                  onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
+                  onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
+               />
             </TabsContent>
+
 
             <TabsContent value="slides">
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
