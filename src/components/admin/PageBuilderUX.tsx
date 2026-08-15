@@ -51,19 +51,24 @@ import {
   Minus,
   Move,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Globe
 } from "lucide-react";
 import { useState } from "react";
 import { BLOCKS, createBlockInstance, type BlockType, type BlockDef } from "@/lib/block-registry";
 import { RenderBlocks } from "./RenderBlocks";
 import { ImageUploader } from "../ImageUploader";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PageBuilderProps {
   blocks: any[];
   onChange: (blocks: any[]) => void;
+  pageData?: any;
+  onPageDataChange?: (data: any) => void;
 }
 
-export function PageBuilderUX({ blocks, onChange }: PageBuilderProps) {
+export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: PageBuilderProps) {
+
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
@@ -150,28 +155,74 @@ export function PageBuilderUX({ blocks, onChange }: PageBuilderProps) {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar: Palette */}
-        <div className="w-72 bg-white border-r border-border flex flex-col z-10">
-          <div className="p-4 border-b border-border">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-primary-dark/60">Adicionar Bloco</h3>
-          </div>
-          <div className="flex-1 overflow-y-auto p-4 space-y-2">
-            {Object.values(BLOCKS).map((def) => (
-              <button
-                key={def.type}
-                onClick={() => addBlock(def.type)}
-                className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-primary/5 hover:border-primary/30 border border-transparent rounded-xl transition group"
-              >
-                <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-primary transition">
-                  <BlockIcon type={def.type} size={18} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-primary-dark leading-none mb-1">{def.label}</p>
-                  <p className="text-[10px] text-primary-dark/50 leading-tight">{def.desc}</p>
-                </div>
-              </button>
-            ))}
-          </div>
+        <div className="w-80 bg-white border-r border-border flex flex-col z-10">
+          <Tabs defaultValue="add" className="w-full flex flex-col h-full">
+            <TabsList className="bg-white/50 border-b border-border p-1 rounded-none flex h-auto">
+              <TabsTrigger value="add" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary py-3">
+                <Plus size={16} className="mr-2" />
+                Blocos
+              </TabsTrigger>
+              <TabsTrigger value="seo" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary py-3">
+                <Globe size={16} className="mr-2" />
+                SEO
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="add" className="flex-1 overflow-y-auto p-4 space-y-2 mt-0">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-primary-dark/40 mb-3">Escolha um bloco</h3>
+              {Object.values(BLOCKS).map((def) => (
+                <button
+                  key={def.type}
+                  onClick={() => addBlock(def.type)}
+                  className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-primary/5 hover:border-primary/30 border border-transparent rounded-xl transition group"
+                >
+                  <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-primary transition">
+                    <BlockIcon type={def.type} size={18} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-primary-dark leading-none mb-1">{def.label}</p>
+                    <p className="text-[10px] text-primary-dark/50 leading-tight">{def.desc}</p>
+                  </div>
+                </button>
+              ))}
+            </TabsContent>
+
+            <TabsContent value="seo" className="flex-1 overflow-y-auto p-6 space-y-6 mt-0">
+               <h3 className="text-[10px] font-bold uppercase tracking-widest text-primary-dark/40 mb-3">Otimização (SEO)</h3>
+               <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-widest text-primary-dark/70 font-bold">Título da Página (SEO)</label>
+                    <input 
+                      type="text" 
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-white" 
+                      value={pageData?.seo_title || ''} 
+                      onChange={(e) => onPageDataChange?.({ seo_title: e.target.value })}
+                      placeholder={pageData?.title}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-widest text-primary-dark/70 font-bold">Descrição (Meta Description)</label>
+                    <textarea 
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-white" 
+                      rows={4}
+                      value={pageData?.seo_description || ''} 
+                      onChange={(e) => onPageDataChange?.({ seo_description: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-widest text-primary-dark/70 font-bold">Imagem de Compartilhamento (OG)</label>
+                    <ImageUploader 
+                      value={pageData?.og_image || null} 
+                      onChange={(url) => onPageDataChange?.({ og_image: url || "" })} 
+                      aspectRatio="1200/630" 
+                      label="Selecionar Imagem OG"
+                    />
+                  </div>
+               </div>
+            </TabsContent>
+          </Tabs>
         </div>
+
 
         {/* Center: Live Preview */}
         <div className="flex-1 bg-gray-100 overflow-y-auto p-8 flex justify-center items-start">
