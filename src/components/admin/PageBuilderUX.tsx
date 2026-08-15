@@ -304,10 +304,10 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
     case 'image':
     case 'video':
       return (
-        <ImageUploader 
-          value={value || null} 
-          onChange={(url) => onChange(url || "")} 
-          aspectRatio="16/9" 
+        <ImageUploader
+          value={value || null}
+          onChange={(url) => onChange(url || "")}
+          aspectRatio={field.aspectRatio || "16/9"}
           allowVideo={field.type === 'video'}
           label={`Selecionar ${field.type === 'image' ? 'Imagem' : 'Vídeo'}`}
         />

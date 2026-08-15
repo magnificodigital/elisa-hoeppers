@@ -47,6 +47,7 @@ export type BlockField = {
   type: "text" | "textarea" | "image" | "color" | "link" | "list" | "select" | "number" | "boolean" | "video";
   options?: { label: string; value: any }[];
   itemFields?: BlockField[]; // For lists
+  aspectRatio?: string; // proporção do recorte pra campos de imagem (ex: "1/1", "4/5"); padrão 16/9
 };
 
 export const BLOCKS: Record<BlockType, BlockDef> = {
@@ -319,7 +320,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
       title: "Equilíbrio para o corpo,\nmente e ambiente."
     },
     fields: [
-      { key: "icon", label: "Ícone", type: "image" },
+      { key: "icon", label: "Ícone", type: "image", aspectRatio: "1/1" },
       { key: "title", label: "Frase", type: "textarea" },
       { key: "subtitle", label: "Subtítulo", type: "text" }
     ]
@@ -350,7 +351,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
       image: "https://hoepppers.lovable.app/images/home/bodyoga/bodyoga-left.png"
     },
     fields: [
-      { key: "image", label: "Imagem", type: "image" },
+      { key: "image", label: "Imagem", type: "image", aspectRatio: "4/5" },
       { key: "title", label: "Título", type: "textarea" },
       { key: "p1", label: "Parágrafo 1", type: "textarea" },
       { key: "p2", label: "Parágrafo 2", type: "textarea" },
