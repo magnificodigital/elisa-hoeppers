@@ -725,8 +725,8 @@ function CheckoutPage() {
                 )}
 
                 <div className="flex justify-between pt-2 mt-3 border-t border-border">
-                  <span className="font-display text-lg text-primary-dark">Total</span>
-                  <span className="font-display text-2xl text-primary-dark">
+                  <span className="font-display text-lg text-bodyoga-green">Total</span>
+                  <span className="font-display text-2xl text-bodyoga-green">
                     {formatPriceBRL(totalCents)}
                   </span>
                 </div>
@@ -746,7 +746,7 @@ function CheckoutPage() {
                     (meEnabled && !!shippingError) ||
                     (meEnabled && !selectedShipping && shippingOpts.length > 0)
                   }
-                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+                  className="block w-full text-center bg-bodyoga-green text-bodyoga-cream py-4 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition disabled:opacity-60 shadow-md"
                 >
                   {submitting === "processing" ? "Preparando pagamento..." : "Continuar para pagamento"}
                 </button>
