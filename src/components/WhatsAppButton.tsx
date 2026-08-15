@@ -47,7 +47,7 @@ const WhatsAppButton = () => {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className={`fixed bottom-6 ${isLeft ? "left-6" : "right-6"} z-50 bg-[#25D366] text-white p-4 rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.3)] hover:scale-110 active:scale-95 transition-all duration-300 group`}
+      className={`fixed bottom-6 ${isLeft ? "left-6" : "right-6"} z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 group`}
       aria-label="Falar no WhatsApp"
     >
       <svg viewBox="0 0 24 24" width={28} height={28} fill="currentColor" aria-hidden="true">
@@ -55,7 +55,7 @@ const WhatsAppButton = () => {
       </svg>
       {cfg.whatsapp_tooltip && (
         <span
-          className={`absolute ${isLeft ? "left-full ml-3" : "right-full mr-3"} top-1/2 -translate-y-1/2 bg-bodyoga-cream text-bodyoga-green border border-bodyoga-green/10 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-widest shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none`}
+          className={`absolute ${isLeft ? "left-full ml-3" : "right-full mr-3"} top-1/2 -translate-y-1/2 bg-white text-primary-dark px-3 py-1 rounded-lg text-sm font-medium shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none`}
         >
           {cfg.whatsapp_tooltip}
         </span>

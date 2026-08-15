@@ -51,24 +51,19 @@ import {
   Minus,
   Move,
   ArrowUp,
-  ArrowDown,
-  Globe
+  ArrowDown
 } from "lucide-react";
 import { useState } from "react";
 import { BLOCKS, createBlockInstance, type BlockType, type BlockDef } from "@/lib/block-registry";
 import { RenderBlocks } from "./RenderBlocks";
 import { ImageUploader } from "../ImageUploader";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PageBuilderProps {
   blocks: any[];
   onChange: (blocks: any[]) => void;
-  pageData?: any;
-  onPageDataChange?: (data: any) => void;
 }
 
-export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: PageBuilderProps) {
-
+export function PageBuilderUX({ blocks, onChange }: PageBuilderProps) {
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
@@ -155,74 +150,28 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar: Palette */}
-        <div className="w-80 bg-white border-r border-border flex flex-col z-10">
-          <Tabs defaultValue="add" className="w-full flex flex-col h-full">
-            <TabsList className="bg-white/50 border-b border-border p-1 rounded-none flex h-auto">
-              <TabsTrigger value="add" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-bodyoga-green py-3">
-                <Plus size={16} className="mr-2" />
-                Blocos
-              </TabsTrigger>
-              <TabsTrigger value="seo" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-bodyoga-green py-3">
-                <Globe size={16} className="mr-2" />
-                SEO
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="add" className="flex-1 overflow-y-auto p-4 space-y-2 mt-0">
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-primary-dark/40 mb-3">Escolha um bloco</h3>
-              {Object.values(BLOCKS).map((def) => (
-                <button
-                  key={def.type}
-                  onClick={() => addBlock(def.type)}
-                  className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-bodyoga-green/5 hover:border-bodyoga-green/30 border border-transparent rounded-xl transition group"
-                >
-                  <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-bodyoga-green transition">
-                    <BlockIcon type={def.type} size={18} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-primary-dark leading-none mb-1">{def.label}</p>
-                    <p className="text-[10px] text-primary-dark/50 leading-tight">{def.desc}</p>
-                  </div>
-                </button>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="seo" className="flex-1 overflow-y-auto p-6 space-y-6 mt-0">
-               <h3 className="text-[10px] font-bold uppercase tracking-widest text-primary-dark/40 mb-3">Otimização (SEO)</h3>
-               <div className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase tracking-widest text-primary-dark/70 font-bold">Título da Página (SEO)</label>
-                    <input 
-                      type="text" 
-                      className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-white" 
-                      value={pageData?.seo_title || ''} 
-                      onChange={(e) => onPageDataChange?.({ seo_title: e.target.value })}
-                      placeholder={pageData?.title}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase tracking-widest text-primary-dark/70 font-bold">Descrição (Meta Description)</label>
-                    <textarea 
-                      className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-white" 
-                      rows={4}
-                      value={pageData?.seo_description || ''} 
-                      onChange={(e) => onPageDataChange?.({ seo_description: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase tracking-widest text-primary-dark/70 font-bold">Imagem de Compartilhamento (OG)</label>
-                    <ImageUploader 
-                      value={pageData?.og_image || null} 
-                      onChange={(url) => onPageDataChange?.({ og_image: url || "" })} 
-                      aspectRatio="1200/630" 
-                      label="Selecionar Imagem OG"
-                    />
-                  </div>
-               </div>
-            </TabsContent>
-          </Tabs>
+        <div className="w-72 bg-white border-r border-border flex flex-col z-10">
+          <div className="p-4 border-b border-border">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-primary-dark/60">Adicionar Bloco</h3>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4 space-y-2">
+            {Object.values(BLOCKS).map((def) => (
+              <button
+                key={def.type}
+                onClick={() => addBlock(def.type)}
+                className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-primary/5 hover:border-primary/30 border border-transparent rounded-xl transition group"
+              >
+                <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-primary transition">
+                  <BlockIcon type={def.type} size={18} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-primary-dark leading-none mb-1">{def.label}</p>
+                  <p className="text-[10px] text-primary-dark/50 leading-tight">{def.desc}</p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-
 
         {/* Center: Live Preview */}
         <div className="flex-1 bg-gray-100 overflow-y-auto p-8 flex justify-center items-start">
@@ -271,7 +220,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 
               <DragOverlay>
                 {activeId ? (
-                  <div className="bg-white border-2 border-bodyoga-green/50 shadow-lg p-4 rounded-lg opacity-80 cursor-grabbing">
+                  <div className="bg-white border-2 border-primary/50 shadow-lg p-4 rounded-lg opacity-80 cursor-grabbing">
                     <p className="text-xs font-medium">Movendo bloco...</p>
                   </div>
                 ) : null}
@@ -285,7 +234,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
           <div className="p-4 border-b border-border flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-widest text-primary-dark/60">Propriedades</h3>
             {selectedBlock && (
-              <span className="text-[10px] bg-bodyoga-green/10 text-bodyoga-green px-2 py-0.5 rounded-full uppercase">
+              <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full uppercase">
                 {selectedBlock.type}
               </span>
             )}
@@ -328,7 +277,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 }
 
 function FieldInput({ field, value, onChange }: { field: any, value: any, onChange: (v: any) => void }) {
-  const inputCls = "w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-bodyoga-green transition-all";
+  const inputCls = "w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary transition-all";
 
   switch (field.type) {
     case 'text':
@@ -340,7 +289,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
     case 'boolean':
       return (
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-bodyoga-green focus:ring-bodyoga-green" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
+          <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
           <span className="text-sm text-primary-dark">Ativo</span>
         </label>
       );
@@ -369,89 +318,6 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
           <input type="text" className={inputCls} value={value ?? ''} onChange={(e) => onChange(e.target.value)} placeholder="/loja ou #produtos" />
         </div>
       );
-    case 'list': {
-      const items: any[] = Array.isArray(value) ? value : [];
-      const itemFields: any[] = field.itemFields ?? [];
-      const addItem = () => {
-        const blank: any = {};
-        itemFields.forEach((f) => { blank[f.key] = f.type === 'boolean' ? false : ''; });
-        onChange([...items, blank]);
-      };
-      const updateItem = (idx: number, key: string, val: any) => {
-        onChange(items.map((it, i) => (i === idx ? { ...it, [key]: val } : it)));
-      };
-      const removeItem = (idx: number) => onChange(items.filter((_, i) => i !== idx));
-      const moveItem = (idx: number, dir: -1 | 1) => {
-        const j = idx + dir;
-        if (j < 0 || j >= items.length) return;
-        const copy = [...items];
-        [copy[idx], copy[j]] = [copy[j], copy[idx]];
-        onChange(copy);
-      };
-      return (
-        <div className="space-y-3">
-          {items.length === 0 && (
-            <p className="text-xs text-gray-400 italic">Nenhum item ainda. Adicione o primeiro abaixo.</p>
-          )}
-          {items.map((item, idx) => (
-            <div key={idx} className="border border-border rounded-lg p-3 bg-gray-50 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-primary-dark/40">
-                  Item {idx + 1}
-                </span>
-                <div className="flex items-center gap-0.5">
-                  <button
-                    type="button"
-                    onClick={() => moveItem(idx, -1)}
-                    disabled={idx === 0}
-                    className="p-1 text-gray-400 hover:text-bodyoga-green disabled:opacity-30 transition"
-                    title="Subir"
-                  >
-                    <ArrowUp size={13} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => moveItem(idx, 1)}
-                    disabled={idx === items.length - 1}
-                    className="p-1 text-gray-400 hover:text-bodyoga-green disabled:opacity-30 transition"
-                    title="Descer"
-                  >
-                    <ArrowDown size={13} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => removeItem(idx)}
-                    className="p-1 text-gray-400 hover:text-red-500 transition"
-                    title="Remover"
-                  >
-                    <Trash2 size={13} />
-                  </button>
-                </div>
-              </div>
-              {itemFields.map((f) => (
-                <div key={f.key} className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-widest text-primary-dark/60 font-bold">
-                    {f.label}
-                  </label>
-                  <FieldInput
-                    field={f}
-                    value={item?.[f.key]}
-                    onChange={(val) => updateItem(idx, f.key, val)}
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={addItem}
-            className="w-full py-2 border-2 border-dashed border-bodyoga-green/30 rounded-lg text-[10px] font-bold uppercase tracking-widest text-bodyoga-green hover:bg-bodyoga-green/5 transition"
-          >
-            + Adicionar item
-          </button>
-        </div>
-      );
-    }
     default:
       return <p className="text-xs text-red-500 italic">Tipo "{field.type}" não implementado</p>;
   }
@@ -485,7 +351,7 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
       {/* Block Outline */}
       <div 
         className={`absolute -inset-[2px] pointer-events-none transition-opacity rounded-[2px] ${
-          isSelected ? 'border-2 border-bodyoga-green opacity-100 z-20' : 'border border-bodyoga-green/20 opacity-0 group-hover:opacity-100 z-10'
+          isSelected ? 'border-2 border-primary opacity-100 z-20' : 'border border-primary/20 opacity-0 group-hover:opacity-100 z-10'
         }`}
       />
 
@@ -497,27 +363,27 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
           <div className="flex items-center bg-white border border-border shadow-sm rounded-lg overflow-hidden">
             <button 
               {...listeners} {...attributes}
-              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition cursor-grab"
+              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition cursor-grab"
             >
               <GripVertical size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
-              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
+              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
             >
               <ArrowUp size={14} />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
-              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
+              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
             >
               <ArrowDown size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
               onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
-              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
+              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
             >
               <Copy size={14} />
             </button>

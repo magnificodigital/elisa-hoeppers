@@ -1,12 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
+import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
 import { listPages } from "@/lib/pages";
 import { useQuery } from "@tanstack/react-query";
-import { getSetting } from "@/lib/settings";
-import { BodyogaLogo } from "./BodyogaLogo";
 
 
 
@@ -16,12 +15,6 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const { user } = useAuth();
   const navConfig = useNavConfig();
   const { data: dbPages } = useQuery({ queryKey: ["pages-active-menu"], queryFn: listPages });
-  const { data: logoSetting } = useQuery({ 
-    queryKey: ["setting", "logo_filter"], 
-    queryFn: () => getSetting("logo_filter") 
-  });
-
-  const logoFilter = logoSetting || "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)";
 
   const dynamicItems = useMemo(() => {
     if (!dbPages) return [];
@@ -89,14 +82,15 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
         {/* Centered logo */}
         <Link
-          to="/"
+          to="/bodyoga"
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
-          <BodyogaLogo 
-            variant="full" 
-            tone={scrolled || alwaysGreen ? "cream" : "green"}
-            className="md:h-20 h-14 w-auto transition-all duration-300"
-          />
+          <span className="md:hidden">
+            <BodyogaLogo variant="full" size={50} tone={green ? "cream" : "green"} className="w-auto h-auto" />
+          </span>
+          <span className="hidden md:block">
+            <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} className="max-w-[200px] object-contain w-auto h-auto" />
+          </span>
         </Link>
 
         {/* Right nav */}
@@ -159,14 +153,14 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-green/95 backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-green backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="flex flex-col items-center gap-6 w-full max-w-[280px] pt-10">
             {navItems.map((item) => (
               <Link
                 key={item.id}
                 to={item.href as any}
                 onClick={() => setOpen(false)}
-                className="block text-[11px] font-bold uppercase tracking-[0.3em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
+                className="block text-sm font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
               >
                 {item.label}
               </Link>
@@ -178,7 +172,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
               <Link
                 to={user ? "/painel" : "/login"}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors"
+                className="flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
                 <User className="w-4 h-4 stroke-[1.5]" />
                 {user ? "Painel" : "Minha Conta"}
@@ -186,7 +180,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
               <Link
                 to="/carrinho"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors"
+                className="flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-bodyoga-cream hover:opacity-70 transition-colors"
               >
                 <ShoppingCart className="w-4 h-4 stroke-[1.5]" />
                 Carrinho
@@ -198,6 +192,3 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
     </header>
   );
 }
-
-export default BodyogaHeader;
-

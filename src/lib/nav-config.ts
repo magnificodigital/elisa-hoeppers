@@ -39,8 +39,10 @@ const POSITIONS: NavPosition[] = ["off", "left", "right"];
 export const DEFAULT_NAV_CONFIG: NavMenuConfig = {
   items: [
     { id: "sobre", label: "SOBRE", href: "/sobre", header: "left", footer: "left" },
+    { id: "bodyoga", label: "BODYOGA", href: "/bodyoga", header: "left", footer: "off" },
+    { id: "projetos", label: "SOB MEDIDA", href: "/projetos-personalizados", header: "left", footer: "off" },
     { id: "loja", label: "SHOP", href: "/loja", header: "left", footer: "right" },
-    { id: "projetos", label: "SOB MEDIDA", href: "/projetos-personalizados", header: "right", footer: "off" },
+    { id: "cursos", label: "AULAS", href: "/cursos", header: "right", footer: "left" },
     { id: "blog", label: "DICAS", href: "/blog", header: "right", footer: "right" },
     { id: "agende", label: "AGENDE SUA AULA", href: "/agende-sua-aula", header: "off", footer: "left" },
   ],

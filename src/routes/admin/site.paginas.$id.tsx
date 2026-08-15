@@ -24,8 +24,6 @@ function EditPageBuilder() {
   const qc = useQueryClient();
   const [blocks, setBlocks] = useState<any[]>([]);
   const [hasChanges, setHasChanges] = useState(false);
-  const [pageData, setPageData] = useState<Partial<SitePage>>({});
-
 
   const { data: page, isLoading } = useQuery({
     queryKey: ["page", id],
@@ -33,16 +31,9 @@ function EditPageBuilder() {
   });
 
   useEffect(() => {
-    if (page) {
-      setBlocks(page.blocks || []);
-      setPageData({
-        title: page.title,
-        seo_title: page.seo_title,
-        seo_description: page.seo_description,
-        og_image: page.og_image,
-      });
+    if (page?.blocks) {
+      setBlocks(page.blocks);
     }
-
   }, [page]);
 
   const save = useMutation({
@@ -71,20 +62,7 @@ function EditPageBuilder() {
     setHasChanges(true);
   };
 
-  const handlePageDataChange = (patch: any) => {
-    setPageData(prev => ({ ...prev, ...patch }));
-    setHasChanges(true);
-  };
-
-  const handleSave = () => {
-    save.mutate({ 
-      blocks, 
-      ...pageData 
-    });
-  };
-
   return (
-
     <BaseLayout>
       <div className="flex flex-col h-screen overflow-hidden bg-background">
         {/* Top Toolbar */}
@@ -130,8 +108,7 @@ function EditPageBuilder() {
                 <Eye size={14} /> Pré-visualizar
               </a>
               <button
-                onClick={handleSave}
-
+                onClick={() => save.mutate({ blocks })}
                 disabled={save.isPending || !hasChanges}
                 className="flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition shadow-sm disabled:opacity-50"
               >
@@ -147,10 +124,7 @@ function EditPageBuilder() {
           <PageBuilderUX 
             blocks={blocks} 
             onChange={handleBlocksChange}
-            pageData={pageData}
-            onPageDataChange={handlePageDataChange}
           />
-
         </main>
       </div>
     </BaseLayout>

@@ -81,24 +81,24 @@ function PagamentoPage() {
             <ChevronLeft className="w-3.5 h-3.5" /> Voltar
           </Link>
 
-          <h1 className="font-display text-3xl md:text-4xl text-bodyoga-green mb-2">
+          <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">
             Pagamento
           </h1>
           <p className="text-primary-dark/70 mb-6">
             Pedido <span className="font-mono">#{order.code}</span> · Total {formatPriceBRL(order.total_cents)}
           </p>
 
-          <div className="bg-white rounded-2xl p-6 mb-6 border border-bodyoga-green/5 shadow-sm">
+          <div className="bg-white rounded-lg p-4 mb-6 border border-border">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-bodyoga-green/60">
+              <span className="text-primary-dark/70">
                 {(order.items as any[]).length} item(s) · Frete {formatPriceBRL(order.shipping_cents ?? 0)}
               </span>
-              <span className="font-display text-lg text-bodyoga-green">{formatPriceBRL(order.total_cents)}</span>
+              <span className="font-display text-lg text-primary-dark">{formatPriceBRL(order.total_cents)}</span>
             </div>
           </div>
 
           {publicKey ? (
-            <div className="bg-white rounded-2xl p-6 border border-bodyoga-green/5 shadow-sm">
+            <div className="bg-white rounded-lg p-4 border border-border">
               <MpPaymentBrick
                 publicKey={publicKey}
                 preferenceId={order.mp_preference_id!}
@@ -133,9 +133,9 @@ function PagamentoPage() {
             </div>
           )}
 
-          <div className="mt-8 flex flex-col items-center gap-2 text-[10px] uppercase tracking-[0.15em] text-bodyoga-green/40">
+          <div className="mt-6 flex items-center justify-center gap-2 text-xs text-primary-dark/60">
             <ShieldCheck className="w-4 h-4" />
-            Processado com segurança pelo Mercado Pago
+            Pagamento processado com segurança pelo Mercado Pago
           </div>
         </div>
       </section>

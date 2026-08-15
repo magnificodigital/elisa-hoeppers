@@ -74,52 +74,50 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => {
-    // In a real scenario, we would fetch these from a cache or the queryClient
-    // For now, using standard titles with fallback to settings logic if integrated in loader
-    return {
-      meta: [
-        { charSet: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { title: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
-        { name: "description", content: "Cosméticos naturais artesanais com óleos essenciais criados por Elisa Hoeppers Casas." },
-        { property: "og:title", content: "BODYOGA — Corpo, mente e ambiente em equilíbrio" },
-        { property: "og:description", content: "Cosméticos naturais artesanais com óleos essenciais." },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-        { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6474f842-ef2b-4137-8e09-79fe713d4d20/id-preview-8c55f742--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app-1779730472117.png" },
-        { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6474f842-ef2b-4137-8e09-79fe713d4d20/id-preview-8c55f742--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app-1779730472117.png" },
-      ],
-      links: [
-        { rel: "stylesheet", href: appCss },
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-        { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Gotu&family=Montserrat:wght@200;300;400;500;600&family=Work+Sans:wght@300;400;500;600;700&display=swap" },
-        { rel: "icon", type: "image/png", href: "/favicon.png" }
-      ],
-      scripts: [
-        { src: "https://sdk.mercadopago.com/js/v2" },
-        { src: "https://www.mercadopago.com/v2/security.js", view: "checkout" as any },
-        {
-          defer: true,
-          ["data-domain"]: "hoepppers.lovable.app,elisahoeppers.com.br",
-          src: "https://plausible.io/js/script.tagged-events.js",
-        },
-        {
-          children:
-            "window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }",
-        },
-        {
-          async: true,
-          src: "https://www.googletagmanager.com/gtag/js?id=G-P23P1WM8K3",
-        },
-        {
-          children:
-            "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-P23P1WM8K3');",
-        },
-      ],
-    }
-  },
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Movimente seu corpo, cuide da sua mente." },
+      { name: "description", content: "Professora de Yoga, fundadora do BODYOGA e perfumista. Movimente seu corpo, cuide da sua mente." },
+      { property: "og:title", content: "Movimente seu corpo, cuide da sua mente." },
+      { property: "og:description", content: "Professora de Yoga, fundadora do BODYOGA e perfumista. Movimente seu corpo, cuide da sua mente." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Movimente seu corpo, cuide da sua mente." },
+      { name: "twitter:description", content: "Professora de Yoga, fundadora do BODYOGA e perfumista. Movimente seu corpo, cuide da sua mente." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6474f842-ef2b-4137-8e09-79fe713d4d20/id-preview-8c55f742--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app-1779730472117.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6474f842-ef2b-4137-8e09-79fe713d4d20/id-preview-8c55f742--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app-1779730472117.png" },
+    ],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Gotu&family=Montserrat:wght@200;300;400;500;600&family=Work+Sans:wght@300;400;500;600;700&display=swap" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" }
+    ],
+    scripts: [
+      { src: "https://sdk.mercadopago.com/js/v2" },
+      { src: "https://www.mercadopago.com/v2/security.js", view: "checkout" as any },
+      {
+        defer: true,
+        ["data-domain"]: "hoepppers.lovable.app,elisahoeppers.com.br",
+        src: "https://plausible.io/js/script.tagged-events.js",
+      },
+      {
+        children:
+          "window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }",
+      },
+      {
+        async: true,
+        src: "https://www.googletagmanager.com/gtag/js?id=G-P23P1WM8K3",
+      },
+      {
+        children:
+          "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-P23P1WM8K3');",
+      },
+    ],
+  }),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

@@ -7,9 +7,10 @@ import {
   listProducts,
   listActiveRituals,
   formatPriceBRL,
+  firstImage,
+  secondImage,
   type Product,
 } from "@/lib/shop";
-import { BodyogaProductCard } from "@/components/bodyoga/BodyogaProductCard";
 
 export const Route = createFileRoute("/loja/")({
   validateSearch: (s: Record<string, unknown>): { brand?: string } => ({
@@ -151,7 +152,39 @@ function ShopListing() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10">
                   {g.products.map((p) => (
-                    <BodyogaProductCard key={p.id} product={p} />
+                    <Link
+                      key={p.slug}
+                      to="/loja/$slug"
+                      params={{ slug: p.slug }}
+                      className="group block"
+                    >
+                      <div className="relative aspect-square overflow-hidden rounded-lg bg-sand">
+                        <GaleriaProduto 
+                          images={p.gallery?.map(g => g.url) || []} 
+                          alt={p.name}
+                          showControls={false}
+                        />
+
+
+                        {!p.in_stock && (
+                          <span className="absolute top-3 right-3 bg-primary-dark text-white text-[11px] px-3 py-1 rounded-md tracking-wide">
+                            Esgotado
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="mt-4 text-base font-medium text-primary-dark">
+                        {p.name}
+                      </h3>
+                      {p.in_stock ? (
+                        <p className="text-sm text-[var(--text-muted)] mt-1">
+                          {formatPriceBRL(p.price_cents)}
+                        </p>
+                      ) : (
+                        <p className="text-sm text-[var(--text-muted)] mt-1 italic">
+                          indisponível no momento
+                        </p>
+                      )}
+                    </Link>
                   ))}
                 </div>
               </div>
