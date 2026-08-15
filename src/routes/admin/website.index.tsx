@@ -6,8 +6,9 @@ import {
   ExternalLink, 
   FileText, 
   Loader2, 
-  Plus, 
-  Trash2, 
+  Plus,
+  Pencil,
+  Trash2,
   Star, 
   Layout, 
   Globe, 
@@ -40,16 +41,15 @@ function WebsiteAdminPage() {
   const { data: allPages, isLoading } = useQuery({ queryKey: ["pages"], queryFn: listPages });
 
   const create = useMutation({
-    mutationFn: async (type: string) => {
-      const finalSlug = slugify(slug || title);
-      if (!title.trim()) throw new Error("Informe o título");
+    mutationFn: async (pageTitle: string) => {
+      const t = pageTitle.trim();
+      if (!t) throw new Error("Informe o título");
+      const finalSlug = slugify(t);
       if (!finalSlug) throw new Error("Endereço inválido");
-      return createPage({ title: title.trim(), slug: finalSlug });
+      return createPage({ title: t, slug: finalSlug });
     },
     onSuccess: (p) => {
       qc.invalidateQueries({ queryKey: ["pages"] });
-      setTitle("");
-      setSlug("");
       navigate({ to: "/admin/website/paginas/$id", params: { id: p.id } });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -149,6 +149,16 @@ function WebsiteAdminPage() {
 
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-display text-2xl text-primary-dark">Páginas do Site</h2>
+            <button
+              onClick={() => {
+                const name = window.prompt("Nome da nova página (ex: Quem Somos):");
+                if (name?.trim()) create.mutate(name.trim());
+              }}
+              disabled={create.isPending}
+              className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm disabled:opacity-60"
+            >
+              <Plus className="w-4 h-4" /> Criar nova página
+            </button>
           </div>
           
           <PageTable 
@@ -160,35 +170,6 @@ function WebsiteAdminPage() {
             onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
           />
 
-          <div className="mt-8 bg-white rounded-2xl border border-border p-6 shadow-sm">
-             <h3 className="text-sm font-bold uppercase tracking-widest text-primary-dark/60 mb-4 flex items-center gap-2">
-                <Plus className="w-4 h-4" /> Criação Rápida
-             </h3>
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input
-                  placeholder="Título (ex: Quem Somos)"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className={inputCls}
-                />
-                <div className="relative">
-                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark/30 text-sm">/p/</span>
-                   <input
-                     placeholder="slug"
-                     value={slug}
-                     onChange={(e) => setSlug(e.target.value)}
-                     className={inputCls + " pl-7"}
-                   />
-                </div>
-                <button
-                  onClick={() => create.mutate(activeTab === 'landing' ? 'landing' : 'site')}
-                  disabled={create.isPending || !title}
-                  className="bg-primary text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition disabled:opacity-50"
-                >
-                  Criar Agora
-                </button>
-             </div>
-          </div>
       </div>
     </div>
   );
@@ -278,14 +259,15 @@ function PageTable({ pages, isLoading, onDelete, onSetHome, onToggleMenu, onUpda
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end items-center gap-2">
-                    <Link 
-                      to="/admin/website/paginas/$id" 
-                      params={{ id: p.id }}
-                      className="p-2 text-primary-dark/40 hover:text-primary transition"
-                      title="Editar"
+                    <a
+                      href={`/admin/website/paginas/${p.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold hover:bg-primary hover:text-white transition"
+                      title="Editar página"
                     >
-                      <Plus className="w-4 h-4" />
-                    </Link>
+                      <Pencil className="w-3.5 h-3.5" /> Editar
+                    </a>
                     <a 
                       href={`/p/${p.slug}`} 
                       target="_blank" 
