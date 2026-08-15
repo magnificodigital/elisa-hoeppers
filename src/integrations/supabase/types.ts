@@ -1625,6 +1625,116 @@ export type Database = {
         }
         Relationships: []
       }
+      site_notice_leads: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          notice_id: string | null
+          notice_title: string | null
+          page: string | null
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          notice_id?: string | null
+          notice_title?: string | null
+          page?: string | null
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          notice_id?: string | null
+          notice_title?: string | null
+          page?: string | null
+          phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_notice_leads_notice_id_fkey"
+            columns: ["notice_id"]
+            isOneToOne: false
+            referencedRelation: "site_notices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_notices: {
+        Row: {
+          active: boolean
+          capture_lead: boolean
+          content: string | null
+          created_at: string
+          cta_href: string | null
+          cta_label: string | null
+          delay_seconds: number
+          end_at: string | null
+          fields_email: boolean
+          fields_name: boolean
+          fields_phone: boolean
+          form_title: string | null
+          frequency: string
+          id: string
+          image_url: string | null
+          pages: string[]
+          start_at: string | null
+          success_message: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          capture_lead?: boolean
+          content?: string | null
+          created_at?: string
+          cta_href?: string | null
+          cta_label?: string | null
+          delay_seconds?: number
+          end_at?: string | null
+          fields_email?: boolean
+          fields_name?: boolean
+          fields_phone?: boolean
+          form_title?: string | null
+          frequency?: string
+          id?: string
+          image_url?: string | null
+          pages?: string[]
+          start_at?: string | null
+          success_message?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          capture_lead?: boolean
+          content?: string | null
+          created_at?: string
+          cta_href?: string | null
+          cta_label?: string | null
+          delay_seconds?: number
+          end_at?: string | null
+          fields_email?: boolean
+          fields_name?: boolean
+          fields_phone?: boolean
+          form_title?: string | null
+          frequency?: string
+          id?: string
+          image_url?: string | null
+          pages?: string[]
+          start_at?: string | null
+          success_message?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
