@@ -49,7 +49,9 @@ import {
   Square,
   Maximize2,
   Minus,
-  Move
+  Move,
+  ArrowUp,
+  ArrowDown
 } from "lucide-react";
 import { useState } from "react";
 import { BLOCKS, createBlockInstance, type BlockType, type BlockDef } from "@/lib/block-registry";
@@ -370,13 +372,13 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
               onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
               className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
             >
-              <ChevronUp size={14} />
+              <ArrowUp size={14} />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
               className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
             >
-              <ChevronDown size={14} />
+              <ArrowDown size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
