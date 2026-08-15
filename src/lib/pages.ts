@@ -21,7 +21,6 @@ export type SitePage = {
   is_home: boolean;
   in_menu: boolean;
   menu_order: number | null;
-  og_image: string | null;
 };
 
 export function slugify(input: string): string {
