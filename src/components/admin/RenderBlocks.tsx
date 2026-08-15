@@ -680,6 +680,99 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
           case "instagram":
             return <HomeInstagram key={block.id} />;
 
+          case "cta": {
+            const primary = p.bgColor === "primary";
+            return (
+              <section key={block.id} className={`py-16 md:py-24 px-6 text-center ${primary ? "bg-bodyoga-green text-bodyoga-cream" : "bg-bodyoga-cream text-bodyoga-green"}`}>
+                <div className="max-w-3xl mx-auto">
+                  {p.title && <h2 className="font-display text-3xl md:text-4xl mb-4">{p.title}</h2>}
+                  {p.text && <p className="mb-8 opacity-80 whitespace-pre-line">{p.text}</p>}
+                  {p.buttonLabel && (
+                    <a href={p.buttonHref || "#"} className={`inline-block px-8 py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold transition ${primary ? "bg-bodyoga-cream text-bodyoga-green hover:opacity-90" : "bg-bodyoga-green text-bodyoga-cream hover:opacity-90"}`}>
+                      {p.buttonLabel}
+                    </a>
+                  )}
+                </div>
+              </section>
+            );
+          }
+
+          case "image":
+            return p.url ? (
+              <figure key={block.id} className="max-w-[1000px] mx-auto px-6 py-8">
+                <img src={p.url} alt={p.caption || ""} className="w-full h-auto rounded-2xl mx-auto" style={p.width ? { maxWidth: p.width } : undefined} loading="lazy" />
+                {p.caption && <figcaption className="text-center text-sm text-bodyoga-green/60 mt-3">{p.caption}</figcaption>}
+              </figure>
+            ) : null;
+
+          case "video": {
+            const url: string = p.url || "";
+            const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]+)/);
+            const vimeo = url.match(/vimeo\.com\/(\d+)/);
+            const embed = yt ? `https://www.youtube.com/embed/${yt[1]}` : vimeo ? `https://player.vimeo.com/video/${vimeo[1]}` : null;
+            return (
+              <div key={block.id} className="max-w-[1000px] mx-auto px-6 py-8">
+                <div className="relative w-full overflow-hidden rounded-2xl bg-black" style={{ aspectRatio: p.ratio || "16/9" }}>
+                  {embed ? (
+                    <iframe src={embed + (p.autoplay ? "?autoplay=1&mute=1" : "")} className="absolute inset-0 w-full h-full" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen title="Vídeo" />
+                  ) : url ? (
+                    <video src={url} className="absolute inset-0 w-full h-full object-cover" controls autoPlay={!!p.autoplay} muted={!!p.autoplay} playsInline />
+                  ) : null}
+                </div>
+              </div>
+            );
+          }
+
+          case "custom-projects":
+            return (
+              <section key={block.id} className="py-16 md:py-24 px-6 text-center bg-bodyoga-green text-bodyoga-cream">
+                <div className="max-w-2xl mx-auto">
+                  <h2 className="font-display text-3xl md:text-4xl mb-3">{p.title || "Projetos sob medida"}</h2>
+                  {p.text && <p className="mb-8 opacity-85 whitespace-pre-line">{p.text}</p>}
+                  <a href="/projetos-personalizados" className="inline-block px-8 py-3.5 rounded-full bg-bodyoga-cream text-bodyoga-green uppercase tracking-[0.2em] text-xs font-semibold hover:opacity-90 transition">
+                    Solicitar projeto
+                  </a>
+                </div>
+              </section>
+            );
+
+          case "yoga-classes":
+            return (
+              <section key={block.id} className="py-16 md:py-24 px-6 text-center bg-bodyoga-cream text-bodyoga-green">
+                <div className="max-w-2xl mx-auto">
+                  <h2 className="font-display text-3xl md:text-4xl mb-3">{p.title || "Aulas de Yoga"}</h2>
+                  {p.text && <p className="mb-8 text-bodyoga-green/80 whitespace-pre-line">{p.text}</p>}
+                  <a href="/agende-sua-aula" className="inline-block px-8 py-3.5 rounded-full bg-bodyoga-green text-bodyoga-cream uppercase tracking-[0.2em] text-xs font-semibold hover:opacity-90 transition">
+                    Agende sua aula
+                  </a>
+                </div>
+              </section>
+            );
+
+          case "shortcut-banner": {
+            const shortcuts: any[] = Array.isArray(p.shortcuts) ? p.shortcuts : [];
+            return (
+              <section key={block.id} className="max-w-[1280px] mx-auto px-6 py-12">
+                <div className="grid md:grid-cols-2 gap-8 items-center bg-bodyoga-green/5 rounded-3xl overflow-hidden">
+                  <div className="p-8 md:p-12">
+                    {p.title && <h2 className="font-display text-2xl md:text-3xl text-bodyoga-green mb-6">{p.title}</h2>}
+                    <div className="flex flex-wrap gap-3">
+                      {shortcuts.map((s, i) => (
+                        <a key={i} href={s.link || "#"} className="inline-block px-6 py-3 rounded-full border border-bodyoga-green/20 text-bodyoga-green text-xs uppercase tracking-[0.2em] font-semibold hover:bg-bodyoga-green hover:text-bodyoga-cream transition">
+                          {s.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  {p.image && (
+                    <div className="h-full min-h-[220px]">
+                      <img src={p.image} alt={p.title || ""} className="w-full h-full object-cover" loading="lazy" />
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
 
           default:
             return <div key={block.id} className="p-8 border border-dashed text-center text-gray-400">Bloco {block.type} não encontrado</div>;
