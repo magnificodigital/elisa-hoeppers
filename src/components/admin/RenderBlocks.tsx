@@ -3,9 +3,11 @@ import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
 import HomeInstagram from "../home/HomeInstagram";
 import { useQuery } from "@tanstack/react-query";
 import { listProducts, formatPriceBRL, type Product } from "@/lib/shop";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, ArrowRight } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
+import { BodyogaProductCard } from "../bodyoga/BodyogaProductCard";
 
 interface RenderBlocksProps {
   blocks: any[];
@@ -40,8 +42,8 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return (
               <section key={block.id} className="py-16 px-4 max-w-4xl mx-auto w-full">
                 <div className={`text-${block.props.align || 'left'}`}>
-                  {block.props.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{block.props.title}</h2>}
-                  {block.props.content && <p className="text-lg text-primary/80 whitespace-pre-wrap leading-relaxed">{block.props.content}</p>}
+                  {block.props.title && <h2 className="text-3xl md:text-4xl font-display mb-6 text-bodyoga-green">{block.props.title}</h2>}
+                  {block.props.content && <p className="text-lg text-bodyoga-green/80 whitespace-pre-wrap leading-relaxed">{block.props.content}</p>}
                 </div>
               </section>
             );
@@ -53,12 +55,12 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <div key={block.id} style={{ height: `${block.props.height}px` }} />;
           case "cta":
             return (
-              <section key={block.id} className={`py-20 px-4 text-center ${block.props.bgColor === 'primary' ? 'bg-primary text-white' : 'bg-cream text-primary'}`}>
+              <section key={block.id} className={`py-20 px-4 text-center ${block.props.bgColor === 'primary' ? 'bg-bodyoga-green text-bodyoga-cream' : 'bg-bodyoga-cream text-bodyoga-green'}`}>
                 <div className="max-w-3xl mx-auto">
                   <h2 className="text-3xl md:text-4xl font-display mb-4">{block.props.title}</h2>
                   {block.props.text && <p className="mb-8 opacity-80">{block.props.text}</p>}
                   {block.props.buttonLabel && (
-                    <a href={block.props.buttonHref} className={`inline-block px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold transition ${block.props.bgColor === 'primary' ? 'bg-white text-primary hover:bg-cream' : 'bg-primary text-white hover:bg-primary-dark'}`}>
+                    <a href={block.props.buttonHref} className={`inline-block px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold transition shadow-sm ${block.props.bgColor === 'primary' ? 'bg-bodyoga-cream text-bodyoga-green hover:bg-white' : 'bg-bodyoga-green text-bodyoga-cream hover:bg-bodyoga-green/90'}`}>
                       {block.props.buttonLabel}
                     </a>
                   )}
@@ -92,8 +94,8 @@ function ProductsBlock({ props }: { props: any }) {
   return (
     <section className="py-20 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
-        {props.title && <h2 className="text-3xl font-display text-primary text-center mb-12">{props.title}</h2>}
-        <div className={`grid grid-cols-1 md:grid-cols-${props.columns || 3} gap-8`}>
+        {props.title && <h2 className="text-3xl font-display text-bodyoga-green text-center mb-12">{props.title}</h2>}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${props.columns || 3} gap-8 md:gap-10`}>
           {displayProducts?.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -104,36 +106,5 @@ function ProductsBlock({ props }: { props: any }) {
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const { addItem } = useCart();
-  const image = product.gallery?.[0]?.url || "";
-
-  return (
-    <div className="group flex flex-col items-center text-center">
-      <a href={`/produto/${product.slug}`} className="block w-full mb-4 overflow-hidden rounded-2xl aspect-square bg-cream">
-        <img 
-          src={image} 
-          alt={product.name} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-      </a>
-      <h3 className="text-lg font-medium text-primary-dark mb-1">{product.name}</h3>
-      <p className="text-sm text-primary/60 mb-3">{formatPriceBRL(product.price_cents)}</p>
-      <button
-        onClick={() => {
-          addItem({
-            product_id: product.id,
-            name: product.name,
-            slug: product.slug,
-            image: image,
-            unit_price_cents: product.price_cents
-          });
-          toast.success("Adicionado ao carrinho");
-        }}
-        className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition opacity-0 group-hover:opacity-100"
-      >
-        <ShoppingCart size={14} /> Comprar
-      </button>
-
-    </div>
-  );
+  return <BodyogaProductCard product={product} />;
 }

@@ -5,7 +5,7 @@ import { useCart } from "@/lib/cart";
 import { formatPriceBRL } from "@/lib/shop";
 
 export const Route = createFileRoute("/carrinho")({
-  head: () => ({ meta: [{ title: "Carrinho — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Seu Carrinho — BODYOGA" }] }),
   component: CartPage,
 });
 
@@ -17,7 +17,7 @@ function CartPage() {
     <Layout>
       <section className="py-16 md:py-24 bg-cream min-h-screen">
         <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-          <h1 className="font-display text-4xl md:text-5xl text-primary-dark">
+          <h1 className="font-display text-4xl md:text-5xl text-bodyoga-green">
             Seu carrinho
           </h1>
           <p className="text-[var(--text-muted)] mt-2">
@@ -32,7 +32,7 @@ function CartPage() {
               <p className="text-primary-dark mb-6">Seu carrinho está vazio.</p>
               <Link
                 to="/loja"
-                className="inline-block bg-primary text-white px-6 py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+                className="inline-block bg-bodyoga-green text-bodyoga-cream px-8 py-3.5 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition shadow-sm"
               >
                 Explorar loja
               </Link>
@@ -139,7 +139,7 @@ function CartPage() {
                 </div>
                 <button
                   onClick={() => navigate({ to: "/checkout" })}
-                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+                  className="block w-full text-center bg-bodyoga-green text-bodyoga-cream py-4 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition shadow-md"
                 >
                   Finalizar pedido
                 </button>

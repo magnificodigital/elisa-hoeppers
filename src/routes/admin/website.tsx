@@ -40,7 +40,7 @@ import {
   type NavPosition
 } from "@/lib/nav-config";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
-import SlidesList from "./bodyoga-slides/index"; // We'll need to export the component from there or refactor.
+import { SlidesList } from "./bodyoga-slides/index.tsx";
 
 
 export const Route = createFileRoute("/admin/website")({
@@ -153,7 +153,7 @@ function WebsiteAdminPage() {
               </TabsTrigger>
               <TabsTrigger value="notices" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                 <Bell className="w-4 h-4 mr-2" />
-                Avisos
+                Avisos & Branding
               </TabsTrigger>
             </TabsList>
 
@@ -181,7 +181,7 @@ function WebsiteAdminPage() {
 
             <TabsContent value="slides">
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
-                <SlidesList />
+                <SlidesList standalone={false} />
               </div>
             </TabsContent>
 
@@ -210,19 +210,8 @@ function WebsiteAdminPage() {
             </TabsContent>
 
             <TabsContent value="notices">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <Bell className="w-12 h-12 text-primary/20 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Avisos do Site</h3>
-                <p className="text-primary-dark/60">Em breve: Gerencie banners de aviso e popups.</p>
-              </div>
-            </TabsContent>
-
-
-            <TabsContent value="notices">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <Bell className="w-12 h-12 text-primary/20 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Avisos do Site</h3>
-                <p className="text-primary-dark/60">Em breve: Gerencie banners de aviso e popups.</p>
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <AvisosTab />
               </div>
             </TabsContent>
           </Tabs>
@@ -680,4 +669,60 @@ function WhatsAppTab() {
     </div>
   );
 }
+
+function AvisosTab() {
+  const qc = useQueryClient();
+  const { data: logoSetting, isLoading: loadingLogo } = useQuery({ 
+    queryKey: ["setting", "logo_filter"], 
+    queryFn: () => listSettings("branding").then(s => s.find(x => x.key === "logo_filter"))
+  });
+  const [logoFilter, setLogoFilter] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (logoSetting) setLogoFilter(logoSetting.value || "");
+  }, [logoSetting]);
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await updateSetting("logo_filter", logoFilter);
+      await qc.invalidateQueries({ queryKey: ["setting", "logo_filter"] });
+      toast.success("Branding atualizado");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loadingLogo) return <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-2xl text-primary-dark">Avisos e Branding</h2>
+        <button onClick={save} disabled={saving} className="bg-primary text-white px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition flex items-center gap-2">
+          {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+          Salvar
+        </button>
+      </div>
+
+      <div className="bg-cream/5 rounded-xl border border-border p-6 space-y-6">
+        <div>
+          <label className="text-[10px] uppercase font-bold tracking-widest text-primary-dark/60 mb-2 block">CSS Filter do Logo (Header/Footer)</label>
+          <input
+            value={logoFilter}
+            onChange={(e) => setLogoFilter(e.target.value)}
+            placeholder="ex: brightness(0) invert(1)"
+            className="w-full border border-border rounded px-3 py-2 text-sm font-mono"
+          />
+          <p className="mt-2 text-[10px] text-primary-dark/40">
+            Use este campo para ajustar a cor do logo SVG/PNG via filtro CSS.
+            Padrão Creme: brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 

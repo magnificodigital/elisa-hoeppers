@@ -12,17 +12,17 @@ import { track } from "@/lib/analytics";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
-  head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Finalizar Pedido — BODYOGA" }] }),
   component: CheckoutPage,
 });
 
 const inputCls =
-  "w-full border border-border rounded-md px-3 py-2.5 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
+  "w-full border border-bodyoga-green/20 rounded-xl px-4 py-3 bg-white text-bodyoga-green text-sm focus:outline-none focus:ring-1 focus:ring-bodyoga-green shadow-sm";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-lg p-6">
-      <h2 className="font-display text-lg text-primary-dark mb-4">{title}</h2>
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-bodyoga-green/5">
+      <h2 className="font-display text-lg text-bodyoga-green mb-4">{title}</h2>
       <div className="space-y-3">{children}</div>
     </div>
   );
@@ -31,7 +31,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-1.5">
+      <label className="block text-[10px] uppercase tracking-[0.2em] text-bodyoga-green/60 mb-1.5 font-bold">
         {label}
       </label>
       {children}
@@ -385,7 +385,7 @@ function CheckoutPage() {
           >
             <ChevronLeft className="w-4 h-4" /> Voltar ao carrinho
           </Link>
-          <h1 className="font-display text-4xl md:text-5xl text-primary-dark mb-8">
+          <h1 className="font-display text-4xl md:text-5xl text-bodyoga-green mb-8">
             Finalizar pedido
           </h1>
 
@@ -725,8 +725,8 @@ function CheckoutPage() {
                 )}
 
                 <div className="flex justify-between pt-2 mt-3 border-t border-border">
-                  <span className="font-display text-lg text-primary-dark">Total</span>
-                  <span className="font-display text-2xl text-primary-dark">
+                  <span className="font-display text-lg text-bodyoga-green">Total</span>
+                  <span className="font-display text-2xl text-bodyoga-green">
                     {formatPriceBRL(totalCents)}
                   </span>
                 </div>
@@ -746,7 +746,7 @@ function CheckoutPage() {
                     (meEnabled && !!shippingError) ||
                     (meEnabled && !selectedShipping && shippingOpts.length > 0)
                   }
-                  className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition disabled:opacity-60"
+                  className="block w-full text-center bg-bodyoga-green text-bodyoga-cream py-4 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition disabled:opacity-60 shadow-md"
                 >
                   {submitting === "processing" ? "Preparando pagamento..." : "Continuar para pagamento"}
                 </button>

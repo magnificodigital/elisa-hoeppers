@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getPageBySlug } from "@/lib/pages";
 import { RenderBlocks } from "@/components/admin/RenderBlocks";
-import BaseLayout from "@/components/Layout";
+
 import { notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/p/$slug")({
@@ -26,10 +26,8 @@ function PageComponent() {
   const page = Route.useLoaderData();
 
   return (
-    <BaseLayout>
-      <div className="min-h-screen bg-background">
-        <RenderBlocks blocks={page.blocks || []} />
-      </div>
-    </BaseLayout>
+    <div className="min-h-screen bg-background">
+      <RenderBlocks blocks={page.blocks || []} />
+    </div>
   );
 }

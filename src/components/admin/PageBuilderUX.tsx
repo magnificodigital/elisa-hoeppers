@@ -158,11 +158,11 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
         <div className="w-80 bg-white border-r border-border flex flex-col z-10">
           <Tabs defaultValue="add" className="w-full flex flex-col h-full">
             <TabsList className="bg-white/50 border-b border-border p-1 rounded-none flex h-auto">
-              <TabsTrigger value="add" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary py-3">
+              <TabsTrigger value="add" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-bodyoga-green py-3">
                 <Plus size={16} className="mr-2" />
                 Blocos
               </TabsTrigger>
-              <TabsTrigger value="seo" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary py-3">
+              <TabsTrigger value="seo" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-bodyoga-green py-3">
                 <Globe size={16} className="mr-2" />
                 SEO
               </TabsTrigger>
@@ -174,9 +174,9 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
                 <button
                   key={def.type}
                   onClick={() => addBlock(def.type)}
-                  className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-primary/5 hover:border-primary/30 border border-transparent rounded-xl transition group"
+                  className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-bodyoga-green/5 hover:border-bodyoga-green/30 border border-transparent rounded-xl transition group"
                 >
-                  <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-primary transition">
+                  <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-bodyoga-green transition">
                     <BlockIcon type={def.type} size={18} />
                   </div>
                   <div className="min-w-0">
@@ -271,7 +271,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 
               <DragOverlay>
                 {activeId ? (
-                  <div className="bg-white border-2 border-primary/50 shadow-lg p-4 rounded-lg opacity-80 cursor-grabbing">
+                  <div className="bg-white border-2 border-bodyoga-green/50 shadow-lg p-4 rounded-lg opacity-80 cursor-grabbing">
                     <p className="text-xs font-medium">Movendo bloco...</p>
                   </div>
                 ) : null}
@@ -285,7 +285,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
           <div className="p-4 border-b border-border flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-widest text-primary-dark/60">Propriedades</h3>
             {selectedBlock && (
-              <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full uppercase">
+              <span className="text-[10px] bg-bodyoga-green/10 text-bodyoga-green px-2 py-0.5 rounded-full uppercase">
                 {selectedBlock.type}
               </span>
             )}
@@ -328,7 +328,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 }
 
 function FieldInput({ field, value, onChange }: { field: any, value: any, onChange: (v: any) => void }) {
-  const inputCls = "w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary transition-all";
+  const inputCls = "w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-bodyoga-green transition-all";
 
   switch (field.type) {
     case 'text':
@@ -340,7 +340,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
     case 'boolean':
       return (
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
+          <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-bodyoga-green focus:ring-bodyoga-green" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
           <span className="text-sm text-primary-dark">Ativo</span>
         </label>
       );
@@ -404,7 +404,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
                     type="button"
                     onClick={() => moveItem(idx, -1)}
                     disabled={idx === 0}
-                    className="p-1 text-gray-400 hover:text-primary disabled:opacity-30 transition"
+                    className="p-1 text-gray-400 hover:text-bodyoga-green disabled:opacity-30 transition"
                     title="Subir"
                   >
                     <ArrowUp size={13} />
@@ -413,7 +413,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
                     type="button"
                     onClick={() => moveItem(idx, 1)}
                     disabled={idx === items.length - 1}
-                    className="p-1 text-gray-400 hover:text-primary disabled:opacity-30 transition"
+                    className="p-1 text-gray-400 hover:text-bodyoga-green disabled:opacity-30 transition"
                     title="Descer"
                   >
                     <ArrowDown size={13} />
@@ -445,7 +445,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
           <button
             type="button"
             onClick={addItem}
-            className="w-full py-2 border-2 border-dashed border-primary/30 rounded-lg text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5 transition"
+            className="w-full py-2 border-2 border-dashed border-bodyoga-green/30 rounded-lg text-[10px] font-bold uppercase tracking-widest text-bodyoga-green hover:bg-bodyoga-green/5 transition"
           >
             + Adicionar item
           </button>
@@ -485,7 +485,7 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
       {/* Block Outline */}
       <div 
         className={`absolute -inset-[2px] pointer-events-none transition-opacity rounded-[2px] ${
-          isSelected ? 'border-2 border-primary opacity-100 z-20' : 'border border-primary/20 opacity-0 group-hover:opacity-100 z-10'
+          isSelected ? 'border-2 border-bodyoga-green opacity-100 z-20' : 'border border-bodyoga-green/20 opacity-0 group-hover:opacity-100 z-10'
         }`}
       />
 
@@ -497,27 +497,27 @@ function SortableBlock({ block, isSelected, onSelect, onRemove, onDuplicate, onM
           <div className="flex items-center bg-white border border-border shadow-sm rounded-lg overflow-hidden">
             <button 
               {...listeners} {...attributes}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition cursor-grab"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition cursor-grab"
             >
               <GripVertical size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
             >
               <ArrowUp size={14} />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
             >
               <ArrowDown size={14} />
             </button>
             <div className="w-[1px] h-4 bg-border" />
             <button 
               onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
-              className="p-1.5 hover:bg-gray-50 text-gray-400 hover:text-primary transition"
+              className="p-1.5 hover:bg-bodyoga-green/5 text-gray-400 hover:text-bodyoga-green transition"
             >
               <Copy size={14} />
             </button>

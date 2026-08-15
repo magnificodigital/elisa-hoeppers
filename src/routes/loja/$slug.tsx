@@ -143,12 +143,12 @@ function ProductDetail() {
               )}
 
               {product.in_stock ? (
-                <div className="mt-6">
+                <div className="mt-8">
                   <AddToCartButton product={product} />
                 </div>
               ) : (
-                <div className="mt-6">
-                  <div className="mb-4 text-center bg-sand text-[var(--text-muted)] py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold">
+                <div className="mt-8">
+                  <div className="mb-4 text-center bg-sand text-bodyoga-green/60 py-3 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold">
                     Fora de estoque
                   </div>
                   <ReservationForm product={product} />
@@ -170,9 +170,9 @@ function ProductDetail() {
                 <WishlistButton itemType="product" itemId={product.id} />
               </div>
 
-              <div className="mt-8 space-y-3 text-sm text-[var(--text-muted)]">
+              <div className="mt-10 space-y-4 text-[10px] uppercase tracking-[0.15em] text-bodyoga-green/60">
                 <p className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4" /> Pagamento via Pix, Cartão ou SmartWallet
+                  <ShieldCheck className="w-3.5 h-3.5" /> Pagamento via Pix, Cartão ou SmartWallet
                 </p>
                 <div className="flex items-center justify-center md:justify-start gap-2 w-fit">
                   {/* Visa */}
@@ -268,17 +268,18 @@ function AddToCartButton({ product }: { product: Product }) {
       </div>
       <button
         type="button"
-        onClick={() => handleAdd(false)}
-        className="block w-full text-center border-2 border-primary text-primary py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary hover:text-white transition"
-      >
-        {added ? "✓ Adicionado ao carrinho" : "Adicionar ao carrinho"}
-      </button>
-      <button
-        type="button"
         onClick={() => handleAdd(true)}
-        className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+        className="block w-full text-center bg-bodyoga-green text-bodyoga-cream py-4 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition shadow-sm"
       >
         Comprar agora
+      </button>
+      
+      <button
+        type="button"
+        onClick={() => handleAdd(false)}
+        className="block w-full text-center border border-bodyoga-green/20 text-bodyoga-green py-3 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/5 transition"
+      >
+        {added ? "✓ Adicionado" : "Adicionar ao carrinho"}
       </button>
     </div>
   );
