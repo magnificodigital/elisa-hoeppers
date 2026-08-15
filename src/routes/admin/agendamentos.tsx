@@ -48,7 +48,7 @@ function AdminAppointments() {
 
   return (
     <>
-      <section className="bg-background min-h-[70vh]">
+      <div className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-2">
             <div className="flex items-center gap-3">
@@ -99,7 +99,7 @@ function AdminAppointments() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {showNew && <NewAppointmentModal onClose={() => setShowNew(false)} />}
     </>

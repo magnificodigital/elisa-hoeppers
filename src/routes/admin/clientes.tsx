@@ -88,9 +88,8 @@ function CustomersPage() {
   ];
 
   return (
-    
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
-        <div className="max-w-5xl mx-auto px-4">
+    <div className="py-12 md:py-16 bg-background min-h-[70vh]">
+      <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between mb-2 gap-4 flex-wrap">
             <div className="flex items-center gap-3">
               <Users size={24} className="text-primary" />
@@ -151,9 +150,8 @@ function CustomersPage() {
               <CustomerRow key={c.email} c={c} />
             ))}
           </div>
-        </div>
-      </section>
-    
+      </div>
+    </div>
   );
 }
 
