@@ -146,8 +146,6 @@ function AdminOrders() {
     </div>
   );
 }
-  );
-}
 
 function BulkApproveButton({ ids, onDone, orders }: { ids: string[]; onDone: () => void; orders: Order[] }) {
   const qc = useQueryClient();

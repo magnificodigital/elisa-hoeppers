@@ -304,8 +304,6 @@ function AdminHome() {
     </div>
   );
 }
-  );
-}
 
 function KpiCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
