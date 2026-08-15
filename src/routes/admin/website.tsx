@@ -153,7 +153,7 @@ function WebsiteAdminPage() {
               </TabsTrigger>
               <TabsTrigger value="notices" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                 <Bell className="w-4 h-4 mr-2" />
-                Avisos
+                Avisos & Branding
               </TabsTrigger>
             </TabsList>
 
