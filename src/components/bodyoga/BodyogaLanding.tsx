@@ -249,7 +249,7 @@ function RitualCategories({ products }: { products: Product[] }) {
 
 
 
-function BodyogaProductCard({ product, noBorder = false }: { product: Product; noBorder?: boolean }) {
+export function BodyogaProductCard({ product, noBorder = false }: { product: Product; noBorder?: boolean }) {
   const [main, sub] = product.name.split("—").map((s) => s.trim());
 
   return (

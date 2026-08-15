@@ -23,7 +23,12 @@ export type BlockType =
   | "yoga-classes"
   | "columns"
   | "shortcut-banner"
-  | "spacer";
+  | "spacer"
+  | "home-hero"
+  | "home-opening"
+  | "home-rituals"
+  | "home-intro"
+  | "home-blog";
 
 export interface BlockDef {
   type: BlockType;
@@ -292,6 +297,61 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     desc: "Espaço em branco",
     defaults: { height: 48 },
     fields: [{ key: "height", label: "Altura (px)", type: "number" }]
+  },
+  "home-hero": {
+    type: "home-hero",
+    label: "Hero (Slider)",
+    desc: "Banner principal com os slides",
+    defaults: {},
+    fields: []
+  },
+  "home-opening": {
+    type: "home-opening",
+    label: "Frase de abertura",
+    desc: "Ícone + frase curta",
+    defaults: {
+      icon: "https://id-preview--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app/assets/bodyoga/icone-bodyoga-2.png",
+      title: "Equilíbrio para o corpo,\nmente e ambiente."
+    },
+    fields: [
+      { key: "icon", label: "Ícone", type: "image" },
+      { key: "title", label: "Frase", type: "textarea" }
+    ]
+  },
+  "home-rituals": {
+    type: "home-rituals",
+    label: "Rituais (Produtos)",
+    desc: "Grade com todos os produtos",
+    defaults: {},
+    fields: []
+  },
+  "home-intro": {
+    type: "home-intro",
+    label: "Apresentação (Elisa)",
+    desc: "Imagem + texto",
+    defaults: {
+      title: "BODYOGA é a\nfusão entre *yoga* e\ncuidado consciente.",
+      p1: "Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.",
+      p2: "Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.",
+      ctaLabel: "Harmonia & Equilíbrio",
+      ctaHref: "/sobre",
+      image: "/images/home/bodyoga/bodyoga-left.png"
+    },
+    fields: [
+      { key: "image", label: "Imagem", type: "image" },
+      { key: "title", label: "Título", type: "textarea" },
+      { key: "p1", label: "Parágrafo 1", type: "textarea" },
+      { key: "p2", label: "Parágrafo 2", type: "textarea" },
+      { key: "ctaLabel", label: "Texto do botão", type: "text" },
+      { key: "ctaHref", label: "Link do botão", type: "link" }
+    ]
+  },
+  "home-blog": {
+    type: "home-blog",
+    label: "Blog na Home",
+    desc: "Últimos posts",
+    defaults: {},
+    fields: []
   },
 };
 

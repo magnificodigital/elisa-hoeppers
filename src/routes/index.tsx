@@ -3,6 +3,8 @@ import { BodyogaLanding } from "@/components/bodyoga/BodyogaLanding";
 import { listPages } from "@/lib/pages";
 import { RenderBlocks } from "@/components/admin/RenderBlocks";
 import BaseLayout from "@/components/Layout";
+import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
+import Footer from "@/components/Footer";
 import { listActiveSlides } from "@/lib/shop";
 
 export const Route = createFileRoute("/")({
@@ -38,9 +40,11 @@ function HomeRoute() {
 
   if (homePage) {
     return (
-      <BaseLayout>
+      <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
+        <BodyogaHeader alwaysGreen />
         <RenderBlocks blocks={homePage.blocks || []} />
-      </BaseLayout>
+        <Footer />
+      </div>
     );
   }
 
