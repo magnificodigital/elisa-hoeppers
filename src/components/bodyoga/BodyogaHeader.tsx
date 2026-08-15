@@ -15,6 +15,12 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
   const { user } = useAuth();
   const navConfig = useNavConfig();
   const { data: dbPages } = useQuery({ queryKey: ["pages-active-menu"], queryFn: listPages });
+  const { data: logoSetting } = useQuery({ 
+    queryKey: ["setting", "logo_filter"], 
+    queryFn: () => getSetting("logo_filter") 
+  });
+
+  const logoFilter = logoSetting || "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)";
 
   const dynamicItems = useMemo(() => {
     if (!dbPages) return [];
@@ -82,15 +88,15 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
         {/* Centered logo */}
         <Link
-          to="/bodyoga"
+          to="/"
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
-          <span className="md:hidden">
-            <BodyogaLogo variant="full" size={50} tone={green ? "cream" : "green"} className="w-auto h-auto" />
-          </span>
-          <span className="hidden md:block">
-            <BodyogaLogo variant="full" size={60} tone={green ? "cream" : "green"} className="max-w-[200px] object-contain w-auto h-auto" />
-          </span>
+          <img
+            src="/images/home/bodyoga/logo-bodyoga.png"
+            alt="BODYOGA"
+            className="h-12 md:h-16 w-auto object-contain"
+            style={{ filter: logoFilter }}
+          />
         </Link>
 
         {/* Right nav */}
