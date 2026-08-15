@@ -58,7 +58,7 @@ function BroadcastPage() {
 
           {tab === "campanhas" && <CampanhasTab />}
           {tab === "templates" && <TemplatesTab />}
-          {tab === "layout" && <LayoutTab />}
+          {tab === "layout" && }
           {tab === "automaticos" && <AutomaticosTab />}
           {tab === "inscritos" && <InscritosTab />}
         </div>

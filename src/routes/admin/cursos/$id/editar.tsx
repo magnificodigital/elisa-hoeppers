@@ -1,17 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getCourseForAdmin, updateCourse, type CourseUpdate } from "@/lib/admin";
 
 export const Route = createFileRoute("/admin/cursos/$id/editar")({
   head: () => ({ meta: [{ title: "Admin — Editar curso" }] }),
   component: () => (
-    <StaffGuard>
+    
       <CourseEditPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -57,21 +55,21 @@ function CourseEditPage() {
 
   if (isLoading) {
     return (
-      <Layout>
+      
         <section className="py-24 text-center"><p className="text-[var(--text-muted)]">Carregando…</p></section>
-      </Layout>
+      
     );
   }
   if (!course) {
     return (
-      <Layout>
+      
         <section className="py-24 text-center"><p className="text-[var(--text-muted)]">Curso não encontrado.</p></section>
-      </Layout>
+      
     );
   }
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
         <div className="container mx-auto px-6 max-w-3xl">
           <Link to="/admin/cursos" className="text-xs uppercase tracking-widest text-primary hover:opacity-70">← Voltar</Link>
@@ -137,7 +135,7 @@ function CourseEditPage() {
           </form>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

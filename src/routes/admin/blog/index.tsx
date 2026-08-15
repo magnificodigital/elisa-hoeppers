@@ -1,16 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, FileText, ArrowLeft } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
 
 export const Route = createFileRoute("/admin/blog/")({
   head: () => ({ meta: [{ title: "Admin — Blog" }] }),
   component: () => (
-    <StaffGuard>
+    
       <AdminBlogList />
-    </StaffGuard>
+    
   ),
 });
 
@@ -38,7 +36,7 @@ function AdminBlogList() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
           <Link
@@ -102,6 +100,6 @@ function AdminBlogList() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

@@ -17,7 +17,6 @@ import {
   LayoutDashboard
 } from "lucide-react";
 import { toast } from "sonner";
-import BaseLayout from "@/components/Layout";
 import { createPage, deletePage, listPages, slugify, updatePage, type SitePage } from "@/lib/pages";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";

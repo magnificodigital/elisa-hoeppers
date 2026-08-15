@@ -2,16 +2,14 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Plus, X } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { listAllCourses, createCourse, slugify } from "@/lib/admin";
 
 export const Route = createFileRoute("/admin/cursos/")({
   head: () => ({ meta: [{ title: "Admin — Cursos" }] }),
   component: () => (
-    <StaffGuard>
+    
       <AdminCursosList />
-    </StaffGuard>
+    
   ),
 });
 
@@ -39,7 +37,7 @@ function AdminCursosList() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-8 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-4 md:px-6 max-w-5xl">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
@@ -148,7 +146,7 @@ function AdminCursosList() {
           </div>
         </div>
       )}
-    </Layout>
+    
   );
 }
 

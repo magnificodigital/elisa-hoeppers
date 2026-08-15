@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save, ExternalLink, Loader2, Globe, Settings, Eye } from "lucide-react";
 import { toast } from "sonner";
-import BaseLayout from "@/components/Layout";
 import { getPage, updatePage, type SitePage } from "@/lib/pages";
 import { PageBuilderUX } from "@/components/admin/PageBuilderUX";
 import { useState, useEffect } from "react";

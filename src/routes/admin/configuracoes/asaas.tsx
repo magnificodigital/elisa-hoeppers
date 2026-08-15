@@ -1,21 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Wallet } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
 
 export const Route = createFileRoute("/admin/configuracoes/asaas")({
   head: () => ({ meta: [{ title: "Admin — Asaas" }] }),
   component: () => (
-    <AdminGuard>
+    
       <Page />
-    </AdminGuard>
+    
   ),
 });
 
 function Page() {
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
@@ -75,6 +73,6 @@ function Page() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

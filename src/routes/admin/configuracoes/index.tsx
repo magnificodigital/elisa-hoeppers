@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Users, Stethoscope, CalendarClock, ChevronRight, Plug } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 
 export const Route = createFileRoute("/admin/configuracoes/")({
   head: () => ({ meta: [{ title: "Admin — Configurações" }] }),

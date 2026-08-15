@@ -2,8 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Trash2, Save, Plus } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import {
   getQuizByLesson, listQuestionsForAdmin, upsertQuiz, deleteQuiz,
   createQuestion, updateQuestion, deleteQuestion,
@@ -13,9 +11,9 @@ import {
 export const Route = createFileRoute("/admin/cursos/$id/aulas/$lessonId/quiz")({
   head: () => ({ meta: [{ title: "Admin — Quiz da aula" }] }),
   component: () => (
-    <StaffGuard>
+    
       <QuizEditor />
-    </StaffGuard>
+    
   ),
 });
 
@@ -75,7 +73,7 @@ function QuizEditor() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-[var(--surface-cream)] min-h-screen">
         <div className="container mx-auto px-6 max-w-4xl">
           <Link to="/admin/cursos/$id/aulas" params={{ id: courseId }} className="text-xs uppercase tracking-widest text-primary hover:opacity-70">← Voltar para aulas</Link>
@@ -137,7 +135,7 @@ function QuizEditor() {
           {loadingQuiz && <p className="text-primary-dark">Carregando…</p>}
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

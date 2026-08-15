@@ -2,17 +2,15 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Trash2, Eye } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getPostForAdmin, updatePost, deletePost, parseMarkdownBlocks } from "@/lib/blog";
 
 export const Route = createFileRoute("/admin/blog/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar post" }] }),
   component: () => (
-    <StaffGuard>
+    
       <PostEditPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -102,27 +100,27 @@ function PostEditPage() {
 
   if (isLoading) {
     return (
-      <Layout>
+      
         <section className="py-24 text-center">
           <p className="text-[var(--text-muted)]">Carregando…</p>
         </section>
-      </Layout>
+      
     );
   }
   if (!post) {
     return (
-      <Layout>
+      
         <section className="py-24 text-center">
           <p className="text-[var(--text-muted)]">Post não encontrado.</p>
         </section>
-      </Layout>
+      
     );
   }
 
   const previewBlocks = parseMarkdownBlocks(form.body_md);
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
@@ -287,6 +285,6 @@ function PostEditPage() {
           </form>
         </div>
       </section>
-    </Layout>
+    
   );
 }

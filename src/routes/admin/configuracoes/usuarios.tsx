@@ -2,8 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { ChevronLeft, Users, UserPlus, Trash2, Key, KeyRound, UserCog, ShieldCheck, Eye, EyeOff } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import {
   Dialog,
@@ -43,9 +41,9 @@ const ROLE_INFO: Record<UserRow["role"], { label: string; desc: string }> = {
 export const Route = createFileRoute("/admin/configuracoes/usuarios")({
   head: () => ({ meta: [{ title: "Admin — Usuários" }] }),
   component: () => (
-    <AdminGuard>
+    
       <Page />
-    </AdminGuard>
+    
   ),
 });
 
@@ -66,7 +64,7 @@ function Page() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
@@ -135,7 +133,7 @@ function Page() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

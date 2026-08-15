@@ -2,17 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Plus, ImageOff, Instagram, Copy, Check } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { listAllProductsForAdmin, formatPriceBRL, firstImage, createProduct } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/produtos/")({
   head: () => ({ meta: [{ title: "Admin — Produtos" }] }),
   component: () => (
-    <StaffGuard>
+    
       <AdminProductsList />
-    </StaffGuard>
+    
   ),
 });
 
@@ -73,7 +71,7 @@ function AdminProductsList() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center justify-between mb-2">
@@ -147,7 +145,7 @@ function AdminProductsList() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 
