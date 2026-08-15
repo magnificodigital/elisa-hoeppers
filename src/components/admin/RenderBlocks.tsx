@@ -1,10 +1,11 @@
 import React from "react";
 import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
-import { BodyogaLanding } from "../bodyoga/BodyogaLanding";
 import HomeInstagram from "../home/HomeInstagram";
-import BodyogaProductCard from "../bodyoga/BodyogaProductCard";
 import { useQuery } from "@tanstack/react-query";
-import { listProducts } from "@/lib/shop";
+import { listProducts, formatPriceBRL, type Product } from "@/lib/shop";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { toast } from "sonner";
 
 interface RenderBlocksProps {
   blocks: any[];
@@ -25,11 +26,12 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                   id: block.id,
                   title: block.props.title,
                   subtitle: block.props.subtitle,
-                  button_label: block.props.buttonLabel,
-                  button_link: block.props.buttonHref,
+                  cta_label: block.props.buttonLabel,
+                  cta_href: block.props.buttonHref,
                   image_url: block.props.bgImage,
                   video_url: block.props.bgVideo,
-                  overlay_opacity: block.props.overlay,
+                  media_href: block.props.mediaHref,
+                  show_nav: block.props.showNav ?? true,
                   active: true
                 } as any]}
               />
@@ -84,7 +86,7 @@ function ProductsBlock({ props }: { props: any }) {
   if (isLoading) return <div className="py-20 text-center text-primary/40">Carregando produtos...</div>;
 
   const displayProducts = props.selection === 'featured' 
-    ? products?.filter(p => p.featured).slice(0, props.columns * 2)
+    ? products?.filter(p => p.is_featured).slice(0, props.columns * 2)
     : products?.slice(0, props.columns * 2);
 
   return (
@@ -93,10 +95,38 @@ function ProductsBlock({ props }: { props: any }) {
         {props.title && <h2 className="text-3xl font-display text-primary text-center mb-12">{props.title}</h2>}
         <div className={`grid grid-cols-1 md:grid-cols-${props.columns || 3} gap-8`}>
           {displayProducts?.map(product => (
-            <BodyogaProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function ProductCard({ product }: { product: Product }) {
+  const { addItem } = useCart();
+  const image = product.gallery?.[0]?.url || "";
+
+  return (
+    <div className="group flex flex-col items-center text-center">
+      <a href={`/produto/${product.slug}`} className="block w-full mb-4 overflow-hidden rounded-2xl aspect-square bg-cream">
+        <img 
+          src={image} 
+          alt={product.name} 
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      </a>
+      <h3 className="text-lg font-medium text-primary-dark mb-1">{product.name}</h3>
+      <p className="text-sm text-primary/60 mb-3">{formatPriceBRL(product.price_cents)}</p>
+      <button
+        onClick={() => {
+          addItem(product);
+          toast.success("Adicionado ao carrinho");
+        }}
+        className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition opacity-0 group-hover:opacity-100"
+      >
+        <ShoppingCart size={14} /> Comprar
+      </button>
+    </div>
   );
 }
