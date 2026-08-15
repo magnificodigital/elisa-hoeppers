@@ -560,6 +560,7 @@ serve(async (req) => {
     else if (type === "project_request") await handleProjectRequest(record_id, payload);
     else if (type === "waitlist_signup") await handleWaitlistSignup(payload);
     else if (type === "waitlist_restock") result = await handleWaitlistRestock(payload?.product_id || record_id);
+    else if (type === "notice_lead") await handleNoticeLead(payload);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,
