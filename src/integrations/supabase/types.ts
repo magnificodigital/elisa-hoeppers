@@ -1011,12 +1011,17 @@ export type Database = {
           display_order: number
           hero_image: string | null
           id: string
+          in_menu: boolean
+          is_home: boolean
           is_published: boolean
+          menu_order: number | null
           seo_description: string | null
           seo_title: string | null
           show_in_menu: boolean
           slug: string
+          status: string
           title: string
+          type: string
           updated_at: string
         }
         Insert: {
@@ -1026,12 +1031,17 @@ export type Database = {
           display_order?: number
           hero_image?: string | null
           id?: string
+          in_menu?: boolean
+          is_home?: boolean
           is_published?: boolean
+          menu_order?: number | null
           seo_description?: string | null
           seo_title?: string | null
           show_in_menu?: boolean
           slug: string
+          status?: string
           title: string
+          type?: string
           updated_at?: string
         }
         Update: {
@@ -1041,12 +1051,17 @@ export type Database = {
           display_order?: number
           hero_image?: string | null
           id?: string
+          in_menu?: boolean
+          is_home?: boolean
           is_published?: boolean
+          menu_order?: number | null
           seo_description?: string | null
           seo_title?: string | null
           show_in_menu?: boolean
           slug?: string
+          status?: string
           title?: string
+          type?: string
           updated_at?: string
         }
         Relationships: []
@@ -1610,6 +1625,24 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       wishlist_items: {
         Row: {
           added_at: string
@@ -1810,6 +1843,13 @@ export type Database = {
         }[]
       }
       get_public_setting: { Args: { p_key: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_admin: { Args: never; Returns: boolean }
       is_enrolled: { Args: { p_course_id: string }; Returns: boolean }
       is_enrolled_in_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
@@ -1873,6 +1913,7 @@ export type Database = {
       }
     }
     Enums: {
+      app_role: "admin" | "moderator" | "user"
       appointment_status: "pending" | "confirmed" | "cancelled" | "completed"
       course_level: "iniciante" | "intermediario" | "avancado" | "todos"
       enrollment_status:
@@ -2016,6 +2057,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "moderator", "user"],
       appointment_status: ["pending", "confirmed", "cancelled", "completed"],
       course_level: ["iniciante", "intermediario", "avancado", "todos"],
       enrollment_status: [
