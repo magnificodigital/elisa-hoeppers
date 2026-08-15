@@ -10,11 +10,7 @@ import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/admin/site/paginas/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar Página" }] }),
-  component: () => (
-    
-      <EditPageBuilder />
-    
-  ),
+  component: () => <EditPageBuilder />,
 });
 
 function EditPageBuilder() {
@@ -48,11 +44,9 @@ function EditPageBuilder() {
 
   if (isLoading || !page) {
     return (
-      <BaseLayout>
-        <div className="flex items-center justify-center py-32">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </BaseLayout>
+      <div className="flex items-center justify-center py-32">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
     );
   }
 
@@ -62,8 +56,7 @@ function EditPageBuilder() {
   };
 
   return (
-    <BaseLayout>
-      <div className="flex flex-col h-screen overflow-hidden bg-background">
+    <div className="flex flex-col h-screen overflow-hidden bg-background">
         {/* Top Toolbar */}
         <header className="h-16 border-b border-border bg-white px-6 flex items-center justify-between z-30 shrink-0">
           <div className="flex items-center gap-4">
@@ -126,6 +119,5 @@ function EditPageBuilder() {
           />
         </main>
       </div>
-    </BaseLayout>
   );
 }

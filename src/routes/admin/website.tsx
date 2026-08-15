@@ -24,11 +24,7 @@ import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/admin/website")({
   head: () => ({ meta: [{ title: "Admin — Gerenciar Site" }] }),
-  component: () => (
-    
-      <WebsiteAdminPage />
-    
-  ),
+  component: () => <WebsiteAdminPage />,
 });
 
 function WebsiteAdminPage() {
@@ -89,8 +85,7 @@ function WebsiteAdminPage() {
   const inputCls = "w-full border border-border rounded-md px-3 py-2 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
-    <BaseLayout>
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
+    <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
@@ -200,7 +195,6 @@ function WebsiteAdminPage() {
           </div>
         </div>
       </section>
-    </BaseLayout>
   );
 }
 
