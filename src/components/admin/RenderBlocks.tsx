@@ -1,7 +1,7 @@
 import React from "react";
-import { BodyogaHeroSlider } from "../bodyoga/BodyogaHeroSlider";
-import { BodyogaLanding } from "../bodyoga/BodyogaLanding";
-import { HomeInstagram } from "../home/HomeInstagram";
+import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
+import BodyogaLanding from "../bodyoga/BodyogaLanding";
+import HomeInstagram from "../home/HomeInstagram";
 // Add more imports as components are updated to accept props
 
 interface RenderBlocksProps {
@@ -23,14 +23,13 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                   id: block.id,
                   title: block.props.title,
                   subtitle: block.props.subtitle,
-                  badge: block.props.badge,
                   button_label: block.props.buttonLabel,
                   button_link: block.props.buttonHref,
                   image_url: block.props.bgImage,
                   video_url: block.props.bgVideo,
                   overlay_opacity: block.props.overlay,
                   active: true
-                }]}
+                } as any]}
               />
             );
           case "text":
