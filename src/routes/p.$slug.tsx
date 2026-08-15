@@ -13,17 +13,20 @@ export const Route = createFileRoute("/p/$slug")({
     return page;
   },
   component: PageView,
-  head: ({ loaderData: page }) => ({
-    title: `${page.title} — BODYOGA`,
-    meta: [
-      { name: "description", content: page.seo_description || "" },
-      { property: "og:title", content: page.seo_title || page.title },
-      { property: "og:description", content: page.seo_description || "" },
-      { property: "og:image", content: page.og_image || "" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: ({ loaderData: page }) => {
+    if (!page) return { title: "Página não encontrada" };
+    return {
+      title: `${page.title} — BODYOGA`,
+      meta: [
+        { name: "description", content: page.seo_description || "" },
+        { property: "og:title", content: page.seo_title || page.title },
+        { property: "og:description", content: page.seo_description || "" },
+        { property: "og:image", content: page.og_image || "" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
 });
 
 function PageView() {

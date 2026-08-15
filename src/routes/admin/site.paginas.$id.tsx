@@ -31,8 +31,8 @@ function EditPageBuilder() {
   });
 
   useEffect(() => {
-    if (page?.blocks) {
-      setBlocks(page.blocks);
+    if (page?.content_blocks) {
+      setBlocks(page.content_blocks);
     }
   }, [page]);
 
@@ -108,7 +108,7 @@ function EditPageBuilder() {
                 <Eye size={14} /> Pré-visualizar
               </a>
               <button
-                onClick={() => save.mutate({ blocks })}
+                onClick={() => save.mutate({ content_blocks: blocks })}
                 disabled={save.isPending || !hasChanges}
                 className="flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition shadow-sm disabled:opacity-50"
               >
