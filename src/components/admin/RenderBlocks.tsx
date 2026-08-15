@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
-import { BodyogaProductCard } from "../bodyoga/BodyogaLanding";
+import { BodyogaProductCard } from "../bodyoga/BodyogaProductCard";
 import HomeInstagram from "../home/HomeInstagram";
 import HomeBlog from "../home/HomeBlog";
 import { listActiveSlides, listProducts, formatPriceBRL } from "@/lib/shop";
