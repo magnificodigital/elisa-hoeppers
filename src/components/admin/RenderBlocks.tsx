@@ -50,30 +50,6 @@ import {
   type Service,
 } from "@/lib/appointments";
 
-            return (
-              <section key={block.id} className="py-20 md:py-32">
-                <div className="container mx-auto px-6 max-w-2xl">
-                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
-                </div>
-              </section>
-            );
-
-          case "signup-form":
-            return <SignupFormBlock key={block.id} />;
-
-
-          
-          default:
-            return (
-              <div key={block.id} className="p-8 border border-dashed border-gray-300 text-center text-gray-500">
-                Bloco "{block.type}" em desenvolvimento
-              </div>
-            );
-        }
-      })}
-    </div>
-  );
-};
 
 function HomeHeroBlock() {
   const { data: slides } = useQuery({ 
@@ -82,6 +58,7 @@ function HomeHeroBlock() {
   });
   return <BodyogaHeroSlider initialSlides={slides ?? []} />;
 }
+
 
 function HomeRitualsBlock({ columns = 3, title, selection = "all" }: { columns?: number, title?: string, selection?: string }) {
   const { data: products } = useQuery({ 
@@ -115,6 +92,7 @@ function HomeRitualsBlock({ columns = 3, title, selection = "all" }: { columns?:
     </section>
   );
 }
+
 
 function CoursesBlock({ columns = 2 }: { columns?: number }) {
   const { data: courses } = useQuery({
@@ -166,6 +144,7 @@ function CoursesBlock({ columns = 2 }: { columns?: number }) {
   );
 }
 
+
 function IconSelector({ icon, className }: { icon: string, className?: string }) {
   switch (icon) {
     case 'leaf': return <Leaf className={className} />;
@@ -179,6 +158,7 @@ function IconSelector({ icon, className }: { icon: string, className?: string })
     default: return <CheckCircle2 className={className} />;
   }
 }
+
 
 
 function renderIntroTitle(text: string) {
@@ -664,3 +644,81 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <BookingFormBlock key={block.id} />;
 
           case "custom-project-form":
+
+
+interface RenderBlocksProps {
+  blocks: any[];
+}
+
+export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
+  if (!blocks || !Array.isArray(blocks)) return null;
+
+  return (
+    <div className="flex flex-col w-full">
+      {blocks.map((block) => {
+        switch (block.type) {
+          case "hero":
+            return (
+              <BodyogaHeroSlider 
+                key={block.id}
+                initialSlides={[{
+                  id: block.id,
+                  title: block.props.title,
+                  subtitle: block.props.subtitle,
+                  button_label: block.props.buttonLabel,
+                  button_link: block.props.buttonHref,
+                  image_url: block.props.bgImage,
+                  video_url: block.props.bgVideo,
+                  overlay_opacity: block.props.overlay,
+                  active: true
+                } as any]}
+              />
+            );
+          case "image-text": {
+            const p = block.props;
+            return (
+              <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
+                <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-16 md:py-24">
+                  <div className={`grid md:grid-cols-2 gap-10 lg:gap-16 items-center ${p.side === 'left' ? 'md:[&>*:first-child]:order-2' : ''}`}>
+                    {p.image && (
+                      <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-green/5">
+                        <img src={p.image} alt={p.title || ''} className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="space-y-6">
+                      {p.title && <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green leading-tight">{p.title}</h2>}
+                      {p.content && <p className="text-lg text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">{p.content}</p>}
+                      {p.buttonLabel && (
+                        <a href={p.buttonHref || '#'} className="inline-flex px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:text-bodyoga-cream text-[11px] uppercase tracking-[0.3em] font-semibold transition">
+                          {p.buttonLabel}
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          case "products":
+            return (
+              <HomeRitualsBlock 
+                key={block.id} 
+                columns={block.props.columns} 
+                title={block.props.title}
+                selection={block.props.selection}
+              />
+            );
+
+          case "text":
+            return (
+              <section key={block.id} className="py-16 px-4 max-w-4xl mx-auto w-full">
+                <div className={`text-${block.props.align || 'left'}`}>
+                  {block.props.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{block.props.title}</h2>}
+                  {block.props.content && <p className="text-lg text-primary/80 whitespace-pre-wrap">{block.props.content}</p>}
+                </div>
+              </section>
+            );
+        }
+      })}
+    </div>
+  );
+};
