@@ -57,7 +57,7 @@ function AdminProjectRequests() {
 
   return (
     
-      <section className="py-12 md:py-20 bg-[#F7F0E5] min-h-screen">
+      <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center gap-3 mb-2">
             <MessageSquare className="w-7 h-7 text-[#3B4F30]" />
@@ -180,7 +180,7 @@ function RequestCard({ request: req }: { request: any }) {
             <select
               value={req.status}
               onChange={(e) => handleStatusChange(e.target.value)}
-              className="bg-[#F7F0E5] text-[#3B4F30] text-xs uppercase tracking-wider px-4 py-2 rounded-full border-none focus:ring-1 focus:ring-[#3B4F30]/20 cursor-pointer"
+              className="bg-bodyoga-cream text-[#3B4F30] text-xs uppercase tracking-wider px-4 py-2 rounded-full border-none focus:ring-1 focus:ring-[#3B4F30]/20 cursor-pointer"
             >
               {STATUS_OPTIONS.map(s => (
                 <option key={s.id} value={s.id}>{s.label}</option>
@@ -252,7 +252,7 @@ function RequestCard({ request: req }: { request: any }) {
 
             <div>
               <h4 className="text-[10px] uppercase tracking-wider font-bold opacity-40 mb-2">Briefing do Projeto</h4>
-              <div className="bg-[#F7F0E5]/50 p-5 rounded-2xl text-[#3B4F30] leading-relaxed whitespace-pre-line border border-[#3B4F30]/5">
+              <div className="bg-bodyoga-cream/50 p-5 rounded-2xl text-[#3B4F30] leading-relaxed whitespace-pre-line border border-[#3B4F30]/5">
                 {req.brief}
               </div>
             </div>
