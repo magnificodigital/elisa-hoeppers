@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as P_slugRouteImport } from './routes/p_$slug'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
@@ -28,7 +29,6 @@ import { Route as PainelPerfilRouteImport } from './routes/painel/perfil'
 import { Route as PainelPedidosRouteImport } from './routes/painel/pedidos'
 import { Route as PainelCertificadosRouteImport } from './routes/painel/certificados'
 import { Route as PagamentoCodeRouteImport } from './routes/pagamento.$code'
-import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as LojaSlugRouteImport } from './routes/loja/$slug'
 import { Route as CursosSlugRouteImport } from './routes/cursos/$slug'
 import { Route as CertificadoCodeRouteImport } from './routes/certificado/$code'
@@ -88,6 +88,11 @@ import { Route as AdminCursosIdAulasLessonIdQuizRouteImport } from './routes/adm
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const P_slugRoute = P_slugRouteImport.update({
+  id: '/p_$slug',
+  path: '/p_$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -178,11 +183,6 @@ const PainelCertificadosRoute = PainelCertificadosRouteImport.update({
 const PagamentoCodeRoute = PagamentoCodeRouteImport.update({
   id: '/pagamento/$code',
   path: '/pagamento/$code',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PSlugRoute = PSlugRouteImport.update({
-  id: '/p/$slug',
-  path: '/p/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LojaSlugRoute = LojaSlugRouteImport.update({
@@ -479,6 +479,7 @@ export interface FileRoutesByFullPath {
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
+  '/p_$slug': typeof P_slugRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -498,7 +499,6 @@ export interface FileRoutesByFullPath {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
-  '/p/$slug': typeof PSlugRoute
   '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
@@ -555,6 +555,7 @@ export interface FileRoutesByTo {
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
+  '/p_$slug': typeof P_slugRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
@@ -573,7 +574,6 @@ export interface FileRoutesByTo {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
-  '/p/$slug': typeof PSlugRoute
   '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
@@ -632,6 +632,7 @@ export interface FileRoutesById {
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
+  '/p_$slug': typeof P_slugRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -651,7 +652,6 @@ export interface FileRoutesById {
   '/certificado/$code': typeof CertificadoCodeRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/loja/$slug': typeof LojaSlugRoute
-  '/p/$slug': typeof PSlugRoute
   '/pagamento/$code': typeof PagamentoCodeRoute
   '/painel/certificados': typeof PainelCertificadosRoute
   '/painel/pedidos': typeof PainelPedidosRoute
@@ -711,6 +711,7 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/checkout'
     | '/login'
+    | '/p_$slug'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/blog'
@@ -730,7 +731,6 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
-    | '/p/$slug'
     | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
@@ -787,6 +787,7 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/checkout'
     | '/login'
+    | '/p_$slug'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/broadcast'
@@ -805,7 +806,6 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
-    | '/p/$slug'
     | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
@@ -863,6 +863,7 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/checkout'
     | '/login'
+    | '/p_$slug'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/blog'
@@ -882,7 +883,6 @@ export interface FileRouteTypes {
     | '/certificado/$code'
     | '/cursos/$slug'
     | '/loja/$slug'
-    | '/p/$slug'
     | '/pagamento/$code'
     | '/painel/certificados'
     | '/painel/pedidos'
@@ -941,12 +941,12 @@ export interface RootRouteChildren {
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
   LoginRoute: typeof LoginRoute
+  P_slugRoute: typeof P_slugRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
   LojaSlugRoute: typeof LojaSlugRoute
-  PSlugRoute: typeof PSlugRoute
   PagamentoCodeRoute: typeof PagamentoCodeRoute
   PainelCertificadosRoute: typeof PainelCertificadosRoute
   PainelPedidosRoute: typeof PainelPedidosRoute
@@ -971,6 +971,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/p_$slug': {
+      id: '/p_$slug'
+      path: '/p_$slug'
+      fullPath: '/p_$slug'
+      preLoaderRoute: typeof P_slugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -1097,13 +1104,6 @@ declare module '@tanstack/react-router' {
       path: '/pagamento/$code'
       fullPath: '/pagamento/$code'
       preLoaderRoute: typeof PagamentoCodeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/p/$slug': {
-      id: '/p/$slug'
-      path: '/p/$slug'
-      fullPath: '/p/$slug'
-      preLoaderRoute: typeof PSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loja/$slug': {
@@ -1627,12 +1627,12 @@ const rootRouteChildren: RootRouteChildren = {
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
   LoginRoute: LoginRoute,
+  P_slugRoute: P_slugRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
   CursosSlugRoute: CursosSlugRoute,
   LojaSlugRoute: LojaSlugRoute,
-  PSlugRoute: PSlugRoute,
   PagamentoCodeRoute: PagamentoCodeRoute,
   PainelCertificadosRoute: PainelCertificadosRoute,
   PainelPedidosRoute: PainelPedidosRoute,
