@@ -19,7 +19,7 @@ export const Route = createFileRoute("/$slug")({
     return (
       <div className="bodyoga-scope bg-bodyoga-cream text-bodyoga-green min-h-screen">
         <BodyogaHeader alwaysGreen />
-        <RenderBlocks blocks={page.content_blocks || []} />
+        <RenderBlocks blocks={page.content_blocks || (page as any).blocks || []} />
         <Footer />
       </div>
     );
