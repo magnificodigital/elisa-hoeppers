@@ -285,7 +285,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
           <div className="p-4 border-b border-border flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-widest text-primary-dark/60">Propriedades</h3>
             {selectedBlock && (
-              <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full uppercase">
+              <span className="text-[10px] bg-bodyoga-green/10 text-bodyoga-green px-2 py-0.5 rounded-full uppercase">
                 {selectedBlock.type}
               </span>
             )}
