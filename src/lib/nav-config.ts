@@ -98,9 +98,11 @@ export async function saveNavConfig(cfg: NavMenuConfig): Promise<void> {
   await updateSetting("nav_menu", JSON.stringify(cfg));
 }
 
-/** Client hook: returns the configured menu (defaults until loaded). */
+/** Client hook: returns the configured menu.
+ * Começa VAZIO (não com o default) pra não "piscar" os itens padrão e depois
+ * trocar pela config salva — o menu só aparece quando a config real carrega. */
 export function useNavConfig(): NavMenuConfig {
-  const [config, setConfig] = useState<NavMenuConfig>(DEFAULT_NAV_CONFIG);
+  const [config, setConfig] = useState<NavMenuConfig>({ items: [] });
   useEffect(() => {
     let alive = true;
     getNavConfig().then((c) => {
