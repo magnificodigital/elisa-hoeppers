@@ -451,9 +451,9 @@ function OrderPage() {
                 Crie sua conta gratuita com o mesmo email do pedido pra ver tudo no seu painel.
               </p>
               <Link
-                to="/p/cadastro-de-alunos"
+                to="/p/$slug"
+                params={{ slug: "cadastro-de-alunos" }}
                 className="inline-block bg-primary text-white px-8 py-3 rounded-full uppercase tracking-[0.2em] text-[11px] font-semibold hover:bg-primary-dark transition"
-
               >
                 Criar conta agora
               </Link>
