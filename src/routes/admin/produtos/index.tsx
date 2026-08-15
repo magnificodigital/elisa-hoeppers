@@ -71,9 +71,8 @@ function AdminProductsList() {
   });
 
   return (
-    
-      <section className="py-12 md:py-20 bg-background min-h-screen">
-        <div className="container mx-auto px-6 max-w-5xl">
+    <div className="py-12 md:py-20 bg-background min-h-screen">
+      <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center justify-between mb-2">
             <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Produtos</h1>
             <button
@@ -143,9 +142,8 @@ function AdminProductsList() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-    
+      </div>
+    </div>
   );
 }
 

@@ -112,8 +112,7 @@ function AdminHome() {
     (actions?.me_failed ?? 0);
 
   return (
-    <section className="bg-background min-h-[70vh]">
-        <div className="max-w-6xl mx-auto px-4">
+    <div className="bg-background min-h-[70vh]">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Admin</h1>
           <p className="text-primary-dark/70 mb-6">Visão geral do site nos últimos 30 dias.</p>
 
@@ -302,8 +301,8 @@ function AdminHome() {
               </div>
             </div>
           )}
-        </div>
-      </section>
+    </div>
+  );
   );
 }
 
