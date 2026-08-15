@@ -271,7 +271,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 
               <DragOverlay>
                 {activeId ? (
-                  <div className="bg-white border-2 border-primary/50 shadow-lg p-4 rounded-lg opacity-80 cursor-grabbing">
+                  <div className="bg-white border-2 border-bodyoga-green/50 shadow-lg p-4 rounded-lg opacity-80 cursor-grabbing">
                     <p className="text-xs font-medium">Movendo bloco...</p>
                   </div>
                 ) : null}
@@ -404,7 +404,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
                     type="button"
                     onClick={() => moveItem(idx, -1)}
                     disabled={idx === 0}
-                    className="p-1 text-gray-400 hover:text-primary disabled:opacity-30 transition"
+                    className="p-1 text-gray-400 hover:text-bodyoga-green disabled:opacity-30 transition"
                     title="Subir"
                   >
                     <ArrowUp size={13} />
@@ -413,7 +413,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
                     type="button"
                     onClick={() => moveItem(idx, 1)}
                     disabled={idx === items.length - 1}
-                    className="p-1 text-gray-400 hover:text-primary disabled:opacity-30 transition"
+                    className="p-1 text-gray-400 hover:text-bodyoga-green disabled:opacity-30 transition"
                     title="Descer"
                   >
                     <ArrowDown size={13} />
@@ -445,7 +445,7 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
           <button
             type="button"
             onClick={addItem}
-            className="w-full py-2 border-2 border-dashed border-primary/30 rounded-lg text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5 transition"
+            className="w-full py-2 border-2 border-dashed border-bodyoga-green/30 rounded-lg text-[10px] font-bold uppercase tracking-widest text-bodyoga-green hover:bg-bodyoga-green/5 transition"
           >
             + Adicionar item
           </button>
