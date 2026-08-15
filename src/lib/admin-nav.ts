@@ -30,7 +30,7 @@ export const ADMIN_NAV_ITEMS = [
   ]},
   { group: "CONTEÚDO", items: [
     { to: "/admin/website", label: "WebSite", icon: Sparkles },
-    { to: "/admin/posts", label: "Blog", icon: Newspaper },
+    { to: "/admin/blog", label: "Blog", icon: Newspaper },
     { to: "/admin/social", label: "Social", icon: LayoutGrid },
     { to: "/admin/broadcast", label: "Emails", icon: Mail },
   ]},

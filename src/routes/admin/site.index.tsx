@@ -12,22 +12,10 @@ export const Route = createFileRoute("/admin/site/")({
 
 const OPTIONS = [
   {
-    to: "/admin/bodyoga-slides",
-    label: "Slides",
-    description: "Gerencie os slides do banner principal.",
-    icon: GalleryHorizontal,
-  },
-  {
-    to: "/admin/site/home",
-    label: "Conteúdo da Home",
-    description: "Textos, botão e imagem da seção de apresentação da página inicial.",
-    icon: Home,
-  },
-  {
-    to: "/admin/site/paginas",
-    label: "Páginas",
-    description: "Edite as páginas de conteúdo e crie novas páginas do site.",
-    icon: FileText,
+    to: "/admin/site/menu",
+    label: "Menu",
+    description: "Escolha o que aparece no header e no footer, e de que lado.",
+    icon: Menu,
   },
   {
     to: "/admin/site/cores",
@@ -36,10 +24,10 @@ const OPTIONS = [
     icon: Palette,
   },
   {
-    to: "/admin/site/menu",
-    label: "Menu de navegação",
-    description: "Escolha o que aparece no header e no footer, e de que lado.",
-    icon: Menu,
+    to: "/admin/site/whatsapp",
+    label: "Botão WhatsApp",
+    description: "Número, mensagem inicial, texto do balão, posição e ativar/desativar.",
+    icon: MessageCircle,
   },
   {
     to: "/admin/site/seo",
@@ -48,10 +36,10 @@ const OPTIONS = [
     icon: Search,
   },
   {
-    to: "/admin/site/whatsapp",
-    label: "Botão do WhatsApp",
-    description: "Número, mensagem inicial, texto do balão, posição e ativar/desativar.",
-    icon: MessageCircle,
+    to: "/admin/bodyoga-slides",
+    label: "Slides",
+    description: "Gerencie os slides do banner principal.",
+    icon: GalleryHorizontal,
   },
 ] as const;
 

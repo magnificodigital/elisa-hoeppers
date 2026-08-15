@@ -1,14 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, FileText, ArrowLeft } from "lucide-react";
+import { Plus, FileText, ArrowLeft, Loader2 } from "lucide-react";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
 
 export const Route = createFileRoute("/admin/blog/")({
   head: () => ({ meta: [{ title: "Admin — Blog" }] }),
   component: () => (
-    
       <AdminBlogList />
-    
   ),
 });
 
@@ -32,17 +30,21 @@ function AdminBlogList() {
         is_published: false,
         tags: [],
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-posts"] }),
+    onSuccess: (p) => {
+      qc.invalidateQueries({ queryKey: ["admin-posts"] });
+      // Redirect to the edit page immediately after creation? 
+      // For now let's just invalidate.
+    },
   });
 
   return (
     <div className="py-12 md:py-16 bg-background min-h-[70vh]">
       <div className="max-w-5xl mx-auto px-4">
           <Link
-            to="/admin/posts"
+            to="/admin"
             className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5"
           >
-            <ArrowLeft size={16} /> Voltar para Posts
+            <ArrowLeft size={16} /> Voltar para o Dashboard
           </Link>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
@@ -59,7 +61,7 @@ function AdminBlogList() {
           </div>
           <p className="text-primary-dark/70 mb-8">Gerencie os posts de Dicas e Novidades.</p>
 
-          {isLoading && <p className="text-primary-dark/60">Carregando…</p>}
+          {isLoading && <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>}
 
           <div className="space-y-3">
             {(posts ?? []).map((p) => (

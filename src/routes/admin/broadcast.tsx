@@ -28,8 +28,8 @@ function BroadcastPage() {
   return (
     <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
-          <Link to="/admin" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
-            <ArrowLeft size={16} /> Voltar para o Painel
+          <Link to="/admin/blog" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
+            <ArrowLeft size={16} /> Voltar para o Blog
           </Link>
           <div className="flex items-center gap-2 mb-2">
             <Mail className="w-6 h-6 text-primary" />
