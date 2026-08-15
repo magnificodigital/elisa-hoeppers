@@ -82,7 +82,8 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
 
         {/* Centered logo */}
         <Link
-          to="/p/bodyoga"
+          to="/p/$slug"
+          params={{ slug: "bodyoga" }}
           className="flex-shrink-0 flex justify-center md:static absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto"
         >
           <span className="md:hidden">
