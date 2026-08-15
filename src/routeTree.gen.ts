@@ -56,6 +56,7 @@ import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagno
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
+import { Route as AdminLayoutRouteImport } from './routes/admin/_layout'
 import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
@@ -328,6 +329,11 @@ const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   path: '/admin/agendamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLayoutRoute = AdminLayoutRouteImport.update({
+  id: '/admin/_layout',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSiteIndexRoute = AdminSiteIndexRouteImport.update({
   id: '/admin/site/',
   path: '/admin/site/',
@@ -528,6 +534,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin': typeof AdminLayoutRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -611,6 +618,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -638,7 +646,6 @@ export interface FileRoutesByTo {
   '/painel/tentativas': typeof PainelTentativasRoute
   '/painel/wishlist': typeof PainelWishlistRoute
   '/pedido/$code': typeof PedidoCodeRoute
-  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/bodyoga': typeof BodyogaIndexRoute
   '/cursos': typeof CursosIndexRoute
@@ -696,6 +703,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/admin/_layout': typeof AdminLayoutRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -782,6 +790,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
+    | '/admin'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -865,6 +874,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
+    | '/admin'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -892,7 +902,6 @@ export interface FileRouteTypes {
     | '/painel/tentativas'
     | '/painel/wishlist'
     | '/pedido/$code'
-    | '/admin'
     | '/blog'
     | '/bodyoga'
     | '/cursos'
@@ -949,6 +958,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
+    | '/admin/_layout'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -1034,6 +1044,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
+  AdminLayoutRoute: typeof AdminLayoutRoute
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
@@ -1433,6 +1444,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_layout': {
+      id: '/admin/_layout'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/site/': {
       id: '/admin/site/'
       path: '/admin/site'
@@ -1718,6 +1736,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
+  AdminLayoutRoute: AdminLayoutRoute,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
