@@ -61,7 +61,7 @@ function SubscribersPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-between mb-2 gap-4 flex-wrap">
             <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ function SubscribersPage() {
                 {s.unsubscribed_at ? (
                   <span className="text-xs uppercase tracking-widest text-red-700 bg-red-50 px-2 py-1 rounded">Descadastrado</span>
                 ) : (
-                  <span className="text-xs uppercase tracking-widest text-primary bg-cream px-2 py-1 rounded">Ativo</span>
+                  <span className="text-xs uppercase tracking-widest text-primary bg-background px-2 py-1 rounded">Ativo</span>
                 )}
               </div>
             ))}

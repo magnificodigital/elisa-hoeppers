@@ -16,13 +16,13 @@ export const Route = createFileRoute("/admin/configuracoes/melhor-envio")({
 function Page() {
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
             <ChevronLeft size={16} /> Voltar
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center">
               <Truck size={20} className="text-primary" />
             </div>
             <h1 className="font-display text-3xl text-primary-dark">Melhor Envio</h1>

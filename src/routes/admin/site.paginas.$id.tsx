@@ -72,7 +72,7 @@ function PageEditor() {
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex justify-center py-24 bg-cream min-h-[70vh]">
+        <div className="flex justify-center py-24 bg-background min-h-[70vh]">
           <Loader2 className="w-6 h-6 animate-spin text-primary" />
         </div>
       </Layout>
@@ -82,7 +82,7 @@ function PageEditor() {
   if (!data) {
     return (
       <Layout>
-        <div className="py-24 text-center bg-cream min-h-[70vh]">
+        <div className="py-24 text-center bg-background min-h-[70vh]">
           <p className="text-primary-dark/60">Página não encontrada.</p>
         </div>
       </Layout>
@@ -91,7 +91,7 @@ function PageEditor() {
 
   return (
     <Layout>
-      <section className="py-6 md:py-8 bg-cream min-h-[70vh]">
+      <section className="py-6 md:py-8 bg-background min-h-[70vh]">
         <div className="w-full px-0">
           <div className="flex items-center justify-between mb-5 gap-3">
             <Link to="/admin/site/paginas" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition">

@@ -33,7 +33,7 @@ function BroadcastPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <Link to="/admin" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
             <ArrowLeft size={16} /> Voltar para o Painel

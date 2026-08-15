@@ -71,7 +71,7 @@ function WhatsAppSettingsPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
             to="/admin/site"
@@ -156,7 +156,7 @@ function WhatsAppSettingsPage() {
                 <p className="text-xs text-primary-dark/50 mt-1">Deixe vazio para não mostrar o balãozinho.</p>
               </div>
 
-              <div className="rounded-lg bg-cream p-4">
+              <div className="rounded-lg bg-background p-4">
                 <p className="text-[10px] uppercase tracking-widest text-primary-dark mb-2">Prévia do link</p>
                 <a
                   href={previewLink}

@@ -121,7 +121,7 @@ function SlideEditPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
+      <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-2xl">
           <Link to="/admin/bodyoga-slides" className="text-xs uppercase tracking-widest text-primary hover:opacity-70 inline-flex items-center gap-1">
             <ChevronLeft className="w-3.5 h-3.5" /> Voltar
@@ -198,7 +198,7 @@ function SlideEditPage() {
               <span className="text-sm text-primary-dark">Ativo no banner da página BODYOGA</span>
             </label>
 
-            <div className="rounded-lg border border-bodyoga-brown/20 bg-cream/50 p-4">
+            <div className="rounded-lg border border-bodyoga-brown/20 bg-background/50 p-4">
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"

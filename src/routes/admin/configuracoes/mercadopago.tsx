@@ -121,13 +121,13 @@ function Page() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
             <ChevronLeft size={16} /> Voltar
           </Link>
           <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center">
               <CreditCard size={20} className="text-primary" />
             </div>
             <h1 className="font-display text-3xl text-primary-dark">Mercado Pago</h1>
@@ -143,7 +143,7 @@ function Page() {
             <AccessTokenCard publicKey={publicKey} />
           </div>
 
-          <div className="mt-6 bg-cream border border-border rounded-xl p-4 text-xs text-primary-dark/80 leading-relaxed">
+          <div className="mt-6 bg-background border border-border rounded-xl p-4 text-xs text-primary-dark/80 leading-relaxed">
             Para vender de verdade, use as credenciais de <strong>PRODUÇÃO</strong> (começam com <code>APP_USR-</code>).
             Para testar sem cobrar, use as de <strong>TESTE</strong> (começam com <code>TEST-</code>) + cartões de teste.
             Sempre os DOIS do mesmo ambiente.

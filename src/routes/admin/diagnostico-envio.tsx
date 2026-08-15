@@ -41,7 +41,7 @@ function DiagPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
             <h1 className="font-display text-3xl md:text-4xl text-primary-dark">Diagnóstico — Melhor Envio</h1>

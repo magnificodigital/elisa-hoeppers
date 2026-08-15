@@ -54,7 +54,7 @@ function AdminAppointments() {
 
   return (
     <Layout>
-      <section className="py-8 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-8 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-2">
             <div className="flex items-center gap-3">
@@ -244,15 +244,15 @@ function AppointmentCard({ appointment: a }: { appointment: AppointmentWithServi
             </span>
             <StatusPill status={a.status} />
             {a.service.is_online ? (
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-cream text-primary-dark px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-background text-primary-dark px-2 py-0.5 rounded-full">
                 <Video size={11} /> Online
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-cream text-primary-dark px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest bg-background text-primary-dark px-2 py-0.5 rounded-full">
                 <MapPin size={11} /> Presencial
               </span>
             )}
-            <span className="text-[10px] uppercase tracking-widest bg-cream text-primary-dark px-2 py-0.5 rounded-full">
+            <span className="text-[10px] uppercase tracking-widest bg-background text-primary-dark px-2 py-0.5 rounded-full">
               {a.service.is_group ? "Grupo" : "Particular"}
             </span>
           </div>
@@ -313,7 +313,7 @@ function AppointmentCard({ appointment: a }: { appointment: AppointmentWithServi
                 onClick={() => {
                   if (confirm("Cancelar reserva?")) update.mutate("cancelled");
                 }}
-                className="border border-border text-[var(--text-muted)] px-3 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-cream/60 transition inline-flex items-center justify-center gap-1.5"
+                className="border border-border text-[var(--text-muted)] px-3 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-background/60 transition inline-flex items-center justify-center gap-1.5"
               >
                 <X size={14} /> Cancelar
               </button>
@@ -331,7 +331,7 @@ function AppointmentCard({ appointment: a }: { appointment: AppointmentWithServi
                 onClick={() => {
                   if (confirm("Cancelar reserva?")) update.mutate("cancelled");
                 }}
-                className="border border-border text-[var(--text-muted)] px-3 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-cream/60 transition"
+                className="border border-border text-[var(--text-muted)] px-3 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-background/60 transition"
               >
                 Cancelar
               </button>
@@ -340,7 +340,7 @@ function AppointmentCard({ appointment: a }: { appointment: AppointmentWithServi
           {a.status === "cancelled" && (
             <button
               onClick={() => update.mutate("pending")}
-              className="border border-border text-primary-dark px-3 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-cream/60 transition"
+              className="border border-border text-primary-dark px-3 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-background/60 transition"
             >
               Reabrir
             </button>

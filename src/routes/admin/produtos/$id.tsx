@@ -206,7 +206,7 @@ function ProductEditPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
+      <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-3xl">
           <Link to="/admin/produtos" className="text-xs uppercase tracking-widest text-primary hover:opacity-70 inline-flex items-center gap-1">
             <ChevronLeft className="w-3.5 h-3.5" /> Voltar

@@ -123,7 +123,7 @@ function PostEditPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
             to="/admin/blog"
@@ -199,7 +199,7 @@ function PostEditPage() {
                 <Eye className="w-3.5 h-3.5" /> {showPreview ? "Esconder pré-visualização" : "Pré-visualizar"}
               </button>
               {showPreview && (
-                <div className="mt-4 border border-border rounded-lg p-5 bg-cream/40">
+                <div className="mt-4 border border-border rounded-lg p-5 bg-background/40">
                   {previewBlocks.map((b, i) => {
                     if (b.type === "h2")
                       return (

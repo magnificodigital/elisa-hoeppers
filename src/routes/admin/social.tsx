@@ -30,7 +30,7 @@ function SocialPostsPage() {
           Gerencie publicações para redes sociais.
         </p>
 
-        <div className="rounded-2xl border border-border bg-cream/40 p-10 text-center">
+        <div className="rounded-2xl border border-border bg-background/40 p-10 text-center">
           <Share2 className="mx-auto mb-4 text-primary-dark/40" size={40} />
           <h2 className="font-display text-xl text-primary-dark mb-2">Em breve</h2>
           <p className="text-primary-dark/60 max-w-md mx-auto">
