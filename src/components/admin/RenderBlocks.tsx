@@ -5,6 +5,7 @@ import HomeInstagram from "../home/HomeInstagram";
 import HomeBlog from "../home/HomeBlog";
 import { listActiveSlides, listProducts, formatPriceBRL } from "@/lib/shop";
 import { listPublishedCourses } from "@/lib/courses";
+import { getSetting } from "@/lib/settings";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { 
   Accordion, 
@@ -95,6 +96,69 @@ function HomeRitualsBlock({ columns = 3, title, subtitle, selection = "all", bg 
           {(products ?? []).map((p) => (
             <BodyogaProductCard key={p.slug} product={p} noBorder />
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const INTRO_DEFAULTS: Record<string, string> = {
+  home_intro_title: "BODYOGA é a\nfusão entre *yoga* e\ncuidado consciente.",
+  home_intro_p1: "Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.",
+  home_intro_p2: "Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.",
+  home_intro_cta_label: "Harmonia & Equilíbrio",
+  home_intro_cta_href: "/sobre",
+  home_intro_image: "/images/home/bodyoga/bodyoga-left.png",
+};
+
+// Apresentação (Elisa): usa os campos do bloco; se vazios, cai nas MESMAS
+// configurações que o site publicado (home_intro_*), pra ficar fiel.
+function HomeIntroBlock({ props }: { props: any }) {
+  const { data: s } = useQuery({
+    queryKey: ["home-intro-settings"],
+    queryFn: async () => {
+      const keys = Object.keys(INTRO_DEFAULTS);
+      const entries = await Promise.all(keys.map(async (k) => {
+        try { const v = await getSetting(k); return [k, v && v.trim() ? v : INTRO_DEFAULTS[k]] as const; }
+        catch { return [k, INTRO_DEFAULTS[k]] as const; }
+      }));
+      return Object.fromEntries(entries) as Record<string, string>;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+  const cfg = s ?? INTRO_DEFAULTS;
+  const image = props.image || cfg.home_intro_image;
+  const title = props.title || cfg.home_intro_title;
+  const p1 = props.p1 || cfg.home_intro_p1;
+  const p2 = props.p2 || cfg.home_intro_p2;
+  const ctaLabel = props.ctaLabel || cfg.home_intro_cta_label;
+  const ctaHref = props.ctaHref || cfg.home_intro_cta_href;
+
+  return (
+    <section className="bg-bodyoga-cream overflow-hidden">
+      <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
+          <div className="md:col-span-6 relative">
+            <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
+              <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105" loading="lazy" decoding="async" />
+            </div>
+          </div>
+          <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
+              {renderIntroTitle(title)}
+            </h2>
+            <div className="space-y-6 max-w-md">
+              {p1 && <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">{p1}</p>}
+              {p2 && <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide whitespace-pre-line">{p2}</p>}
+            </div>
+            {ctaLabel && (
+              <div>
+                <a href={ctaHref || "/sobre"} className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5">
+                  <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">{ctaLabel}</span>
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
@@ -610,57 +674,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <HomeRitualsBlock key={block.id} columns={p.columns} title={p.title} subtitle={p.subtitle} selection={p.selection} bg={p.bg} />;
 
           case "home-intro":
-            return (
-              <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
-                <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
-                    <div className="md:col-span-6 relative">
-                      <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
-                        <img
-                          src={p.image}
-                          alt={p.title || ""}
-                          className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
-                      <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
-                        {renderIntroTitle(p.title || "")}
-                      </h2>
-
-                      <div className="space-y-6 max-w-md">
-                        {p.p1 && (
-                          <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">
-                            {p.p1}
-                          </p>
-                        )}
-                        {p.p2 && (
-                          <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide whitespace-pre-line">
-                            {p.p2}
-                          </p>
-                        )}
-                      </div>
-
-                      {p.ctaLabel && (
-                        <div>
-                          <a
-                            href={p.ctaHref || "/sobre"}
-                            className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-                          >
-                            <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
-                              {p.ctaLabel}
-                            </span>
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </section>
-            );
+            return <HomeIntroBlock key={block.id} props={p} />;
 
           case "home-blog":
             return <HomeBlog key={block.id} />;
