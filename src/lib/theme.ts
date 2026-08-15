@@ -14,12 +14,13 @@ export const THEME_VARS: Record<string, { label: string; fallback: string; vars:
       "--accent-teal",
       "--foreground",
       "--ring",
+      "--border",
     ],
   },
   theme_cream: {
     label: "Creme (fundo)",
     fallback: "#e2d4c1",
-    vars: ["--cream", "--cream-rose", "--bodyoga-cream", "--background", "--card", "--surface-cream"],
+    vars: ["--cream", "--cream-rose", "--bodyoga-cream", "--background", "--card", "--surface-cream", "--peach", "--peach-light", "--sand"],
   },
 };
 
