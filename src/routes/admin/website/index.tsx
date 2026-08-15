@@ -25,7 +25,7 @@ import { createPage, deletePage, listPages, slugify, updatePage, type SitePage }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 
-export const Route = createFileRoute("/admin/website")({
+export const Route = createFileRoute("/admin/website/")({
   head: () => ({ meta: [{ title: "Admin — Gerenciar Site" }] }),
   component: () => <WebsiteAdminPage />,
 });
