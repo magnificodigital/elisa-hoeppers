@@ -42,8 +42,8 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return (
               <section key={block.id} className="py-16 px-4 max-w-4xl mx-auto w-full">
                 <div className={`text-${block.props.align || 'left'}`}>
-                  {block.props.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{block.props.title}</h2>}
-                  {block.props.content && <p className="text-lg text-primary/80 whitespace-pre-wrap leading-relaxed">{block.props.content}</p>}
+                  {block.props.title && <h2 className="text-3xl md:text-4xl font-display mb-6 text-bodyoga-green">{block.props.title}</h2>}
+                  {block.props.content && <p className="text-lg text-bodyoga-green/80 whitespace-pre-wrap leading-relaxed">{block.props.content}</p>}
                 </div>
               </section>
             );
@@ -55,12 +55,12 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <div key={block.id} style={{ height: `${block.props.height}px` }} />;
           case "cta":
             return (
-              <section key={block.id} className={`py-20 px-4 text-center ${block.props.bgColor === 'primary' ? 'bg-primary text-white' : 'bg-cream text-primary'}`}>
+              <section key={block.id} className={`py-20 px-4 text-center ${block.props.bgColor === 'primary' ? 'bg-bodyoga-green text-bodyoga-cream' : 'bg-bodyoga-cream text-bodyoga-green'}`}>
                 <div className="max-w-3xl mx-auto">
                   <h2 className="text-3xl md:text-4xl font-display mb-4">{block.props.title}</h2>
                   {block.props.text && <p className="mb-8 opacity-80">{block.props.text}</p>}
                   {block.props.buttonLabel && (
-                    <a href={block.props.buttonHref} className={`inline-block px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold transition ${block.props.bgColor === 'primary' ? 'bg-white text-primary hover:bg-cream' : 'bg-primary text-white hover:bg-primary-dark'}`}>
+                    <a href={block.props.buttonHref} className={`inline-block px-10 py-3.5 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold transition shadow-sm ${block.props.bgColor === 'primary' ? 'bg-bodyoga-cream text-bodyoga-green hover:bg-white' : 'bg-bodyoga-green text-bodyoga-cream hover:bg-bodyoga-green/90'}`}>
                       {block.props.buttonLabel}
                     </a>
                   )}
@@ -94,8 +94,8 @@ function ProductsBlock({ props }: { props: any }) {
   return (
     <section className="py-20 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
-        {props.title && <h2 className="text-3xl font-display text-primary text-center mb-12">{props.title}</h2>}
-        <div className={`grid grid-cols-1 md:grid-cols-${props.columns || 3} gap-8`}>
+        {props.title && <h2 className="text-3xl font-display text-bodyoga-green text-center mb-12">{props.title}</h2>}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${props.columns || 3} gap-8 md:gap-10`}>
           {displayProducts?.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
