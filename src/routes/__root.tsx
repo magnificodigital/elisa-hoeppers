@@ -74,7 +74,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: ({ context }) => {
+  head: () => {
     // In a real scenario, we would fetch these from a cache or the queryClient
     // For now, using standard titles with fallback to settings logic if integrated in loader
     return {
