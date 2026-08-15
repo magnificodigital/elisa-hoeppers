@@ -25,7 +25,7 @@ function AvailabilityPage() {
 
   return (
     
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
+      <div className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3 mb-2">
             <Calendar className="text-primary" size={28} />
@@ -67,7 +67,7 @@ function AvailabilityPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
     
   );
 }

@@ -22,6 +22,7 @@ import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-aluno
 import { Route as BodyogaRouteImport } from './routes/bodyoga'
 import { Route as BioRouteImport } from './routes/bio'
 import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PainelIndexRouteImport } from './routes/painel/index'
 import { Route as LojaIndexRouteImport } from './routes/loja/index'
@@ -56,7 +57,6 @@ import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagno
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
-import { Route as AdminLayoutRouteImport } from './routes/admin/_layout'
 import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
@@ -158,6 +158,11 @@ const AgendeSuaAulaRoute = AgendeSuaAulaRouteImport.update({
   path: '/agende-sua-aula',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -189,9 +194,9 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const PedidoCodeRoute = PedidoCodeRouteImport.update({
   id: '/pedido/$code',
@@ -259,115 +264,110 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminWebsiteRoute = AdminWebsiteRouteImport.update({
-  id: '/admin/website',
-  path: '/admin/website',
-  getParentRoute: () => rootRouteImport,
+  id: '/website',
+  path: '/website',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSolicitacoesRoute = AdminSolicitacoesRouteImport.update({
-  id: '/admin/solicitacoes',
-  path: '/admin/solicitacoes',
-  getParentRoute: () => rootRouteImport,
+  id: '/solicitacoes',
+  path: '/solicitacoes',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSocialRoute = AdminSocialRouteImport.update({
-  id: '/admin/social',
-  path: '/admin/social',
-  getParentRoute: () => rootRouteImport,
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminReservasRoute = AdminReservasRouteImport.update({
-  id: '/admin/reservas',
-  path: '/admin/reservas',
-  getParentRoute: () => rootRouteImport,
+  id: '/reservas',
+  path: '/reservas',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPostsRoute = AdminPostsRouteImport.update({
-  id: '/admin/posts',
-  path: '/admin/posts',
-  getParentRoute: () => rootRouteImport,
+  id: '/posts',
+  path: '/posts',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminPedidosRoute = AdminPedidosRouteImport.update({
-  id: '/admin/pedidos',
-  path: '/admin/pedidos',
-  getParentRoute: () => rootRouteImport,
+  id: '/pedidos',
+  path: '/pedidos',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminNotasFiscaisRoute = AdminNotasFiscaisRouteImport.update({
-  id: '/admin/notas-fiscais',
-  path: '/admin/notas-fiscais',
-  getParentRoute: () => rootRouteImport,
+  id: '/notas-fiscais',
+  path: '/notas-fiscais',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminInscritosRoute = AdminInscritosRouteImport.update({
-  id: '/admin/inscritos',
-  path: '/admin/inscritos',
-  getParentRoute: () => rootRouteImport,
+  id: '/inscritos',
+  path: '/inscritos',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminDisponibilidadeRoute = AdminDisponibilidadeRouteImport.update({
-  id: '/admin/disponibilidade',
-  path: '/admin/disponibilidade',
-  getParentRoute: () => rootRouteImport,
+  id: '/disponibilidade',
+  path: '/disponibilidade',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminDiagnosticoPagamentosRoute =
   AdminDiagnosticoPagamentosRouteImport.update({
-    id: '/admin/diagnostico-pagamentos',
-    path: '/admin/diagnostico-pagamentos',
-    getParentRoute: () => rootRouteImport,
+    id: '/diagnostico-pagamentos',
+    path: '/diagnostico-pagamentos',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminDiagnosticoEnvioRoute = AdminDiagnosticoEnvioRouteImport.update({
-  id: '/admin/diagnostico-envio',
-  path: '/admin/diagnostico-envio',
-  getParentRoute: () => rootRouteImport,
+  id: '/diagnostico-envio',
+  path: '/diagnostico-envio',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminClientesRoute = AdminClientesRouteImport.update({
-  id: '/admin/clientes',
-  path: '/admin/clientes',
-  getParentRoute: () => rootRouteImport,
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
-  id: '/admin/broadcast',
-  path: '/admin/broadcast',
-  getParentRoute: () => rootRouteImport,
+  id: '/broadcast',
+  path: '/broadcast',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
-  id: '/admin/agendamentos',
-  path: '/admin/agendamentos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLayoutRoute = AdminLayoutRouteImport.update({
-  id: '/admin/_layout',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
+  id: '/agendamentos',
+  path: '/agendamentos',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSiteIndexRoute = AdminSiteIndexRouteImport.update({
-  id: '/admin/site/',
-  path: '/admin/site/',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/',
+  path: '/site/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProdutosIndexRoute = AdminProdutosIndexRouteImport.update({
-  id: '/admin/produtos/',
-  path: '/admin/produtos/',
-  getParentRoute: () => rootRouteImport,
+  id: '/produtos/',
+  path: '/produtos/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminCursosIndexRoute = AdminCursosIndexRouteImport.update({
-  id: '/admin/cursos/',
-  path: '/admin/cursos/',
-  getParentRoute: () => rootRouteImport,
+  id: '/cursos/',
+  path: '/cursos/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminConfiguracoesIndexRoute = AdminConfiguracoesIndexRouteImport.update({
-  id: '/admin/configuracoes/',
-  path: '/admin/configuracoes/',
-  getParentRoute: () => rootRouteImport,
+  id: '/configuracoes/',
+  path: '/configuracoes/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBodyogaSlidesIndexRoute = AdminBodyogaSlidesIndexRouteImport.update({
-  id: '/admin/bodyoga-slides/',
-  path: '/admin/bodyoga-slides/',
-  getParentRoute: () => rootRouteImport,
+  id: '/bodyoga-slides/',
+  path: '/bodyoga-slides/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
-  id: '/admin/blog/',
-  path: '/admin/blog/',
-  getParentRoute: () => rootRouteImport,
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminAjudaIndexRoute = AdminAjudaIndexRouteImport.update({
-  id: '/admin/ajuda/',
-  path: '/admin/ajuda/',
-  getParentRoute: () => rootRouteImport,
+  id: '/ajuda/',
+  path: '/ajuda/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const PainelAulaLessonIdRoute = PainelAulaLessonIdRouteImport.update({
   id: '/painel/aula/$lessonId',
@@ -386,131 +386,131 @@ const ApiPublicInstagramFeedDotxmlRoute =
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminSiteWhatsappRoute = AdminSiteWhatsappRouteImport.update({
-  id: '/admin/site/whatsapp',
-  path: '/admin/site/whatsapp',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/whatsapp',
+  path: '/site/whatsapp',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSiteSeoRoute = AdminSiteSeoRouteImport.update({
-  id: '/admin/site/seo',
-  path: '/admin/site/seo',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/seo',
+  path: '/site/seo',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSiteMenuRoute = AdminSiteMenuRouteImport.update({
-  id: '/admin/site/menu',
-  path: '/admin/site/menu',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/menu',
+  path: '/site/menu',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSiteHomeRoute = AdminSiteHomeRouteImport.update({
-  id: '/admin/site/home',
-  path: '/admin/site/home',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/home',
+  path: '/site/home',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSiteCoresRoute = AdminSiteCoresRouteImport.update({
-  id: '/admin/site/cores',
-  path: '/admin/site/cores',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/cores',
+  path: '/site/cores',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
-  id: '/admin/produtos/$id',
-  path: '/admin/produtos/$id',
-  getParentRoute: () => rootRouteImport,
+  id: '/produtos/$id',
+  path: '/produtos/$id',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminConfiguracoesUsuariosRoute =
   AdminConfiguracoesUsuariosRouteImport.update({
-    id: '/admin/configuracoes/usuarios',
-    path: '/admin/configuracoes/usuarios',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/usuarios',
+    path: '/configuracoes/usuarios',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesSiteRoute = AdminConfiguracoesSiteRouteImport.update({
-  id: '/admin/configuracoes/site',
-  path: '/admin/configuracoes/site',
-  getParentRoute: () => rootRouteImport,
+  id: '/configuracoes/site',
+  path: '/configuracoes/site',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminConfiguracoesNewsletterRoute =
   AdminConfiguracoesNewsletterRouteImport.update({
-    id: '/admin/configuracoes/newsletter',
-    path: '/admin/configuracoes/newsletter',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/newsletter',
+    path: '/configuracoes/newsletter',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesMercadopagoRoute =
   AdminConfiguracoesMercadopagoRouteImport.update({
-    id: '/admin/configuracoes/mercadopago',
-    path: '/admin/configuracoes/mercadopago',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/mercadopago',
+    path: '/configuracoes/mercadopago',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesMelhorEnvioRoute =
   AdminConfiguracoesMelhorEnvioRouteImport.update({
-    id: '/admin/configuracoes/melhor-envio',
-    path: '/admin/configuracoes/melhor-envio',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/melhor-envio',
+    path: '/configuracoes/melhor-envio',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesIntegracoesRoute =
   AdminConfiguracoesIntegracoesRouteImport.update({
-    id: '/admin/configuracoes/integracoes',
-    path: '/admin/configuracoes/integracoes',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/integracoes',
+    path: '/configuracoes/integracoes',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesEmailsRoute =
   AdminConfiguracoesEmailsRouteImport.update({
-    id: '/admin/configuracoes/emails',
-    path: '/admin/configuracoes/emails',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/emails',
+    path: '/configuracoes/emails',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesDiagnosticosRoute =
   AdminConfiguracoesDiagnosticosRouteImport.update({
-    id: '/admin/configuracoes/diagnosticos',
-    path: '/admin/configuracoes/diagnosticos',
-    getParentRoute: () => rootRouteImport,
+    id: '/configuracoes/diagnosticos',
+    path: '/configuracoes/diagnosticos',
+    getParentRoute: () => AdminRouteRoute,
   } as any)
 const AdminConfiguracoesCupomRoute = AdminConfiguracoesCupomRouteImport.update({
-  id: '/admin/configuracoes/cupom',
-  path: '/admin/configuracoes/cupom',
-  getParentRoute: () => rootRouteImport,
+  id: '/configuracoes/cupom',
+  path: '/configuracoes/cupom',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminConfiguracoesBaseRoute = AdminConfiguracoesBaseRouteImport.update({
-  id: '/admin/configuracoes/base',
-  path: '/admin/configuracoes/base',
-  getParentRoute: () => rootRouteImport,
+  id: '/configuracoes/base',
+  path: '/configuracoes/base',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminConfiguracoesAsaasRoute = AdminConfiguracoesAsaasRouteImport.update({
-  id: '/admin/configuracoes/asaas',
-  path: '/admin/configuracoes/asaas',
-  getParentRoute: () => rootRouteImport,
+  id: '/configuracoes/asaas',
+  path: '/configuracoes/asaas',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBodyogaSlidesIdRoute = AdminBodyogaSlidesIdRouteImport.update({
-  id: '/admin/bodyoga-slides/$id',
-  path: '/admin/bodyoga-slides/$id',
-  getParentRoute: () => rootRouteImport,
+  id: '/bodyoga-slides/$id',
+  path: '/bodyoga-slides/$id',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
-  id: '/admin/blog/$id',
-  path: '/admin/blog/$id',
-  getParentRoute: () => rootRouteImport,
+  id: '/blog/$id',
+  path: '/blog/$id',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminAjudaSlugRoute = AdminAjudaSlugRouteImport.update({
-  id: '/admin/ajuda/$slug',
-  path: '/admin/ajuda/$slug',
-  getParentRoute: () => rootRouteImport,
+  id: '/ajuda/$slug',
+  path: '/ajuda/$slug',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSitePaginasIndexRoute = AdminSitePaginasIndexRouteImport.update({
-  id: '/admin/site/paginas/',
-  path: '/admin/site/paginas/',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/paginas/',
+  path: '/site/paginas/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminSitePaginasIdRoute = AdminSitePaginasIdRouteImport.update({
-  id: '/admin/site/paginas/$id',
-  path: '/admin/site/paginas/$id',
-  getParentRoute: () => rootRouteImport,
+  id: '/site/paginas/$id',
+  path: '/site/paginas/$id',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminCursosIdEditarRoute = AdminCursosIdEditarRouteImport.update({
-  id: '/admin/cursos/$id/editar',
-  path: '/admin/cursos/$id/editar',
-  getParentRoute: () => rootRouteImport,
+  id: '/cursos/$id/editar',
+  path: '/cursos/$id/editar',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminCursosIdAulasRoute = AdminCursosIdAulasRouteImport.update({
-  id: '/admin/cursos/$id/aulas',
-  path: '/admin/cursos/$id/aulas',
-  getParentRoute: () => rootRouteImport,
+  id: '/cursos/$id/aulas',
+  path: '/cursos/$id/aulas',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminCursosIdAulasLessonIdQuizRoute =
   AdminCursosIdAulasLessonIdQuizRouteImport.update({
@@ -521,6 +521,7 @@ const AdminCursosIdAulasLessonIdQuizRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/bodyoga': typeof BodyogaRouteWithChildren
@@ -534,7 +535,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
-  '/admin': typeof AdminLayoutRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -618,7 +618,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
-  '/admin': typeof AdminIndexRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -646,6 +645,7 @@ export interface FileRoutesByTo {
   '/painel/tentativas': typeof PainelTentativasRoute
   '/painel/wishlist': typeof PainelWishlistRoute
   '/pedido/$code': typeof PedidoCodeRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/bodyoga': typeof BodyogaIndexRoute
   '/cursos': typeof CursosIndexRoute
@@ -690,6 +690,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/bodyoga': typeof BodyogaRouteWithChildren
@@ -703,7 +704,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
-  '/admin/_layout': typeof AdminLayoutRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
@@ -777,6 +777,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/agende-sua-aula'
     | '/bio'
     | '/bodyoga'
@@ -790,7 +791,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
-    | '/admin'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -874,7 +874,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
-    | '/admin'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -902,6 +901,7 @@ export interface FileRouteTypes {
     | '/painel/tentativas'
     | '/painel/wishlist'
     | '/pedido/$code'
+    | '/admin'
     | '/blog'
     | '/bodyoga'
     | '/cursos'
@@ -945,6 +945,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/agende-sua-aula'
     | '/bio'
     | '/bodyoga'
@@ -958,7 +959,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
-    | '/admin/_layout'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
@@ -1031,6 +1031,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
   BioRoute: typeof BioRoute
   BodyogaRoute: typeof BodyogaRouteWithChildren
@@ -1044,21 +1045,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
-  AdminLayoutRoute: typeof AdminLayoutRoute
-  AdminAgendamentosRoute: typeof AdminAgendamentosRoute
-  AdminBroadcastRoute: typeof AdminBroadcastRoute
-  AdminClientesRoute: typeof AdminClientesRoute
-  AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
-  AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
-  AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
-  AdminInscritosRoute: typeof AdminInscritosRoute
-  AdminNotasFiscaisRoute: typeof AdminNotasFiscaisRoute
-  AdminPedidosRoute: typeof AdminPedidosRoute
-  AdminPostsRoute: typeof AdminPostsRoute
-  AdminReservasRoute: typeof AdminReservasRoute
-  AdminSocialRoute: typeof AdminSocialRoute
-  AdminSolicitacoesRoute: typeof AdminSolicitacoesRoute
-  AdminWebsiteRoute: typeof AdminWebsiteRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
   CursosSlugRoute: typeof CursosSlugRoute
@@ -1072,45 +1058,13 @@ export interface RootRouteChildren {
   PainelTentativasRoute: typeof PainelTentativasRoute
   PainelWishlistRoute: typeof PainelWishlistRoute
   PedidoCodeRoute: typeof PedidoCodeRoute
-  AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
-  AdminAjudaSlugRoute: typeof AdminAjudaSlugRoute
-  AdminBlogIdRoute: typeof AdminBlogIdRoute
-  AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
-  AdminConfiguracoesAsaasRoute: typeof AdminConfiguracoesAsaasRoute
-  AdminConfiguracoesBaseRoute: typeof AdminConfiguracoesBaseRoute
-  AdminConfiguracoesCupomRoute: typeof AdminConfiguracoesCupomRoute
-  AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
-  AdminConfiguracoesEmailsRoute: typeof AdminConfiguracoesEmailsRoute
-  AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
-  AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
-  AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
-  AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
-  AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
-  AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
-  AdminProdutosIdRoute: typeof AdminProdutosIdRoute
-  AdminSiteCoresRoute: typeof AdminSiteCoresRoute
-  AdminSiteHomeRoute: typeof AdminSiteHomeRoute
-  AdminSiteMenuRoute: typeof AdminSiteMenuRoute
-  AdminSiteSeoRoute: typeof AdminSiteSeoRoute
-  AdminSiteWhatsappRoute: typeof AdminSiteWhatsappRoute
   ApiPublicInstagramFeedDotxmlRoute: typeof ApiPublicInstagramFeedDotxmlRoute
   ApiPublicMediaRoute: typeof ApiPublicMediaRoute
   PainelAulaLessonIdRoute: typeof PainelAulaLessonIdRoute
-  AdminAjudaIndexRoute: typeof AdminAjudaIndexRoute
-  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
-  AdminBodyogaSlidesIndexRoute: typeof AdminBodyogaSlidesIndexRoute
-  AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
-  AdminCursosIndexRoute: typeof AdminCursosIndexRoute
-  AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
-  AdminSiteIndexRoute: typeof AdminSiteIndexRoute
-  AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
-  AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
-  AdminSitePaginasIdRoute: typeof AdminSitePaginasIdRoute
-  AdminSitePaginasIndexRoute: typeof AdminSitePaginasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1206,6 +1160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgendeSuaAulaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -1250,10 +1211,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/': {
       id: '/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/pedido/$code': {
       id: '/pedido/$code'
@@ -1348,157 +1309,150 @@ declare module '@tanstack/react-router' {
     }
     '/admin/website': {
       id: '/admin/website'
-      path: '/admin/website'
+      path: '/website'
       fullPath: '/admin/website'
       preLoaderRoute: typeof AdminWebsiteRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/solicitacoes': {
       id: '/admin/solicitacoes'
-      path: '/admin/solicitacoes'
+      path: '/solicitacoes'
       fullPath: '/admin/solicitacoes'
       preLoaderRoute: typeof AdminSolicitacoesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/social': {
       id: '/admin/social'
-      path: '/admin/social'
+      path: '/social'
       fullPath: '/admin/social'
       preLoaderRoute: typeof AdminSocialRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/reservas': {
       id: '/admin/reservas'
-      path: '/admin/reservas'
+      path: '/reservas'
       fullPath: '/admin/reservas'
       preLoaderRoute: typeof AdminReservasRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/posts': {
       id: '/admin/posts'
-      path: '/admin/posts'
+      path: '/posts'
       fullPath: '/admin/posts'
       preLoaderRoute: typeof AdminPostsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/pedidos': {
       id: '/admin/pedidos'
-      path: '/admin/pedidos'
+      path: '/pedidos'
       fullPath: '/admin/pedidos'
       preLoaderRoute: typeof AdminPedidosRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/notas-fiscais': {
       id: '/admin/notas-fiscais'
-      path: '/admin/notas-fiscais'
+      path: '/notas-fiscais'
       fullPath: '/admin/notas-fiscais'
       preLoaderRoute: typeof AdminNotasFiscaisRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/inscritos': {
       id: '/admin/inscritos'
-      path: '/admin/inscritos'
+      path: '/inscritos'
       fullPath: '/admin/inscritos'
       preLoaderRoute: typeof AdminInscritosRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/disponibilidade': {
       id: '/admin/disponibilidade'
-      path: '/admin/disponibilidade'
+      path: '/disponibilidade'
       fullPath: '/admin/disponibilidade'
       preLoaderRoute: typeof AdminDisponibilidadeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/diagnostico-pagamentos': {
       id: '/admin/diagnostico-pagamentos'
-      path: '/admin/diagnostico-pagamentos'
+      path: '/diagnostico-pagamentos'
       fullPath: '/admin/diagnostico-pagamentos'
       preLoaderRoute: typeof AdminDiagnosticoPagamentosRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/diagnostico-envio': {
       id: '/admin/diagnostico-envio'
-      path: '/admin/diagnostico-envio'
+      path: '/diagnostico-envio'
       fullPath: '/admin/diagnostico-envio'
       preLoaderRoute: typeof AdminDiagnosticoEnvioRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/clientes': {
       id: '/admin/clientes'
-      path: '/admin/clientes'
+      path: '/clientes'
       fullPath: '/admin/clientes'
       preLoaderRoute: typeof AdminClientesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/broadcast': {
       id: '/admin/broadcast'
-      path: '/admin/broadcast'
+      path: '/broadcast'
       fullPath: '/admin/broadcast'
       preLoaderRoute: typeof AdminBroadcastRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/agendamentos': {
       id: '/admin/agendamentos'
-      path: '/admin/agendamentos'
+      path: '/agendamentos'
       fullPath: '/admin/agendamentos'
       preLoaderRoute: typeof AdminAgendamentosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/_layout': {
-      id: '/admin/_layout'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminLayoutRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/': {
       id: '/admin/site/'
-      path: '/admin/site'
+      path: '/site'
       fullPath: '/admin/site/'
       preLoaderRoute: typeof AdminSiteIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/produtos/': {
       id: '/admin/produtos/'
-      path: '/admin/produtos'
+      path: '/produtos'
       fullPath: '/admin/produtos/'
       preLoaderRoute: typeof AdminProdutosIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/cursos/': {
       id: '/admin/cursos/'
-      path: '/admin/cursos'
+      path: '/cursos'
       fullPath: '/admin/cursos/'
       preLoaderRoute: typeof AdminCursosIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/': {
       id: '/admin/configuracoes/'
-      path: '/admin/configuracoes'
+      path: '/configuracoes'
       fullPath: '/admin/configuracoes/'
       preLoaderRoute: typeof AdminConfiguracoesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/bodyoga-slides/': {
       id: '/admin/bodyoga-slides/'
-      path: '/admin/bodyoga-slides'
+      path: '/bodyoga-slides'
       fullPath: '/admin/bodyoga-slides/'
       preLoaderRoute: typeof AdminBodyogaSlidesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/blog/': {
       id: '/admin/blog/'
-      path: '/admin/blog'
+      path: '/blog'
       fullPath: '/admin/blog/'
       preLoaderRoute: typeof AdminBlogIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/ajuda/': {
       id: '/admin/ajuda/'
-      path: '/admin/ajuda'
+      path: '/ajuda'
       fullPath: '/admin/ajuda/'
       preLoaderRoute: typeof AdminAjudaIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/painel/aula/$lessonId': {
       id: '/painel/aula/$lessonId'
@@ -1523,171 +1477,171 @@ declare module '@tanstack/react-router' {
     }
     '/admin/site/whatsapp': {
       id: '/admin/site/whatsapp'
-      path: '/admin/site/whatsapp'
+      path: '/site/whatsapp'
       fullPath: '/admin/site/whatsapp'
       preLoaderRoute: typeof AdminSiteWhatsappRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/seo': {
       id: '/admin/site/seo'
-      path: '/admin/site/seo'
+      path: '/site/seo'
       fullPath: '/admin/site/seo'
       preLoaderRoute: typeof AdminSiteSeoRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/menu': {
       id: '/admin/site/menu'
-      path: '/admin/site/menu'
+      path: '/site/menu'
       fullPath: '/admin/site/menu'
       preLoaderRoute: typeof AdminSiteMenuRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/home': {
       id: '/admin/site/home'
-      path: '/admin/site/home'
+      path: '/site/home'
       fullPath: '/admin/site/home'
       preLoaderRoute: typeof AdminSiteHomeRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/cores': {
       id: '/admin/site/cores'
-      path: '/admin/site/cores'
+      path: '/site/cores'
       fullPath: '/admin/site/cores'
       preLoaderRoute: typeof AdminSiteCoresRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/produtos/$id': {
       id: '/admin/produtos/$id'
-      path: '/admin/produtos/$id'
+      path: '/produtos/$id'
       fullPath: '/admin/produtos/$id'
       preLoaderRoute: typeof AdminProdutosIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/usuarios': {
       id: '/admin/configuracoes/usuarios'
-      path: '/admin/configuracoes/usuarios'
+      path: '/configuracoes/usuarios'
       fullPath: '/admin/configuracoes/usuarios'
       preLoaderRoute: typeof AdminConfiguracoesUsuariosRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/site': {
       id: '/admin/configuracoes/site'
-      path: '/admin/configuracoes/site'
+      path: '/configuracoes/site'
       fullPath: '/admin/configuracoes/site'
       preLoaderRoute: typeof AdminConfiguracoesSiteRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/newsletter': {
       id: '/admin/configuracoes/newsletter'
-      path: '/admin/configuracoes/newsletter'
+      path: '/configuracoes/newsletter'
       fullPath: '/admin/configuracoes/newsletter'
       preLoaderRoute: typeof AdminConfiguracoesNewsletterRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/mercadopago': {
       id: '/admin/configuracoes/mercadopago'
-      path: '/admin/configuracoes/mercadopago'
+      path: '/configuracoes/mercadopago'
       fullPath: '/admin/configuracoes/mercadopago'
       preLoaderRoute: typeof AdminConfiguracoesMercadopagoRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/melhor-envio': {
       id: '/admin/configuracoes/melhor-envio'
-      path: '/admin/configuracoes/melhor-envio'
+      path: '/configuracoes/melhor-envio'
       fullPath: '/admin/configuracoes/melhor-envio'
       preLoaderRoute: typeof AdminConfiguracoesMelhorEnvioRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/integracoes': {
       id: '/admin/configuracoes/integracoes'
-      path: '/admin/configuracoes/integracoes'
+      path: '/configuracoes/integracoes'
       fullPath: '/admin/configuracoes/integracoes'
       preLoaderRoute: typeof AdminConfiguracoesIntegracoesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/emails': {
       id: '/admin/configuracoes/emails'
-      path: '/admin/configuracoes/emails'
+      path: '/configuracoes/emails'
       fullPath: '/admin/configuracoes/emails'
       preLoaderRoute: typeof AdminConfiguracoesEmailsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/diagnosticos': {
       id: '/admin/configuracoes/diagnosticos'
-      path: '/admin/configuracoes/diagnosticos'
+      path: '/configuracoes/diagnosticos'
       fullPath: '/admin/configuracoes/diagnosticos'
       preLoaderRoute: typeof AdminConfiguracoesDiagnosticosRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/cupom': {
       id: '/admin/configuracoes/cupom'
-      path: '/admin/configuracoes/cupom'
+      path: '/configuracoes/cupom'
       fullPath: '/admin/configuracoes/cupom'
       preLoaderRoute: typeof AdminConfiguracoesCupomRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/base': {
       id: '/admin/configuracoes/base'
-      path: '/admin/configuracoes/base'
+      path: '/configuracoes/base'
       fullPath: '/admin/configuracoes/base'
       preLoaderRoute: typeof AdminConfiguracoesBaseRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/asaas': {
       id: '/admin/configuracoes/asaas'
-      path: '/admin/configuracoes/asaas'
+      path: '/configuracoes/asaas'
       fullPath: '/admin/configuracoes/asaas'
       preLoaderRoute: typeof AdminConfiguracoesAsaasRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/bodyoga-slides/$id': {
       id: '/admin/bodyoga-slides/$id'
-      path: '/admin/bodyoga-slides/$id'
+      path: '/bodyoga-slides/$id'
       fullPath: '/admin/bodyoga-slides/$id'
       preLoaderRoute: typeof AdminBodyogaSlidesIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/blog/$id': {
       id: '/admin/blog/$id'
-      path: '/admin/blog/$id'
+      path: '/blog/$id'
       fullPath: '/admin/blog/$id'
       preLoaderRoute: typeof AdminBlogIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/ajuda/$slug': {
       id: '/admin/ajuda/$slug'
-      path: '/admin/ajuda/$slug'
+      path: '/ajuda/$slug'
       fullPath: '/admin/ajuda/$slug'
       preLoaderRoute: typeof AdminAjudaSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/paginas/': {
       id: '/admin/site/paginas/'
-      path: '/admin/site/paginas'
+      path: '/site/paginas'
       fullPath: '/admin/site/paginas/'
       preLoaderRoute: typeof AdminSitePaginasIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/site/paginas/$id': {
       id: '/admin/site/paginas/$id'
-      path: '/admin/site/paginas/$id'
+      path: '/site/paginas/$id'
       fullPath: '/admin/site/paginas/$id'
       preLoaderRoute: typeof AdminSitePaginasIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/cursos/$id/editar': {
       id: '/admin/cursos/$id/editar'
-      path: '/admin/cursos/$id/editar'
+      path: '/cursos/$id/editar'
       fullPath: '/admin/cursos/$id/editar'
       preLoaderRoute: typeof AdminCursosIdEditarRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/cursos/$id/aulas': {
       id: '/admin/cursos/$id/aulas'
-      path: '/admin/cursos/$id/aulas'
+      path: '/cursos/$id/aulas'
       fullPath: '/admin/cursos/$id/aulas'
       preLoaderRoute: typeof AdminCursosIdAulasRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/cursos/$id/aulas/$lessonId/quiz': {
       id: '/admin/cursos/$id/aulas/$lessonId/quiz'
@@ -1698,17 +1652,6 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-
-interface BodyogaRouteChildren {
-  BodyogaIndexRoute: typeof BodyogaIndexRoute
-}
-
-const BodyogaRouteChildren: BodyogaRouteChildren = {
-  BodyogaIndexRoute: BodyogaIndexRoute,
-}
-
-const BodyogaRouteWithChildren =
-  BodyogaRoute._addFileChildren(BodyogaRouteChildren)
 
 interface AdminCursosIdAulasRouteChildren {
   AdminCursosIdAulasLessonIdQuizRoute: typeof AdminCursosIdAulasLessonIdQuizRoute
@@ -1721,22 +1664,56 @@ const AdminCursosIdAulasRouteChildren: AdminCursosIdAulasRouteChildren = {
 const AdminCursosIdAulasRouteWithChildren =
   AdminCursosIdAulasRoute._addFileChildren(AdminCursosIdAulasRouteChildren)
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AgendeSuaAulaRoute: AgendeSuaAulaRoute,
-  BioRoute: BioRoute,
-  BodyogaRoute: BodyogaRouteWithChildren,
-  CadastroDeAlunosRoute: CadastroDeAlunosRoute,
-  CarrinhoRoute: CarrinhoRoute,
-  CheckoutRoute: CheckoutRoute,
-  LoginRoute: LoginRoute,
-  PerfumistaRoute: PerfumistaRoute,
-  PrivacidadeRoute: PrivacidadeRoute,
-  ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SobreRoute: SobreRoute,
-  TermosRoute: TermosRoute,
-  AdminLayoutRoute: AdminLayoutRoute,
+interface AdminRouteRouteChildren {
+  AdminAgendamentosRoute: typeof AdminAgendamentosRoute
+  AdminBroadcastRoute: typeof AdminBroadcastRoute
+  AdminClientesRoute: typeof AdminClientesRoute
+  AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
+  AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
+  AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
+  AdminInscritosRoute: typeof AdminInscritosRoute
+  AdminNotasFiscaisRoute: typeof AdminNotasFiscaisRoute
+  AdminPedidosRoute: typeof AdminPedidosRoute
+  AdminPostsRoute: typeof AdminPostsRoute
+  AdminReservasRoute: typeof AdminReservasRoute
+  AdminSocialRoute: typeof AdminSocialRoute
+  AdminSolicitacoesRoute: typeof AdminSolicitacoesRoute
+  AdminWebsiteRoute: typeof AdminWebsiteRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminAjudaSlugRoute: typeof AdminAjudaSlugRoute
+  AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminBodyogaSlidesIdRoute: typeof AdminBodyogaSlidesIdRoute
+  AdminConfiguracoesAsaasRoute: typeof AdminConfiguracoesAsaasRoute
+  AdminConfiguracoesBaseRoute: typeof AdminConfiguracoesBaseRoute
+  AdminConfiguracoesCupomRoute: typeof AdminConfiguracoesCupomRoute
+  AdminConfiguracoesDiagnosticosRoute: typeof AdminConfiguracoesDiagnosticosRoute
+  AdminConfiguracoesEmailsRoute: typeof AdminConfiguracoesEmailsRoute
+  AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
+  AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
+  AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
+  AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
+  AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
+  AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
+  AdminProdutosIdRoute: typeof AdminProdutosIdRoute
+  AdminSiteCoresRoute: typeof AdminSiteCoresRoute
+  AdminSiteHomeRoute: typeof AdminSiteHomeRoute
+  AdminSiteMenuRoute: typeof AdminSiteMenuRoute
+  AdminSiteSeoRoute: typeof AdminSiteSeoRoute
+  AdminSiteWhatsappRoute: typeof AdminSiteWhatsappRoute
+  AdminAjudaIndexRoute: typeof AdminAjudaIndexRoute
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+  AdminBodyogaSlidesIndexRoute: typeof AdminBodyogaSlidesIndexRoute
+  AdminConfiguracoesIndexRoute: typeof AdminConfiguracoesIndexRoute
+  AdminCursosIndexRoute: typeof AdminCursosIndexRoute
+  AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
+  AdminSiteIndexRoute: typeof AdminSiteIndexRoute
+  AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
+  AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
+  AdminSitePaginasIdRoute: typeof AdminSitePaginasIdRoute
+  AdminSitePaginasIndexRoute: typeof AdminSitePaginasIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminAgendamentosRoute: AdminAgendamentosRoute,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
@@ -1751,24 +1728,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSocialRoute: AdminSocialRoute,
   AdminSolicitacoesRoute: AdminSolicitacoesRoute,
   AdminWebsiteRoute: AdminWebsiteRoute,
-  BlogSlugRoute: BlogSlugRoute,
-  CertificadoCodeRoute: CertificadoCodeRoute,
-  CursosSlugRoute: CursosSlugRoute,
-  LojaSlugRoute: LojaSlugRoute,
-  PSlugRoute: PSlugRoute,
-  PagamentoCodeRoute: PagamentoCodeRoute,
-  PainelCertificadosRoute: PainelCertificadosRoute,
-  PainelPedidosRoute: PainelPedidosRoute,
-  PainelPerfilRoute: PainelPerfilRoute,
-  PainelPerguntasRoute: PainelPerguntasRoute,
-  PainelTentativasRoute: PainelTentativasRoute,
-  PainelWishlistRoute: PainelWishlistRoute,
-  PedidoCodeRoute: PedidoCodeRoute,
   AdminIndexRoute: AdminIndexRoute,
-  BlogIndexRoute: BlogIndexRoute,
-  CursosIndexRoute: CursosIndexRoute,
-  LojaIndexRoute: LojaIndexRoute,
-  PainelIndexRoute: PainelIndexRoute,
   AdminAjudaSlugRoute: AdminAjudaSlugRoute,
   AdminBlogIdRoute: AdminBlogIdRoute,
   AdminBodyogaSlidesIdRoute: AdminBodyogaSlidesIdRoute,
@@ -1789,9 +1749,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSiteMenuRoute: AdminSiteMenuRoute,
   AdminSiteSeoRoute: AdminSiteSeoRoute,
   AdminSiteWhatsappRoute: AdminSiteWhatsappRoute,
-  ApiPublicInstagramFeedDotxmlRoute: ApiPublicInstagramFeedDotxmlRoute,
-  ApiPublicMediaRoute: ApiPublicMediaRoute,
-  PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
   AdminAjudaIndexRoute: AdminAjudaIndexRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminBodyogaSlidesIndexRoute: AdminBodyogaSlidesIndexRoute,
@@ -1803,6 +1760,59 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
   AdminSitePaginasIdRoute: AdminSitePaginasIdRoute,
   AdminSitePaginasIndexRoute: AdminSitePaginasIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+interface BodyogaRouteChildren {
+  BodyogaIndexRoute: typeof BodyogaIndexRoute
+}
+
+const BodyogaRouteChildren: BodyogaRouteChildren = {
+  BodyogaIndexRoute: BodyogaIndexRoute,
+}
+
+const BodyogaRouteWithChildren =
+  BodyogaRoute._addFileChildren(BodyogaRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  AgendeSuaAulaRoute: AgendeSuaAulaRoute,
+  BioRoute: BioRoute,
+  BodyogaRoute: BodyogaRouteWithChildren,
+  CadastroDeAlunosRoute: CadastroDeAlunosRoute,
+  CarrinhoRoute: CarrinhoRoute,
+  CheckoutRoute: CheckoutRoute,
+  LoginRoute: LoginRoute,
+  PerfumistaRoute: PerfumistaRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
+  ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SobreRoute: SobreRoute,
+  TermosRoute: TermosRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  CertificadoCodeRoute: CertificadoCodeRoute,
+  CursosSlugRoute: CursosSlugRoute,
+  LojaSlugRoute: LojaSlugRoute,
+  PSlugRoute: PSlugRoute,
+  PagamentoCodeRoute: PagamentoCodeRoute,
+  PainelCertificadosRoute: PainelCertificadosRoute,
+  PainelPedidosRoute: PainelPedidosRoute,
+  PainelPerfilRoute: PainelPerfilRoute,
+  PainelPerguntasRoute: PainelPerguntasRoute,
+  PainelTentativasRoute: PainelTentativasRoute,
+  PainelWishlistRoute: PainelWishlistRoute,
+  PedidoCodeRoute: PedidoCodeRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  CursosIndexRoute: CursosIndexRoute,
+  LojaIndexRoute: LojaIndexRoute,
+  PainelIndexRoute: PainelIndexRoute,
+  ApiPublicInstagramFeedDotxmlRoute: ApiPublicInstagramFeedDotxmlRoute,
+  ApiPublicMediaRoute: ApiPublicMediaRoute,
+  PainelAulaLessonIdRoute: PainelAulaLessonIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -84,8 +84,8 @@ function WebsiteAdminPage() {
   const inputCls = "w-full border border-border rounded-md px-3 py-2 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
-    <section className="bg-background min-h-[70vh]">
-        <div className="max-w-6xl mx-auto px-4">
+    <div className="bg-background min-h-[70vh]">
+      <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">WebSite</h1>
@@ -192,8 +192,8 @@ function WebsiteAdminPage() {
                 </button>
              </div>
           </div>
-        </div>
-      </section>
+      </div>
+    </div>
   );
 }
 
