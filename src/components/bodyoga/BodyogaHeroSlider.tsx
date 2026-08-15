@@ -119,7 +119,13 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
             playsInline
             disablePictureInPicture
             suppressHydrationWarning
-          />
+          >
+            {/* 
+              O elemento extra 'youtube-dubbing-button' injetado por extensões de navegador
+              dentro da tag <video> causa erro de hidratação. O suppressHydrationWarning
+              foi adicionado para mitigar isso.
+            */}
+          </video>
         ) : (
           <iframe
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full h-[56.25vw] min-h-full pointer-events-none"
