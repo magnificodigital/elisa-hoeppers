@@ -22,13 +22,181 @@ import {
   Layout, 
   Star,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Globe,
+  Calendar,
+  GraduationCap,
+  Dumbbell,
+  ShoppingBag,
+  Instagram,
+  Youtube,
+  MessageCircle,
+  Video,
+  Users,
+  User as UserIcon,
+  MapPin,
+  ChevronRight,
+  Check
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
+import { CustomProjectForm } from "@/components/projetos/CustomProjectForm";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  listServices, listTakenSlots, bookAppointment, generateSlotsForDate,
+  listAvailabilityRules, listAvailabilityBlocks,
+  formatCurrencyBRL, formatTime, formatDate,
+  type Service,
+} from "@/lib/appointments";
 
-interface RenderBlocksProps {
+            return (
+              <section key={block.id} className="py-20 md:py-32">
+                <div className="container mx-auto px-6 max-w-2xl">
+                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
+                </div>
+              </section>
+            );
+
+          case "signup-form":
+            return <SignupFormBlock key={block.id} />;
+
+
+          
+          default:
+            return (
+              <div key={block.id} className="p-8 border border-dashed border-gray-300 text-center text-gray-500">
+                Bloco "{block.type}" em desenvolvimento
+              </div>
+            );
+        }
+      })}
+    </div>
+  );
+};
+
+function HomeHeroBlock() {
+  const { data: slides } = useQuery({ 
+    queryKey: ["bodyoga-slides-active"], 
+    queryFn: listActiveSlides 
+  });
+  return <BodyogaHeroSlider initialSlides={slides ?? []} />;
+}
+
+function HomeRitualsBlock({ columns = 3, title, selection = "all" }: { columns?: number, title?: string, selection?: string }) {
+  const { data: products } = useQuery({ 
+    queryKey: ["bodyoga-products", selection], 
+    queryFn: () => listProducts({ 
+      onlyInStock: false,
+      featured: selection === "featured"
+    }) 
+  });
+  
+  const gridCols = columns === 1 ? "grid-cols-1" : 
+                   columns === 2 ? "grid-cols-1 md:grid-cols-2" : 
+                   columns === 4 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" :
+                   "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+
+  return (
+    <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
+      <span id="produtos" className="block -mt-24 pt-24" aria-hidden />
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-20">
+        {title && (
+          <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green text-center mb-12">
+            {title}
+          </h2>
+        )}
+        <div className={`grid ${gridCols} gap-4 md:gap-8`}>
+          {(products ?? []).map((p) => (
+            <BodyogaProductCard key={p.slug} product={p} noBorder />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CoursesBlock({ columns = 2 }: { columns?: number }) {
+  const { data: courses } = useQuery({
+    queryKey: ["courses", "published"],
+    queryFn: listPublishedCourses,
+  });
+
+  const gridCols = columns === 1 ? "grid-cols-1" : 
+                   columns === 3 ? "grid-cols-1 md:grid-cols-3" :
+                   "grid-cols-1 md:grid-cols-2";
+
+  return (
+    <section className="bg-bodyoga-cream py-16 md:py-24">
+      <div className="max-w-[1170px] mx-auto px-4 md:px-6">
+        <div className={`grid ${gridCols} gap-8`}>
+          {(courses ?? []).map((c) => (
+            <Link
+              key={c.id}
+              to="/cursos/$slug"
+              params={{ slug: c.slug }}
+              className="flex flex-col group"
+            >
+              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-bodyoga-green/5">
+                {c.cover_image && (
+                  <img
+                    src={c.cover_image}
+                    alt={c.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                )}
+                {c.overlay_label && (
+                  <span className="absolute top-4 left-4 bg-bodyoga-cream/90 text-bodyoga-green text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full">
+                    {c.overlay_label}
+                  </span>
+                )}
+              </div>
+              <div className="mt-6 text-center">
+                <h3 className="font-display text-xl text-bodyoga-green">{c.title}</h3>
+                {c.subtitle && (
+                  <p className="text-bodyoga-green/60 text-sm mt-2">{c.subtitle}</p>
+                )}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function IconSelector({ icon, className }: { icon: string, className?: string }) {
+  switch (icon) {
+    case 'leaf': return <Leaf className={className} />;
+    case 'heart': return <Heart className={className} />;
+    case 'sparkles': return <Sparkles className={className} />;
+    case 'flower': return <Flower2 className={className} />;
+    case 'sprout': return <Sprout className={className} />;
+    case 'clock': return <Clock className={className} />;
+    case 'layout': return <Layout className={className} />;
+    case 'star': return <Star className={className} />;
+    default: return <CheckCircle2 className={className} />;
+  }
+}
+
+
+function renderIntroTitle(text: string) {
+  return text.split("\n").map((line, i) => (
+    <span key={i}>
+      {i > 0 && <br />}
+      {line.split(/(\*[^*]+\*)/g).map((part, j) =>
+        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
+          <span key={j} className="italic">
+            {part.slice(1, -1)}
+          </span>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  ));
+}interface RenderBlocksProps {
   blocks: any[];
 }
 
@@ -492,138 +660,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
           case "home-blog":
             return <HomeBlog key={block.id} />;
 
-          
-          default:
-            return (
-              <div key={block.id} className="p-8 border border-dashed border-gray-300 text-center text-gray-500">
-                Bloco "{block.type}" em desenvolvimento
-              </div>
-            );
-        }
-      })}
-    </div>
-  );
-};
+          case "booking-form":
+            return <BookingFormBlock key={block.id} />;
 
-function HomeHeroBlock() {
-  const { data: slides } = useQuery({ 
-    queryKey: ["bodyoga-slides-active"], 
-    queryFn: listActiveSlides 
-  });
-  return <BodyogaHeroSlider initialSlides={slides ?? []} />;
-}
-
-function HomeRitualsBlock({ columns = 3, title, selection = "all" }: { columns?: number, title?: string, selection?: string }) {
-  const { data: products } = useQuery({ 
-    queryKey: ["bodyoga-products", selection], 
-    queryFn: () => listProducts({ 
-      onlyInStock: false,
-      featured: selection === "featured"
-    }) 
-  });
-  
-  const gridCols = columns === 1 ? "grid-cols-1" : 
-                   columns === 2 ? "grid-cols-1 md:grid-cols-2" : 
-                   columns === 4 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" :
-                   "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
-
-  return (
-    <section id="rituais" className="bg-bodyoga-cream scroll-mt-24">
-      <span id="produtos" className="block -mt-24 pt-24" aria-hidden />
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-20">
-        {title && (
-          <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green text-center mb-12">
-            {title}
-          </h2>
-        )}
-        <div className={`grid ${gridCols} gap-4 md:gap-8`}>
-          {(products ?? []).map((p) => (
-            <BodyogaProductCard key={p.slug} product={p} noBorder />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CoursesBlock({ columns = 2 }: { columns?: number }) {
-  const { data: courses } = useQuery({
-    queryKey: ["courses", "published"],
-    queryFn: listPublishedCourses,
-  });
-
-  const gridCols = columns === 1 ? "grid-cols-1" : 
-                   columns === 3 ? "grid-cols-1 md:grid-cols-3" :
-                   "grid-cols-1 md:grid-cols-2";
-
-  return (
-    <section className="bg-bodyoga-cream py-16 md:py-24">
-      <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-        <div className={`grid ${gridCols} gap-8`}>
-          {(courses ?? []).map((c) => (
-            <Link
-              key={c.id}
-              to="/cursos/$slug"
-              params={{ slug: c.slug }}
-              className="flex flex-col group"
-            >
-              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-bodyoga-green/5">
-                {c.cover_image && (
-                  <img
-                    src={c.cover_image}
-                    alt={c.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                )}
-                {c.overlay_label && (
-                  <span className="absolute top-4 left-4 bg-bodyoga-cream/90 text-bodyoga-green text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full">
-                    {c.overlay_label}
-                  </span>
-                )}
-              </div>
-              <div className="mt-6 text-center">
-                <h3 className="font-display text-xl text-bodyoga-green">{c.title}</h3>
-                {c.subtitle && (
-                  <p className="text-bodyoga-green/60 text-sm mt-2">{c.subtitle}</p>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function IconSelector({ icon, className }: { icon: string, className?: string }) {
-  switch (icon) {
-    case 'leaf': return <Leaf className={className} />;
-    case 'heart': return <Heart className={className} />;
-    case 'sparkles': return <Sparkles className={className} />;
-    case 'flower': return <Flower2 className={className} />;
-    case 'sprout': return <Sprout className={className} />;
-    case 'clock': return <Clock className={className} />;
-    case 'layout': return <Layout className={className} />;
-    case 'star': return <Star className={className} />;
-    default: return <CheckCircle2 className={className} />;
-  }
-}
-
-
-function renderIntroTitle(text: string) {
-  return text.split("\n").map((line, i) => (
-    <span key={i}>
-      {i > 0 && <br />}
-      {line.split(/(\*[^*]+\*)/g).map((part, j) =>
-        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
-          <span key={j} className="italic">
-            {part.slice(1, -1)}
-          </span>
-        ) : (
-          part
-        )
-      )}
-    </span>
-  ));
-}
+          case "custom-project-form":
