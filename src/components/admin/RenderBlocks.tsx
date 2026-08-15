@@ -107,35 +107,55 @@ function ProductsBlock({ props }: { props: any }) {
 
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
-  const image = product.gallery?.[0]?.url || "";
+  const [main, sub] = product.name.split("—").map((s) => s.trim());
 
   return (
-    <div className="group flex flex-col items-center text-center">
-      <a href={`/produto/${product.slug}`} className="block w-full mb-4 overflow-hidden rounded-2xl aspect-square bg-cream">
-        <img 
-          src={image} 
-          alt={product.name} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+    <Link
+      to="/loja/$slug"
+      params={{ slug: product.slug }}
+      className="group block bg-bodyoga-cream rounded-2xl overflow-hidden transition"
+    >
+      <div className="relative aspect-square overflow-hidden bg-bodyoga-green/5">
+        <GaleriaProduto 
+          images={product.gallery?.map(g => g.url) || []} 
+          alt={product.name}
+          showControls={false}
         />
-      </a>
-      <h3 className="text-lg font-medium text-primary-dark mb-1">{product.name}</h3>
-      <p className="text-sm text-primary/60 mb-3">{formatPriceBRL(product.price_cents)}</p>
-      <button
-        onClick={() => {
-          addItem({
-            product_id: product.id,
-            name: product.name,
-            slug: product.slug,
-            image: image,
-            unit_price_cents: product.price_cents
-          });
-          toast.success("Adicionado ao carrinho");
-        }}
-        className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition opacity-0 group-hover:opacity-100"
-      >
-        <ShoppingCart size={14} /> Comprar
-      </button>
-
-    </div>
+      </div>
+      <div className="p-6 text-left">
+        {sub && (
+          <p className="text-xs uppercase tracking-[0.2em] text-bodyoga-brown">{sub}</p>
+        )}
+        <h3 className="font-display text-lg text-bodyoga-green mt-1">{main}</h3>
+        {product.short_description && (
+          <p className="mt-2 text-sm text-bodyoga-green/70 leading-relaxed line-clamp-2">
+            {product.short_description}
+          </p>
+        )}
+        <div className="mt-5">
+          <span className="block text-bodyoga-green font-medium">
+            {formatPriceBRL(product.price_cents)}
+          </span>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addItem({
+                product_id: product.id,
+                name: product.name,
+                slug: product.slug,
+                image: product.gallery?.[0]?.url || "",
+                unit_price_cents: product.price_cents
+              });
+              toast.success("Adicionado ao carrinho");
+            }}
+            className="mt-3 inline-flex w-full items-center justify-center gap-1 rounded-full bg-bodyoga-green px-5 py-2.5 text-xs uppercase tracking-[0.18em] text-bodyoga-cream transition hover:bg-bodyoga-green/90"
+          >
+            Comprar <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+    </Link>
   );
+}
 }

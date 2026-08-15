@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
 import { listPages } from "@/lib/pages";
 import { useQuery } from "@tanstack/react-query";
+import { getSetting } from "@/lib/settings";
 
 
 
