@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   ArrowLeft, 
   ExternalLink, 
@@ -14,7 +14,13 @@ import {
   Bell, 
   Menu as MenuIcon,
   Copy,
-  LayoutDashboard
+  LayoutDashboard,
+  Palette,
+  MessageSquare,
+  Search,
+  Settings,
+  RotateCcw,
+  Save
 } from "lucide-react";
 import { toast } from "sonner";
 import BaseLayout from "@/components/Layout";
@@ -22,6 +28,20 @@ import { AdminGuard } from "@/components/AdminGuard";
 import { createPage, deletePage, listPages, slugify, updatePage, type SitePage } from "@/lib/pages";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import { listSettings, updateSetting, bulkUpdateSettings } from "@/lib/settings";
+import { THEME_VARS, THEME_KEYS, applyTheme, defaultTheme } from "@/lib/theme";
+import { 
+  PAGE_OPTIONS, 
+  getNavConfig, 
+  saveNavConfig, 
+  newNavItem, 
+  type NavItem, 
+  type NavHref,
+  type NavPosition
+} from "@/lib/nav-config";
+import { SettingsCategory } from "@/components/admin/SettingsCategory";
+import SlidesList from "./bodyoga-slides/index"; // We'll need to export the component from there or refactor.
+
 
 export const Route = createFileRoute("/admin/website")({
   head: () => ({ meta: [{ title: "Admin — Gerenciar Site" }] }),
