@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
-import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
 import { listPages } from "@/lib/pages";
 import { useQuery } from "@tanstack/react-query";
+import { getSetting } from "@/lib/settings";
+import { BodyogaLogo } from "./BodyogaLogo";
 import { getSetting } from "@/lib/settings";
 
 
