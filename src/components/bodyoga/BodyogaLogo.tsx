@@ -6,6 +6,9 @@ import wordmarkAsset from "@/assets/bodyoga/logo-bodyoga.png.asset.json";
 const CREAM_FILTER =
   "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)";
 
+const GREEN_FILTER =
+  "brightness(0) saturate(100%) invert(26%) sepia(13%) saturate(1292%) hue-rotate(52deg) brightness(94%) contrast(92%)";
+
 export function BodyogaLogo({
   variant = "icon",
   className = "",
@@ -26,7 +29,7 @@ export function BodyogaLogo({
         className={`w-auto ${className}`}
         style={{
           height: size ?? undefined,
-          filter: tone === "cream" ? CREAM_FILTER : undefined,
+          filter: tone === "cream" ? CREAM_FILTER : (tone === "green" ? GREEN_FILTER : undefined),
         }}
       />
     );
@@ -37,7 +40,10 @@ export function BodyogaLogo({
       src={iconAsset.url}
       alt="BODYOGA"
       className={`w-auto ${className}`}
-      style={{ height: size ?? 48 }}
+      style={{ 
+        height: size ?? 48,
+        filter: tone === "cream" ? CREAM_FILTER : (tone === "green" ? GREEN_FILTER : undefined)
+      }}
     />
   );
 }
