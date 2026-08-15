@@ -118,7 +118,6 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
             loop
             playsInline
             disablePictureInPicture
-            data-wxt-ignore="true"
           />
         ) : (
           <iframe
