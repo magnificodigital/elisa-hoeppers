@@ -56,7 +56,6 @@ import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminBlogRouteImport } from './routes/admin/blog'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
-import { Route as AdminWebsiteIndexRouteImport } from './routes/admin/website.index'
 import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
@@ -328,11 +327,6 @@ const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   path: '/agendamentos',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminWebsiteIndexRoute = AdminWebsiteIndexRouteImport.update({
-  id: '/website/',
-  path: '/website/',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
 const AdminSiteIndexRoute = AdminSiteIndexRouteImport.update({
   id: '/site/',
   path: '/site/',
@@ -591,7 +585,6 @@ export interface FileRoutesByFullPath {
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/site/': typeof AdminSiteIndexRoute
-  '/admin/website/': typeof AdminWebsiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
@@ -672,7 +665,6 @@ export interface FileRoutesByTo {
   '/admin/cursos': typeof AdminCursosIndexRoute
   '/admin/produtos': typeof AdminProdutosIndexRoute
   '/admin/site': typeof AdminSiteIndexRoute
-  '/admin/website': typeof AdminWebsiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
@@ -757,7 +749,6 @@ export interface FileRoutesById {
   '/admin/cursos/': typeof AdminCursosIndexRoute
   '/admin/produtos/': typeof AdminProdutosIndexRoute
   '/admin/site/': typeof AdminSiteIndexRoute
-  '/admin/website/': typeof AdminWebsiteIndexRoute
   '/admin/cursos/$id/aulas': typeof AdminCursosIdAulasRouteWithChildren
   '/admin/cursos/$id/editar': typeof AdminCursosIdEditarRoute
   '/admin/site/paginas/$id': typeof AdminSitePaginasIdRoute
@@ -843,7 +834,6 @@ export interface FileRouteTypes {
     | '/admin/cursos/'
     | '/admin/produtos/'
     | '/admin/site/'
-    | '/admin/website/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
@@ -924,7 +914,6 @@ export interface FileRouteTypes {
     | '/admin/cursos'
     | '/admin/produtos'
     | '/admin/site'
-    | '/admin/website'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
@@ -1008,7 +997,6 @@ export interface FileRouteTypes {
     | '/admin/cursos/'
     | '/admin/produtos/'
     | '/admin/site/'
-    | '/admin/website/'
     | '/admin/cursos/$id/aulas'
     | '/admin/cursos/$id/editar'
     | '/admin/site/paginas/$id'
@@ -1384,13 +1372,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgendamentosRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/website/': {
-      id: '/admin/website/'
-      path: '/website'
-      fullPath: '/admin/website/'
-      preLoaderRoute: typeof AdminWebsiteIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/admin/site/': {
       id: '/admin/site/'
       path: '/site'
@@ -1697,7 +1678,6 @@ interface AdminRouteRouteChildren {
   AdminCursosIndexRoute: typeof AdminCursosIndexRoute
   AdminProdutosIndexRoute: typeof AdminProdutosIndexRoute
   AdminSiteIndexRoute: typeof AdminSiteIndexRoute
-  AdminWebsiteIndexRoute: typeof AdminWebsiteIndexRoute
   AdminCursosIdAulasRoute: typeof AdminCursosIdAulasRouteWithChildren
   AdminCursosIdEditarRoute: typeof AdminCursosIdEditarRoute
   AdminSitePaginasIdRoute: typeof AdminSitePaginasIdRoute
@@ -1743,7 +1723,6 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminCursosIndexRoute: AdminCursosIndexRoute,
   AdminProdutosIndexRoute: AdminProdutosIndexRoute,
   AdminSiteIndexRoute: AdminSiteIndexRoute,
-  AdminWebsiteIndexRoute: AdminWebsiteIndexRoute,
   AdminCursosIdAulasRoute: AdminCursosIdAulasRouteWithChildren,
   AdminCursosIdEditarRoute: AdminCursosIdEditarRoute,
   AdminSitePaginasIdRoute: AdminSitePaginasIdRoute,
