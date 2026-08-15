@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
 import { BodyogaProductCard } from "../bodyoga/BodyogaLanding";
 import HomeInstagram from "../home/HomeInstagram";
 import HomeBlog from "../home/HomeBlog";
 import { listActiveSlides, listProducts, formatPriceBRL } from "@/lib/shop";
 import { listPublishedCourses } from "@/lib/courses";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { 
   Accordion, 
   AccordionContent, 
@@ -50,30 +50,6 @@ import {
   type Service,
 } from "@/lib/appointments";
 
-            return (
-              <section key={block.id} className="py-20 md:py-32">
-                <div className="container mx-auto px-6 max-w-2xl">
-                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
-                </div>
-              </section>
-            );
-
-          case "signup-form":
-            return <SignupFormBlock key={block.id} />;
-
-
-          
-          default:
-            return (
-              <div key={block.id} className="p-8 border border-dashed border-gray-300 text-center text-gray-500">
-                Bloco "{block.type}" em desenvolvimento
-              </div>
-            );
-        }
-      })}
-    </div>
-  );
-};
 
 function HomeHeroBlock() {
   const { data: slides } = useQuery({ 
@@ -180,7 +156,6 @@ function IconSelector({ icon, className }: { icon: string, className?: string })
   }
 }
 
-
 function renderIntroTitle(text: string) {
   return text.split("\n").map((line, i) => (
     <span key={i}>
@@ -196,7 +171,164 @@ function renderIntroTitle(text: string) {
       )}
     </span>
   ));
-}interface RenderBlocksProps {
+}
+
+function DatePicker({ selectedDate, onChange }: { selectedDate: Date; onChange: (d: Date) => void }) {
+  const days = Array.from({ length: 14 }, (_, i) => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + i);
+    return d;
+  });
+  return (
+    <div className="flex gap-2 overflow-x-auto pb-2">
+      {days.map((d) => {
+        const sel = d.toDateString() === selectedDate.toDateString();
+        return (
+          <button
+            key={d.toISOString()}
+            onClick={() => onChange(d)}
+            className={`flex flex-col items-center justify-center min-w-[64px] py-3 rounded-lg border transition ${sel ? "bg-primary text-white border-primary" : "bg-white border-border"}`}
+          >
+            <span className="text-[10px] uppercase tracking-wider opacity-80">{d.toLocaleDateString("pt-BR", { weekday: "short" })}</span>
+            <span className="text-2xl font-display leading-none">{d.getDate()}</span>
+            <span className="text-[10px] uppercase opacity-80">{d.toLocaleDateString("pt-BR", { month: "short" })}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function BookingFormBlock() {
+  const { user, profile } = useAuth();
+  const { data: services, isLoading: loadingServices } = useQuery({ queryKey: ["services"], queryFn: listServices });
+  const { data: taken } = useQuery({ queryKey: ["taken-slots"], queryFn: listTakenSlots });
+  const { data: rules } = useQuery({ queryKey: ["availability-rules"], queryFn: listAvailabilityRules });
+  const { data: blocks } = useQuery({ queryKey: ["availability-blocks"], queryFn: listAvailabilityBlocks });
+
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const t = new Date();
+    t.setHours(0, 0, 0, 0);
+    return t;
+  });
+  const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
+  const [step, setStep] = useState<"service" | "slot" | "form" | "done">("service");
+  const [form, setForm] = useState({
+    name: profile?.full_name ?? user?.email?.split("@")[0] ?? "",
+    email: user?.email ?? "",
+    phone: "",
+    notes: "",
+  });
+  const [confirmCode, setConfirmCode] = useState<string | null>(null);
+
+  const slots = useMemo(() => {
+    if (!selectedService) return [];
+    return generateSlotsForDate(selectedDate, selectedService.duration_min, taken ?? [], rules, blocks);
+  }, [selectedService, selectedDate, taken, rules, blocks]);
+
+  const bookMutation = useMutation({
+    mutationFn: () => bookAppointment({
+      service_id: selectedService!.id,
+      starts_at: selectedSlot!.toISOString(),
+      customer_name: form.name,
+      customer_email: form.email,
+      customer_phone: form.phone || undefined,
+      notes: form.notes || undefined,
+    }),
+    onSuccess: (result) => {
+      setConfirmCode(result.code);
+      setStep("done");
+    },
+  });
+
+  return (
+    <section className="bg-cream py-12 md:py-20">
+      <div className="container mx-auto px-4 max-w-5xl">
+        {step === "service" && (
+          <div className="grid md:grid-cols-2 gap-4">
+            {(services ?? []).map((s) => (
+              <button key={s.id} onClick={() => { setSelectedService(s); setStep("slot"); }} className="bg-white rounded-xl p-6 text-left border border-border hover:border-primary transition">
+                <h2 className="font-display text-xl text-primary-dark mb-2">{s.title}</h2>
+                <div className="flex justify-between text-sm">
+                  <span>{s.duration_min} min</span>
+                  <span className="font-semibold">{formatCurrencyBRL(s.price_cents)}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+        {step === "slot" && (
+          <div className="bg-white rounded-xl p-6 md:p-8">
+            <DatePicker selectedDate={selectedDate} onChange={(d) => setSelectedDate(d)} />
+            <div className="mt-8 grid grid-cols-4 gap-2">
+              {slots.map((slot) => (
+                <button key={slot.startsAt.toISOString()} onClick={() => slot.available && setSelectedSlot(slot.startsAt)} disabled={!slot.available}
+                  className={`py-2 rounded-md text-sm ${selectedSlot?.getTime() === slot.startsAt.getTime() ? "bg-primary text-white" : "border"}`}>
+                  {formatTime(slot.startsAt)}
+                </button>
+              ))}
+            </div>
+            {selectedSlot && <button onClick={() => setStep("form")} className="mt-8 bg-primary text-white px-8 py-3 rounded-full uppercase text-xs">Continuar</button>}
+          </div>
+        )}
+        {step === "form" && (
+          <form onSubmit={(e) => { e.preventDefault(); bookMutation.mutate(); }} className="bg-white p-8 max-w-xl mx-auto space-y-4">
+            <input required placeholder="Nome" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border p-2" />
+            <input type="email" required placeholder="E-mail" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full border p-2" />
+            <button type="submit" className="w-full bg-primary text-white py-3 rounded-full uppercase text-xs">Reservar</button>
+          </form>
+        )}
+        {step === "done" && (
+          <div className="text-center p-8">
+            <h2 className="font-display text-2xl mb-4">Reserva recebida!</h2>
+            <p>Código: {confirmCode}</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function SignupFormBlock() {
+  const { signUp, signIn } = useAuth();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await signUp({ email, password, fullName });
+      await signIn({ email, password });
+      window.location.href = "/painel";
+    } catch (err: any) {
+      toast.error(err.message ?? "Erro ao criar conta.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="py-20 bg-cream">
+      <div className="max-w-md mx-auto px-4 bg-white p-8 rounded-3xl border">
+        <h2 className="font-display text-2xl mb-6 text-center">Crie sua conta</h2>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <input required placeholder="Nome completo" value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full border p-3" />
+          <input type="email" required placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border p-3" />
+          <input type="password" required minLength={6} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border p-3" />
+          <button type="submit" disabled={loading} className="w-full bg-primary text-white py-3 rounded-full uppercase text-xs">Criar conta</button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+
+interface RenderBlocksProps {
   blocks: any[];
 }
 
@@ -206,6 +338,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
   return (
     <div className="flex flex-col w-full">
       {blocks.map((block) => {
+        const p = block.props;
         switch (block.type) {
           case "hero":
             return (
@@ -213,38 +346,29 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                 key={block.id}
                 initialSlides={[{
                   id: block.id,
-                  title: block.props.title,
-                  subtitle: block.props.subtitle,
-                  button_label: block.props.buttonLabel,
-                  button_link: block.props.buttonHref,
-                  image_url: block.props.bgImage,
-                  video_url: block.props.bgVideo,
-                  overlay_opacity: block.props.overlay,
+                  title: p.title,
+                  subtitle: p.subtitle,
+                  button_label: p.buttonLabel,
+                  button_link: p.buttonHref,
+                  image_url: p.bgImage,
+                  video_url: p.bgVideo,
+                  overlay_opacity: p.overlay,
                   active: true
                 } as any]}
               />
             );
+
           case "text":
             return (
               <section key={block.id} className="py-16 px-4 max-w-4xl mx-auto w-full">
-                <div className={`text-${block.props.align || 'left'}`}>
-                  {block.props.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{block.props.title}</h2>}
-                  {block.props.content && <p className="text-lg text-primary/80 whitespace-pre-wrap">{block.props.content}</p>}
+                <div className={`text-${p.align || 'left'}`}>
+                  {p.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{p.title}</h2>}
+                  {p.content && <p className="text-lg text-primary/80 whitespace-pre-wrap">{p.content}</p>}
                 </div>
               </section>
             );
-          case "products":
-            return (
-              <HomeRitualsBlock 
-                key={block.id} 
-                columns={block.props.columns} 
-                title={block.props.title}
-                selection={block.props.selection}
-              />
-            );
 
-          case "image-text": {
-            const p = block.props;
+          case "image-text":
             return (
               <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
                 <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-16 md:py-24">
@@ -267,26 +391,21 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                 </div>
               </section>
             );
-          }
 
-          case "categories": {
-            const p = block.props;
-            const cols = p.columns === 1 ? "grid-cols-1" : 
-                         p.columns === 2 ? "grid-cols-2" : 
-                         p.columns === 4 ? "grid-cols-2 lg:grid-cols-4" : 
-                         "grid-cols-2 md:grid-cols-3";
+          case "products":
+            return <HomeRitualsBlock key={block.id} columns={p.columns} title={p.title} selection={p.selection} />;
+
+          case "categories":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-16 px-4">
                 <div className="max-w-[1170px] mx-auto">
-                  <div className={`grid ${cols} gap-4 md:gap-6`}>
+                  <div className={`grid ${p.columns === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2 md:grid-cols-3"} gap-4 md:gap-6`}>
                     {(p.items || []).map((item: any, i: number) => (
                       <a key={i} href={item.link || '#'} className="group block relative aspect-square overflow-hidden rounded-2xl bg-bodyoga-green/5">
-                        {item.image && (
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                        )}
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                        {item.image && <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />}
+                        <div className="absolute inset-0 bg-black/20" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-white font-display text-xl md:text-2xl tracking-wide">{item.name}</span>
+                          <span className="text-white font-display text-xl">{item.name}</span>
                         </div>
                       </a>
                     ))}
@@ -294,59 +413,23 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                 </div>
               </section>
             );
-          }
 
-          case "gallery": {
-            const p = block.props;
-            const cols = p.columns === 1 ? "grid-cols-1" : 
-                         p.columns === 2 ? "grid-cols-2" : 
-                         p.columns === 4 ? "grid-cols-2 lg:grid-cols-4" : 
-                         "grid-cols-2 md:grid-cols-3";
+          case "gallery":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-12 px-4">
                 <div className="max-w-[1170px] mx-auto">
-                  <div className={`grid ${cols} gap-4`}>
+                  <div className={`grid ${p.columns === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2 md:grid-cols-3"} gap-4`}>
                     {(p.images || []).map((img: any, i: number) => (
-                      <div key={i} className="aspect-square rounded-2xl overflow-hidden bg-bodyoga-green/5">
-                        <img src={img.url} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      <div key={i} className="aspect-square rounded-2xl overflow-hidden">
+                        <img src={img.url} alt="" className="w-full h-full object-cover" />
                       </div>
                     ))}
                   </div>
                 </div>
               </section>
             );
-          }
 
-          case "image": {
-            const p = block.props;
-            return (
-              <section key={block.id} className="bg-bodyoga-cream py-8 px-4 flex flex-col items-center">
-                <div style={{ width: p.width || '100%', maxWidth: '100%' }} className="rounded-2xl overflow-hidden">
-                  <img src={p.url} alt={p.caption || ''} className="w-full h-auto" />
-                </div>
-                {p.caption && <p className="mt-4 text-sm text-bodyoga-green/60 italic">{p.caption}</p>}
-              </section>
-            );
-          }
-
-          case "video": {
-            const p = block.props;
-            const ratio = p.ratio === '21/9' ? 'aspect-[21/9]' : p.ratio === '4/3' ? 'aspect-[4/3]' : 'aspect-video';
-            return (
-              <section key={block.id} className="bg-bodyoga-cream py-12 px-4">
-                <div className={`max-w-[1170px] mx-auto rounded-2xl overflow-hidden shadow-xl ${ratio} bg-black`}>
-                  {p.url.includes('youtube.com') || p.url.includes('youtu.be') ? (
-                    <iframe src={p.url.replace('watch?v=', 'embed/')} className="w-full h-full" frameBorder="0" allowFullScreen />
-                  ) : (
-                    <video src={p.url} className="w-full h-full object-cover" autoPlay={p.autoplay} muted={p.autoplay} controls />
-                  )}
-                </div>
-              </section>
-            );
-          }
-
-          case "faq": {
-            const p = block.props;
+          case "faq":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 px-4">
                 <div className="max-w-3xl mx-auto">
@@ -354,96 +437,79 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                   <Accordion type="single" collapsible className="w-full">
                     {(p.items || []).map((item: any, i: number) => (
                       <AccordionItem key={i} value={`item-${i}`} className="border-bodyoga-green/10">
-                        <AccordionTrigger className="font-display text-lg text-bodyoga-green hover:text-bodyoga-green/80">
-                          {item.q}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-bodyoga-green/70 leading-relaxed">
-                          {item.a}
-                        </AccordionContent>
+                        <AccordionTrigger className="font-display text-lg text-bodyoga-green">{item.q}</AccordionTrigger>
+                        <AccordionContent className="text-bodyoga-green/70 leading-relaxed">{item.a}</AccordionContent>
                       </AccordionItem>
                     ))}
                   </Accordion>
                 </div>
               </section>
             );
-          }
 
-          case "testimonials": {
-            const p = block.props;
+          case "testimonials":
             return (
-              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 overflow-hidden">
-                <div className="max-w-[1170px] mx-auto px-4">
-                  <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-                    {(p.items || []).map((t: any, i: number) => (
-                      <div key={i} className="max-w-xs flex flex-col items-center text-center">
-                        <div className="w-20 h-20 rounded-full overflow-hidden bg-bodyoga-green/10 mb-6">
-                          {t.photo && <img src={t.photo} alt={t.name} className="w-full h-full object-cover" />}
-                        </div>
-                        <p className="text-bodyoga-green/80 italic font-light mb-4">"{t.text}"</p>
-                        <span className="font-display text-bodyoga-green tracking-wide">{t.name}</span>
+              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 px-4">
+                <div className="max-w-[1170px] mx-auto grid md:grid-cols-3 gap-8">
+                  {(p.items || []).map((t: any, i: number) => (
+                    <div key={i} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
+                      <p className="italic text-bodyoga-green/80">"{t.text}"</p>
+                      <div>
+                        <p className="font-semibold text-bodyoga-green">{t.author}</p>
+                        <p className="text-xs text-bodyoga-green/50 uppercase tracking-widest">{t.role}</p>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            );
-          }
-
-          case "stats": {
-            const p = block.props;
-            return (
-              <section key={block.id} className="bg-bodyoga-green py-16 md:py-20 text-bodyoga-cream">
-                <div className="max-w-[1170px] mx-auto px-4 flex flex-wrap justify-around gap-8">
-                  {(p.items || []).map((s: any, i: number) => (
-                    <div key={i} className="flex flex-col items-center text-center min-w-[150px]">
-                      <span className="font-display text-4xl md:text-5xl mb-2">{s.value}</span>
-                      <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">{s.label}</span>
                     </div>
                   ))}
                 </div>
               </section>
             );
-          }
 
-          case "benefits": {
-            const p = block.props;
+          case "stats":
+            return (
+              <section key={block.id} className="bg-bodyoga-green py-16 px-4 text-bodyoga-cream">
+                <div className="max-w-[1170px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                  {(p.items || []).map((s: any, i: number) => (
+                    <div key={i} className="space-y-2">
+                      <p className="font-display text-4xl md:text-5xl">{s.value}</p>
+                      <p className="text-xs uppercase tracking-widest opacity-70">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+
+          case "benefits":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24">
                 <div className="max-w-[1170px] mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
                   {(p.items || []).map((b: any, i: number) => (
                     <div key={i} className="flex flex-col items-center text-center space-y-4">
-                      <div className="text-bodyoga-green">
-                        <IconSelector icon={b.icon} className="w-8 h-8" />
-                      </div>
+                      <IconSelector icon={b.icon} className="w-8 h-8 text-bodyoga-green" />
                       <h3 className="font-display text-xl text-bodyoga-green">{b.title}</h3>
-                      <p className="text-bodyoga-green/70 text-sm leading-relaxed">{b.text}</p>
+                      <p className="text-bodyoga-green/70 text-sm">{b.text}</p>
                     </div>
                   ))}
                 </div>
               </section>
             );
-          }
 
-          case "timeline": {
-            const p = block.props;
+          case "timeline":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 px-4">
-                <div className="max-w-3xl mx-auto relative border-l border-bodyoga-green/20 pl-8 space-y-12">
+                <div className="max-w-3xl mx-auto space-y-12">
                   {(p.items || []).map((t: any, i: number) => (
-                    <div key={i} className="relative">
-                      <div className="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-bodyoga-green border-4 border-bodyoga-cream" />
-                      <span className="font-display text-2xl text-bodyoga-green block mb-2">{t.year}</span>
-                      <h3 className="text-lg font-medium text-bodyoga-green mb-2">{t.title}</h3>
-                      <p className="text-bodyoga-green/70 leading-relaxed">{t.text}</p>
+                    <div key={i} className="flex gap-8 items-start">
+                      <span className="font-display text-2xl text-bodyoga-green/30">{t.year}</span>
+                      <div className="space-y-2">
+                        <h3 className="font-display text-xl text-bodyoga-green">{t.title}</h3>
+                        <p className="text-bodyoga-green/70">{t.text}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
               </section>
             );
-          }
 
-          case "author": {
-            const p = block.props;
+          case "author":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24">
                 <div className="max-w-[900px] mx-auto px-6 grid md:grid-cols-12 gap-12 items-center">
@@ -453,214 +519,80 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                   <div className="md:col-span-7 space-y-6">
                     <h2 className="font-display text-3xl text-bodyoga-green">{p.title}</h2>
                     <p className="text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">{p.bio}</p>
-                    {p.signature && <img src={p.signature} alt="Assinatura" className="h-16 w-auto opacity-70" />}
                   </div>
                 </div>
               </section>
             );
-          }
 
           case "courses":
-            return <CoursesBlock key={block.id} columns={block.props.columns} />;
+            return <CoursesBlock key={block.id} columns={p.columns} />;
 
-          case "cta": {
-            const p = block.props;
-            const isPrimary = p.bgColor === 'primary';
-            return (
-              <section key={block.id} className={`${isPrimary ? 'bg-bodyoga-green text-bodyoga-cream' : 'bg-bodyoga-cream text-bodyoga-green'} py-16 md:py-24 px-4 text-center`}>
-                <div className="max-w-2xl mx-auto space-y-8">
-                  <h2 className="font-display text-3xl md:text-5xl leading-tight">{p.title}</h2>
-                  {p.text && <p className="text-lg opacity-80">{p.text}</p>}
-                  <a href={p.buttonHref || '#'} className={`inline-flex px-10 py-4 rounded-full border text-[11px] uppercase tracking-[0.3em] font-semibold transition ${
-                    isPrimary ? 'border-bodyoga-cream/20 hover:bg-bodyoga-cream hover:text-bodyoga-green' : 'border-bodyoga-green/20 hover:bg-bodyoga-green hover:text-bodyoga-cream'
-                  }`}>
-                    {p.buttonLabel}
-                  </a>
-                </div>
-              </section>
-            );
-          }
-
-          case "newsletter": {
-            const p = block.props;
+          case "newsletter":
             return (
               <section key={block.id} className="bg-bodyoga-green py-20 px-4 text-bodyoga-cream text-center">
                 <div className="max-w-xl mx-auto space-y-8">
                   <h2 className="font-display text-3xl md:text-4xl">{p.title}</h2>
                   <p className="opacity-80">{p.text}</p>
-                  <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => {
-                    e.preventDefault();
-                    toast.success("Inscrito com sucesso!");
-                  }}>
-                    <input 
-                      type="email" 
-                      placeholder="Seu melhor email" 
-                      className="flex-1 bg-white/10 border border-white/20 rounded-full px-6 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/30"
-                      required
-                    />
-                    <button className="bg-bodyoga-cream text-bodyoga-green px-8 py-3 rounded-full text-xs uppercase tracking-widest font-bold hover:opacity-90 transition">
-                      Enviar
-                    </button>
+                  <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => { e.preventDefault(); toast.success("Inscrito!"); }}>
+                    <input type="email" placeholder="Email" className="flex-1 bg-white/10 border border-white/20 rounded-full px-6 py-3" required />
+                    <button className="bg-bodyoga-cream text-bodyoga-green px-8 py-3 rounded-full text-xs uppercase font-bold">Enviar</button>
                   </form>
                 </div>
               </section>
             );
-          }
 
-          case "custom-projects": {
-            const p = block.props;
-            return (
-              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 border-y border-bodyoga-green/5">
-                <div className="max-w-[1170px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
-                  <div className="max-w-xl text-center md:text-left">
-                    <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green mb-4">{p.title}</h2>
-                    <p className="text-bodyoga-green/70">{p.text}</p>
-                  </div>
-                  <Link to="/projetos-personalizados" className="inline-flex px-10 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:text-bodyoga-cream text-[11px] uppercase tracking-[0.3em] font-semibold transition text-bodyoga-green">
-                    Solicitar Projeto
-                  </Link>
-                </div>
-              </section>
-            );
-          }
-
-          case "yoga-classes": {
-            const p = block.props;
-            return (
-              <section key={block.id} className="bg-bodyoga-green py-16 md:py-24 px-4 text-center text-bodyoga-cream">
-                <div className="max-w-2xl mx-auto space-y-8">
-                  <h2 className="font-display text-3xl md:text-5xl">{p.title}</h2>
-                  <p className="text-lg opacity-80">{p.text}</p>
-                  <Link to="/agende-sua-aula" className="inline-flex px-10 py-4 rounded-full border border-bodyoga-cream/20 hover:bg-bodyoga-cream hover:text-bodyoga-green text-[11px] uppercase tracking-[0.3em] font-semibold transition text-bodyoga-cream">
-                    Agendar Aula
-                  </Link>
-                </div>
-              </section>
-            );
-          }
-
-          case "columns": {
-            const p = block.props;
-            const cols = p.count === 2 ? "grid-cols-1 md:grid-cols-2" : 
-                         p.count === 3 ? "grid-cols-1 md:grid-cols-3" : 
-                         "grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
+          case "columns":
             return (
               <section key={block.id} className="bg-bodyoga-cream py-16 px-4">
-                <div className={`max-w-[1170px] mx-auto grid ${cols} gap-12`}>
+                <div className={`max-w-[1170px] mx-auto grid ${p.count === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2"} gap-12`}>
                   {(p.items || []).map((item: any, i: number) => (
                     <div key={i} className="text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line" dangerouslySetInnerHTML={{ __html: item.content }} />
                   ))}
                 </div>
               </section>
             );
-          }
-
-          case "shortcut-banner": {
-            const p = block.props;
-            return (
-              <section key={block.id} className="bg-bodyoga-cream py-12 px-4">
-                <div className="max-w-[1170px] mx-auto rounded-2xl overflow-hidden relative min-h-[300px] flex items-center">
-                  {p.image && <img src={p.image} className="absolute inset-0 w-full h-full object-cover" alt="" />}
-                  <div className="absolute inset-0 bg-black/30" />
-                  <div className="relative z-10 p-8 md:p-16 space-y-8">
-                    <h2 className="font-display text-3xl md:text-4xl text-white">{p.title}</h2>
-                    <div className="flex flex-wrap gap-4">
-                      {(p.shortcuts || []).map((s: any, i: number) => (
-                        <a key={i} href={s.link || '#'} className="bg-white/90 hover:bg-white text-bodyoga-green px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-bold transition">
-                          {s.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </section>
-            );
-          }
 
           case "spacer":
-            return <div key={block.id} style={{ height: `${block.props.height}px` }} />;
-
-          case "home-insta":
-            return <HomeInstagram key={block.id} />;
-          
-          case "home-hero":
-            return <HomeHeroBlock key={block.id} />;
-            
-          case "home-opening":
-            return (
-              <section key={block.id} className="bg-bodyoga-cream">
-                <div className="max-w-[900px] mx-auto px-6 py-6 md:py-10 flex flex-col items-center text-center">
-                  {block.props.icon && (
-                    <img
-                      src={block.props.icon}
-                      alt="BODYOGA"
-                      className="w-28 md:w-40 h-auto mb-3"
-                      loading="lazy"
-                    />
-                  )}
-                  <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug whitespace-pre-line">
-                    {block.props.title}
-                  </p>
-                </div>
-              </section>
-            );
-
-          case "home-rituals":
-            return <HomeRitualsBlock key={block.id} />;
-
-          case "home-intro":
-            return (
-              <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
-                <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
-                    <div className="md:col-span-6 relative">
-                      <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
-                        <img
-                          src={block.props.image}
-                          alt="Elisa Hoeppers"
-                          className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
-                          loading="lazy"
-                        />
-                      </div>
-                    </div>
-                    <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
-                      <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
-                        {renderIntroTitle(block.props.title || "")}
-                      </h2>
-                      <div className="space-y-6 max-w-md">
-                        {block.props.p1 && (
-                          <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">
-                            {block.props.p1}
-                          </p>
-                        )}
-                        {block.props.p2 && (
-                          <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide whitespace-pre-line">
-                            {block.props.p2}
-                          </p>
-                        )}
-                      </div>
-                      {block.props.ctaLabel && (
-                        <div>
-                          <a
-                            href={block.props.ctaHref || "#"}
-                            className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-                          >
-                            <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
-                              {block.props.ctaLabel}
-                            </span>
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </section>
-            );
-
-          case "home-blog":
-            return <HomeBlog key={block.id} />;
+            return <div key={block.id} style={{ height: `${p.height}px` }} />;
 
           case "booking-form":
             return <BookingFormBlock key={block.id} />;
 
           case "custom-project-form":
+            return (
+              <section key={block.id} className="py-20 md:py-32">
+                <div className="container mx-auto px-6 max-w-2xl">
+                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
+                </div>
+              </section>
+            );
+
+          case "signup-form":
+            return <SignupFormBlock key={block.id} />;
+
+          case "home-hero":
+            return <HomeHeroBlock key={block.id} />;
+          
+          case "home-intro":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
+                <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div className="md:col-span-6"><img src={p.image} className="rounded-2xl" alt="" /></div>
+                    <div className="md:col-span-6 space-y-10">
+                      <h2 className="font-display text-3xl md:text-5xl text-bodyoga-green">{renderIntroTitle(p.title || "")}</h2>
+                      <p className="text-lg text-bodyoga-green/80">{p.p1}</p>
+                      {p.ctaLabel && <a href={p.ctaHref || "#"} className="inline-block px-7 py-4 border rounded-full uppercase text-[11px]">{p.ctaLabel}</a>}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+
+          default:
+            return <div key={block.id} className="p-8 border border-dashed text-center text-gray-400">Bloco {block.type} não encontrado</div>;
+        }
+      })}
+    </div>
+  );
+};
