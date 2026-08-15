@@ -37,10 +37,11 @@ import Footer from "@/components/Footer";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import HomeBlog from "@/components/home/HomeBlog";
 import HomeInstagram from "@/components/home/HomeInstagram";
-import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
-import { listProducts, listActiveRituals, formatPriceBRL, type Product, type Slide } from "@/lib/shop";
+import { BodyogaProductCard } from "@/components/bodyoga/BodyogaProductCard";
+import { listProducts, listActiveRituals, type Product, type Slide } from "@/lib/shop";
 import { getSetting } from "@/lib/settings";
 import iconAsset from "@/assets/bodyoga/icone-bodyoga-2.png.asset.json";
+
 
 const INTRO_DEFAULTS: Record<string, string> = {
   home_intro_title: "BODYOGA é a\nfusão entre *yoga* e\ncuidado consciente.",
