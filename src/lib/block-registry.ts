@@ -39,6 +39,7 @@ export interface BlockDef {
   desc: string;
   defaults: Record<string, any>;
   fields: BlockField[];
+  hidden?: boolean; // não aparece na paleta (mas o tipo continua válido)
 }
 
 export type BlockField = {
@@ -106,7 +107,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "categories",
     label: "Categorias",
     desc: "Grid de categorias",
-    defaults: { items: [], columns: 3 },
+    defaults: { items: [{ name: "Nova categoria", image: "", link: "/loja" }], columns: 3 },
     fields: [
       { key: "columns", label: "Colunas", type: "number" },
       { 
@@ -184,7 +185,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "faq",
     label: "FAQ",
     desc: "Perguntas e respostas",
-    defaults: { title: "Dúvidas frequentes", items: [] },
+    defaults: { title: "Dúvidas frequentes", items: [{ q: "Como funciona a entrega?", a: "Escreva aqui a resposta." }, { q: "Os produtos são naturais?", a: "Escreva aqui a resposta." }] },
     fields: [
       { key: "title", label: "Título", type: "text" },
       { key: "items", label: "Perguntas", type: "list", itemFields: [{key: "q", label: "Pergunta", type: "text"}, {key: "a", label: "Resposta", type: "textarea"}] }
@@ -194,13 +195,14 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "testimonials",
     label: "Depoimentos",
     desc: "Carrossel de avaliações",
-    defaults: { items: [] },
+    defaults: { items: [{ name: "Cliente", text: "Escreva aqui o depoimento.", photo: "" }] },
     fields: [
       { key: "items", label: "Depoimentos", type: "list", itemFields: [{key: "name", label: "Nome", type: "text"}, {key: "text", label: "Texto", type: "textarea"}, {key: "photo", label: "Foto", type: "image"}] }
     ]
   },
   stats: {
     type: "stats",
+    hidden: true,
     label: "Estatísticas",
     desc: "Números em destaque",
     defaults: { items: [] },
@@ -210,6 +212,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
   },
   benefits: {
     type: "benefits",
+    hidden: true,
     label: "Benefícios",
     desc: "Ícones + título + texto",
     defaults: { items: [] },
@@ -219,6 +222,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
   },
   timeline: {
     type: "timeline",
+    hidden: true,
     label: "Linha do tempo",
     desc: "História da marca por ano",
     defaults: { items: [] },
@@ -264,6 +268,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
   },
   "custom-projects": {
     type: "custom-projects",
+    hidden: true,
     label: "Projetos personalizados",
     desc: "CTA pro formulário",
     defaults: { title: "Sua marca tem um cheiro.", text: "Vamos criá-lo juntos." },
@@ -271,6 +276,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
   },
   "yoga-classes": {
     type: "yoga-classes",
+    hidden: true,
     label: "Aulas de Yoga",
     desc: "CTA pro agendamento",
     defaults: { title: "Pratique conosco", text: "Agende sua aula experimental." },
@@ -280,7 +286,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "columns",
     label: "Colunas livres",
     desc: "2 a 4 colunas",
-    defaults: { count: 2, items: [] },
+    defaults: { count: 2, items: [{ content: "Texto da coluna 1." }, { content: "Texto da coluna 2." }] },
     fields: [
       { key: "count", label: "Nº Colunas", type: "number" },
       { key: "items", label: "Conteúdo", type: "list", itemFields: [{key: "content", label: "Texto/HTML", type: "textarea"}] }
@@ -371,22 +377,31 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "booking-form",
     label: "Formulário de Agendamento",
     desc: "Widget completo de agendamento de aulas",
-    defaults: {},
-    fields: []
+    defaults: { title: "", intro: "" },
+    fields: [
+      { key: "title", label: "Título", type: "text" },
+      { key: "intro", label: "Texto de introdução", type: "textarea" }
+    ]
   },
   "custom-project-form": {
     type: "custom-project-form",
     label: "Formulário de Projetos Personalizados",
     desc: "Widget de solicitação de projetos sob medida",
-    defaults: {},
-    fields: []
+    defaults: { title: "", intro: "" },
+    fields: [
+      { key: "title", label: "Título", type: "text" },
+      { key: "intro", label: "Texto de introdução", type: "textarea" }
+    ]
   },
   "signup-form": {
     type: "signup-form",
     label: "Formulário de Cadastro",
     desc: "Widget de cadastro de novos alunos",
-    defaults: {},
-    fields: []
+    defaults: { title: "", intro: "" },
+    fields: [
+      { key: "title", label: "Título", type: "text" },
+      { key: "intro", label: "Texto de introdução", type: "textarea" }
+    ]
   },
 };
 

@@ -526,9 +526,9 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                   {(p.items || []).map((t: any, i: number) => (
                     <div key={i} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
                       <p className="italic text-bodyoga-green/80">"{t.text}"</p>
-                      <div>
-                        <p className="font-semibold text-bodyoga-green">{t.author}</p>
-                        <p className="text-xs text-bodyoga-green/50 uppercase tracking-widest">{t.role}</p>
+                      <div className="flex items-center gap-3">
+                        {t.photo && <img src={t.photo} alt={t.name || ""} className="w-10 h-10 rounded-full object-cover" />}
+                        <p className="font-semibold text-bodyoga-green">{t.name}</p>
                       </div>
                     </div>
                   ))}
@@ -629,19 +629,45 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <div key={block.id} style={{ height: `${p.height}px` }} />;
 
           case "booking-form":
-            return <BookingFormBlock key={block.id} />;
+            return (
+              <div key={block.id}>
+                {(p.title || p.intro) && (
+                  <div className="max-w-2xl mx-auto px-6 pt-16 text-center">
+                    {p.title && <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green mb-3">{p.title}</h2>}
+                    {p.intro && <p className="text-bodyoga-green/70 whitespace-pre-line">{p.intro}</p>}
+                  </div>
+                )}
+                <BookingFormBlock />
+              </div>
+            );
 
           case "custom-project-form":
             return (
               <section key={block.id} className="py-20 md:py-32">
                 <div className="container mx-auto px-6 max-w-2xl">
+                  {(p.title || p.intro) && (
+                    <div className="text-center mb-8">
+                      {p.title && <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green mb-3">{p.title}</h2>}
+                      {p.intro && <p className="text-bodyoga-green/70 whitespace-pre-line">{p.intro}</p>}
+                    </div>
+                  )}
                   <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
                 </div>
               </section>
             );
 
           case "signup-form":
-            return <SignupFormBlock key={block.id} />;
+            return (
+              <div key={block.id}>
+                {(p.title || p.intro) && (
+                  <div className="max-w-2xl mx-auto px-6 pt-16 text-center">
+                    {p.title && <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green mb-3">{p.title}</h2>}
+                    {p.intro && <p className="text-bodyoga-green/70 whitespace-pre-line">{p.intro}</p>}
+                  </div>
+                )}
+                <SignupFormBlock />
+              </div>
+            );
 
           case "home-hero":
             return <HomeHeroBlock key={block.id} />;

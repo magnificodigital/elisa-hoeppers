@@ -155,7 +155,7 @@ export function PageBuilderUX({ blocks, onChange }: PageBuilderProps) {
             <h3 className="text-xs font-bold uppercase tracking-widest text-primary-dark/60">Adicionar Bloco</h3>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-2">
-            {Object.values(BLOCKS).map((def) => (
+            {Object.values(BLOCKS).filter((def) => !def.hidden).map((def) => (
               <button
                 key={def.type}
                 onClick={() => addBlock(def.type)}
