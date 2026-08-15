@@ -118,6 +118,7 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
             loop
             playsInline
             disablePictureInPicture
+            suppressHydrationWarning
           />
         ) : (
           <iframe
@@ -127,6 +128,7 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
             allow="autoplay; encrypted-media"
             frameBorder={0}
             data-tsd-ignore="true"
+            suppressHydrationWarning
           />
         )}
         <div className="absolute inset-0 z-10" />
