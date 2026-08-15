@@ -132,24 +132,37 @@ function WebsiteAdminPage() {
           </div>
 
           <Tabs defaultValue="pages" onValueChange={setActiveTab} className="w-full">
-            <TabsList className="bg-white/50 border border-border p-1 rounded-xl mb-6">
+            <TabsList className="bg-white/50 border border-border p-1 rounded-xl mb-6 flex flex-wrap h-auto">
               <TabsTrigger value="pages" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                 <Globe className="w-4 h-4 mr-2" />
-                Páginas do site
+                Páginas
               </TabsTrigger>
-              <TabsTrigger value="landing" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
+              <TabsTrigger value="slides" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                 <Layout className="w-4 h-4 mr-2" />
-                Landing pages
+                Slides
               </TabsTrigger>
-              <TabsTrigger value="blog" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                <FileText className="w-4 h-4 mr-2" />
-                Blog
+              <TabsTrigger value="colors" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                <Palette className="w-4 h-4 mr-2" />
+                Cores
+              </TabsTrigger>
+              <TabsTrigger value="menu" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                <MenuIcon className="w-4 h-4 mr-2" />
+                Menu
+              </TabsTrigger>
+              <TabsTrigger value="seo" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                <Search className="w-4 h-4 mr-2" />
+                SEO
+              </TabsTrigger>
+              <TabsTrigger value="whatsapp" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                WhatsApp
               </TabsTrigger>
               <TabsTrigger value="notices" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                 <Bell className="w-4 h-4 mr-2" />
                 Avisos
               </TabsTrigger>
             </TabsList>
+
 
             <TabsContent value="pages">
                <PageTable 
