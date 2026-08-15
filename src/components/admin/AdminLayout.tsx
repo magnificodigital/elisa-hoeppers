@@ -100,6 +100,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     </div>
   );
 
+  // Editor de páginas: tela cheia, SEM sidebar/topbar do admin
+  if (pathname.includes("/website/paginas/")) {
+    return (
+      <div className="h-screen w-full overflow-hidden bodyoga-scope bg-[var(--admin-background)]">
+        {children}
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen bg-[var(--admin-background)] overflow-hidden bodyoga-scope">
       {/* Desktop Sidebar */}
