@@ -15,9 +15,10 @@ import {
   Bell,
   AlertCircle,
   HelpCircle,
-  
   Stethoscope,
   Truck,
+  Clock,
+  Sparkles
 } from "lucide-react";
 
 import { AdminSearchBar } from "@/components/AdminSearchBar";
