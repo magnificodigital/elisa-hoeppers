@@ -199,3 +199,6 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
     </header>
   );
 }
+
+export default BodyogaHeader;
+
