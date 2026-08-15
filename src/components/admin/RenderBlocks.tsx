@@ -2,7 +2,9 @@ import React from "react";
 import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
 import { BodyogaLanding } from "../bodyoga/BodyogaLanding";
 import HomeInstagram from "../home/HomeInstagram";
-// Add more imports as components are updated to accept props
+import BodyogaProductCard from "../bodyoga/BodyogaProductCard";
+import { useQuery } from "@tanstack/react-query";
+import { listProducts } from "@/lib/shop";
 
 interface RenderBlocksProps {
   blocks: any[];
@@ -37,18 +39,33 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
               <section key={block.id} className="py-16 px-4 max-w-4xl mx-auto w-full">
                 <div className={`text-${block.props.align || 'left'}`}>
                   {block.props.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{block.props.title}</h2>}
-                  {block.props.content && <p className="text-lg text-primary/80 whitespace-pre-wrap">{block.props.content}</p>}
+                  {block.props.content && <p className="text-lg text-primary/80 whitespace-pre-wrap leading-relaxed">{block.props.content}</p>}
                 </div>
               </section>
             );
+          case "products":
+            return <ProductsBlock key={block.id} props={block.props} />;
           case "instagram":
             return <HomeInstagram key={block.id} />;
           case "spacer":
             return <div key={block.id} style={{ height: `${block.props.height}px` }} />;
-          // Add more mappings
+          case "cta":
+            return (
+              <section key={block.id} className={`py-20 px-4 text-center ${block.props.bgColor === 'primary' ? 'bg-primary text-white' : 'bg-cream text-primary'}`}>
+                <div className="max-w-3xl mx-auto">
+                  <h2 className="text-3xl md:text-4xl font-display mb-4">{block.props.title}</h2>
+                  {block.props.text && <p className="mb-8 opacity-80">{block.props.text}</p>}
+                  {block.props.buttonLabel && (
+                    <a href={block.props.buttonHref} className={`inline-block px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold transition ${block.props.bgColor === 'primary' ? 'bg-white text-primary hover:bg-cream' : 'bg-primary text-white hover:bg-primary-dark'}`}>
+                      {block.props.buttonLabel}
+                    </a>
+                  )}
+                </div>
+              </section>
+            );
           default:
             return (
-              <div key={block.id} className="p-8 border border-dashed border-gray-300 text-center text-gray-500">
+              <div key={block.id} className="p-8 border border-dashed border-gray-300 text-center text-gray-500 bg-gray-50 my-4 rounded-lg">
                 Bloco "{block.type}" em desenvolvimento
               </div>
             );
@@ -57,3 +74,29 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
     </div>
   );
 };
+
+function ProductsBlock({ props }: { props: any }) {
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products-block"],
+    queryFn: () => listProducts()
+  });
+
+  if (isLoading) return <div className="py-20 text-center text-primary/40">Carregando produtos...</div>;
+
+  const displayProducts = props.selection === 'featured' 
+    ? products?.filter(p => p.featured).slice(0, props.columns * 2)
+    : products?.slice(0, props.columns * 2);
+
+  return (
+    <section className="py-20 px-4 bg-background">
+      <div className="max-w-7xl mx-auto">
+        {props.title && <h2 className="text-3xl font-display text-primary text-center mb-12">{props.title}</h2>}
+        <div className={`grid grid-cols-1 md:grid-cols-${props.columns || 3} gap-8`}>
+          {displayProducts?.map(product => (
+            <BodyogaProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
