@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { Menu, X, ArrowUpRight, LogOut, ChevronRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, LogOut, ChevronRight, ChevronDown, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import { ADMIN_NAV_ITEMS } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import {
   Drawer,
   DrawerContent,
@@ -105,7 +113,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-[#3B4F30]/10 shrink-0">
+        <header className="h-16 flex items-center justify-between px-6 md:px-8 lg:px-10 shrink-0">
           <div className="flex items-center gap-4">
             <Drawer open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DrawerTrigger asChild>
@@ -124,11 +132,55 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </h2>
           </div>
 
-          <div className="flex items-center gap-4">
-             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E2D4C1] border border-[#3B4F30]/5 text-[13px] text-[#3B4F30]/80">
-               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-               Admin: {profile?.full_name || 'Usuário'}
-             </div>
+          <div className="flex items-center gap-2">
+            {/* Ver o site (nova aba) */}
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#3B4F30]/15 text-[13px] font-medium text-[#3B4F30] hover:bg-[#3B4F30]/5 transition"
+            >
+              <ArrowUpRight size={16} strokeWidth={2} />
+              Ver site
+            </a>
+
+            {/* Menu da conta */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-[#3B4F30]/5 transition outline-none">
+                  <span className="w-8 h-8 rounded-full bg-[#3B4F30] text-white flex items-center justify-center text-sm font-medium">
+                    {(profile?.full_name || 'A').charAt(0).toUpperCase()}
+                  </span>
+                  <span className="hidden sm:block text-[13px] font-medium text-[#3B4F30] max-w-[120px] truncate">
+                    {profile?.full_name || 'Admin'}
+                  </span>
+                  <ChevronDown size={16} className="text-[#3B4F30]/50" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuLabel className="text-xs font-normal text-[#3B4F30]/60">
+                  {profile?.full_name || 'Admin'}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/admin/configuracoes" className="cursor-pointer flex items-center gap-2">
+                    <Settings size={15} /> Gerenciar conta
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="sm:hidden">
+                  <a href="/" target="_blank" rel="noopener noreferrer" className="cursor-pointer flex items-center gap-2">
+                    <ArrowUpRight size={15} /> Ver site
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="cursor-pointer flex items-center gap-2 text-red-600 focus:text-red-600"
+                >
+                  <LogOut size={15} /> Sair do painel
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
