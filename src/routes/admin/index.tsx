@@ -118,7 +118,7 @@ function AdminHome() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-bodyoga-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Admin</h1>
           <p className="text-primary-dark/70 mb-6">Visão geral do site nos últimos 30 dias.</p>

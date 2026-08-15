@@ -27,7 +27,7 @@ function AvailabilityPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3 mb-2">
             <Calendar className="text-primary" size={28} />
@@ -152,7 +152,7 @@ function NewBlockForm() {
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); create.mutate(); }}
-      className="bg-cream/40 rounded-lg p-4 space-y-3"
+      className="bg-background/40 rounded-lg p-4 space-y-3"
     >
       <p className="text-xs uppercase tracking-widest text-primary-dark font-semibold">Novo bloqueio</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

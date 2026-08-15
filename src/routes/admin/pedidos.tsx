@@ -73,7 +73,7 @@ function AdminOrders() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-20 bg-[var(--surface-cream)] min-h-screen">
+      <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center gap-3 mb-2">
             <Package className="w-7 h-7 text-primary" />
@@ -178,7 +178,7 @@ function BulkApproveButton({ ids, onDone, orders }: { ids: string[]; onDone: () 
     <button
       onClick={() => mutation.mutate()}
       disabled={mutation.isPending}
-      className="inline-flex items-center gap-1.5 bg-cream text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
+      className="inline-flex items-center gap-1.5 bg-background text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
     >
       ✓ Aprovar {eligibleIds.length} pendente(s)
     </button>
@@ -220,7 +220,7 @@ function BulkBuyLabelsButton({ ids, onDone, orders }: { ids: string[]; onDone: (
     <>
       <button
         onClick={() => setConfirmOpen(true)}
-        className="inline-flex items-center gap-1.5 bg-cream text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition"
+        className="inline-flex items-center gap-1.5 bg-background text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition"
       >
         🏷 Comprar {eligible.length} etiqueta(s)
       </button>
@@ -352,7 +352,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
         </div>
       </div>
 
-      <div className="bg-cream/60 rounded-md p-3 mb-3 text-sm">
+      <div className="bg-background/60 rounded-md p-3 mb-3 text-sm">
         {o.items.map((it, i) => (
           <div key={i} className="flex justify-between py-0.5">
             <span className="text-primary-dark">{it.qty}× {it.name}</span>
@@ -435,7 +435,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
               Confirmar
             </button>
             <button onClick={() => { if (confirm("Cancelar pedido?")) updateStatus.mutate("cancelled"); }}
-              className="border border-border text-[var(--text-muted)] px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-cream/60 transition">
+              className="border border-border text-[var(--text-muted)] px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-background/60 transition">
               Cancelar
             </button>
           </>
@@ -446,7 +446,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
               Marcar enviado
             </button>
             <button onClick={() => { if (confirm("Cancelar pedido?")) updateStatus.mutate("cancelled"); }}
-              className="border border-border text-[var(--text-muted)] px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-cream/60 transition">
+              className="border border-border text-[var(--text-muted)] px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-background/60 transition">
               Cancelar
             </button>
           </>
@@ -457,7 +457,7 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
           </button>
         )}
         {o.status === "cancelled" && (
-          <button onClick={() => updateStatus.mutate("pending")} className="border border-border text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-cream/60 transition">
+          <button onClick={() => updateStatus.mutate("pending")} className="border border-border text-primary-dark px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-background/60 transition">
             Reabrir
           </button>
         )}

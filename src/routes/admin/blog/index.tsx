@@ -39,7 +39,7 @@ function AdminBlogList() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
           <Link
             to="/admin/posts"

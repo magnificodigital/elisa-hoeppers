@@ -21,7 +21,7 @@ const options = [
 function PostsHome() {
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Posts</h1>
           <p className="text-primary-dark/70 mb-8">Escolha o tipo de conteúdo que deseja criar ou editar.</p>
@@ -35,7 +35,7 @@ function PostsHome() {
                   to={o.to}
                   className="bg-white rounded-xl p-5 border border-border/20 shadow-none hover:shadow-lg transition flex items-start gap-4 group"
                 >
-                  <div className="w-11 h-11 rounded-full bg-cream flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-full bg-background flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-primary" />
                   </div>
                   <div>

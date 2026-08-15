@@ -57,13 +57,13 @@ function Page() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
             <ChevronLeft size={16} /> Voltar
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center">
               <MailCheck size={20} className="text-primary" />
             </div>
             <h1 className="font-display text-3xl text-primary-dark">Integração Resend</h1>
@@ -79,7 +79,7 @@ function Page() {
               <div>
                 <p className="text-sm font-medium text-primary-dark">API Key configurada</p>
                 <p className="text-xs text-primary-dark/60">
-                  A chave <code className="bg-cream px-1 rounded">RESEND_API_KEY</code> está armazenada com segurança nos secrets do Supabase.
+                  A chave <code className="bg-background px-1 rounded">RESEND_API_KEY</code> está armazenada com segurança nos secrets do Supabase.
                 </p>
               </div>
             </div>
@@ -89,7 +89,7 @@ function Page() {
               <div>
                 <p className="text-sm font-medium text-primary-dark">Domínio verificado</p>
                 <p className="text-xs text-primary-dark/60">
-                  Emails saem de <strong>{fromEmail}</strong> pelo domínio <code className="bg-cream px-1 rounded">bodyogaoficial.com.br</code>.
+                  Emails saem de <strong>{fromEmail}</strong> pelo domínio <code className="bg-background px-1 rounded">bodyogaoficial.com.br</code>.
                 </p>
               </div>
             </div>

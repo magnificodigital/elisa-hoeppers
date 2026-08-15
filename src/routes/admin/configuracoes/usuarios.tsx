@@ -67,7 +67,7 @@ function Page() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
             <ChevronLeft size={16} /> Voltar
@@ -75,7 +75,7 @@ function Page() {
 
           <div className="flex items-center justify-between gap-4 mb-2">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-cream flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center">
                 <Users size={20} className="text-primary" />
               </div>
               <h1 className="font-display text-3xl text-primary-dark">Usuários</h1>
@@ -175,11 +175,11 @@ function UserRowCard({ user: u }: { user: UserRow }) {
       ? "bg-primary text-cream"
       : u.role === "instructor"
         ? "bg-peach/40 text-primary-dark"
-        : "bg-cream text-primary-dark";
+        : "bg-background text-primary-dark";
 
   return (
     <div className="bg-white rounded-xl p-4 shadow-none border border-border/20 flex items-center gap-3">
-      <div className="w-11 h-11 rounded-full bg-cream flex items-center justify-center shrink-0 overflow-hidden">
+      <div className="w-11 h-11 rounded-full bg-background flex items-center justify-center shrink-0 overflow-hidden">
         {u.avatar_url ? (
           <img src={u.avatar_url} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -323,7 +323,7 @@ function SetPasswordDialog({
           <button
             type="button"
             onClick={gen}
-            className="border border-border rounded-md px-3 py-2 text-xs text-primary-dark hover:bg-cream transition whitespace-nowrap"
+            className="border border-border rounded-md px-3 py-2 text-xs text-primary-dark hover:bg-background transition whitespace-nowrap"
           >
             Gerar
           </button>
@@ -498,7 +498,7 @@ function CreateForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
           <button
             type="button"
             onClick={genPassword}
-            className="border border-border rounded-md px-3 py-2 text-xs text-primary-dark hover:bg-cream transition whitespace-nowrap"
+            className="border border-border rounded-md px-3 py-2 text-xs text-primary-dark hover:bg-background transition whitespace-nowrap"
           >
             Gerar
           </button>

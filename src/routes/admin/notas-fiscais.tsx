@@ -40,7 +40,7 @@ function Page() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center gap-2 mb-2">
             <FileText className="text-primary" size={24} />
@@ -58,7 +58,7 @@ function Page() {
                 className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-widest transition ${
                   filter === f
                     ? "bg-primary text-cream"
-                    : "bg-white border border-border text-primary-dark hover:bg-cream/40"
+                    : "bg-white border border-border text-primary-dark hover:bg-background/40"
                 }`}
               >
                 {f}

@@ -91,7 +91,7 @@ function CustomersPage() {
 
   return (
     <Layout>
-      <section className="py-12 md:py-16 bg-bodyoga-cream min-h-[70vh]">
+      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between mb-2 gap-4 flex-wrap">
             <div className="flex items-center gap-3">
@@ -131,7 +131,7 @@ function CustomersPage() {
                   className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
                     filter === f.key
                        ? "bg-primary text-white"
-                       : "bg-white text-primary-dark/70 hover:bg-cream-dark"
+                       : "bg-white text-primary-dark/70 hover:bg-background"
                   }`}
                 >
                   {f.label}
@@ -174,7 +174,7 @@ function CustomerRow({ c }: { c: AdminCustomer }) {
       </div>
       <div className="flex items-center gap-1.5 flex-wrap shrink-0">
         {c.subscribed ? (
-          <span className="inline-flex items-center gap-1 text-xs text-primary bg-cream px-2 py-1 rounded">
+          <span className="inline-flex items-center gap-1 text-xs text-primary bg-background px-2 py-1 rounded">
             <Mail size={12} /> Inscrito
           </span>
         ) : (
