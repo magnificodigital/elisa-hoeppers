@@ -54,9 +54,9 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-cream/10 text-center text-xs text-cream/60">
           <p className="mb-2">
-            <Link to="/privacidade" className="hover:text-peach transition-colors">Privacidade</Link>
+            <Link to="/p/privacidade" className="hover:text-peach transition-colors">Privacidade</Link>
             {" · "}
-            <Link to="/termos" className="hover:text-peach transition-colors">Termos de Uso</Link>
+            <Link to="/p/termos" className="hover:text-peach transition-colors">Termos de Uso</Link>
           </p>
           <p>
             © {new Date().getFullYear()} · Feito com muito ♥ por{" "}
