@@ -165,34 +165,54 @@ function WebsiteAdminPage() {
 
 
             <TabsContent value="pages">
-               <PageTable 
-                  pages={pages} 
-                  isLoading={isLoading} 
-                  onDelete={(id: string) => del.mutate(id)}
-                  onSetHome={setAsHome}
-                  onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
-                  onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
-               />
+              <PageTable 
+                pages={pages} 
+                isLoading={isLoading} 
+                onDelete={(id: string) => del.mutate(id)}
+                onSetHome={setAsHome}
+                onToggleMenu={(id: string, in_menu: boolean) => update.mutate({ id, patch: { in_menu } })}
+                onUpdateOrder={(id: string, menu_order: number) => update.mutate({ id, patch: { menu_order } })}
+              />
             </TabsContent>
 
-            <TabsContent value="landing">
-               <PageTable 
-                  pages={landingPages} 
-                  isLoading={isLoading} 
-                  onDelete={(id: string) => del.mutate(id)}
-               />
-            </TabsContent>
-
-            <TabsContent value="blog">
-              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <LayoutDashboard className="w-12 h-12 text-primary/20 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-dark mb-2">Blog e Posts</h3>
-                <p className="text-primary-dark/60 mb-6">Use a seção de Posts para gerenciar o blog.</p>
-                <Link to="/admin/blog" className="text-primary hover:underline uppercase text-xs tracking-widest font-bold">
-                   Ir para Posts
-                </Link>
+            <TabsContent value="slides">
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <SlidesList />
               </div>
             </TabsContent>
+
+            <TabsContent value="colors">
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <CoresTab />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="menu">
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <MenuTab />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="seo">
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <SEOTab />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="whatsapp">
+              <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+                <WhatsAppTab />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="notices">
+              <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
+                <Bell className="w-12 h-12 text-primary/20 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-primary-dark mb-2">Avisos do Site</h3>
+                <p className="text-primary-dark/60">Em breve: Gerencie banners de aviso e popups.</p>
+              </div>
+            </TabsContent>
+
 
             <TabsContent value="notices">
               <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
