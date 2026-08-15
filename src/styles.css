@@ -71,8 +71,8 @@
   --cream: #e2d4c1;
   --sand: #e2d4c1;
   --cream-rose: #e2d4c1;
-  --peach: #F7F0E5;
-  --peach-light: #F7F0E5;
+  --peach: #e2d4c1;
+  --peach-light: #e2d4c1;
   --accent-blue: #3B4F30;
   --accent-teal: #3B4F30;
   --text: #3B4F30;
@@ -81,6 +81,8 @@
   --card: #e2d4c1;
   --border: #3B4F30;
   --ring: #3B4F30;
+  --bodyoga-cream: #e2d4c1;
+  --bodyoga-green: #3B4F30;
 }
 
 
