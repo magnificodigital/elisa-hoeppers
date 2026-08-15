@@ -41,7 +41,7 @@ const sections = [
   { to: "/admin/reservas", icon: Bell, title: "Reservas", desc: "Reservas de produtos fora de estoque." },
   { to: "/admin/clientes", icon: Users, title: "Clientes", desc: "Veja seus clientes e quem está inscrito." },
   { to: "/admin/website", icon: Sparkles, title: "WebSite", desc: "Páginas, Landing Pages e Blog." },
-  { to: "/admin/posts", icon: FileText, title: "Blog Posts", desc: "Crie e edite posts de Dicas." },
+  { to: "/admin/posts", icon: FileText, title: "Blog", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/social", icon: Share2, title: "Social Posts", desc: "Posts para as redes sociais." },
   { to: "/admin/broadcast", icon: Mail, title: "Emails", desc: "Envie email pra newsletter ou alunas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
