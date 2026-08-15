@@ -22,6 +22,7 @@ import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-aluno
 import { Route as BodyogaRouteImport } from './routes/bodyoga'
 import { Route as BioRouteImport } from './routes/bio'
 import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
+import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PainelIndexRouteImport } from './routes/painel/index'
@@ -158,6 +159,11 @@ const BioRoute = BioRouteImport.update({
 const AgendeSuaAulaRoute = AgendeSuaAulaRouteImport.update({
   id: '/agende-sua-aula',
   path: '/agende-sua-aula',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlugRoute = SlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
@@ -536,6 +542,7 @@ const AdminCursosIdAulasLessonIdQuizRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/$slug': typeof SlugRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/bodyoga': typeof BodyogaRouteWithChildren
@@ -622,6 +629,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
@@ -708,6 +716,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/$slug': typeof SlugRoute
   '/agende-sua-aula': typeof AgendeSuaAulaRoute
   '/bio': typeof BioRoute
   '/bodyoga': typeof BodyogaRouteWithChildren
@@ -797,6 +806,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/$slug'
     | '/agende-sua-aula'
     | '/bio'
     | '/bodyoga'
@@ -883,6 +893,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$slug'
     | '/agende-sua-aula'
     | '/bio'
     | '/cadastro-de-alunos'
@@ -968,6 +979,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/$slug'
     | '/agende-sua-aula'
     | '/bio'
     | '/bodyoga'
@@ -1056,6 +1068,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  SlugRoute: typeof SlugRoute
   AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
   BioRoute: typeof BioRoute
   BodyogaRoute: typeof BodyogaRouteWithChildren
@@ -1182,6 +1195,13 @@ declare module '@tanstack/react-router' {
       path: '/agende-sua-aula'
       fullPath: '/agende-sua-aula'
       preLoaderRoute: typeof AgendeSuaAulaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$slug': {
+      id: '/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof SlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -1832,6 +1852,7 @@ const BodyogaRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  SlugRoute: SlugRoute,
   AgendeSuaAulaRoute: AgendeSuaAulaRoute,
   BioRoute: BioRoute,
   BodyogaRoute: BodyogaRouteWithChildren,
