@@ -10,13 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ProjetosPersonalizadosRouteImport } from './routes/projetos-personalizados'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
-import { Route as CadastroDeAlunosRouteImport } from './routes/cadastro-de-alunos'
-import { Route as BodyogaRouteImport } from './routes/bodyoga'
-import { Route as AgendeSuaAulaRouteImport } from './routes/agende-sua-aula'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -96,11 +92,6 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjetosPersonalizadosRoute = ProjetosPersonalizadosRouteImport.update({
-  id: '/projetos-personalizados',
-  path: '/projetos-personalizados',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -114,21 +105,6 @@ const CheckoutRoute = CheckoutRouteImport.update({
 const CarrinhoRoute = CarrinhoRouteImport.update({
   id: '/carrinho',
   path: '/carrinho',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CadastroDeAlunosRoute = CadastroDeAlunosRouteImport.update({
-  id: '/cadastro-de-alunos',
-  path: '/cadastro-de-alunos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BodyogaRoute = BodyogaRouteImport.update({
-  id: '/bodyoga',
-  path: '/bodyoga',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgendeSuaAulaRoute = AgendeSuaAulaRouteImport.update({
-  id: '/agende-sua-aula',
-  path: '/agende-sua-aula',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugRoute = SlugRouteImport.update({
@@ -162,9 +138,9 @@ const CursosIndexRoute = CursosIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const BodyogaIndexRoute = BodyogaIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => BodyogaRoute,
+  id: '/bodyoga/',
+  path: '/bodyoga/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
@@ -513,13 +489,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/$slug': typeof SlugRoute
-  '/agende-sua-aula': typeof AgendeSuaAulaRoute
-  '/bodyoga': typeof BodyogaRouteWithChildren
-  '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -595,12 +567,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
-  '/agende-sua-aula': typeof AgendeSuaAulaRoute
-  '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
@@ -677,13 +646,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/$slug': typeof SlugRoute
-  '/agende-sua-aula': typeof AgendeSuaAulaRoute
-  '/bodyoga': typeof BodyogaRouteWithChildren
-  '/cadastro-de-alunos': typeof CadastroDeAlunosRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
   '/login': typeof LoginRoute
-  '/projetos-personalizados': typeof ProjetosPersonalizadosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -762,13 +727,9 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/$slug'
-    | '/agende-sua-aula'
-    | '/bodyoga'
-    | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/blog'
@@ -844,12 +805,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$slug'
-    | '/agende-sua-aula'
-    | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/broadcast'
@@ -925,13 +883,9 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/$slug'
-    | '/agende-sua-aula'
-    | '/bodyoga'
-    | '/cadastro-de-alunos'
     | '/carrinho'
     | '/checkout'
     | '/login'
-    | '/projetos-personalizados'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/blog'
@@ -1009,13 +963,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   SlugRoute: typeof SlugRoute
-  AgendeSuaAulaRoute: typeof AgendeSuaAulaRoute
-  BodyogaRoute: typeof BodyogaRouteWithChildren
-  CadastroDeAlunosRoute: typeof CadastroDeAlunosRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
   LoginRoute: typeof LoginRoute
-  ProjetosPersonalizadosRoute: typeof ProjetosPersonalizadosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CertificadoCodeRoute: typeof CertificadoCodeRoute
@@ -1031,6 +981,7 @@ export interface RootRouteChildren {
   PainelWishlistRoute: typeof PainelWishlistRoute
   PedidoCodeRoute: typeof PedidoCodeRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  BodyogaIndexRoute: typeof BodyogaIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
   LojaIndexRoute: typeof LojaIndexRoute
   PainelIndexRoute: typeof PainelIndexRoute
@@ -1046,13 +997,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projetos-personalizados': {
-      id: '/projetos-personalizados'
-      path: '/projetos-personalizados'
-      fullPath: '/projetos-personalizados'
-      preLoaderRoute: typeof ProjetosPersonalizadosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -1074,27 +1018,6 @@ declare module '@tanstack/react-router' {
       path: '/carrinho'
       fullPath: '/carrinho'
       preLoaderRoute: typeof CarrinhoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cadastro-de-alunos': {
-      id: '/cadastro-de-alunos'
-      path: '/cadastro-de-alunos'
-      fullPath: '/cadastro-de-alunos'
-      preLoaderRoute: typeof CadastroDeAlunosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bodyoga': {
-      id: '/bodyoga'
-      path: '/bodyoga'
-      fullPath: '/bodyoga'
-      preLoaderRoute: typeof BodyogaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agende-sua-aula': {
-      id: '/agende-sua-aula'
-      path: '/agende-sua-aula'
-      fullPath: '/agende-sua-aula'
-      preLoaderRoute: typeof AgendeSuaAulaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug': {
@@ -1141,10 +1064,10 @@ declare module '@tanstack/react-router' {
     }
     '/bodyoga/': {
       id: '/bodyoga/'
-      path: '/'
+      path: '/bodyoga'
       fullPath: '/bodyoga/'
       preLoaderRoute: typeof BodyogaIndexRouteImport
-      parentRoute: typeof BodyogaRoute
+      parentRoute: typeof rootRouteImport
     }
     '/blog/': {
       id: '/blog/'
@@ -1738,28 +1661,13 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
   AdminRouteRouteChildren,
 )
 
-interface BodyogaRouteChildren {
-  BodyogaIndexRoute: typeof BodyogaIndexRoute
-}
-
-const BodyogaRouteChildren: BodyogaRouteChildren = {
-  BodyogaIndexRoute: BodyogaIndexRoute,
-}
-
-const BodyogaRouteWithChildren =
-  BodyogaRoute._addFileChildren(BodyogaRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   SlugRoute: SlugRoute,
-  AgendeSuaAulaRoute: AgendeSuaAulaRoute,
-  BodyogaRoute: BodyogaRouteWithChildren,
-  CadastroDeAlunosRoute: CadastroDeAlunosRoute,
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
   LoginRoute: LoginRoute,
-  ProjetosPersonalizadosRoute: ProjetosPersonalizadosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   CertificadoCodeRoute: CertificadoCodeRoute,
@@ -1775,6 +1683,7 @@ const rootRouteChildren: RootRouteChildren = {
   PainelWishlistRoute: PainelWishlistRoute,
   PedidoCodeRoute: PedidoCodeRoute,
   BlogIndexRoute: BlogIndexRoute,
+  BodyogaIndexRoute: BodyogaIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
   LojaIndexRoute: LojaIndexRoute,
   PainelIndexRoute: PainelIndexRoute,
