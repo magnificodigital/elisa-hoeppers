@@ -1,8 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronLeft, Clock, Lightbulb, AlertTriangle } from "lucide-react";
 import type { ReactNode } from "react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { tutorials, categories, type Tutorial } from "@/data/tutorials";
 
 export const Route = createFileRoute("/admin/ajuda/$slug")({
@@ -15,29 +13,29 @@ export const Route = createFileRoute("/admin/ajuda/$slug")({
     meta: [{ title: `${loaderData?.tutorial.title ?? "Tutorial"} — Ajuda` }],
   }),
   component: () => (
-    <AdminGuard>
+    
       <Page />
-    </AdminGuard>
+    
   ),
   errorComponent: () => (
-    <Layout>
+    
       <section className="py-24 text-center">
         <p className="text-primary-dark mb-4">Erro ao carregar tutorial.</p>
         <Link to="/admin/ajuda" className="text-primary underline">
           Voltar pra ajuda
         </Link>
       </section>
-    </Layout>
+    
   ),
   notFoundComponent: () => (
-    <Layout>
+    
       <section className="py-24 text-center">
         <p className="text-primary-dark mb-4">Tutorial não encontrado.</p>
         <Link to="/admin/ajuda" className="text-primary underline">
           Voltar pra ajuda
         </Link>
       </section>
-    </Layout>
+    
   ),
 });
 
@@ -46,7 +44,7 @@ function Page() {
   const cat = categories[tutorial.category];
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-2xl mx-auto px-4">
           <Link
@@ -117,7 +115,7 @@ function Page() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

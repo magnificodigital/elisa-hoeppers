@@ -1,8 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Send, ArrowLeft, LayoutTemplate, Palette, Zap, Users, Mail } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { CampanhasTab } from "@/components/admin/broadcast/CampanhasTab";
 import { TemplatesTab } from "@/components/admin/broadcast/TemplatesTab";
 import { LayoutTab } from "@/components/admin/broadcast/LayoutTab";
@@ -21,19 +19,14 @@ const TABS: { id: TabId; label: string; icon: any }[] = [
 
 export const Route = createFileRoute("/admin/broadcast")({
   head: () => ({ meta: [{ title: "Admin — Emails & Broadcast" }] }),
-  component: () => (
-    <StaffGuard>
-      <BroadcastPage />
-    </StaffGuard>
-  ),
+  component: () => <BroadcastPage />,
 });
 
 function BroadcastPage() {
   const [tab, setTab] = useState<TabId>("campanhas");
 
   return (
-    <Layout>
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
+    <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <Link to="/admin" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
             <ArrowLeft size={16} /> Voltar para o Painel
@@ -70,6 +63,5 @@ function BroadcastPage() {
           {tab === "inscritos" && <InscritosTab />}
         </div>
       </section>
-    </Layout>
   );
 }

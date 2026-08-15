@@ -1,17 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, GripVertical } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { listAllSlidesForAdmin, createSlide } from "@/lib/shop";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/bodyoga-slides/")({
   head: () => ({ meta: [{ title: "Admin — Slides" }] }),
   component: () => (
-    <StaffGuard>
+    
       <SlidesList />
-    </StaffGuard>
+    
   ),
 });
 
@@ -52,7 +50,7 @@ function SlidesList() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-3xl">
           <div className="flex items-center justify-between mb-6">
@@ -107,6 +105,6 @@ function SlidesList() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }

@@ -3,8 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { ChevronLeft, CreditCard, Eye, EyeOff, Save } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
 import { listSettings } from "@/lib/settings";
 import { getPaymentSecret, setPaymentSecret, maskSecret, detectEnv } from "@/lib/payment-secrets";
@@ -12,9 +10,9 @@ import { getPaymentSecret, setPaymentSecret, maskSecret, detectEnv } from "@/lib
 export const Route = createFileRoute("/admin/configuracoes/mercadopago")({
   head: () => ({ meta: [{ title: "Admin — Mercado Pago" }] }),
   component: () => (
-    <AdminGuard>
+    
       <Page />
-    </AdminGuard>
+    
   ),
 });
 
@@ -120,7 +118,7 @@ function Page() {
   const env = detectEnv(publicKey);
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/configuracoes" className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6">
@@ -154,6 +152,6 @@ function Page() {
           </Link>
         </div>
       </section>
-    </Layout>
+    
   );
 }

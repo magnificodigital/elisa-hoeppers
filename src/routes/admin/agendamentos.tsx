@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Calendar, Phone, Mail, MessageCircle, Check, X, Clock, Video, MapPin, Plus } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import {
   listAppointmentsForAdmin,
   updateAppointmentStatus,
@@ -17,11 +15,7 @@ import {
 
 export const Route = createFileRoute("/admin/agendamentos")({
   head: () => ({ meta: [{ title: "Admin — Agendamentos" }] }),
-  component: () => (
-    <StaffGuard>
-      <AdminAppointments />
-    </StaffGuard>
-  ),
+  component: () => <AdminAppointments />,
 });
 
 
@@ -53,8 +47,8 @@ function AdminAppointments() {
   });
 
   return (
-    <Layout>
-      <section className="py-8 md:py-16 bg-background min-h-[70vh]">
+    <>
+      <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-2">
             <div className="flex items-center gap-3">
@@ -108,7 +102,7 @@ function AdminAppointments() {
       </section>
 
       {showNew && <NewAppointmentModal onClose={() => setShowNew(false)} />}
-    </Layout>
+    </>
   );
 }
 

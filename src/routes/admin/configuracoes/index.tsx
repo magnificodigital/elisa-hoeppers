@@ -1,15 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Users, Stethoscope, CalendarClock, ChevronRight, Plug } from "lucide-react";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 
 export const Route = createFileRoute("/admin/configuracoes/")({
   head: () => ({ meta: [{ title: "Admin — Configurações" }] }),
-  component: () => (
-    <AdminGuard>
-      <ConfigIndex />
-    </AdminGuard>
-  ),
+  component: () => <ConfigIndex />,
 });
 
 const sections = [
@@ -21,8 +15,7 @@ const sections = [
 
 function ConfigIndex() {
   return (
-    <Layout>
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
+    <section className="bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Configurações</h1>
           <p className="text-primary-dark/70 mb-10">Selecione abaixo o que deseja configurar.</p>
@@ -50,6 +43,5 @@ function ConfigIndex() {
           </div>
         </div>
       </section>
-    </Layout>
   );
 }

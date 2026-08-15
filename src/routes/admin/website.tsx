@@ -17,19 +17,13 @@ import {
   LayoutDashboard
 } from "lucide-react";
 import { toast } from "sonner";
-import BaseLayout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { createPage, deletePage, listPages, slugify, updatePage, type SitePage } from "@/lib/pages";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/admin/website")({
   head: () => ({ meta: [{ title: "Admin — Gerenciar Site" }] }),
-  component: () => (
-    <AdminGuard>
-      <WebsiteAdminPage />
-    </AdminGuard>
-  ),
+  component: () => <WebsiteAdminPage />,
 });
 
 function WebsiteAdminPage() {
@@ -90,8 +84,7 @@ function WebsiteAdminPage() {
   const inputCls = "w-full border border-border rounded-md px-3 py-2 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
-    <BaseLayout>
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
+    <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
@@ -118,7 +111,7 @@ function WebsiteAdminPage() {
                 Páginas do site
               </TabsTrigger>
               <TabsTrigger value="landing" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
-                <Layout className="w-4 h-4 mr-2" />
+                
                 Landing pages
               </TabsTrigger>
               <TabsTrigger value="blog" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
@@ -152,7 +145,7 @@ function WebsiteAdminPage() {
 
             <TabsContent value="blog">
               <div className="bg-white rounded-2xl p-12 text-center border border-dashed border-border">
-                <LayoutDashboard className="w-12 h-12 text-primary/20 mx-auto mb-4" />
+                
                 <h3 className="text-lg font-medium text-primary-dark mb-2">Blog e Posts</h3>
                 <p className="text-primary-dark/60 mb-6">Use a seção de Posts para gerenciar o blog.</p>
                 <Link to="/admin/blog" className="text-primary hover:underline uppercase text-xs tracking-widest font-bold">
@@ -201,7 +194,6 @@ function WebsiteAdminPage() {
           </div>
         </div>
       </section>
-    </BaseLayout>
   );
 }
 

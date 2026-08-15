@@ -3,16 +3,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { ArrowLeft, ExternalLink, FileText, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { createPage, deletePage, listPages, slugify } from "@/lib/pages";
 
 export const Route = createFileRoute("/admin/site/paginas/")({
   head: () => ({ meta: [{ title: "Admin — Páginas do site" }] }),
   component: () => (
-    <AdminGuard>
+    
       <PagesListPage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -53,7 +51,7 @@ function PagesListPage() {
     "w-full border border-border rounded-md px-3 py-2 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/site" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
@@ -147,6 +145,6 @@ function PagesListPage() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }

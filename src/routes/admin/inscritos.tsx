@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Mail, Download } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { supabase } from "@/lib/supabase";
 
 type Subscriber = {
@@ -33,9 +31,9 @@ function csvEscape(v: string | null): string {
 export const Route = createFileRoute("/admin/inscritos")({
   head: () => ({ meta: [{ title: "Admin — Inscritos" }] }),
   component: () => (
-    <StaffGuard>
+    
       <SubscribersPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -60,7 +58,7 @@ function SubscribersPage() {
   const active = subs?.filter((s) => !s.unsubscribed_at) ?? [];
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-between mb-2 gap-4 flex-wrap">
@@ -108,6 +106,6 @@ function SubscribersPage() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

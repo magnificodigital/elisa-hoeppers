@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Calendar, Plus, Trash2, Clock, Save } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import {
   listAvailabilityRules, updateAvailabilityRule,
   listAvailabilityBlocks, createAvailabilityBlock, deleteAvailabilityBlock,
@@ -13,9 +11,9 @@ import {
 export const Route = createFileRoute("/admin/disponibilidade")({
   head: () => ({ meta: [{ title: "Admin — Disponibilidade" }] }),
   component: () => (
-    <StaffGuard>
+    
       <AvailabilityPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -26,7 +24,7 @@ function AvailabilityPage() {
   const { data: blocks } = useQuery({ queryKey: ["availability-blocks"], queryFn: listAvailabilityBlocks });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3 mb-2">
@@ -70,7 +68,7 @@ function AvailabilityPage() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

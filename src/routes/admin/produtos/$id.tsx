@@ -2,8 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Trash2 } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { ImageUploader } from "@/components/ImageUploader";
 import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
@@ -14,9 +12,9 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 export const Route = createFileRoute("/admin/produtos/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar produto" }] }),
   component: () => (
-    <StaffGuard>
+    
       <ProductEditPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -191,21 +189,21 @@ function ProductEditPage() {
 
   if (isLoading) {
     return (
-      <Layout>
+      
         <section className="py-24 text-center"><p className="text-[var(--text-muted)]">Carregando…</p></section>
-      </Layout>
+      
     );
   }
   if (!product) {
     return (
-      <Layout>
+      
         <section className="py-24 text-center"><p className="text-[var(--text-muted)]">Produto não encontrado.</p></section>
-      </Layout>
+      
     );
   }
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-3xl">
           <Link to="/admin/produtos" className="text-xs uppercase tracking-widest text-primary hover:opacity-70 inline-flex items-center gap-1">
@@ -518,7 +516,7 @@ function ProductEditPage() {
           </form>
         </div>
       </section>
-    </Layout>
+    
   );
 }
 

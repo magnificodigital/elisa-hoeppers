@@ -3,8 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
 import { Package, Mail, Phone, MessageCircle, MapPin, Calendar, Truck, FileText } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { PaymentMethodBadge } from "@/components/PaymentMethodBadge";
 import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";
@@ -14,11 +12,7 @@ import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/pedidos")({
   head: () => ({ meta: [{ title: "Admin — Pedidos" }] }),
-  component: () => (
-    <StaffGuard>
-      <AdminOrders />
-    </StaffGuard>
-  ),
+  component: () => <AdminOrders />,
 });
 
 const FILTERS = [
@@ -72,8 +66,7 @@ function AdminOrders() {
   }
 
   return (
-    <Layout>
-      <section className="py-12 md:py-20 bg-background min-h-screen">
+    <section className="bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center gap-3 mb-2">
             <Package className="w-7 h-7 text-primary" />
@@ -151,7 +144,6 @@ function AdminOrders() {
           </div>
         </div>
       </section>
-    </Layout>
   );
 }
 

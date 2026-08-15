@@ -3,17 +3,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Loader2, RotateCcw, Save } from "lucide-react";
 import { toast } from "sonner";
-import Layout from "@/components/Layout";
-import { AdminGuard } from "@/components/AdminGuard";
 import { listSettings, updateSetting } from "@/lib/settings";
 import { THEME_VARS, THEME_KEYS, applyTheme, defaultTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/admin/site/cores")({
   head: () => ({ meta: [{ title: "Admin — Cores do site" }] }),
   component: () => (
-    <AdminGuard>
+    
       <CoresPage />
-    </AdminGuard>
+    
   ),
 });
 
@@ -50,7 +48,7 @@ function CoresPage() {
   };
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link to="/admin/site" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
@@ -113,6 +111,6 @@ function CoresPage() {
           )}
         </div>
       </section>
-    </Layout>
+    
   );
 }

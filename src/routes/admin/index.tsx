@@ -20,8 +20,6 @@ import {
   Truck,
 } from "lucide-react";
 
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { AdminSearchBar } from "@/components/AdminSearchBar";
 import { getDashboardStats } from "@/lib/analytics";
 import { supabase } from "@/lib/supabase";
@@ -30,11 +28,7 @@ import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Admin — Elisa Hoeppers" }] }),
-  component: () => (
-    <StaffGuard>
-      <AdminHome />
-    </StaffGuard>
-  ),
+  component: () => <AdminHome />,
 });
 
 const sections = [
@@ -117,8 +111,7 @@ function AdminHome() {
     (actions?.me_failed ?? 0);
 
   return (
-    <Layout>
-      <section className="py-12 md:py-16 bg-background min-h-[70vh]">
+    <section className="bg-background min-h-[70vh]">
         <div className="max-w-6xl mx-auto px-4">
           <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">Admin</h1>
           <p className="text-primary-dark/70 mb-6">Visão geral do site nos últimos 30 dias.</p>
@@ -310,7 +303,6 @@ function AdminHome() {
           )}
         </div>
       </section>
-    </Layout>
   );
 }
 

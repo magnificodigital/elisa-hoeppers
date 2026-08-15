@@ -2,17 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FileText, ExternalLink, AlertCircle, CheckCircle, Clock } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { supabase } from "@/lib/supabase";
 import { formatPriceBRL } from "@/lib/shop";
 
 export const Route = createFileRoute("/admin/notas-fiscais")({
   head: () => ({ meta: [{ title: "Admin — Notas Fiscais" }] }),
   component: () => (
-    <StaffGuard>
+    
       <Page />
-    </StaffGuard>
+    
   ),
 });
 
@@ -39,7 +37,7 @@ function Page() {
   });
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center gap-2 mb-2">
@@ -131,6 +129,6 @@ function Page() {
           </div>
         </div>
       </section>
-    </Layout>
+    
   );
 }

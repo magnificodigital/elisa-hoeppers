@@ -2,17 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { GripVertical, Plus, Pencil, Trash2 } from "lucide-react";
-import Layout from "@/components/Layout";
-import { StaffGuard } from "@/components/StaffGuard";
 import { getCourseForAdmin, listLessonsForAdmin, createLesson, updateLesson, deleteLesson, extractYouTubeId, type LessonAdmin } from "@/lib/admin";
 import { listModulesByCourse, createModule, updateModule, deleteModule, type Module } from "@/lib/modules";
 
 export const Route = createFileRoute("/admin/cursos/$id/aulas")({
   head: () => ({ meta: [{ title: "Admin — Aulas" }] }),
   component: () => (
-    <StaffGuard>
+    
       <CourseLessonsPage />
-    </StaffGuard>
+    
   ),
 });
 
@@ -43,7 +41,7 @@ function CourseLessonsPage() {
   const nextModuleOrder = (modules?.reduce((m, x) => Math.max(m, x.display_order), 0) ?? 0) + 1;
 
   return (
-    <Layout>
+    
       <section className="py-12 md:py-20 bg-bodyoga-cream min-h-screen">
         <div className="container mx-auto px-6 max-w-4xl">
           <Link to="/admin/cursos" className="text-xs uppercase tracking-widest text-primary hover:opacity-70">← Voltar</Link>
@@ -87,7 +85,7 @@ function CourseLessonsPage() {
           <NewLessonForm courseId={id} nextOrder={nextOrder} modules={modules ?? []} onCreated={invalidate} />
         </div>
       </section>
-    </Layout>
+    
   );
 }
 
