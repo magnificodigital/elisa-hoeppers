@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Search, ExternalLink } from "lucide-react";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
 
-export const Route = createFileRoute("/admin/site/seo")({
+export const Route = createFileRoute("/admin/website/seo")({
   head: () => ({ meta: [{ title: "Admin — SEO" }] }),
   component: () => (
     

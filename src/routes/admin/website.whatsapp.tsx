@@ -5,7 +5,7 @@ import { ArrowLeft, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
 import { listSettings, updateSetting } from "@/lib/settings";
 
-export const Route = createFileRoute("/admin/site/whatsapp")({
+export const Route = createFileRoute("/admin/website/whatsapp")({
   head: () => ({ meta: [{ title: "Admin — Botão do WhatsApp" }] }),
   component: () => (
     

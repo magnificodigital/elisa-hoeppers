@@ -7,7 +7,7 @@ import { PageBuilderUX } from "@/components/admin/PageBuilderUX";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 
-export const Route = createFileRoute("/admin/site/paginas/$id")({
+export const Route = createFileRoute("/admin/website/paginas/$id")({
   head: () => ({ meta: [{ title: "Admin — Editar Página" }] }),
   component: () => <EditPageBuilder />,
 });
