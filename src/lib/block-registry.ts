@@ -310,7 +310,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     label: "Frase de abertura",
     desc: "Ícone + frase curta",
     defaults: {
-      icon: "https://id-preview--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app/assets/bodyoga/icone-bodyoga-2.png",
+      icon: "https://hoepppers.lovable.app/assets/bodyoga/icone-bodyoga-2.png",
       title: "Equilíbrio para o corpo,\nmente e ambiente."
     },
     fields: [
@@ -335,7 +335,7 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
       p2: "Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.",
       ctaLabel: "Harmonia & Equilíbrio",
       ctaHref: "/sobre",
-      image: "/images/home/bodyoga/bodyoga-left.png"
+      image: "https://hoepppers.lovable.app/images/home/bodyoga/bodyoga-left.png"
     },
     fields: [
       { key: "image", label: "Imagem", type: "image" },
