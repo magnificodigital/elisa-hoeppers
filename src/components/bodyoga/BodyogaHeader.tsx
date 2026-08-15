@@ -7,7 +7,6 @@ import { listPages } from "@/lib/pages";
 import { useQuery } from "@tanstack/react-query";
 import { getSetting } from "@/lib/settings";
 import { BodyogaLogo } from "./BodyogaLogo";
-import { getSetting } from "@/lib/settings";
 
 
 
