@@ -13,6 +13,7 @@ import { FloatingCart } from "@/components/FloatingCart";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { CookieBanner } from "@/components/CookieBanner";
 import { Toaster } from "@/components/ui/sonner";
+import { SiteNoticePopup } from "@/components/site/SiteNoticePopup";
 
 import appCss from "../styles.css?url";
 
