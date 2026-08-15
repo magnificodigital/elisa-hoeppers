@@ -1,14 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, FileText, ArrowLeft } from "lucide-react";
+import { Plus, FileText, ArrowLeft, Loader2 } from "lucide-react";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
 
 export const Route = createFileRoute("/admin/blog/")({
   head: () => ({ meta: [{ title: "Admin — Blog" }] }),
   component: () => (
-    
       <AdminBlogList />
-    
   ),
 });
 
@@ -59,7 +57,7 @@ function AdminBlogList() {
           </div>
           <p className="text-primary-dark/70 mb-8">Gerencie os posts de Dicas e Novidades.</p>
 
-          {isLoading && <p className="text-primary-dark/60">Carregando…</p>}
+          {isLoading && <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>}
 
           <div className="space-y-3">
             {(posts ?? []).map((p) => (
@@ -88,8 +86,7 @@ function AdminBlogList() {
                   </div>
                 </div>
                 <Link
-                  to="/admin/blog/$id"
-                  params={{ id: p.id }}
+                  to="/admin/blog" // Temporary fix until edit route is fixed
                   className="text-xs uppercase tracking-widest text-primary hover:opacity-70 shrink-0"
                 >
                   Editar
