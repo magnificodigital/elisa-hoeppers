@@ -5,7 +5,7 @@ import { BodyogaHeader } from "@/components/bodyoga/BodyogaHeader";
 import Footer from "@/components/Footer";
 
 export const Route = createFileRoute("/p/$slug")({
-  loader: async ({ params }: { params: { slug: string } }) => {
+  loader: async ({ params }) => {
     const page = await getPageBySlug(params.slug);
     if (!page || page.status !== "active") throw notFound();
     return page;
