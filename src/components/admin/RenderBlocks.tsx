@@ -53,11 +53,9 @@ import {
 
 
 function HomeHeroBlock() {
-  const { data: slides } = useQuery({ 
-    queryKey: ["bodyoga-slides-active"], 
-    queryFn: listActiveSlides 
-  });
-  return <BodyogaHeroSlider initialSlides={slides ?? []} />;
+  // Deixa o próprio slider buscar os slides ativos (evita cair no DefaultHero
+  // "Rituais para corpo" enquanto carrega). Igual ao comportamento do site publicado.
+  return <BodyogaHeroSlider />;
 }
 
 function HomeRitualsBlock({ columns = 3, title, subtitle, selection = "all", bg = "cream" }: { columns?: number, title?: string, subtitle?: string, selection?: string, bg?: string }) {
