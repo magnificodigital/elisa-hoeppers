@@ -26,7 +26,7 @@ export type NavHref = (typeof PAGE_OPTIONS)[number]["href"];
 export type NavItem = {
   id: string;
   label: string;
-  href: NavHref;
+  href: string; // Widen to allow /p/slug
   header: NavPosition;
   footer: NavPosition;
 };
@@ -72,7 +72,7 @@ function normalize(raw: unknown): NavMenuConfig {
   for (const entry of rawItems) {
     if (!entry || typeof entry !== "object") continue;
     const e = entry as Record<string, unknown>;
-    const href = VALID_HREFS.includes(e.href as string) ? (e.href as NavHref) : "/";
+    const href = typeof e.href === "string" ? e.href : "/";
     items.push({
       id: typeof e.id === "string" ? e.id : newNavItem().id,
       label: typeof e.label === "string" && e.label.trim() ? e.label : "Página",
