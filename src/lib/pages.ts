@@ -10,6 +10,7 @@ export type SitePage = {
   hero_image: string | null;
   seo_title: string | null;
   seo_description: string | null;
+  og_image: string | null;
   is_published: boolean;
   show_in_menu: boolean;
   display_order: number;

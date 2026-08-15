@@ -32,7 +32,7 @@ const NAV_ITEMS: NavLeaf[] = [
   { to: "/admin/solicitacoes", label: "Solicitações", icon: MessageSquare },
   { to: "/admin/notas-fiscais", label: "Notas Fiscais", icon: FileText },
   { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
-  { to: "/admin/site", label: "WebSite", icon: Sparkles },
+  { to: "/admin/website", label: "WebSite", icon: Sparkles },
   { to: "/admin/posts", label: "Posts", icon: Newspaper },
   { to: "/admin/broadcast", label: "Emails", icon: Mail },
   { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
