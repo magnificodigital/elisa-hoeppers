@@ -15,9 +15,10 @@ import {
   Bell,
   AlertCircle,
   HelpCircle,
-  
   Stethoscope,
   Truck,
+  Clock,
+  Sparkles
 } from "lucide-react";
 
 import { AdminSearchBar } from "@/components/AdminSearchBar";
@@ -34,17 +35,17 @@ export const Route = createFileRoute("/admin/")({
 const sections = [
   { to: "/admin/cursos", icon: GraduationCap, title: "Cursos", desc: "Edite cursos, aulas e quizzes." },
   { to: "/admin/agendamentos", icon: Calendar, title: "Agendamentos", desc: "Confirme reservas de aulas." },
+  { to: "/admin/disponibilidade", icon: Clock, title: "Horários", desc: "Configure sua grade de disponibilidade." },
   { to: "/admin/produtos", icon: ShoppingBag, title: "Produtos", desc: "Gerencie o catálogo da loja." },
   { to: "/admin/pedidos", icon: Package, title: "Pedidos", desc: "Acompanhe e atualize pedidos da loja." },
   { to: "/admin/reservas", icon: Bell, title: "Reservas", desc: "Reservas de produtos fora de estoque." },
   { to: "/admin/clientes", icon: Users, title: "Clientes", desc: "Veja seus clientes e quem está inscrito." },
-  { to: "/admin/blog", icon: FileText, title: "Blog Posts", desc: "Crie e edite posts de Dicas." },
+  { to: "/admin/website", icon: Sparkles, title: "WebSite", desc: "Páginas, Landing Pages e Blog." },
+  { to: "/admin/posts", icon: FileText, title: "Blog Posts", desc: "Crie e edite posts de Dicas." },
   { to: "/admin/social", icon: Share2, title: "Social Posts", desc: "Posts para as redes sociais." },
   { to: "/admin/broadcast", icon: Mail, title: "Emails", desc: "Envie email pra newsletter ou alunas." },
   { to: "/admin/configuracoes", icon: Settings, title: "Configurações", desc: "Integrações (Mercado Pago, Newsletter)." },
   { to: "/admin/ajuda", icon: HelpCircle, title: "Ajuda", desc: "Tutoriais passo a passo." },
-  { to: "/admin/diagnostico-pagamentos", icon: Stethoscope, title: "Diagnóstico Pagamentos", desc: "Auto-check da integração Mercado Pago." },
-  { to: "/admin/diagnostico-envio", icon: Truck, title: "Diagnóstico Envio", desc: "Auto-check do Melhor Envio." },
 ] as const;
 
 function formatBRL(cents: number): string {
