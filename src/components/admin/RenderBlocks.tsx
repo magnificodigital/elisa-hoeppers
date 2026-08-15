@@ -120,13 +120,20 @@ function ProductCard({ product }: { product: Product }) {
       <p className="text-sm text-primary/60 mb-3">{formatPriceBRL(product.price_cents)}</p>
       <button
         onClick={() => {
-          addItem(product);
+          addItem({
+            product_id: product.id,
+            name: product.name,
+            slug: product.slug,
+            image: image,
+            unit_price_cents: product.price_cents
+          });
           toast.success("Adicionado ao carrinho");
         }}
         className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition opacity-0 group-hover:opacity-100"
       >
         <ShoppingCart size={14} /> Comprar
       </button>
+
     </div>
   );
 }
