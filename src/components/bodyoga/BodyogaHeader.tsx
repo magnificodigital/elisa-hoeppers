@@ -95,7 +95,7 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
           <img
             src="/images/home/bodyoga/logo-bodyoga.png"
             alt="BODYOGA"
-            className="h-12 md:h-16 w-auto object-contain"
+            className="h-14 md:h-20 w-auto object-contain"
             style={{ filter: logoFilter }}
           />
         </Link>

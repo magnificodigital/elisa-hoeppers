@@ -143,12 +143,12 @@ function ProductDetail() {
               )}
 
               {product.in_stock ? (
-                <div className="mt-6">
+                <div className="mt-8">
                   <AddToCartButton product={product} />
                 </div>
               ) : (
-                <div className="mt-6">
-                  <div className="mb-4 text-center bg-sand text-[var(--text-muted)] py-3 rounded-full uppercase tracking-[0.2em] text-xs font-semibold">
+                <div className="mt-8">
+                  <div className="mb-4 text-center bg-sand text-bodyoga-green/60 py-3 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold">
                     Fora de estoque
                   </div>
                   <ReservationForm product={product} />
@@ -268,17 +268,18 @@ function AddToCartButton({ product }: { product: Product }) {
       </div>
       <button
         type="button"
-        onClick={() => handleAdd(false)}
-        className="block w-full text-center border-2 border-primary text-primary py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary hover:text-white transition"
-      >
-        {added ? "✓ Adicionado ao carrinho" : "Adicionar ao carrinho"}
-      </button>
-      <button
-        type="button"
         onClick={() => handleAdd(true)}
-        className="block w-full text-center bg-primary text-white py-3.5 rounded-full uppercase tracking-[0.2em] text-xs font-semibold hover:bg-primary-dark transition"
+        className="block w-full text-center bg-bodyoga-green text-bodyoga-cream py-4 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/90 transition shadow-sm"
       >
         Comprar agora
+      </button>
+      
+      <button
+        type="button"
+        onClick={() => handleAdd(false)}
+        className="block w-full text-center border border-bodyoga-green/20 text-bodyoga-green py-3 rounded-full uppercase tracking-[0.2em] text-[10px] font-bold hover:bg-bodyoga-green/5 transition"
+      >
+        {added ? "✓ Adicionado" : "Adicionar ao carrinho"}
       </button>
     </div>
   );
