@@ -410,7 +410,15 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
           }
 
           case "spacer":
+            return <div key={block.id} style={{ height: `${block.props.height}px` }} />;
 
+          case "home-insta":
+            return <HomeInstagram key={block.id} />;
+          
+          case "home-hero":
+            return <HomeHeroBlock key={block.id} />;
+            
+          case "home-opening":
             return (
               <section key={block.id} className="bg-bodyoga-cream">
                 <div className="max-w-[900px] mx-auto px-6 py-6 md:py-10 flex flex-col items-center text-center">
@@ -484,8 +492,6 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
           case "home-blog":
             return <HomeBlog key={block.id} />;
 
-          case "spacer":
-            return <div key={block.id} style={{ height: `${block.props.height}px` }} />;
           
           default:
             return (
