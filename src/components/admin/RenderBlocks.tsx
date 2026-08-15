@@ -327,3 +327,272 @@ function SignupFormBlock() {
   );
 }
 
+
+interface RenderBlocksProps {
+  blocks: any[];
+}
+
+export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
+  if (!blocks || !Array.isArray(blocks)) return null;
+
+  return (
+    <div className="flex flex-col w-full">
+      {blocks.map((block) => {
+        const p = block.props;
+        switch (block.type) {
+          case "hero":
+            return (
+              <BodyogaHeroSlider 
+                key={block.id}
+                initialSlides={[{
+                  id: block.id,
+                  title: p.title,
+                  subtitle: p.subtitle,
+                  button_label: p.buttonLabel,
+                  button_link: p.buttonHref,
+                  image_url: p.bgImage,
+                  video_url: p.bgVideo,
+                  overlay_opacity: p.overlay,
+                  active: true
+                } as any]}
+              />
+            );
+
+          case "text":
+            return (
+              <section key={block.id} className="py-16 px-4 max-w-4xl mx-auto w-full">
+                <div className={`text-${p.align || 'left'}`}>
+                  {p.title && <h2 className="text-3xl md:text-4xl font-light mb-6 text-primary">{p.title}</h2>}
+                  {p.content && <p className="text-lg text-primary/80 whitespace-pre-wrap">{p.content}</p>}
+                </div>
+              </section>
+            );
+
+          case "image-text":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
+                <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-16 md:py-24">
+                  <div className={`grid md:grid-cols-2 gap-10 lg:gap-16 items-center ${p.side === 'left' ? 'md:[&>*:first-child]:order-2' : ''}`}>
+                    {p.image && (
+                      <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-green/5">
+                        <img src={p.image} alt={p.title || ''} className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="space-y-6">
+                      {p.title && <h2 className="font-display text-3xl md:text-4xl text-bodyoga-green leading-tight">{p.title}</h2>}
+                      {p.content && <p className="text-lg text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">{p.content}</p>}
+                      {p.buttonLabel && (
+                        <a href={p.buttonHref || '#'} className="inline-flex px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:text-bodyoga-cream text-[11px] uppercase tracking-[0.3em] font-semibold transition">
+                          {p.buttonLabel}
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+
+          case "products":
+            return <HomeRitualsBlock key={block.id} columns={p.columns} title={p.title} selection={p.selection} />;
+
+          case "categories":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 px-4">
+                <div className="max-w-[1170px] mx-auto">
+                  <div className={`grid ${p.columns === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2 md:grid-cols-3"} gap-4 md:gap-6`}>
+                    {(p.items || []).map((item: any, i: number) => (
+                      <a key={i} href={item.link || '#'} className="group block relative aspect-square overflow-hidden rounded-2xl bg-bodyoga-green/5">
+                        {item.image && <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />}
+                        <div className="absolute inset-0 bg-black/20" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-white font-display text-xl">{item.name}</span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            );
+
+          case "gallery":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-12 px-4">
+                <div className="max-w-[1170px] mx-auto">
+                  <div className={`grid ${p.columns === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2 md:grid-cols-3"} gap-4`}>
+                    {(p.images || []).map((img: any, i: number) => (
+                      <div key={i} className="aspect-square rounded-2xl overflow-hidden">
+                        <img src={img.url} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            );
+
+          case "faq":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 px-4">
+                <div className="max-w-3xl mx-auto">
+                  {p.title && <h2 className="font-display text-3xl text-bodyoga-green text-center mb-12">{p.title}</h2>}
+                  <Accordion type="single" collapsible className="w-full">
+                    {(p.items || []).map((item: any, i: number) => (
+                      <AccordionItem key={i} value={`item-${i}`} className="border-bodyoga-green/10">
+                        <AccordionTrigger className="font-display text-lg text-bodyoga-green">{item.q}</AccordionTrigger>
+                        <AccordionContent className="text-bodyoga-green/70 leading-relaxed">{item.a}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              </section>
+            );
+
+          case "testimonials":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 px-4">
+                <div className="max-w-[1170px] mx-auto grid md:grid-cols-3 gap-8">
+                  {(p.items || []).map((t: any, i: number) => (
+                    <div key={i} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
+                      <p className="italic text-bodyoga-green/80">"{t.text}"</p>
+                      <div>
+                        <p className="font-semibold text-bodyoga-green">{t.author}</p>
+                        <p className="text-xs text-bodyoga-green/50 uppercase tracking-widest">{t.role}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+
+          case "stats":
+            return (
+              <section key={block.id} className="bg-bodyoga-green py-16 px-4 text-bodyoga-cream">
+                <div className="max-w-[1170px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                  {(p.items || []).map((s: any, i: number) => (
+                    <div key={i} className="space-y-2">
+                      <p className="font-display text-4xl md:text-5xl">{s.value}</p>
+                      <p className="text-xs uppercase tracking-widest opacity-70">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+
+          case "benefits":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24">
+                <div className="max-w-[1170px] mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
+                  {(p.items || []).map((b: any, i: number) => (
+                    <div key={i} className="flex flex-col items-center text-center space-y-4">
+                      <IconSelector icon={b.icon} className="w-8 h-8 text-bodyoga-green" />
+                      <h3 className="font-display text-xl text-bodyoga-green">{b.title}</h3>
+                      <p className="text-bodyoga-green/70 text-sm">{b.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+
+          case "timeline":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24 px-4">
+                <div className="max-w-3xl mx-auto space-y-12">
+                  {(p.items || []).map((t: any, i: number) => (
+                    <div key={i} className="flex gap-8 items-start">
+                      <span className="font-display text-2xl text-bodyoga-green/30">{t.year}</span>
+                      <div className="space-y-2">
+                        <h3 className="font-display text-xl text-bodyoga-green">{t.title}</h3>
+                        <p className="text-bodyoga-green/70">{t.text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+
+          case "author":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 md:py-24">
+                <div className="max-w-[900px] mx-auto px-6 grid md:grid-cols-12 gap-12 items-center">
+                  <div className="md:col-span-5 aspect-[4/5] rounded-2xl overflow-hidden bg-bodyoga-green/5">
+                    {p.photo && <img src={p.photo} alt={p.title} className="w-full h-full object-cover" />}
+                  </div>
+                  <div className="md:col-span-7 space-y-6">
+                    <h2 className="font-display text-3xl text-bodyoga-green">{p.title}</h2>
+                    <p className="text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">{p.bio}</p>
+                  </div>
+                </div>
+              </section>
+            );
+
+          case "courses":
+            return <CoursesBlock key={block.id} columns={p.columns} />;
+
+          case "newsletter":
+            return (
+              <section key={block.id} className="bg-bodyoga-green py-20 px-4 text-bodyoga-cream text-center">
+                <div className="max-w-xl mx-auto space-y-8">
+                  <h2 className="font-display text-3xl md:text-4xl">{p.title}</h2>
+                  <p className="opacity-80">{p.text}</p>
+                  <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => { e.preventDefault(); toast.success("Inscrito!"); }}>
+                    <input type="email" placeholder="Email" className="flex-1 bg-white/10 border border-white/20 rounded-full px-6 py-3" required />
+                    <button className="bg-bodyoga-cream text-bodyoga-green px-8 py-3 rounded-full text-xs uppercase font-bold">Enviar</button>
+                  </form>
+                </div>
+              </section>
+            );
+
+          case "columns":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream py-16 px-4">
+                <div className={`max-w-[1170px] mx-auto grid ${p.count === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1 md:grid-cols-2"} gap-12`}>
+                  {(p.items || []).map((item: any, i: number) => (
+                    <div key={i} className="text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line" dangerouslySetInnerHTML={{ __html: item.content }} />
+                  ))}
+                </div>
+              </section>
+            );
+
+          case "spacer":
+            return <div key={block.id} style={{ height: `${p.height}px` }} />;
+
+          case "booking-form":
+            return <BookingFormBlock key={block.id} />;
+
+          case "custom-project-form":
+            return (
+              <section key={block.id} className="py-20 md:py-32">
+                <div className="container mx-auto px-6 max-w-2xl">
+                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
+                </div>
+              </section>
+            );
+
+          case "signup-form":
+            return <SignupFormBlock key={block.id} />;
+
+          case "home-hero":
+            return <HomeHeroBlock key={block.id} />;
+          
+          case "home-intro":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
+                <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                    <div className="md:col-span-6"><img src={p.image} className="rounded-2xl" alt="" /></div>
+                    <div className="md:col-span-6 space-y-10">
+                      <h2 className="font-display text-3xl md:text-5xl text-bodyoga-green">{renderIntroTitle(p.title || "")}</h2>
+                      <p className="text-lg text-bodyoga-green/80">{p.p1}</p>
+                      {p.ctaLabel && <a href={p.ctaHref || "#"} className="inline-block px-7 py-4 border rounded-full uppercase text-[11px]">{p.ctaLabel}</a>}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+
+          default:
+            return <div key={block.id} className="p-8 border border-dashed text-center text-gray-400">Bloco {block.type} não encontrado</div>;
+        }
+      })}
+    </div>
+  );
+};
