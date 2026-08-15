@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, FileText, ArrowLeft, Loader2 } from "lucide-react";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/blog/")({
   head: () => ({ meta: [{ title: "Admin — Blog" }] }),
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/admin/blog/")({
 
 function AdminBlogList() {
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const { data: posts, isLoading } = useQuery({
     queryKey: ["admin-posts"],
     queryFn: listAllPostsForAdmin,
