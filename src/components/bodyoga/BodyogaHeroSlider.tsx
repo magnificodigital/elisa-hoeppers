@@ -171,7 +171,7 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
 
 
 function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: () => void }) {
-  const titleLines = slide.title.split("\n");
+  const titleLines = (slide.title || "").split("\n");
   const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
   const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
   return (
@@ -284,6 +284,7 @@ export function BodyogaHeroSlider({ initialSlides }: { initialSlides?: Slide[] }
     queryKey: ["bodyoga-slides-active"],
     queryFn: listActiveSlides,
     initialData: initialSlides,
+    enabled: !initialSlides || initialSlides.length === 0,
   });
 
   const dbSlides = slides ?? [];
