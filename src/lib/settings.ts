@@ -24,10 +24,14 @@ export async function updateSetting(key: string, value: string): Promise<void> {
 }
 
 export async function getSetting(key: string): Promise<string | null> {
-  // Reads only non-secret/public settings (e.g. me_enabled, mp_enabled,
-  // mp_public_key) via a security-definer function so visitors who aren't
-  // logged in can still see shipping/payment options at checkout.
   const { data, error } = await supabase.rpc("get_public_setting", { p_key: key });
   if (error) throw error;
   return (data as string | null) ?? null;
+}
+
+export async function bulkUpdateSettings(settings: { key: string; value: string }[]): Promise<void> {
+  for (const s of settings) {
+    const { error } = await supabase.from("app_settings").update({ value: s.value }).eq("key", s.key);
+    if (error) throw error;
+  }
 }
