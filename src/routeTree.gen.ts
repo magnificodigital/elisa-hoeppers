@@ -54,15 +54,15 @@ import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/d
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
+import { Route as AdminBlogRouteImport } from './routes/admin/blog'
 import { Route as AdminAgendamentosRouteImport } from './routes/admin/agendamentos'
-import { Route as AdminBlogRouteRouteImport } from './routes/admin/blog/route'
-import { Route as AdminWebsiteIndexRouteImport } from './routes/admin/website/index'
+import { Route as AdminWebsiteIndexRouteImport } from './routes/admin/website.index'
 import { Route as AdminSiteIndexRouteImport } from './routes/admin/site.index'
 import { Route as AdminProdutosIndexRouteImport } from './routes/admin/produtos/index'
 import { Route as AdminCursosIndexRouteImport } from './routes/admin/cursos/index'
 import { Route as AdminConfiguracoesIndexRouteImport } from './routes/admin/configuracoes/index'
 import { Route as AdminBodyogaSlidesIndexRouteImport } from './routes/admin/bodyoga-slides/index'
-import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog/index'
+import { Route as AdminBlogIndexRouteImport } from './routes/admin/blog.index'
 import { Route as AdminAjudaIndexRouteImport } from './routes/admin/ajuda.index'
 import { Route as PainelAulaLessonIdRouteImport } from './routes/painel/aula/$lessonId'
 import { Route as ApiPublicMediaRouteImport } from './routes/api/public/media'
@@ -85,7 +85,7 @@ import { Route as AdminConfiguracoesCupomRouteImport } from './routes/admin/conf
 import { Route as AdminConfiguracoesBaseRouteImport } from './routes/admin/configuracoes/base'
 import { Route as AdminConfiguracoesAsaasRouteImport } from './routes/admin/configuracoes/asaas'
 import { Route as AdminBodyogaSlidesIdRouteImport } from './routes/admin/bodyoga-slides/$id'
-import { Route as AdminBlogIdRouteImport } from './routes/admin/blog/$id'
+import { Route as AdminBlogIdRouteImport } from './routes/admin/blog.$id'
 import { Route as AdminAjudaSlugRouteImport } from './routes/admin/ajuda/$slug'
 import { Route as AdminSitePaginasIndexRouteImport } from './routes/admin/site.paginas.index'
 import { Route as AdminSitePaginasIdRouteImport } from './routes/admin/site.paginas.$id'
@@ -319,14 +319,14 @@ const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
   path: '/broadcast',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminAgendamentosRoute = AdminAgendamentosRouteImport.update({
   id: '/agendamentos',
   path: '/agendamentos',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
-const AdminBlogRouteRoute = AdminBlogRouteRouteImport.update({
-  id: '/blog',
-  path: '/blog',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminWebsiteIndexRoute = AdminWebsiteIndexRouteImport.update({
@@ -362,7 +362,7 @@ const AdminBodyogaSlidesIndexRoute = AdminBodyogaSlidesIndexRouteImport.update({
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AdminBlogRouteRoute,
+  getParentRoute: () => AdminBlogRoute,
 } as any)
 const AdminAjudaIndexRoute = AdminAjudaIndexRouteImport.update({
   id: '/ajuda/',
@@ -485,7 +485,7 @@ const AdminBodyogaSlidesIdRoute = AdminBodyogaSlidesIdRouteImport.update({
 const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   id: '/$id',
   path: '/$id',
-  getParentRoute: () => AdminBlogRouteRoute,
+  getParentRoute: () => AdminBlogRoute,
 } as any)
 const AdminAjudaSlugRoute = AdminAjudaSlugRouteImport.update({
   id: '/ajuda/$slug',
@@ -535,8 +535,8 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
-  '/admin/blog': typeof AdminBlogRouteRouteWithChildren
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -703,8 +703,8 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
-  '/admin/blog': typeof AdminBlogRouteRouteWithChildren
   '/admin/agendamentos': typeof AdminAgendamentosRoute
+  '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
@@ -790,8 +790,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
-    | '/admin/blog'
     | '/admin/agendamentos'
+    | '/admin/blog'
     | '/admin/broadcast'
     | '/admin/clientes'
     | '/admin/diagnostico-envio'
@@ -957,8 +957,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/termos'
-    | '/admin/blog'
     | '/admin/agendamentos'
+    | '/admin/blog'
     | '/admin/broadcast'
     | '/admin/clientes'
     | '/admin/diagnostico-envio'
@@ -1382,18 +1382,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBroadcastRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/agendamentos': {
       id: '/admin/agendamentos'
       path: '/agendamentos'
       fullPath: '/admin/agendamentos'
       preLoaderRoute: typeof AdminAgendamentosRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogRouteRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/website/': {
@@ -1443,7 +1443,7 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/blog/'
       preLoaderRoute: typeof AdminBlogIndexRouteImport
-      parentRoute: typeof AdminBlogRouteRoute
+      parentRoute: typeof AdminBlogRoute
     }
     '/admin/ajuda/': {
       id: '/admin/ajuda/'
@@ -1604,7 +1604,7 @@ declare module '@tanstack/react-router' {
       path: '/$id'
       fullPath: '/admin/blog/$id'
       preLoaderRoute: typeof AdminBlogIdRouteImport
-      parentRoute: typeof AdminBlogRouteRoute
+      parentRoute: typeof AdminBlogRoute
     }
     '/admin/ajuda/$slug': {
       id: '/admin/ajuda/$slug'
@@ -1651,18 +1651,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AdminBlogRouteRouteChildren {
+interface AdminBlogRouteChildren {
   AdminBlogIdRoute: typeof AdminBlogIdRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
 }
 
-const AdminBlogRouteRouteChildren: AdminBlogRouteRouteChildren = {
+const AdminBlogRouteChildren: AdminBlogRouteChildren = {
   AdminBlogIdRoute: AdminBlogIdRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
 }
 
-const AdminBlogRouteRouteWithChildren = AdminBlogRouteRoute._addFileChildren(
-  AdminBlogRouteRouteChildren,
+const AdminBlogRouteWithChildren = AdminBlogRoute._addFileChildren(
+  AdminBlogRouteChildren,
 )
 
 interface AdminCursosIdAulasRouteChildren {
@@ -1677,8 +1677,8 @@ const AdminCursosIdAulasRouteWithChildren =
   AdminCursosIdAulasRoute._addFileChildren(AdminCursosIdAulasRouteChildren)
 
 interface AdminRouteRouteChildren {
-  AdminBlogRouteRoute: typeof AdminBlogRouteRouteWithChildren
   AdminAgendamentosRoute: typeof AdminAgendamentosRoute
+  AdminBlogRoute: typeof AdminBlogRouteWithChildren
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
@@ -1724,8 +1724,8 @@ interface AdminRouteRouteChildren {
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
-  AdminBlogRouteRoute: AdminBlogRouteRouteWithChildren,
   AdminAgendamentosRoute: AdminAgendamentosRoute,
+  AdminBlogRoute: AdminBlogRouteWithChildren,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
