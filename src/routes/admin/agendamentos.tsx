@@ -102,7 +102,7 @@ function AdminAppointments() {
       </section>
 
       {showNew && <NewAppointmentModal onClose={() => setShowNew(false)} />}
-    
+    </>
   );
 }
 
