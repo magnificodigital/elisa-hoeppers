@@ -6,7 +6,7 @@ export type SitePage = {
   slug: string;
   title: string;
   content_md: string;
-  content_blocks: PageBlock[];
+  content_blocks: any[];
   hero_image: string | null;
   seo_title: string | null;
   seo_description: string | null;
@@ -21,7 +21,7 @@ export type SitePage = {
   is_home: boolean;
   in_menu: boolean;
   menu_order: number | null;
-  blocks: any[]; // New structure
+  og_image: string | null;
 };
 
 export function slugify(input: string): string {
@@ -59,7 +59,7 @@ export async function getPageBySlug(slug: string): Promise<SitePage | null> {
 export async function createPage(input: { title: string; slug: string }): Promise<SitePage> {
   const { data, error } = await supabase
     .from("pages")
-    .insert({ title: input.title, slug: input.slug, content_md: "", blocks: [] })
+    .insert({ title: input.title, slug: input.slug, content_md: "", content_blocks: [] })
     .select()
     .single();
   if (error) throw error;
