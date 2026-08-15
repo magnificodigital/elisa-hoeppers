@@ -37,7 +37,7 @@ export async function listPages(): Promise<SitePage[]> {
   const { data, error } = await supabase
     .from("pages")
     .select("*")
-    .order("menu_order", { ascending: true, nullsLast: true })
+    .order("menu_order", { ascending: true })
     .order("title", { ascending: true });
   if (error) throw error;
   return (data ?? []) as SitePage[];
@@ -45,6 +45,12 @@ export async function listPages(): Promise<SitePage[]> {
 
 export async function getPage(id: string): Promise<SitePage | null> {
   const { data, error } = await supabase.from("pages").select("*").eq("id", id).maybeSingle();
+  if (error) throw error;
+  return (data as SitePage) ?? null;
+}
+
+export async function getPageBySlug(slug: string): Promise<SitePage | null> {
+  const { data, error } = await supabase.from("pages").select("*").eq("slug", slug).maybeSingle();
   if (error) throw error;
   return (data as SitePage) ?? null;
 }
