@@ -32,8 +32,8 @@ function AdminBlogList() {
       }),
     onSuccess: (p) => {
       qc.invalidateQueries({ queryKey: ["admin-posts"] });
-      // Redirect to the edit page immediately after creation? 
-      // For now let's just invalidate.
+      toast.success("Post criado");
+      navigate({ to: "/admin/blog/$id", params: { id: p.id } });
     },
   });
 
