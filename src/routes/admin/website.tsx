@@ -40,7 +40,7 @@ import {
   type NavPosition
 } from "@/lib/nav-config";
 import { SettingsCategory } from "@/components/admin/SettingsCategory";
-import SlidesList from "./bodyoga-slides/index.tsx"; // Fix extension to .tsx for direct import if exported as default
+import { SlidesList } from "./bodyoga-slides/index.tsx";
 
 
 export const Route = createFileRoute("/admin/website")({
