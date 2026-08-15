@@ -195,7 +195,6 @@ function PageTable({ pages, isLoading, onDelete, onSetHome, onToggleMenu, onUpda
             <tr className="bg-cream/30 border-b border-border">
               <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-primary-dark/60">Título</th>
               <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-primary-dark/60 text-center">Início</th>
-              <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-primary-dark/60 text-center">Menu</th>
               <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-primary-dark/60">Status</th>
               <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-primary-dark/60 text-right">Ações</th>
             </tr>
@@ -220,24 +219,6 @@ function PageTable({ pages, isLoading, onDelete, onSetHome, onToggleMenu, onUpda
                   >
                     <Star className={`w-5 h-5 ${p.is_home ? 'fill-current' : ''}`} />
                   </button>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  {onToggleMenu && (
-                    <div className="flex flex-col items-center gap-1">
-                      <Switch 
-                        checked={p.in_menu} 
-                        onCheckedChange={(val) => onToggleMenu(p.id, val)}
-                      />
-                      {p.in_menu && (
-                        <input 
-                           type="number" 
-                           className="w-12 text-[10px] border border-border rounded text-center"
-                           value={p.menu_order ?? 0}
-                           onChange={(e) => onUpdateOrder(p.id, parseInt(e.target.value) || 0)}
-                        />
-                      )}
-                    </div>
-                  )}
                 </td>
                 <td className="px-6 py-4">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tighter ${
