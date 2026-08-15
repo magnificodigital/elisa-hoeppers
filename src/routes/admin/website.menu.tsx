@@ -99,7 +99,7 @@ function MenuPage() {
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
         <div className="max-w-3xl mx-auto px-4">
           <Link
-            to="/admin/site"
+            to="/admin/website"
             className="inline-flex items-center gap-1 text-sm text-primary-dark/70 hover:text-primary transition mb-6"
           >
             <ChevronLeft size={16} /> Voltar
