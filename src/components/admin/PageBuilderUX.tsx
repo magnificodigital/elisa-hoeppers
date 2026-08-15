@@ -328,7 +328,7 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
 }
 
 function FieldInput({ field, value, onChange }: { field: any, value: any, onChange: (v: any) => void }) {
-  const inputCls = "w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary transition-all";
+  const inputCls = "w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-bodyoga-green transition-all";
 
   switch (field.type) {
     case 'text':
