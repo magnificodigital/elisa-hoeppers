@@ -38,9 +38,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const isActive = (to: string, exact?: boolean) =>
     exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
 
-  const currentTitle = ADMIN_NAV_ITEMS.flatMap(g => g.items)
-    .find(item => isActive(item.to, item.exact))?.label || "Admin";
-
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-[#3B4F30] text-white overflow-y-auto no-scrollbar">
       <div className="p-6">
@@ -127,9 +124,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 </div>
               </DrawerContent>
             </Drawer>
-            <h2 className="font-display text-lg text-[#3B4F30] font-medium tracking-tight">
-              {currentTitle}
-            </h2>
           </div>
 
           <div className="flex items-center gap-2">
