@@ -158,11 +158,11 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
         <div className="w-80 bg-white border-r border-border flex flex-col z-10">
           <Tabs defaultValue="add" className="w-full flex flex-col h-full">
             <TabsList className="bg-white/50 border-b border-border p-1 rounded-none flex h-auto">
-              <TabsTrigger value="add" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary py-3">
+              <TabsTrigger value="add" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-bodyoga-green py-3">
                 <Plus size={16} className="mr-2" />
                 Blocos
               </TabsTrigger>
-              <TabsTrigger value="seo" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary py-3">
+              <TabsTrigger value="seo" className="flex-1 rounded-none data-[state=active]:bg-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-bodyoga-green py-3">
                 <Globe size={16} className="mr-2" />
                 SEO
               </TabsTrigger>
@@ -174,9 +174,9 @@ export function PageBuilderUX({ blocks, onChange, pageData, onPageDataChange }: 
                 <button
                   key={def.type}
                   onClick={() => addBlock(def.type)}
-                  className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-primary/5 hover:border-primary/30 border border-transparent rounded-xl transition group"
+                  className="w-full flex items-start gap-3 p-3 text-left bg-gray-50 hover:bg-bodyoga-green/5 hover:border-bodyoga-green/30 border border-transparent rounded-xl transition group"
                 >
-                  <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-primary transition">
+                  <div className="p-2 bg-white rounded-lg shadow-sm group-hover:text-bodyoga-green transition">
                     <BlockIcon type={def.type} size={18} />
                   </div>
                   <div className="min-w-0">
