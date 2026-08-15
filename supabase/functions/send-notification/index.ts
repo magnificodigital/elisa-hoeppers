@@ -520,6 +520,20 @@ async function handleWaitlistRestock(productId: string) {
   return { notified: subs.length };
 }
 
+async function handleNoticeLead(payload: any) {
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>🎯 Novo lead pelo aviso</h1>
+      <p><span class="label">Aviso</span><br/>${payload.notice_title}</p>
+      <p><span class="label">Página</span><br/>${payload.page || "/"}</p>
+      <p><span class="label">Lead</span><br/>${payload.name || "Não informado"}<br/>${payload.email || "Não informado"}<br/>${payload.phone || "Não informado"}</p>
+      <a class="btn" href="${SITE_URL}/admin/website/avisos">Ver leads no admin</a>
+    </div>
+  `);
+
+  await sendEmail(ELISA_EMAIL, `🎯 Novo lead pelo aviso — ${payload.name || payload.email}`, elisaHtml);
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -546,6 +560,7 @@ serve(async (req) => {
     else if (type === "project_request") await handleProjectRequest(record_id, payload);
     else if (type === "waitlist_signup") await handleWaitlistSignup(payload);
     else if (type === "waitlist_restock") result = await handleWaitlistRestock(payload?.product_id || record_id);
+    else if (type === "notice_lead") await handleNoticeLead(payload);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {
         status: 400,

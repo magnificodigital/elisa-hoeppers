@@ -43,12 +43,12 @@ export function BodyogaFooter() {
                 </a>
               </li>
               <li>
-                <a href="https://instagram.com/bodyoga.com.br" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-bodyoga-brown transition">
+                <a href="https://instagram.com/bodyoga.oficial" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-bodyoga-brown transition">
                   <Instagram className="w-4 h-4" /> Instagram
                 </a>
               </li>
               <li>
-                <a href="mailto:contato@bodyoga.com.br" className="inline-flex items-center gap-1.5 hover:text-bodyoga-brown transition">
+                <a href="mailto:contato@bodyogaoficial.com.br" className="inline-flex items-center gap-1.5 hover:text-bodyoga-brown transition">
                   <Mail className="w-4 h-4" /> Email
                 </a>
               </li>
@@ -57,7 +57,7 @@ export function BodyogaFooter() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-bodyoga-cream/20 text-center text-xs text-bodyoga-cream/60">
-          © {new Date().getFullYear()} BODYOGA® — Todos os direitos reservados.
+          © {new Date().getFullYear()} BODYOGA® — Todos os direitos reservados. bodyogaoficial.com.br
         </div>
       </div>
     </footer>
