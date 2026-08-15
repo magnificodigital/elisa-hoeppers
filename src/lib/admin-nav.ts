@@ -1,4 +1,20 @@
-import { LayoutDashboard, Users, Package, MessageSquare, FileText, ShoppingBag, Sparkles, Newspaper, Mail, GraduationCap, Calendar, HelpCircle, Settings } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  Users, 
+  Package, 
+  MessageSquare, 
+  FileText, 
+  ShoppingBag, 
+  Sparkles, 
+  Newspaper, 
+  Mail, 
+  GraduationCap, 
+  Calendar, 
+  HelpCircle, 
+  Settings,
+  Clock,
+  LayoutGrid
+} from "lucide-react";
 
 export const ADMIN_NAV_ITEMS = [
   { group: "OPERAÇÃO", items: [
@@ -15,10 +31,12 @@ export const ADMIN_NAV_ITEMS = [
   { group: "CONTEÚDO", items: [
     { to: "/admin/website", label: "WebSite", icon: Sparkles },
     { to: "/admin/posts", label: "Posts", icon: Newspaper },
+    { to: "/admin/social", label: "Social", icon: LayoutGrid },
     { to: "/admin/broadcast", label: "Emails", icon: Mail },
   ]},
   { group: "AGENDA", items: [
     { to: "/admin/agendamentos", label: "Agendamentos", icon: Calendar },
+    { to: "/admin/disponibilidade", label: "Horários", icon: Clock },
   ]},
   { group: "SISTEMA", items: [
     { to: "/admin/ajuda", label: "Tutoriais", icon: HelpCircle },
