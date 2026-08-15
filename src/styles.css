@@ -142,9 +142,9 @@
 
 /* ============ BODYOGA palette (escopado) ============ */
 .bodyoga-scope {
-  --bodyoga-green: #3B4F30;
-  --bodyoga-cream: #e2d4c1;
-  --bodyoga-brown: #3B4F30; /* Alinhado ao verde conforme solicitado */
+  --bodyoga-green: var(--primary);
+  --bodyoga-cream: var(--cream);
+  --bodyoga-brown: var(--primary); /* Alinhado ao verde conforme solicitado */
 }
 
 .bg-bodyoga-green { background-color: var(--bodyoga-green); }
