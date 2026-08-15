@@ -26,10 +26,8 @@ function PageComponent() {
   const page = Route.useLoaderData();
 
   return (
-    <BaseLayout>
-      <div className="min-h-screen bg-background">
-        <RenderBlocks blocks={page.blocks || []} />
-      </div>
-    </BaseLayout>
+    <div className="min-h-screen bg-background">
+      <RenderBlocks blocks={page.blocks || []} />
+    </div>
   );
 }
