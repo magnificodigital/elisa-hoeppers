@@ -94,17 +94,17 @@ function WebsiteAdminPage() {
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-primary-dark mb-2">WebSite</h1>
               <p className="text-primary-dark/70">
-                poder editar tudo.
+                Gerencie o conteúdo visual, cores e páginas institucionais.
               </p>
             </div>
             <div className="flex gap-2">
-               <button
-                  onClick={() => create.mutate('site')}
+               <Link
+                  to="/admin/site/home"
                   className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-xs uppercase tracking-widest hover:bg-primary-dark transition shadow-sm"
                 >
-                  <Plus className="w-4 h-4" />
-                  Nova Página
-                </button>
+                  <LayoutDashboard className="w-4 h-4" />
+                  Editar Home
+                </Link>
             </div>
           </div>
 
