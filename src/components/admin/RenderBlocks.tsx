@@ -1,6 +1,6 @@
 import React from "react";
 import BodyogaHeroSlider from "../bodyoga/BodyogaHeroSlider";
-import BodyogaLanding from "../bodyoga/BodyogaLanding";
+import { BodyogaLanding } from "../bodyoga/BodyogaLanding";
 import HomeInstagram from "../home/HomeInstagram";
 // Add more imports as components are updated to accept props
 
