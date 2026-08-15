@@ -572,22 +572,88 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
 
           case "home-hero":
             return <HomeHeroBlock key={block.id} />;
-          
+
+          case "home-opening":
+            return (
+              <section key={block.id} className="bg-bodyoga-cream">
+                <div className="max-w-[900px] mx-auto px-6 py-6 md:py-10 flex flex-col items-center text-center">
+                  {p.icon && (
+                    <img
+                      src={p.icon}
+                      alt="BODYOGA"
+                      className="w-28 md:w-40 h-auto mb-3"
+                      loading="lazy"
+                    />
+                  )}
+                  <p className="font-display text-2xl md:text-4xl text-bodyoga-green leading-snug whitespace-pre-line">
+                    {p.title}
+                  </p>
+                </div>
+              </section>
+            );
+
+          case "home-rituals":
+            return <HomeRitualsBlock key={block.id} />;
+
           case "home-intro":
             return (
               <section key={block.id} className="bg-bodyoga-cream overflow-hidden">
                 <div className="max-w-[1170px] mx-auto px-6 md:px-10 py-20 md:py-32">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-                    <div className="md:col-span-6"><img src={p.image} className="rounded-2xl" alt="" /></div>
-                    <div className="md:col-span-6 space-y-10">
-                      <h2 className="font-display text-3xl md:text-5xl text-bodyoga-green">{renderIntroTitle(p.title || "")}</h2>
-                      <p className="text-lg text-bodyoga-green/80">{p.p1}</p>
-                      {p.ctaLabel && <a href={p.ctaHref || "#"} className="inline-block px-7 py-4 border rounded-full uppercase text-[11px]">{p.ctaLabel}</a>}
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center">
+                    <div className="md:col-span-6 relative">
+                      <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-bodyoga-green/5">
+                        <img
+                          src={p.image}
+                          alt={p.title || ""}
+                          className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-6 flex flex-col justify-center space-y-10 mt-12 md:mt-0">
+                      <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-bodyoga-green leading-[1.15]">
+                        {renderIntroTitle(p.title || "")}
+                      </h2>
+
+                      <div className="space-y-6 max-w-md">
+                        {p.p1 && (
+                          <p className="text-lg md:text-xl text-bodyoga-green/80 font-light leading-relaxed whitespace-pre-line">
+                            {p.p1}
+                          </p>
+                        )}
+                        {p.p2 && (
+                          <p className="text-sm md:text-base text-bodyoga-green font-medium leading-relaxed tracking-wide whitespace-pre-line">
+                            {p.p2}
+                          </p>
+                        )}
+                      </div>
+
+                      {p.ctaLabel && (
+                        <div>
+                          <a
+                            href={p.ctaHref || "/sobre"}
+                            className="group inline-flex items-center gap-2 px-7 py-4 rounded-full border border-bodyoga-green/20 hover:bg-bodyoga-green hover:border-bodyoga-green transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                          >
+                            <span className="text-[11px] uppercase tracking-[0.3em] text-bodyoga-green group-hover:text-bodyoga-cream font-semibold transition-colors">
+                              {p.ctaLabel}
+                            </span>
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </section>
             );
+
+          case "home-blog":
+            return <HomeBlog key={block.id} />;
+
+          case "instagram":
+            return <HomeInstagram key={block.id} />;
+
 
           default:
             return <div key={block.id} className="p-8 border border-dashed text-center text-gray-400">Bloco {block.type} não encontrado</div>;
