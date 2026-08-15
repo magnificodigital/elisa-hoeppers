@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, FileText, ArrowLeft } from "lucide-react";
 import { listAllPostsForAdmin, createPost } from "@/lib/blog";
 
-export const Route = createFileRoute("/admin/blog")({
+export const Route = createFileRoute("/admin/blog/")({
   head: () => ({ meta: [{ title: "Admin — Blog" }] }),
   component: () => (
     
