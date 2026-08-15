@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BodyogaLanding } from "@/components/bodyoga/BodyogaLanding";
 import { listPages } from "@/lib/pages";
 import { RenderBlocks } from "@/components/admin/RenderBlocks";
-import BaseLayout from "@/components/Layout";
+
 import { listActiveSlides } from "@/lib/shop";
 
 export const Route = createFileRoute("/")({
@@ -37,11 +37,7 @@ function HomeRoute() {
   const { slides, homePage } = Route.useLoaderData();
 
   if (homePage) {
-    return (
-      <BaseLayout>
-        <RenderBlocks blocks={homePage.blocks || []} />
-      </BaseLayout>
-    );
+    return <RenderBlocks blocks={homePage.blocks || []} />;
   }
 
   return <BodyogaLanding initialSlides={slides} />;

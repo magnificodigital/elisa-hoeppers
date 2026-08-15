@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getPageBySlug } from "@/lib/pages";
 import { RenderBlocks } from "@/components/admin/RenderBlocks";
-import BaseLayout from "@/components/Layout";
+
 import { notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/p/$slug")({
