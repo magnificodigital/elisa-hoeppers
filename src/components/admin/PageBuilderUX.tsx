@@ -47,7 +47,9 @@ import {
   Calendar,
   Columns,
   Square,
-  Maximize2
+  Maximize2,
+  Minus,
+  Move
 } from "lucide-react";
 import { useState } from "react";
 import { BLOCKS, createBlockInstance, type BlockType, type BlockDef } from "@/lib/block-registry";
@@ -425,7 +427,7 @@ function BlockIcon({ type, size = 16 }: { type: BlockType, size?: number }) {
     case 'yoga-classes': return <Calendar size={size} />;
     case 'columns': return <Columns size={size} />;
     case 'shortcut-banner': return <Layout size={size} />;
-    case 'spacer': return <MoveHorizontal size={size} />;
+    case 'spacer': return <Move size={size} />;
     default: return <Square size={size} />;
   }
 }
