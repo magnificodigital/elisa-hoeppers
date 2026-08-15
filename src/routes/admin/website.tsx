@@ -181,7 +181,7 @@ function WebsiteAdminPage() {
 
             <TabsContent value="slides">
               <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
-                <SlidesList />
+                <SlidesList standalone={false} />
               </div>
             </TabsContent>
 
