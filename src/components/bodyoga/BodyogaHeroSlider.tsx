@@ -181,6 +181,11 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
   const titleLines = (slide.title || "").split("\n");
   const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
   const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
+  const s = slide as any;
+  const textStyle = s.text_color ? { color: s.text_color as string } : undefined;
+  const btnStyle = s.button_color
+    ? { backgroundColor: s.button_color as string, borderColor: s.button_color as string, color: s.button_text_color || undefined }
+    : undefined;
   return (
     <>
       {slide.media_href && !capturesCoupon && (
@@ -193,7 +198,6 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
       )}
       {/* MOBILE */}
       <div className="md:hidden relative min-h-[85vh] w-full bg-bodyoga-cream">
-        <h1 className="sr-only">{slide.title}</h1>
         {slide.image_url && (
           <img
             src={slide.image_url}
@@ -205,27 +209,45 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
             height={1600}
           />
         )}
-        {slide.cta_label && (
-          <div className="absolute inset-0 pt-40 pb-24 flex items-center justify-center">
-            {capturesCoupon ? (
-              <button
-                type="button"
-                onClick={onCouponClick}
-                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-              >
-                {slide.cta_label}
-              </button>
-            ) : (
-              <a
-                href={slide.cta_href || "#rituais"}
-                onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
-                className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-              >
-                {slide.cta_label}
-              </a>
-            )}
-          </div>
-        )}
+        <div className="absolute inset-x-0 bottom-0 pt-28 pb-14 px-6 flex flex-col items-center text-center bg-gradient-to-t from-bodyoga-cream via-bodyoga-cream/80 to-transparent">
+          {slide.title && (
+            <h1 className="font-display text-3xl leading-tight text-bodyoga-green" style={textStyle}>
+              {titleLines.map((line, i) => (
+                <span key={i} className="block">{line}</span>
+              ))}
+            </h1>
+          )}
+          {subtitleLines.length > 0 && (
+            <p className="mt-3 text-base text-bodyoga-green/80" style={textStyle}>
+              {subtitleLines.map((line, i) => (
+                <span key={i} className="block">{line}</span>
+              ))}
+            </p>
+          )}
+          {slide.cta_label && (
+            <div className="mt-6">
+              {capturesCoupon ? (
+                <button
+                  type="button"
+                  onClick={onCouponClick}
+                  style={btnStyle}
+                  className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+                >
+                  {slide.cta_label}
+                </button>
+              ) : (
+                <a
+                  href={slide.cta_href || "#rituais"}
+                  onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                  style={btnStyle}
+                  className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+                >
+                  {slide.cta_label}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* DESKTOP */}
@@ -242,13 +264,13 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
           <div className="relative max-w-xl">
             <div className="absolute -inset-x-16 -inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
             <div className="relative">
-              <h1 className="font-display text-5xl leading-tight text-bodyoga-green">
+              <h1 className="font-display text-5xl leading-tight text-bodyoga-green" style={textStyle}>
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">{line}</span>
                 ))}
               </h1>
               {subtitleLines.length > 0 && (
-                <p className="mt-6 text-lg text-bodyoga-green/80 leading-relaxed">
+                <p className="mt-6 text-lg text-bodyoga-green/80 leading-relaxed" style={textStyle}>
                   {subtitleLines.map((line, i) => (
                     <span key={i} className="block">{line}</span>
                   ))}
@@ -260,6 +282,7 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
                     <button
                       type="button"
                       onClick={onCouponClick}
+                      style={btnStyle}
                       className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
                     >
                       {slide.cta_label}
@@ -268,6 +291,7 @@ function CustomSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: (
                     <a
                       href={slide.cta_href || "#rituais"}
                       onClick={(e) => handleAnchorClick(e, slide.cta_href || "#rituais")}
+                      style={btnStyle}
                       className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
                     >
                       {slide.cta_label}
