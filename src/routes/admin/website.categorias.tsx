@@ -5,14 +5,14 @@ import { ArrowLeft, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
 import { listAllRitualsForAdmin, updateRitual } from "@/lib/shop";
 
-export const Route = createFileRoute("/admin/website/rituais")({
+export const Route = createFileRoute("/admin/website/categorias")({
   head: () => ({ meta: [{ title: "Admin — Categorias" }] }),
-  component: () => <RituaisPage />,
+  component: () => <CategoriasPage />,
 });
 
 type Draft = { title: string; description: string; is_active: boolean };
 
-function RituaisPage() {
+function CategoriasPage() {
   const qc = useQueryClient();
   const { data: rituals, isLoading } = useQuery({ queryKey: ["rituals-admin"], queryFn: listAllRitualsForAdmin });
   const [drafts, setDrafts] = useState<Record<string, Draft>>({});

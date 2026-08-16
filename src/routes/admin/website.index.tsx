@@ -136,7 +136,7 @@ function WebsiteAdminPage() {
               icon={Bell}
             />
             <WebsiteOption
-              to="/admin/website/rituais"
+              to="/admin/website/categorias"
               label="Categorias"
               description="Corpo, Mente e Ambiente"
               icon={Flower2}
