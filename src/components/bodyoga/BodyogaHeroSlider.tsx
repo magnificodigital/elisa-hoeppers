@@ -105,6 +105,13 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
   const videoUrl = slide.video_url!;
   const isFile = isVideoUrl(videoUrl) || videoUrl.startsWith("/__l5e/");
   const capturesCoupon = slide.coupon_capture_enabled && !!onCouponClick;
+  const titleLines = (slide.title || "").split("\n");
+  const subtitleLines = (slide.subtitle ?? "").split("\n").filter(Boolean);
+  const s = slide as any;
+  const textStyle = s.text_color ? { color: s.text_color as string } : undefined;
+  const btnStyle = s.button_color
+    ? { backgroundColor: s.button_color as string, borderColor: s.button_color as string, color: s.button_text_color || undefined }
+    : undefined;
   return (
     <>
       <div className="absolute inset-0 overflow-hidden bg-black pointer-events-none">
@@ -151,25 +158,43 @@ function VideoSlide({ slide, onCouponClick }: { slide: Slide; onCouponClick?: ()
       )}
       <div className="absolute inset-x-0 bottom-0 h-24 md:h-32 bg-gradient-to-b from-transparent to-bodyoga-cream pointer-events-none" />
 
-      <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex items-center justify-center min-h-[85vh]">
+      <div className="relative z-10 max-w-[1170px] mx-auto px-4 md:px-6 pt-40 md:pt-56 pb-24 md:pb-36 flex flex-col items-center justify-center text-center min-h-[85vh]">
+        {slide.title && (
+          <h1 className="font-display text-3xl md:text-5xl leading-tight text-white drop-shadow-lg" style={textStyle}>
+            {titleLines.map((line, i) => (
+              <span key={i} className="block">{line}</span>
+            ))}
+          </h1>
+        )}
+        {subtitleLines.length > 0 && (
+          <p className="mt-4 text-base md:text-lg text-white/90 drop-shadow max-w-xl" style={textStyle}>
+            {subtitleLines.map((line, i) => (
+              <span key={i} className="block">{line}</span>
+            ))}
+          </p>
+        )}
         {slide.cta_label && (
-          capturesCoupon ? (
-            <button
-              type="button"
-              onClick={onCouponClick}
-              className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-            >
-              {slide.cta_label}
-            </button>
-          ) : (
-            <a
-              href={slide.cta_href || "/agendar"}
-              onClick={(e) => handleAnchorClick(e, slide.cta_href)}
-              className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
-            >
-              {slide.cta_label}
-            </a>
-          )
+          <div className="mt-8">
+            {capturesCoupon ? (
+              <button
+                type="button"
+                onClick={onCouponClick}
+                style={btnStyle}
+                className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </button>
+            ) : (
+              <a
+                href={slide.cta_href || "/agendar"}
+                onClick={(e) => handleAnchorClick(e, slide.cta_href)}
+                style={btnStyle}
+                className="px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
+              >
+                {slide.cta_label}
+              </a>
+            )}
+          </div>
         )}
       </div>
     </>
