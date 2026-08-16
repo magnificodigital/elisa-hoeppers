@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save, ExternalLink, Loader2, Globe, Settings, Eye } from "lucide-react";
 import { toast } from "sonner";
-import { getPage, updatePage, type SitePage } from "@/lib/pages";
+import { getPage, updatePage, slugify, type SitePage } from "@/lib/pages";
 import { PageBuilderUX } from "@/components/admin/PageBuilderUX";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
@@ -75,7 +75,7 @@ function EditPageBuilder() {
                 placeholder="Nome da página"
                 className="text-sm font-bold text-primary-dark bg-transparent border-b border-transparent hover:border-border/60 focus:border-primary focus:outline-none rounded px-0.5 -ml-0.5"
               />
-              <p className="text-[10px] text-primary-dark/40 uppercase tracking-widest">/{page.slug}</p>
+              <p className="text-[10px] text-primary-dark/40 uppercase tracking-widest">/{(title.trim() ? slugify(title) : page.slug) || page.slug}</p>
             </div>
           </div>
 
@@ -106,7 +106,7 @@ function EditPageBuilder() {
                 <Eye size={14} /> Pré-visualizar
               </a>
               <button
-                onClick={() => save.mutate({ content_blocks: blocks, title: title.trim() || page.title })}
+                onClick={() => save.mutate({ content_blocks: blocks, title: title.trim() || page.title, slug: (title.trim() && slugify(title)) || page.slug })}
                 disabled={save.isPending || !hasChanges}
                 className="flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition shadow-sm disabled:opacity-50"
               >
