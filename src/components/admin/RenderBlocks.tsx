@@ -52,6 +52,8 @@ import {
 } from "@/lib/appointments";
 
 
+const SPACE_MAP: Record<string, string> = { none: "0rem", sm: "1.5rem", md: "3.5rem", lg: "6rem" };
+
 function HomeHeroBlock() {
   // Deixa o próprio slider buscar os slides ativos (evita cair no DefaultHero
   // "Rituais para corpo" enquanto carrega). Igual ao comportamento do site publicado.
@@ -643,7 +645,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
 
           case "custom-project-form":
             return (
-              <section key={block.id} className="py-20 md:py-32">
+              <section key={block.id} style={{ paddingTop: SPACE_MAP[p.spacingTop] ?? SPACE_MAP.lg, paddingBottom: SPACE_MAP[p.spacingBottom] ?? SPACE_MAP.lg }}>
                 <div className="container mx-auto px-6 max-w-2xl">
                   {(p.title || p.intro) && (
                     <div className="text-center mb-8">

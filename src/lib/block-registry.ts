@@ -387,10 +387,12 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "custom-project-form",
     label: "Formulário de Projetos Personalizados",
     desc: "Widget de solicitação de projetos sob medida",
-    defaults: { title: "", intro: "" },
+    defaults: { title: "", intro: "", spacingTop: "lg", spacingBottom: "lg" },
     fields: [
       { key: "title", label: "Título", type: "text" },
-      { key: "intro", label: "Texto de introdução", type: "textarea" }
+      { key: "intro", label: "Texto de introdução", type: "textarea" },
+      { key: "spacingTop", label: "Espaço acima", type: "select", options: [{label:"Nenhum",value:"none"},{label:"Pequeno",value:"sm"},{label:"Médio",value:"md"},{label:"Grande",value:"lg"}] },
+      { key: "spacingBottom", label: "Espaço abaixo", type: "select", options: [{label:"Nenhum",value:"none"},{label:"Pequeno",value:"sm"},{label:"Médio",value:"md"},{label:"Grande",value:"lg"}] }
     ]
   },
   "signup-form": {
