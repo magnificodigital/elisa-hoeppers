@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, Save, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { listPages } from "@/lib/pages";
 import {
   PAGE_OPTIONS,
   DEFAULT_NAV_CONFIG,
@@ -60,6 +62,14 @@ function MenuPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const { data: pages } = useQuery({ queryKey: ["pages"], queryFn: listPages });
+  const linkOptions = [
+    { label: "Início", href: "/" },
+    { label: "Shop / Loja", href: "/loja" },
+    { label: "Aulas / Cursos", href: "/cursos" },
+    { label: "Dicas / Blog", href: "/blog" },
+    ...(pages ?? []).map((p) => ({ label: p.title, href: `/${p.slug}` })),
+  ];
 
   useEffect(() => {
     getNavConfig().then((c) => {
@@ -146,7 +156,10 @@ function MenuPage() {
                           }
                           className="w-full rounded-lg border border-[#DBCCBF] px-3 py-2 text-sm text-primary-dark bg-white focus:outline-none focus:border-primary"
                         >
-                          {PAGE_OPTIONS.map((p) => (
+                          {item.href && !linkOptions.some((o) => o.href === item.href) && (
+                            <option value={item.href}>{item.href} (atual)</option>
+                          )}
+                          {linkOptions.map((p) => (
                             <option key={p.href} value={p.href}>
                               {p.label} ({p.href})
                             </option>
