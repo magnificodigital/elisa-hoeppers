@@ -32,9 +32,10 @@ export function GaleriaProduto({ images, alt, showControls = true }: { images: s
     <div className="w-full">
       {/* Palco com crossfade */}
       <div
-        className="relative w-full aspect-square rounded-2xl overflow-hidden bg-[var(--surface-muted,#f3f0e9)] group"
+        className={`relative w-full aspect-square rounded-2xl overflow-hidden bg-[var(--surface-muted,#f3f0e9)] group ${imgs.length > 1 ? "cursor-pointer" : ""}`}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
+        onClick={() => { if (imgs.length > 1 && !isVideoUrl(imgs[idx])) setIdx((i) => (i + 1) % imgs.length); }}
       >
         {imgs.map((src, i) => {
           const isVideo = isVideoUrl(src);
