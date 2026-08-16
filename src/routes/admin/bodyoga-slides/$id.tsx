@@ -39,6 +39,9 @@ function SlideEditPage() {
     is_active: true,
     duration_seconds: 7,
     coupon_capture_enabled: false,
+    text_color: "",
+    button_color: "",
+    button_text_color: "",
   });
 
   const [delOpen, setDelOpen] = useState(false);
@@ -61,6 +64,9 @@ function SlideEditPage() {
         is_active: slide.is_active,
         duration_seconds: slide.duration_seconds ?? 7,
         coupon_capture_enabled: slide.coupon_capture_enabled ?? false,
+        text_color: (slide as any).text_color ?? "",
+        button_color: (slide as any).button_color ?? "",
+        button_text_color: (slide as any).button_text_color ?? "",
       });
     }
   }, [slide]);
@@ -83,6 +89,9 @@ function SlideEditPage() {
         is_active: form.is_active,
         duration_seconds: form.duration_seconds,
         coupon_capture_enabled: form.coupon_capture_enabled,
+        text_color: form.text_color || null,
+        button_color: form.button_color || null,
+        button_text_color: form.button_text_color || null,
       }),
     onSuccess: () => {
       toast.success("Slide atualizado");
@@ -145,6 +154,33 @@ function SlideEditPage() {
               <Field label="Link do botão">
                 <input value={form.cta_href} onChange={(e) => setForm({ ...form, cta_href: e.target.value })} placeholder="Ex: #produtos ou /loja" className={inputCls} />
               </Field>
+            </div>
+
+            <div>
+              <label className="block text-[10px] uppercase tracking-widest text-primary-dark mb-2">Cores (opcional — vazio = padrão da marca)</label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Field label="Cor do texto">
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={form.text_color || "#3B4F30"} onChange={(e) => setForm({ ...form, text_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
+                    <input value={form.text_color} onChange={(e) => setForm({ ...form, text_color: e.target.value })} placeholder="padrão" className={inputCls} />
+                    {form.text_color && <button type="button" onClick={() => setForm({ ...form, text_color: "" })} className="text-[10px] text-primary-dark/50 hover:text-red-500 shrink-0">limpar</button>}
+                  </div>
+                </Field>
+                <Field label="Fundo do botão">
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={form.button_color || "#3B4F30"} onChange={(e) => setForm({ ...form, button_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
+                    <input value={form.button_color} onChange={(e) => setForm({ ...form, button_color: e.target.value })} placeholder="padrão" className={inputCls} />
+                    {form.button_color && <button type="button" onClick={() => setForm({ ...form, button_color: "" })} className="text-[10px] text-primary-dark/50 hover:text-red-500 shrink-0">limpar</button>}
+                  </div>
+                </Field>
+                <Field label="Cor do texto do botão">
+                  <div className="flex items-center gap-2">
+                    <input type="color" value={form.button_text_color || "#F5F3EE"} onChange={(e) => setForm({ ...form, button_text_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
+                    <input value={form.button_text_color} onChange={(e) => setForm({ ...form, button_text_color: e.target.value })} placeholder="padrão" className={inputCls} />
+                    {form.button_text_color && <button type="button" onClick={() => setForm({ ...form, button_text_color: "" })} className="text-[10px] text-primary-dark/50 hover:text-red-500 shrink-0">limpar</button>}
+                  </div>
+                </Field>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

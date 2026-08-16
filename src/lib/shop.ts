@@ -179,6 +179,9 @@ export type Slide = {
   is_active: boolean;
   duration_seconds: number;
   coupon_capture_enabled: boolean;
+  text_color?: string | null;
+  button_color?: string | null;
+  button_text_color?: string | null;
 };
 
 const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, video_url, media_href, show_nav, display_order, is_active, duration_seconds, coupon_capture_enabled";
@@ -187,7 +190,7 @@ const SLIDE_COLS = "id, title, subtitle, cta_label, cta_href, image_url, video_u
 export async function listActiveSlides(): Promise<Slide[]> {
   const { data, error } = await supabase
     .from("bodyoga_slides")
-    .select(SLIDE_COLS)
+    .select("*")
     .eq("is_active", true)
     .order("display_order", { ascending: true });
   if (error) throw error;
@@ -197,7 +200,7 @@ export async function listActiveSlides(): Promise<Slide[]> {
 export async function listAllSlidesForAdmin(): Promise<Slide[]> {
   const { data, error } = await supabase
     .from("bodyoga_slides")
-    .select(SLIDE_COLS)
+    .select("*")
     .order("display_order", { ascending: true });
   if (error) throw error;
   return ((data ?? []) as Slide[]).map(withSlideMedia);
@@ -206,7 +209,7 @@ export async function listAllSlidesForAdmin(): Promise<Slide[]> {
 export async function getSlideForAdmin(id: string): Promise<Slide | null> {
   const { data, error } = await supabase
     .from("bodyoga_slides")
-    .select(SLIDE_COLS)
+    .select("*")
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
@@ -220,7 +223,7 @@ export async function createSlide(input: SlideInsert): Promise<Slide> {
   const { data, error } = await supabase
     .from("bodyoga_slides")
     .insert(input)
-    .select(SLIDE_COLS)
+    .select("*")
     .single();
   if (error) throw error;
   return data as Slide;
