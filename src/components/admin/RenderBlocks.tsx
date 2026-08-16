@@ -703,7 +703,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <HomeIntroBlock key={block.id} props={p} />;
 
           case "home-blog":
-            return <HomeBlog key={block.id} />;
+            return <HomeBlog key={block.id} title={p.title} subtitle={p.subtitle} />;
 
           case "instagram":
             return <HomeInstagram key={block.id} />;

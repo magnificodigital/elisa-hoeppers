@@ -3,7 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "@/components/SectionTitle";
 import { listPublishedPosts } from "@/lib/blog";
 
-const HomeBlog = () => {
+const HomeBlog = ({
+  title = "Dicas e Novidades",
+  subtitle = "Encontre a harmonia e as boas energias que você precisa",
+}: { title?: string; subtitle?: string } = {}) => {
   const { data: posts } = useQuery({
     queryKey: ["blog-posts-home"],
     queryFn: listPublishedPosts,
@@ -15,8 +18,8 @@ const HomeBlog = () => {
   return (
     <section className="py-20 md:py-24 bg-bodyoga-cream">
       <div className="max-w-[1170px] mx-auto px-4 md:px-6">
-        <SectionTitle subtitle="Encontre a harmonia e as boas energias que você precisa">
-          Dicas e Novidades
+        <SectionTitle subtitle={subtitle}>
+          {title}
         </SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-12">
           {visible.map((p) => (

@@ -371,8 +371,11 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     type: "home-blog",
     label: "Blog na Home",
     desc: "Últimos posts",
-    defaults: {},
-    fields: []
+    defaults: { title: "Dicas e Novidades", subtitle: "Encontre a harmonia e as boas energias que você precisa" },
+    fields: [
+      { key: "title", label: "Título", type: "text" },
+      { key: "subtitle", label: "Subtítulo", type: "text" }
+    ]
   },
 
   "booking-form": {
