@@ -47,11 +47,9 @@ export function CustomProjectForm({ onSuccess, className }: CustomProjectFormPro
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("custom_project_requests")
-        .insert([values])
-        .select()
-        .single();
+        .insert([values]);
 
       if (error) throw error;
 
@@ -59,7 +57,6 @@ export function CustomProjectForm({ onSuccess, className }: CustomProjectFormPro
       await supabase.functions.invoke("send-notification", {
         body: {
           type: "project_request",
-          record_id: data.id,
           payload: {
             name: values.name,
             email: values.email,
