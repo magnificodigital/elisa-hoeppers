@@ -25,7 +25,7 @@ import {
 
 const ROLE_INFO: Record<UserRow["role"], { label: string; desc: string }> = {
   student: {
-    label: "Aluna",
+    label: "Cliente",
     desc: "Acesso à área da cliente: cursos matriculados, pedidos, lista de desejos e perfil.",
   },
   instructor: {
@@ -202,7 +202,7 @@ function UserRowCard({ user: u }: { user: UserRow }) {
         disabled={update.isPending}
         className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded-full ${roleCls} border-0 cursor-pointer disabled:opacity-50`}
       >
-        <option value="student">Aluna</option>
+        <option value="student">Cliente</option>
         <option value="instructor">Instrutora</option>
         <option value="admin">Admin</option>
       </select>
@@ -385,7 +385,7 @@ function InviteForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
           onChange={(e) => setRole(e.target.value as UserRow["role"])}
           className="w-full border border-border rounded-md px-3 py-2 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         >
-          <option value="student">Aluna</option>
+          <option value="student">Cliente</option>
           <option value="instructor">Instrutora</option>
           <option value="admin">Admin</option>
         </select>
@@ -506,7 +506,7 @@ function CreateForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
           onChange={(e) => setRole(e.target.value as UserRow["role"])}
           className="w-full border border-border rounded-md px-3 py-2 bg-white text-primary-dark text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         >
-          <option value="student">Aluna</option>
+          <option value="student">Cliente</option>
           <option value="instructor">Instrutora</option>
           <option value="admin">Admin</option>
         </select>
