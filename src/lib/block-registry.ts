@@ -45,7 +45,7 @@ export interface BlockDef {
 export type BlockField = {
   key: string;
   label: string;
-  type: "text" | "textarea" | "image" | "color" | "link" | "list" | "select" | "number" | "boolean" | "video";
+  type: "text" | "textarea" | "image" | "color" | "link" | "list" | "select" | "number" | "boolean" | "video" | "slides-manager";
   options?: { label: string; value: any }[];
   itemFields?: BlockField[]; // For lists
   aspectRatio?: string; // proporção do recorte pra campos de imagem (ex: "1/1", "4/5"); padrão 16/9
@@ -315,7 +315,9 @@ export const BLOCKS: Record<BlockType, BlockDef> = {
     label: "Hero (Slider)",
     desc: "Banner principal com os slides",
     defaults: {},
-    fields: []
+    fields: [
+      { key: "manage", label: "Slides do topo", type: "slides-manager" }
+    ]
   },
   "home-opening": {
     type: "home-opening",

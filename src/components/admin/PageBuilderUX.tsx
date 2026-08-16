@@ -364,6 +364,22 @@ function FieldInput({ field, value, onChange }: { field: any, value: any, onChan
         </div>
       );
     }
+    case 'slides-manager':
+      return (
+        <div className="space-y-2">
+          <a
+            href="/admin/bodyoga-slides"
+            target="_blank"
+            rel="noreferrer"
+            className="w-full inline-flex items-center justify-center gap-2 bg-primary text-white px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition"
+          >
+            Gerenciar slides ↗
+          </a>
+          <p className="text-[10px] text-primary-dark/50 leading-relaxed">
+            Adicione, edite e reordene os slides do topo (imagens, vídeos, textos e botões) — abre o editor de Slides.
+          </p>
+        </div>
+      );
     default:
       return <p className="text-xs text-red-500 italic">Tipo "{field.type}" não implementado</p>;
   }
