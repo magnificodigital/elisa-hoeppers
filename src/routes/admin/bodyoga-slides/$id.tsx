@@ -140,7 +140,7 @@ function SlideEditPage() {
             className="bg-white rounded-lg p-6 md:p-8 space-y-5 shadow-none border border-border/20"
           >
             <Field label="Título">
-              <textarea required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} rows={2} className={inputCls} />
+              <textarea value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} rows={2} className={inputCls} />
               <p className="text-[10px] text-[var(--text-muted)] mt-1">Use quebras de linha para separar o título em várias linhas.</p>
             </Field>
             <Field label="Subtítulo">
