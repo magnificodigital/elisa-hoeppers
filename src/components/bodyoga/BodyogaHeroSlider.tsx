@@ -30,7 +30,7 @@ function DefaultHero() {
             }}
             className="inline-block px-7 py-3 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] transition"
           >
-            Conhecer rituais
+            Conhecer produtos
           </a>
         </div>
       </div>
@@ -48,7 +48,7 @@ function DefaultHero() {
             <div className="absolute -inset-x-16 -inset-y-14 backdrop-blur-md bg-[#E6DAC5]/55 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_70%)] pointer-events-none" />
             <div className="relative">
               <h1 className="font-display text-5xl leading-tight text-bodyoga-green">
-                <span className="whitespace-nowrap">Rituais para corpo,</span>
+                <span className="whitespace-nowrap">Cuidado para corpo,</span>
                 <br />
                 <span className="whitespace-nowrap">mente e ambiente.</span>
               </h1>
@@ -68,7 +68,7 @@ function DefaultHero() {
                   }}
                   className="px-7 py-3 rounded-full border border-bodyoga-green text-bodyoga-green text-sm font-medium uppercase tracking-[0.18em] hover:bg-bodyoga-green hover:text-bodyoga-cream transition"
                 >
-                  Conhecer rituais
+                  Conhecer produtos
                 </a>
               </div>
             </div>

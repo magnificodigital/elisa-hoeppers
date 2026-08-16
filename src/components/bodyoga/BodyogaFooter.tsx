@@ -17,7 +17,7 @@ export function BodyogaFooter() {
           <div className="space-y-4">
             <BodyogaLogo variant="full" size={40} className="[&_span]:!text-bodyoga-cream [&_circle:first-child]:!fill-[var(--bodyoga-cream)] [&_path]:!stroke-[var(--bodyoga-green)] [&_circle:last-child]:!fill-[var(--bodyoga-green)]" />
             <p className="text-sm leading-relaxed text-bodyoga-cream/80 max-w-xs">
-              Rituais para corpo, mente e ambiente. Criado à mão por Elisa Hoeppers Casas, no encontro entre o yoga e o cuidado natural.
+              Cuidado para corpo, mente e ambiente. Criado à mão por Elisa Hoeppers Casas, no encontro entre o yoga e o cuidado natural.
             </p>
           </div>
 

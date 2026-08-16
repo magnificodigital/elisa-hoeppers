@@ -104,7 +104,7 @@ function HomeRitualsBlock({ columns = 3, title, subtitle, selection = "all", bg 
 
 const INTRO_DEFAULTS: Record<string, string> = {
   home_intro_title: "BODYOGA é a\nfusão entre *yoga* e\ncuidado consciente.",
-  home_intro_p1: "Cada produto é um ritual pensado pra trazer presença ao gesto cotidiano de cuidar de si.",
+  home_intro_p1: "Cada produto é pensado pra trazer presença ao gesto cotidiano de cuidar de si.",
   home_intro_p2: "Feito à mão e em pequenos lotes, por Elisa Hoeppers Casas, para gerar equilíbrio e harmonizar o corpo, a mente e o ambiente.",
   home_intro_cta_label: "Harmonia & Equilíbrio",
   home_intro_cta_href: "/sobre",
