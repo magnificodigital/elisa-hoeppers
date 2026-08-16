@@ -10,7 +10,8 @@ import {
   ArrowLeft,
   Copy,
   ToggleLeft,
-  ToggleRight
+  ToggleRight,
+  Gift
 } from "lucide-react";
 import { toast } from "sonner";
 import { listNotices, updateNotice, deleteNotice, type SiteNotice } from "@/lib/notices";
@@ -75,6 +76,20 @@ function NoticesListPage() {
             Novo Aviso
           </Link>
         </div>
+
+        <Link
+          to="/admin/configuracoes/cupom"
+          className="flex items-center gap-4 bg-white rounded-2xl border border-border p-5 mb-6 hover:shadow-lg transition group"
+        >
+          <div className="w-11 h-11 rounded-full bg-bodyoga-green/10 flex items-center justify-center shrink-0">
+            <Gift size={20} className="text-primary" />
+          </div>
+          <div className="flex-1">
+            <h2 className="font-display text-lg text-primary-dark group-hover:text-primary transition">Cupom de 1ª compra</h2>
+            <p className="text-sm text-primary-dark/60">Edite os textos do popup de captura (título, subtítulo, botão, consentimento) e o % de desconto.</p>
+          </div>
+          <ArrowLeft className="w-4 h-4 rotate-180 text-primary-dark/40 group-hover:text-primary transition" />
+        </Link>
 
         <div className="bg-white rounded-2xl border border-border overflow-hidden shadow-sm">
           <div className="overflow-x-auto">

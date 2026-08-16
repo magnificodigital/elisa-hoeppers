@@ -15,6 +15,10 @@ export function CouponCaptureDialog({ open, onClose }: Props) {
     "Cadastre seu email e receba um cupom exclusivo de desconto na sua primeira compra.",
   );
   const [discountPct, setDiscountPct] = useState<number>(10);
+  const [buttonLabel, setButtonLabel] = useState("Quero meu cupom");
+  const [consent, setConsent] = useState("Ao continuar, você aceita receber emails da BODYOGA. Pode cancelar quando quiser.");
+  const [nameLabel, setNameLabel] = useState("Seu nome (opcional)");
+  const [emailLabel, setEmailLabel] = useState("Seu melhor email");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,11 +33,19 @@ export function CouponCaptureDialog({ open, onClose }: Props) {
       getSetting("coupon_banner_title"),
       getSetting("coupon_banner_subtitle"),
       getSetting("coupon_discount_percent"),
-    ]).then(([t, st, d]) => {
+      getSetting("coupon_banner_button"),
+      getSetting("coupon_banner_consent"),
+      getSetting("coupon_name_label"),
+      getSetting("coupon_email_label"),
+    ]).then(([t, st, d, b, c, nl, el]) => {
       if (t) setTitle(t);
       if (st) setSubtitle(st);
       const pct = parseInt(d ?? "10", 10);
       if (!isNaN(pct)) setDiscountPct(pct);
+      if (b) setButtonLabel(b);
+      if (c) setConsent(c);
+      if (nl) setNameLabel(nl);
+      if (el) setEmailLabel(el);
     }).catch(() => {});
   }, [open]);
 
@@ -130,7 +142,7 @@ export function CouponCaptureDialog({ open, onClose }: Props) {
             <form onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
-                placeholder="Seu nome (opcional)"
+                placeholder={nameLabel}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full border border-bodyoga-green/20 rounded-full px-5 py-3 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-bodyoga-green"
@@ -138,7 +150,7 @@ export function CouponCaptureDialog({ open, onClose }: Props) {
               <input
                 type="email"
                 required
-                placeholder="Seu melhor email"
+                placeholder={emailLabel}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full border border-bodyoga-green/20 rounded-full px-5 py-3 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-bodyoga-green"
@@ -150,10 +162,10 @@ export function CouponCaptureDialog({ open, onClose }: Props) {
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-bodyoga-green text-bodyoga-cream text-sm font-medium uppercase tracking-[0.18em] hover:opacity-90 transition disabled:opacity-60"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                {loading ? "Gerando cupom…" : "Quero meu cupom"}
+                {loading ? "Gerando cupom…" : buttonLabel}
               </button>
               <p className="text-[11px] text-center text-bodyoga-green/50 pt-1">
-                Ao continuar, você aceita receber emails da BODYOGA. Pode cancelar quando quiser.
+                {consent}
               </p>
             </form>
           </>
