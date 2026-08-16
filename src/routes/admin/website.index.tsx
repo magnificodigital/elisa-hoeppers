@@ -12,7 +12,8 @@ import {
   Star, 
   Layout, 
   Globe, 
-  Bell, 
+  Bell,
+  Flower2,
   Menu as MenuIcon,
   Copy,
   LayoutDashboard,
@@ -128,11 +129,17 @@ function WebsiteAdminPage() {
               description="Banners do Topo"
               icon={GalleryHorizontal}
             />
-            <WebsiteOption 
+            <WebsiteOption
               to="/admin/website/avisos"
               label="Avisos"
               description="Popups e Promoções"
               icon={Bell}
+            />
+            <WebsiteOption
+              to="/admin/website/rituais"
+              label="Rituais"
+              description="Textos de Corpo, Mente e Ambiente"
+              icon={Flower2}
             />
           </div>
 
