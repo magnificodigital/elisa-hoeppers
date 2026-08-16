@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { listAllRitualsForAdmin, updateRitual } from "@/lib/shop";
 
 export const Route = createFileRoute("/admin/website/rituais")({
-  head: () => ({ meta: [{ title: "Admin — Rituais" }] }),
+  head: () => ({ meta: [{ title: "Admin — Categorias" }] }),
   component: () => <RituaisPage />,
 });
 
@@ -40,8 +40,8 @@ function RituaisPage() {
         <Link to="/admin/website" className="inline-flex items-center gap-1.5 text-sm text-primary-dark/70 hover:text-primary transition mb-5">
           <ArrowLeft size={16} /> Voltar
         </Link>
-        <h1 className="font-display text-3xl text-primary-dark mb-2">Rituais</h1>
-        <p className="text-primary-dark/70 mb-8">Edite os textos das categorias (Corpo, Mente e Ambiente).</p>
+        <h1 className="font-display text-3xl text-primary-dark mb-2">Categorias</h1>
+        <p className="text-primary-dark/70 mb-8">Edite os textos das categorias: Corpo, Mente e Ambiente.</p>
 
         {isLoading ? (
           <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>

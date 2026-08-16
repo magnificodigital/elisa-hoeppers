@@ -137,8 +137,8 @@ function WebsiteAdminPage() {
             />
             <WebsiteOption
               to="/admin/website/rituais"
-              label="Rituais"
-              description="Textos de Corpo, Mente e Ambiente"
+              label="Categorias"
+              description="Corpo, Mente e Ambiente"
               icon={Flower2}
             />
           </div>

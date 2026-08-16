@@ -30,7 +30,7 @@ const ROLE_INFO: Record<UserRow["role"], { label: string; desc: string }> = {
   },
   instructor: {
     label: "Instrutora",
-    desc: "Tudo da aluna + gerenciar cursos, aulas, quizzes e ver matrículas dos alunos.",
+    desc: "Tudo da cliente + gerenciar cursos, aulas, quizzes e ver matrículas dos alunos.",
   },
   admin: {
     label: "Admin",
