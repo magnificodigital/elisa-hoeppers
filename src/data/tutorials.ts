@@ -11,7 +11,7 @@ export type Tutorial = {
   id: string;
   title: string;
   description: string;
-  category: "produtos" | "cursos" | "pedidos" | "clientes" | "marketing" | "config";
+  category: "produtos" | "cursos" | "pedidos" | "clientes" | "marketing" | "config" | "site";
   estimatedMinutes: number;
   steps: TutorialStep[];
 };
@@ -35,13 +35,13 @@ export const tutorials: Tutorial[] = [
       },
       {
         title: "Preencher informações básicas",
-        body: "Preencha os campos principais:\n\n- **Nome**: título que aparece na loja pra cliente (ex: 'Spray Antisséptico Ritual de Purificação')\n- **Slug**: parte da URL depois de /loja/. Use minúsculas, hífens no lugar de espaço (ex: 'spray-antisseptico-ritual')\n- **Descrição curta**: 1-2 linhas que aparecem nos cards de listagem\n- **Descrição completa**: texto detalhado que aparece na página individual do produto",
+        body: "Preencha os campos principais:\n\n- **Nome**: título que aparece na loja pra cliente (ex: 'Óleo Corporal de Lavanda')\n- **Slug**: parte da URL depois de /loja/. Use minúsculas, hífens no lugar de espaço (ex: 'oleo-corporal-lavanda')\n- **Descrição curta**: 1-2 linhas que aparecem nos cards de listagem\n- **Descrição completa**: texto detalhado que aparece na página individual do produto",
         tip: "Escolha um slug curto e descritivo — depois de publicado, mudar o slug quebra links que clientes possam ter salvo. Se puder, deixa fixo desde o início.",
       },
       {
         title: "Adicionar fotos ao produto",
-        body: "Na seção **Galeria**, clique em **+ Adicionar imagem** e cole a URL da foto hospedada.\n\nA primeira foto vira a **capa** — aparece nos cards de listagem e no topo da página do produto. As demais aparecem em carrossel na página.\n\nRecomendação: **fotos quadradas 1000×1000px**, fundo neutro, iluminação bem trabalhada.",
-        warning: "As fotos precisam estar hospedadas em URL pública. Não dá pra fazer upload direto de arquivo local. Se precisar hospedar, use o Media Library do Supabase Storage.",
+        body: "Na seção **Galeria**, clique em **+ Adicionar imagem** e faça o **upload direto** do arquivo do seu computador (não precisa mais colar URL). Você pode subir **até 3 imagens** por produto.\n\nA primeira foto vira a **capa** — aparece nos cards de listagem e no topo da página. As demais entram na galeria: na página do produto, o cliente **clica na foto pra trocar** pra próxima, com animação suave.\n\nRecomendação: **fotos quadradas 1000×1000px**, fundo neutro, boa iluminação.",
+        tip: "Para PNG com fundo transparente, faça upload do PNG normalmente — o sistema preserva a transparência (não coloca fundo preto).",
       },
       {
         title: "Definir preço e estoque",
@@ -239,17 +239,17 @@ export const tutorials: Tutorial[] = [
       },
       {
         title: "Organizar em módulos (opcional)",
-        body: "Dentro do curso, você pode criar **módulos** pra agrupar aulas relacionadas (ex: 'Introdução ao Yoga', 'Postura e Respiração', 'Prática Avançada').\n\nCada módulo pode ter várias aulas dentro. Isso ajuda a aluna a navegar em cursos longos.",
+        body: "Dentro do curso, você pode criar **módulos** pra agrupar aulas relacionadas (ex: 'Introdução ao Yoga', 'Postura e Respiração', 'Prática Avançada').\n\nCada módulo pode ter várias aulas dentro. Isso ajuda a cliente a navegar em cursos longos.",
         tip: "Se o curso tem só 3-4 aulas, você pode pular os módulos e colocar todas as aulas soltas. Módulos são úteis quando tem 5+ aulas.",
       },
       {
         title: "Adicionar aulas",
         body: "Dentro de cada módulo (ou solto), clica em **+ Nova aula** e preenche:\n\n- **Título da aula**\n- **YouTube ID**: parte depois de v= na URL do YouTube. Exemplo: em `youtube.com/watch?v=dQw4w9WgXcQ`, o ID é `dQw4w9WgXcQ`\n- **Duração** em minutos\n- **Descrição** (aparece abaixo do vídeo)\n- **Recursos** (opcional): links pra PDF, checklist, playlist Spotify...",
-        warning: "O vídeo do YouTube precisa estar como **público** ou **não listado**. Vídeos privados ou removidos não carregam pra alunas e mostra erro.",
+        warning: "O vídeo do YouTube precisa estar como **público** ou **não listado**. Vídeos privados ou removidos não carregam pra clientes e mostra erro.",
       },
       {
         title: "Definir ordem das aulas",
-        body: "Na lista de aulas, você pode arrastar com o mouse pra reordenar. A ordem definida aqui é a sequência que a aluna vai seguir no player.",
+        body: "Na lista de aulas, você pode arrastar com o mouse pra reordenar. A ordem definida aqui é a sequência que a cliente vai seguir no player.",
       },
       {
         title: "Publicar o curso",
@@ -277,43 +277,43 @@ export const tutorials: Tutorial[] = [
       {
         title: "Adicionar aulas ao módulo",
         body: "Você pode:\n\n1. **Arrastar aulas existentes** pra dentro do módulo (segura e arrasta com o mouse)\n2. **Criar aulas novas** direto dentro do módulo clicando em **+ Nova aula** dentro do bloco expansível",
-        tip: "Deixa a primeira aula como 'Aula 0 - Boas-vindas' curta pra apresentar você e o curso. Ajuda a aluna a se conectar antes de mergulhar no conteúdo.",
+        tip: "Deixa a primeira aula como 'Aula 0 - Boas-vindas' curta pra apresentar você e o curso. Ajuda a cliente a se conectar antes de mergulhar no conteúdo.",
       },
       {
         title: "Reordenar módulos",
-        body: "Se tem múltiplos módulos, arrasta pra cima ou pra baixo pra mudar a ordem que aparecem pra aluna.\n\nA aluna vê os módulos na ordem que você definiu — ela precisa completar as aulas de um módulo antes de partir pro próximo (em cursos com progressão obrigatória).",
+        body: "Se tem múltiplos módulos, arrasta pra cima ou pra baixo pra mudar a ordem que aparecem pra cliente.\n\nA cliente vê os módulos na ordem que você definiu — ela precisa completar as aulas de um módulo antes de partir pro próximo (em cursos com progressão obrigatória).",
       },
       {
         title: "Deletar módulo (cuidado)",
         body: "Se apagar um módulo, as aulas dele ficam soltas de novo (não são deletadas). Depois você pode reorganizar em outro módulo ou deletar as aulas individualmente.",
-        warning: "Deletar aula é destrutivo — se aluna já matriculada tinha progresso naquela aula, se perde. Evita deletar aulas de cursos com muita gente matriculada.",
+        warning: "Deletar aula é destrutivo — se cliente já matriculada tinha progresso naquela aula, se perde. Evita deletar aulas de cursos com muita gente matriculada.",
       },
     ],
   },
 
   {
     id: "responder-qa",
-    title: "Como responder perguntas de alunas (Q&A)",
-    description: "Interagir com alunas que fazem perguntas dentro do curso.",
+    title: "Como responder perguntas de clientes (Q&A)",
+    description: "Interagir com clientes que fazem perguntas dentro do curso.",
     category: "cursos",
     estimatedMinutes: 3,
     steps: [
       {
         title: "Ver perguntas pendentes",
-        body: "Menu → **Cursos** → clica no curso → seção **Perguntas & Respostas** (Q&A).\n\nVocê vê todas as perguntas feitas pelas alunas, ordenadas por mais recente. Cada pergunta mostra: nome da aluna, aula relacionada, texto da pergunta e data.",
+        body: "Menu → **Cursos** → clica no curso → seção **Perguntas & Respostas** (Q&A).\n\nVocê vê todas as perguntas feitas pelas clientes, ordenadas por mais recente. Cada pergunta mostra: nome da cliente, aula relacionada, texto da pergunta e data.",
       },
       {
         title: "Responder",
-        body: "Clica em **Responder** abaixo da pergunta. Um campo de texto aparece.\n\nEscreve a resposta e clica **Enviar**. A aluna recebe email automático com sua resposta e vê ela no próprio player do curso na próxima vez que abrir.",
-        tip: "Respostas suas aparecem destacadas com o selo 'Elisa Hoeppers' — mostra pras outras alunas que você tá presente. Isso aumenta a percepção de valor e engajamento.",
+        body: "Clica em **Responder** abaixo da pergunta. Um campo de texto aparece.\n\nEscreve a resposta e clica **Enviar**. A cliente recebe email automático com sua resposta e vê ela no próprio player do curso na próxima vez que abrir.",
+        tip: "Respostas suas aparecem destacadas com o selo 'Elisa Hoeppers' — mostra pras outras clientes que você tá presente. Isso aumenta a percepção de valor e engajamento.",
       },
       {
         title: "Marcar como resolvida",
-        body: "Depois de responder, marca a pergunta como **Resolvida**. Ela some da lista de pendentes.\n\nSe cliente fizer perguntas duplicadas ou irrelevantes, você pode **Ocultar** — só você e a aluna que perguntou continuam vendo.",
+        body: "Depois de responder, marca a pergunta como **Resolvida**. Ela some da lista de pendentes.\n\nSe cliente fizer perguntas duplicadas ou irrelevantes, você pode **Ocultar** — só você e a cliente que perguntou continuam vendo.",
       },
       {
-        title: "Perguntas de outras alunas",
-        body: "Se uma pergunta é muito boa e útil pra todo mundo, deixa ela **Pública** (padrão). Outras alunas vão ver ela e sua resposta, o que ajuda o aprendizado coletivo.\n\nUse **Privada** só se a pergunta expõe algo pessoal da aluna que ela não gostaria de compartilhar.",
+        title: "Perguntas de outras clientes",
+        body: "Se uma pergunta é muito boa e útil pra todo mundo, deixa ela **Pública** (padrão). Outras clientes vão ver ela e sua resposta, o que ajuda o aprendizado coletivo.\n\nUse **Privada** só se a pergunta expõe algo pessoal da cliente que ela não gostaria de compartilhar.",
       },
     ],
   },
@@ -328,17 +328,17 @@ export const tutorials: Tutorial[] = [
     steps: [
       {
         title: "Acessar gestão de usuários",
-        body: "Menu → **Clientes** (ou **Configurações → Usuários**).\n\nVocê vê a lista completa de contas cadastradas com nome, email, tipo (aluna/instrutora/admin) e último login.",
+        body: "Menu → **Clientes** (ou **Configurações → Usuários**).\n\nVocê vê a lista completa de contas cadastradas com nome, email, tipo (cliente/instrutora/admin) e último login.",
       },
       {
         title: "Clicar em Convidar novo usuário",
-        body: "No topo da página, clica em **+ Convidar usuário**. Uma modal aparece pedindo:\n\n- **Email** da pessoa\n- **Nome** (opcional, mas ajuda pra identificar)\n- **Tipo de acesso**:\n  - **Aluna**: acesso normal ao painel (cursos comprados)\n  - **Instrutora**: acesso ao admin (produtos, pedidos, cursos), mas SEM chaves de API/pagamento\n  - **Admin**: acesso total incluindo configurações sensíveis",
+        body: "No topo da página, clica em **+ Convidar usuário**. Uma modal aparece pedindo:\n\n- **Email** da pessoa\n- **Nome** (opcional, mas ajuda pra identificar)\n- **Tipo de acesso**:\n  - **Cliente**: acesso normal ao painel (cursos comprados)\n  - **Instrutora**: acesso ao admin (produtos, pedidos, cursos), mas SEM chaves de API/pagamento\n  - **Admin**: acesso total incluindo configurações sensíveis",
         warning: "Só dá **Admin** pra pessoas de confiança total. Admin vê chaves do Mercado Pago, Asaas, Melhor Envio — informações críticas do negócio.",
       },
       {
         title: "Enviar convite",
         body: "Clica **Enviar convite**. A pessoa recebe email do Supabase com link pra criar senha e ativar a conta.\n\nO email chega em ~1 minuto. Se demorar, avisa a pessoa pra olhar spam.",
-        tip: "Depois que a pessoa criar senha, ela pode entrar em `/login` normalmente e vai automaticamente pra `/admin` (se for instrutora/admin) ou `/painel` (se for aluna).",
+        tip: "Depois que a pessoa criar senha, ela pode entrar em `/login` normalmente e vai automaticamente pra `/admin` (se for instrutora/admin) ou `/painel` (se for cliente).",
       },
       {
         title: "Trocar tipo de acesso depois",
@@ -349,7 +349,7 @@ export const tutorials: Tutorial[] = [
 
   {
     id: "gerenciar-cliente",
-    title: "Como gerenciar uma cliente (aluna)",
+    title: "Como gerenciar uma cliente (cliente)",
     description: "Buscar, resetar senha, ver histórico, excluir conta.",
     category: "clientes",
     estimatedMinutes: 3,
@@ -378,7 +378,7 @@ export const tutorials: Tutorial[] = [
   {
     id: "cadastrar-disponibilidade",
     title: "Como cadastrar horários disponíveis pra aulas",
-    description: "Definir quando alunas podem reservar aulas particulares.",
+    description: "Definir quando clientes podem reservar aulas particulares.",
     category: "clientes",
     estimatedMinutes: 4,
     steps: [
@@ -388,12 +388,12 @@ export const tutorials: Tutorial[] = [
       },
       {
         title: "Criar horário recorrente",
-        body: "Pra abrir um horário que se repete toda semana (ex: 'toda quarta 19h-20h'):\n\n1. Clica em **+ Nova regra**\n2. Escolhe o **dia da semana**\n3. Define **hora início** e **hora fim**\n4. Escolhe se é pra **aula particular** ou **aula em grupo**\n5. Salva\n\nEsse horário aparece verde no calendário e alunas podem reservar por `/agende-sua-aula`.",
+        body: "Pra abrir um horário que se repete toda semana (ex: 'toda quarta 19h-20h'):\n\n1. Clica em **+ Nova regra**\n2. Escolhe o **dia da semana**\n3. Define **hora início** e **hora fim**\n4. Escolhe se é pra **aula particular** ou **aula em grupo**\n5. Salva\n\nEsse horário aparece verde no calendário e clientes podem reservar por `/agende-sua-aula`.",
         tip: "Deixa gaps de 15 min entre aulas pra preparar espaço e não atrasar a próxima.",
       },
       {
         title: "Bloquear datas específicas (férias, feriados)",
-        body: "Pra bloquear um dia ou período específico (ex: 'férias de 20/12 a 05/01'):\n\n1. Clica em **+ Bloqueio**\n2. Escolhe **data início** e **data fim**\n3. Escreve motivo (opcional, só pra você lembrar)\n4. Salva\n\nHorários nesse período ficam bloqueados independente das regras recorrentes. Alunas não veem opção de reservar naqueles dias.",
+        body: "Pra bloquear um dia ou período específico (ex: 'férias de 20/12 a 05/01'):\n\n1. Clica em **+ Bloqueio**\n2. Escolhe **data início** e **data fim**\n3. Escreve motivo (opcional, só pra você lembrar)\n4. Salva\n\nHorários nesse período ficam bloqueados independente das regras recorrentes. Clientes não veem opção de reservar naqueles dias.",
       },
       {
         title: "Remover regra ou bloqueio",
@@ -406,7 +406,7 @@ export const tutorials: Tutorial[] = [
   {
     id: "gerenciar-reservas",
     title: "Como confirmar ou cancelar reservas de aula",
-    description: "Aprovar/recusar as reservas que alunas fazem pelo site.",
+    description: "Aprovar/recusar as reservas que clientes fazem pelo site.",
     category: "clientes",
     estimatedMinutes: 3,
     steps: [
@@ -435,22 +435,23 @@ export const tutorials: Tutorial[] = [
   {
     id: "criar-broadcast",
     title: "Como enviar email pra base (Broadcast)",
-    description: "Compor e disparar email pra segmentos: newsletter, alunas, compradoras.",
+    description: "Compor e disparar email pra segmentos: newsletter, clientes, compradoras.",
     category: "marketing",
     estimatedMinutes: 6,
     steps: [
       {
-        title: "Acessar Broadcast",
-        body: "Menu → **Broadcast**. Você verá o **compositor** de novo email e o **histórico** de todos os envios anteriores (com data, segmento e taxa de abertura, se disponível).",
+        title: "Acessar Emails",
+        body: "Menu → **Emails**. A central de emails tem 5 abas no topo:\n\n- **Campanhas**: criar e disparar emails pra base + histórico de envios\n- **Templates**: modelos reutilizáveis com editor visual em blocos\n- **Layout & Branding**: logo, cores e rodapé aplicados a todos os emails\n- **Automáticos**: os textos dos emails transacionais (pedido confirmado, enviado, etc.)\n- **Inscritos**: quem está na newsletter\n\nPra disparar um email pra base, você fica na aba **Campanhas**.",
       },
       {
         title: "Escolher o segmento",
-        body: "Antes de escrever o email, decide pra quem vai:\n\n- **Todas as inscritas** — quem tá na newsletter (mais amplo)\n- **Compradoras de curso X** — filtra por curso específico\n- **Compradoras de produto Y** — filtra por produto físico\n- **Alunas com pedido nos últimos 30 dias** — engajamento recente\n\nCada segmento mostra o **número de destinatárias** antes de enviar.",
+        body: "Antes de escrever o email, decide pra quem vai:\n\n- **Todas as inscritas** — quem tá na newsletter (mais amplo)\n- **Compradoras de curso X** — filtra por curso específico\n- **Compradoras de produto Y** — filtra por produto físico\n- **Clientes com pedido nos últimos 30 dias** — engajamento recente\n\nCada segmento mostra o **número de destinatárias** antes de enviar.",
         tip: "Segmentar bem = taxa de abertura maior. Email genérico pra todo mundo tende a ser ignorado. Email de curso pra quem já comprou aquele curso tem 3-5x mais engajamento.",
       },
       {
         title: "Compor o email",
-        body: "Preenche:\n\n- **Assunto**: entre 40-60 caracteres, evita CAIXA ALTA (parece spam)\n- **Corpo (HTML)**: você pode usar tags HTML básicas: `<p>`, `<b>` (negrito), `<i>` (itálico), `<a href=\"URL\">link</a>`, `<br>` (quebra de linha), `<ul>`, `<li>` (listas)\n- **Nome do remetente**: geralmente 'BODYOGA' ou 'Elisa Hoeppers'\n- **Email de resposta** (Reply-To): pra onde vão as respostas se cliente responder",
+        body: "Você monta o email no **editor visual em blocos** (arrasta imagem, texto, botão, divisória). Não precisa saber HTML.\n\n- Comece de um **template** pronto (aba Templates) ou de uma **campanha em branco**\n- O **logo da BODYOGA** já vem no topo automaticamente (configurado em Layout & Branding)\n- Preencha o **Assunto**: 40-60 caracteres, evite CAIXA ALTA (parece spam)\n- Você pode usar variáveis como `{{customer_name}}` que são trocadas pelo nome de cada destinatária no envio",
+        tip: "Se você personalizou um bom email, salva ele como **template** (aba Templates → Novo template) pra reaproveitar nas próximas campanhas.",
       },
       {
         title: "Testar antes de enviar",
@@ -504,8 +505,8 @@ export const tutorials: Tutorial[] = [
     estimatedMinutes: 5,
     steps: [
       {
-        title: "Acessar Posts",
-        body: "Menu → **Posts**. Você vê a lista de todos os posts publicados e rascunhos.\n\nCada post mostra: título, data de publicação, status (publicado/rascunho) e visualizações (se tracking).",
+        title: "Acessar o Blog",
+        body: "Menu → **Blog**. Você vê a lista de todos os posts publicados e rascunhos.\n\nCada post mostra: título, data de publicação, status (publicado/rascunho) e visualizações (se tracking).",
       },
       {
         title: "Criar novo post",
@@ -618,6 +619,233 @@ export const tutorials: Tutorial[] = [
       },
     ],
   },
+
+  // ============ SITE & CONTEÚDO ============
+  {
+    id: "editar-pagina-site",
+    title: "Como editar uma página do site no editor de blocos",
+    description: "Mudar textos, imagens e seções de qualquer página direto no editor visual.",
+    category: "site",
+    estimatedMinutes: 5,
+    steps: [
+      {
+        title: "Abrir o WebSite",
+        body: "Menu → **WebSite**. Você vê a lista de todas as páginas reais do site (Home, Loja, Sobre, etc.) e, ao lado, os atalhos: **Slides**, **Cores**, **Menus**, **Avisos**, **SEO** e **Botão do WhatsApp**.",
+      },
+      {
+        title: "Entrar no editor da página",
+        body: "Na página que quer mexer, clica em **Editar**. O editor abre em **tela cheia**, sem o menu lateral, mostrando a página exatamente como ela está publicada.\n\nÀ esquerda ficam os **blocos disponíveis** pra arrastar; no centro, a **prévia**; e ao clicar num bloco, os campos dele aparecem pra editar.",
+        tip: "No topo da prévia tem o seletor **celular / tablet / computador** — use pra conferir como cada tela fica antes de salvar.",
+      },
+      {
+        title: "Editar um bloco",
+        body: "Clica no bloco que quer mudar (um título, um texto, uma imagem, a galeria, um FAQ...). Os campos dele aparecem e você edita direto.\n\nPra **imagens**, use o botão de upload — sobe o arquivo do computador. Pra listas (categorias, depoimentos, colunas), cada item tem seus próprios campos.",
+      },
+      {
+        title: "Reordenar, adicionar e remover blocos",
+        body: "- **Adicionar**: arraste um bloco da paleta da esquerda pra dentro da página\n- **Reordenar**: arraste o bloco pra cima ou pra baixo\n- **Remover**: use o ícone de lixeira do bloco\n\nAlguns blocos têm ajuste de **espaçamento** (distância entre um bloco e outro).",
+      },
+      {
+        title: "Salvar",
+        body: "Clica em **Salvar**. As mudanças vão pro ar na hora. Se quiser conferir, clica em **Ver site** e abre a página real.",
+        warning: "O editor mostra a página fiel ao publicado. Se editar e não vir a mudança no site, confirma que clicou em **Salvar** (e não só saiu do editor).",
+      },
+    ],
+  },
+
+  {
+    id: "criar-pagina-site",
+    title: "Como criar uma página nova e mudar o nome/endereço",
+    description: "Criar uma página do zero e definir o título e o endereço (slug) dela.",
+    category: "site",
+    estimatedMinutes: 4,
+    steps: [
+      {
+        title: "Criar a página",
+        body: "Menu → **WebSite** → **+ Nova página**. Uma página em branco é criada e abre no editor de blocos.",
+      },
+      {
+        title: "Definir o nome da página",
+        body: "No campo de **título** da página, escreve o nome (ex: 'Nossa História'). O **endereço (slug)** é gerado automaticamente a partir do título — 'Nossa História' vira `/nossa-historia`.\n\nAs páginas ficam logo após o domínio (ex: `bodyogaoficial.com.br/nossa-historia`), sem nenhum prefixo.",
+        tip: "Se mudar o título depois, o endereço acompanha. Evite trocar o endereço de uma página já divulgada, pois quebra links salvos.",
+      },
+      {
+        title: "Montar o conteúdo",
+        body: "Arraste os blocos que quiser (título, texto, imagem, colunas, FAQ, formulário...) e preencha os campos. Veja o tutorial **Como editar uma página do site** pra detalhes do editor.",
+      },
+      {
+        title: "Publicar e colocar no menu",
+        body: "Clica em **Salvar**. A página já fica acessível pelo endereço dela.\n\nPra ela aparecer no **menu do site**, vá em **WebSite → Menus** e adicione — só aparece no menu o que você definir ali (veja o tutorial do menu).",
+      },
+    ],
+  },
+
+  {
+    id: "gerenciar-slides",
+    title: "Como gerenciar os slides do banner (topo da Home)",
+    description: "Criar, editar, definir título/subtítulo e trocar as cores dos textos e botões.",
+    category: "site",
+    estimatedMinutes: 4,
+    steps: [
+      {
+        title: "Abrir os Slides",
+        body: "Menu → **WebSite** → **Slides**. Você vê os slides que giram no topo da Home. Clica em **+ Novo slide** pra criar ou num existente pra editar.",
+      },
+      {
+        title: "Escolher a mídia",
+        body: "Cada slide pode ter uma **imagem** de fundo ou um **vídeo**. Faça o upload/defina a mídia. Ela ocupa o topo da Home em tela cheia.",
+      },
+      {
+        title: "Título e subtítulo (opcionais)",
+        body: "Preencha **título** e **subtítulo** se quiser texto sobre a mídia. **Não é obrigatório** — pode deixar em branco pra um slide só de imagem.\n\nO título e o subtítulo aparecem tanto no computador quanto no celular.",
+      },
+      {
+        title: "Cores dos textos e do botão",
+        body: "No editor do slide há três seletores de cor:\n\n- **Cor do texto** (título e subtítulo)\n- **Cor do botão**\n- **Cor do texto do botão**\n\nAjuste pra garantir contraste com a imagem de fundo. Cada campo tem um **limpar** pra voltar ao padrão.",
+        tip: "Em imagens claras, use texto escuro; em imagens escuras, texto claro. Um botão com boa cor de fundo + texto contrastante aumenta os cliques.",
+      },
+      {
+        title: "Salvar e ordenar",
+        body: "Clica em **Salvar**. Os slides giram na ordem definida na lista — arraste pra reordenar.",
+      },
+    ],
+  },
+
+  {
+    id: "gerenciar-menu-site",
+    title: "Como gerenciar o menu do site",
+    description: "Controlar exatamente quais páginas aparecem no menu de navegação.",
+    category: "site",
+    estimatedMinutes: 3,
+    steps: [
+      {
+        title: "Abrir o menu",
+        body: "Menu → **WebSite** → **Menus** (ou `/admin/website/menu`). Aqui você monta a barra de navegação do site.",
+      },
+      {
+        title: "Adicionar itens",
+        body: "Clica em **+ Adicionar item** e escolhe uma das **páginas reais** do site. Só aparece no menu do site o que você colocar aqui — nada é adicionado automaticamente.",
+        tip: "Você define o **rótulo** que aparece pro visitante (ex: a página 'Criação Olfativa' pode aparecer no menu como 'Sob Medida').",
+      },
+      {
+        title: "Reordenar e remover",
+        body: "Arraste os itens pra mudar a ordem em que aparecem. Pra tirar um item do menu, remova ele — a página continua existindo, só sai da navegação.",
+      },
+      {
+        title: "Salvar",
+        body: "Clica em **Salvar**. O menu do site atualiza. Confira em **Ver site**: os itens devem aparecer estáveis, sem piscar.",
+      },
+    ],
+  },
+
+  {
+    id: "gerenciar-avisos",
+    title: "Como criar um aviso (popup) e capturar leads",
+    description: "Popups de cupom, novidades ou captura de email/WhatsApp no site.",
+    category: "site",
+    estimatedMinutes: 5,
+    steps: [
+      {
+        title: "Abrir Avisos",
+        body: "Menu → **Avisos** (ou WebSite → Avisos). Você vê a lista de avisos criados. Clica em **+ Novo aviso** pra criar.",
+      },
+      {
+        title: "Conteúdo do aviso",
+        body: "Preencha:\n\n- **Título** e **texto**\n- **Imagem** (opcional)\n- **Botão** (rótulo + link), se quiser levar pra alguma página\n\nÉ aqui que você monta um popup de **cupom de boas-vindas**, anúncio de coleção nova, etc.",
+      },
+      {
+        title: "Onde e quando aparece",
+        body: "Configure:\n\n- **Páginas**: em quais páginas o aviso aparece (todas ou específicas)\n- **Atraso**: quantos segundos até abrir\n- **Frequência**: uma vez por sessão, sempre, etc.\n- **Início/fim** (opcional): agenda o período em que fica ativo\n\nMarque **Ativo** pra ligar.",
+      },
+      {
+        title: "Capturar lead (opcional)",
+        body: "Se ligar **Capturar lead**, o aviso vira um formulário. Você escolhe quais campos pedir (**nome**, **email**, **telefone**) e o **texto de sucesso** que aparece depois que a pessoa envia.\n\nÓtimo pra crescer a base da newsletter ou capturar interessados numa promoção.",
+      },
+      {
+        title: "Ver os leads capturados",
+        body: "Na lista de avisos, o aviso que captura lead tem a opção **Ver leads** — abre a lista de quem preencheu (nome, email, telefone, página e data). Dá pra exportar/consultar quando quiser.",
+        tip: "Combine um cupom com captura de email: a pessoa deixa o email e recebe o código. Assim você entrega valor e ganha um contato pra newsletter.",
+      },
+    ],
+  },
+
+  {
+    id: "lista-espera-produto",
+    title: "Como funciona a lista de espera de produtos esgotados",
+    description: "Capturar interessados quando falta estoque e avisá-los quando repõe.",
+    category: "produtos",
+    estimatedMinutes: 3,
+    steps: [
+      {
+        title: "Como o cliente entra na lista",
+        body: "Quando um produto está **esgotado** (caixa 'Em estoque' desmarcada), a página dele mostra um campo **'Avise-me quando voltar'**. O cliente deixa **email e WhatsApp** e entra na lista de espera daquele produto.",
+      },
+      {
+        title: "Ver quantos estão esperando",
+        body: "Vá em **Produtos** → abra o produto. Se houver gente na lista, aparece um aviso: **'Lista de espera: N interessados aguardando aviso.'**",
+      },
+      {
+        title: "Avisar a lista",
+        body: "Quando repuser o estoque, você tem duas formas de avisar:\n\n1. **Automático**: ao marcar **Em estoque** e salvar, o sistema dispara o email de 'produto voltou' pra lista.\n2. **Manual**: clica no botão **Avisar lista agora** na página do produto.\n\nCada pessoa recebe o email **'{{product_name}} voltou!'** com link pra comprar.",
+        tip: "O texto desse email é editável em **Emails → Templates → Produto de volta ao estoque**.",
+      },
+      {
+        title: "Depois do aviso",
+        body: "Quem já foi avisado sai da contagem de 'aguardando'. Se o produto esgotar de novo, uma nova lista começa a ser formada.",
+      },
+    ],
+  },
+
+  {
+    id: "solicitacoes-projetos",
+    title: "Onde chegam as solicitações de projetos personalizados",
+    description: "Ver e responder os pedidos feitos no formulário de criação olfativa / sob medida.",
+    category: "clientes",
+    estimatedMinutes: 2,
+    steps: [
+      {
+        title: "De onde vêm",
+        body: "Quando alguém preenche o formulário em **/criacao-olfativa** (fragrância personalizada, brinde corporativo, etc.), a solicitação é registrada e um **email é enviado pra você** avisando.",
+      },
+      {
+        title: "Ver as solicitações",
+        body: "Menu → **Solicitações**. Você vê todos os pedidos com nome, email, WhatsApp, empresa, tipo de projeto e o briefing que a pessoa escreveu, ordenados pela mais recente.",
+      },
+      {
+        title: "Dar andamento",
+        body: "Abra a solicitação pra ver o briefing completo. Responda a pessoa pelo **email** ou **WhatsApp** informados e, conforme evolui, atualize o **status** (nova → em andamento → respondida → fechada) pra manter o controle.",
+        tip: "Responder rápido (poucas horas) faz muita diferença em projeto sob medida — é quando o interesse está no auge.",
+      },
+    ],
+  },
+
+  {
+    id: "templates-email",
+    title: "Como usar e restaurar os templates de email",
+    description: "Modelos prontos de email (pedido, cupom, curso...) com editor visual em blocos.",
+    category: "marketing",
+    estimatedMinutes: 4,
+    steps: [
+      {
+        title: "Abrir os Templates",
+        body: "Menu → **Emails** → aba **Templates**. São modelos reutilizáveis com **editor visual em blocos**, todos com o **logo da BODYOGA no topo**. Os marcados como **SISTEMA** são os oficiais do e-commerce.",
+      },
+      {
+        title: "Restaurar / completar os padrões",
+        body: "Clica em **↻ Restaurar padrão** pra recriar todos os templates oficiais: cupom de boas-vindas, pedido confirmado, enviado, cancelado, entregue, nota fiscal, curso comprado, curso concluído, produto de volta ao estoque, agendamento e newsletter.",
+        warning: "Restaurar **sobrescreve** os templates de sistema pelo layout padrão. Se você personalizou algum deles, essa personalização será perdida. Use quando faltam templates ou quando quer voltar ao padrão.",
+      },
+      {
+        title: "Editar um template",
+        body: "Clica no template pra abrir o **editor de blocos**. Arraste/edite imagem, texto e botão. Use variáveis como `{{customer_name}}`, `{{order_code}}`, `{{product_name}}` — elas são trocadas pelos dados reais no envio.",
+      },
+      {
+        title: "Logo e branding",
+        body: "O logo e as cores do topo/rodapé vêm da aba **Layout & Branding** e valem pra todos os emails. Ajuste ali uma vez e todos os templates seguem o padrão.",
+        tip: "Pra criar um modelo próprio (ex: aviso de coleção nova), use **+ Novo template** e depois reaproveite em qualquer campanha.",
+      },
+    ],
+  },
 ];
 
 export const categories = {
@@ -626,5 +854,6 @@ export const categories = {
   pedidos: { label: "Pedidos", icon: "🛒" },
   clientes: { label: "Clientes", icon: "👤" },
   marketing: { label: "Marketing", icon: "📢" },
+  site: { label: "Site & Conteúdo", icon: "🎨" },
   config: { label: "Configurações", icon: "⚙️" },
 } as const;
