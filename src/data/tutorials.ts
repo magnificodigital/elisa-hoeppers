@@ -17,7 +17,6 @@ export type Tutorial = {
 };
 
 export const tutorials: Tutorial[] = [
-  // ============ PRODUTOS ============
   {
     id: "cadastrar-produto",
     title: "Como cadastrar um produto novo",
@@ -110,7 +109,6 @@ export const tutorials: Tutorial[] = [
     ],
   },
 
-  // ============ PEDIDOS ============
   {
     id: "processar-pedido",
     title: "Como processar um pedido do início ao fim",
@@ -225,7 +223,6 @@ export const tutorials: Tutorial[] = [
     ],
   },
 
-  // ============ CURSOS ============
   {
     id: "cadastrar-curso",
     title: "Como cadastrar um curso novo",
@@ -292,90 +289,6 @@ export const tutorials: Tutorial[] = [
   },
 
   {
-    id: "responder-qa",
-    title: "Como responder perguntas de clientes (Q&A)",
-    description: "Interagir com clientes que fazem perguntas dentro do curso.",
-    category: "cursos",
-    estimatedMinutes: 3,
-    steps: [
-      {
-        title: "Ver perguntas pendentes",
-        body: "Menu → **Cursos** → clica no curso → seção **Perguntas & Respostas** (Q&A).\n\nVocê vê todas as perguntas feitas pelas clientes, ordenadas por mais recente. Cada pergunta mostra: nome da cliente, aula relacionada, texto da pergunta e data.",
-      },
-      {
-        title: "Responder",
-        body: "Clica em **Responder** abaixo da pergunta. Um campo de texto aparece.\n\nEscreve a resposta e clica **Enviar**. A cliente recebe email automático com sua resposta e vê ela no próprio player do curso na próxima vez que abrir.",
-        tip: "Respostas suas aparecem destacadas com o selo 'Elisa Hoeppers' — mostra pras outras clientes que você tá presente. Isso aumenta a percepção de valor e engajamento.",
-      },
-      {
-        title: "Marcar como resolvida",
-        body: "Depois de responder, marca a pergunta como **Resolvida**. Ela some da lista de pendentes.\n\nSe cliente fizer perguntas duplicadas ou irrelevantes, você pode **Ocultar** — só você e a cliente que perguntou continuam vendo.",
-      },
-      {
-        title: "Perguntas de outras clientes",
-        body: "Se uma pergunta é muito boa e útil pra todo mundo, deixa ela **Pública** (padrão). Outras clientes vão ver ela e sua resposta, o que ajuda o aprendizado coletivo.\n\nUse **Privada** só se a pergunta expõe algo pessoal da cliente que ela não gostaria de compartilhar.",
-      },
-    ],
-  },
-
-  // ============ CLIENTES ============
-  {
-    id: "convidar-admin",
-    title: "Como convidar um novo administrador ou instrutor",
-    description: "Dar acesso ao painel admin pra outra pessoa (assistente, instrutora, sócio).",
-    category: "clientes",
-    estimatedMinutes: 3,
-    steps: [
-      {
-        title: "Acessar gestão de usuários",
-        body: "Menu → **Clientes** (ou **Configurações → Usuários**).\n\nVocê vê a lista completa de contas cadastradas com nome, email, tipo (cliente/instrutora/admin) e último login.",
-      },
-      {
-        title: "Clicar em Convidar novo usuário",
-        body: "No topo da página, clica em **+ Convidar usuário**. Uma modal aparece pedindo:\n\n- **Email** da pessoa\n- **Nome** (opcional, mas ajuda pra identificar)\n- **Tipo de acesso**:\n  - **Cliente**: acesso normal ao painel (cursos comprados)\n  - **Instrutora**: acesso ao admin (produtos, pedidos, cursos), mas SEM chaves de API/pagamento\n  - **Admin**: acesso total incluindo configurações sensíveis",
-        warning: "Só dá **Admin** pra pessoas de confiança total. Admin vê chaves do Mercado Pago, Asaas, Melhor Envio — informações críticas do negócio.",
-      },
-      {
-        title: "Enviar convite",
-        body: "Clica **Enviar convite**. A pessoa recebe email do Supabase com link pra criar senha e ativar a conta.\n\nO email chega em ~1 minuto. Se demorar, avisa a pessoa pra olhar spam.",
-        tip: "Depois que a pessoa criar senha, ela pode entrar em `/login` normalmente e vai automaticamente pra `/admin` (se for instrutora/admin) ou `/painel` (se for cliente).",
-      },
-      {
-        title: "Trocar tipo de acesso depois",
-        body: "Se depois quiser mudar o tipo (ex: promover instrutora pra admin), volta na lista → clica na linha do usuário → altera o campo **Tipo** → salva.\n\nA mudança é imediata. A pessoa precisa fazer logout/login pra o novo tipo pegar.",
-      },
-    ],
-  },
-
-  {
-    id: "gerenciar-cliente",
-    title: "Como gerenciar uma cliente (cliente)",
-    description: "Buscar, resetar senha, ver histórico, excluir conta.",
-    category: "clientes",
-    estimatedMinutes: 3,
-    steps: [
-      {
-        title: "Buscar cliente específica",
-        body: "Menu → **Clientes**. Usa o campo de busca no topo pra procurar por **nome** ou **email**.\n\nA lista filtra em tempo real conforme você digita.",
-      },
-      {
-        title: "Ver detalhes da cliente",
-        body: "Clica na linha da cliente. Você vê:\n\n- Dados básicos (nome, email, data de cadastro)\n- Histórico de pedidos (com valores)\n- Cursos matriculada\n- Último login\n- Endereços salvos",
-        tip: "Uma cliente que gasta muito ou compra recorrente pode virar VIP. Você pode dar cupom personalizado, brinde no próximo pedido, etc.",
-      },
-      {
-        title: "Resetar senha da cliente",
-        body: "Se cliente pediu ajuda porque esqueceu a senha e não consegue recuperar sozinha:\n\n1. Encontra ela na lista\n2. Clica em **Resetar senha**\n3. Confirma na modal\n\nCliente recebe email com link pra criar uma senha nova.",
-      },
-      {
-        title: "Excluir conta (LGPD)",
-        body: "Se cliente pedir formalmente pra excluir os dados (direito LGPD), você deve:\n\n1. Clica em **Excluir conta**\n2. Confirma que entende o impacto\n3. Sistema apaga: profile, endereços, wishlist\n4. **Preserva**: pedidos passados (nota fiscal precisa manter por 5 anos, obrigação legal)",
-        warning: "Excluir é irreversível. Se cliente pedir pra restaurar depois, não dá — precisa criar conta nova.",
-      },
-    ],
-  },
-
-  {
     id: "cadastrar-disponibilidade",
     title: "Como cadastrar horários disponíveis pra aulas",
     description: "Definir quando clientes podem reservar aulas particulares.",
@@ -431,7 +344,6 @@ export const tutorials: Tutorial[] = [
     ],
   },
 
-  // ============ MARKETING ============
   {
     id: "criar-broadcast",
     title: "Como enviar email pra base (Broadcast)",
@@ -470,34 +382,6 @@ export const tutorials: Tutorial[] = [
   },
 
   {
-    id: "moderar-reviews",
-    title: "Como moderar avaliações de produtos e cursos",
-    description: "Aprovar, ocultar ou destacar reviews que clientes deixaram.",
-    category: "marketing",
-    estimatedMinutes: 3,
-    steps: [
-      {
-        title: "Acessar Avaliações",
-        body: "Menu → **Avaliações**. Você vê todas as reviews que clientes deixaram, com filtros por:\n\n- **Pendentes de moderação** (novas, ainda não aprovadas)\n- **Aprovadas** (aparecem no site)\n- **Ocultadas** (moderadas por você)\n- **Todas**\n\nCada review mostra: cliente, estrelas (1-5), texto, data e produto/curso avaliado.",
-      },
-      {
-        title: "Aprovar review",
-        body: "Reviews positivas ou construtivas: clica em **Aprovar**. Ela aparece imediatamente na página do produto/curso e ajuda a converter novos clientes.\n\nSe a review tem foto anexada, ela também vai junto.",
-        tip: "Reviews com estrelas 4-5 e texto detalhado são as mais impactantes. Estrela 5 sem texto ainda ajuda mas menos.",
-      },
-      {
-        title: "Ocultar review problemática",
-        body: "Se uma review contém:\n\n- Xingamento ou linguagem ofensiva\n- Informação falsa\n- Spam ou promoção de outra marca\n- Dados pessoais (telefone, endereço)\n\nClica em **Ocultar**. Ela some do site mas fica no admin (pra auditoria).",
-        warning: "Não oculta reviews negativas construtivas só porque criticam. Reviews 3-4 estrelas com feedback honesto dão credibilidade. Ocultar só reviews claramente inadequadas.",
-      },
-      {
-        title: "Responder review",
-        body: "Você pode responder qualquer review (positiva ou negativa) clicando em **Responder**.\n\nEscreve sua resposta e envia. Cliente recebe email + a resposta aparece embaixo da review original no site.\n\nPra reviews negativas, responder com empatia e mostrar como vai resolver **converte crítica em oportunidade** de mostrar seu atendimento.",
-      },
-    ],
-  },
-
-  {
     id: "criar-post-blog",
     title: "Como criar um post no blog",
     description: "Publicar artigo, notícia ou dica no /blog do site.",
@@ -529,7 +413,6 @@ export const tutorials: Tutorial[] = [
     ],
   },
 
-  // ============ CONFIGURAÇÕES ============
   {
     id: "configurar-mp",
     title: "Como configurar Mercado Pago",
@@ -620,7 +503,6 @@ export const tutorials: Tutorial[] = [
     ],
   },
 
-  // ============ SITE & CONTEÚDO ============
   {
     id: "editar-pagina-site",
     title: "Como editar uma página do site no editor de blocos",
