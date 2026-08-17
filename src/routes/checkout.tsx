@@ -9,7 +9,21 @@ import { formatPriceBRL, calculateShipping, type ShippingOption } from "@/lib/sh
 import { getSetting } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import { track } from "@/lib/analytics";
+import { validateCoupon } from "@/lib/coupons";
 import { toast } from "sonner";
+
+const COUPON_KEY = "elisa.coupon.v1";
+
+function couponReason(reason?: string): string {
+  const map: Record<string, string> = {
+    not_found: "Cupom não encontrado.",
+    invalid: "Cupom inválido.",
+    used: "Este cupom já foi utilizado.",
+    expired: "Cupom expirado.",
+    disabled: "Cupom indisponível no momento.",
+  };
+  return (reason && map[reason]) || "Cupom inválido ou expirado.";
+}
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
@@ -53,6 +67,11 @@ function friendlyError(msg: string): string {
 
 function CheckoutPage() {
   const { items, subtotalCents, totalItems, clear, loaded } = useCart();
+
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount_percent: number } | null>(null);
+  const [couponMsg, setCouponMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [couponChecking, setCouponChecking] = useState(false);
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -149,7 +168,51 @@ function CheckoutPage() {
   }, [form.cep, meEnabled, items]);
 
   const shippingCents = selectedShipping?.price_cents ?? 0;
-  const totalCents = subtotalCents + shippingCents;
+  const discountCents = appliedCoupon
+    ? Math.min(subtotalCents, Math.floor((subtotalCents * appliedCoupon.discount_percent) / 100))
+    : 0;
+  const totalCents = Math.max(0, subtotalCents + shippingCents - discountCents);
+
+  const applyCoupon = async (raw?: string) => {
+    const code = (raw ?? couponInput).trim();
+    if (!code) return;
+    setCouponChecking(true);
+    setCouponMsg(null);
+    try {
+      const res = await validateCoupon(code);
+      if (res?.valid) {
+        setAppliedCoupon({ code: res.code, discount_percent: res.discount_percent });
+        setCouponInput(res.code);
+        setCouponMsg({ ok: true, text: `Cupom aplicado: ${res.discount_percent}% de desconto.` });
+      } else {
+        setAppliedCoupon(null);
+        setCouponMsg({ ok: false, text: couponReason(res?.reason) });
+      }
+    } catch {
+      setAppliedCoupon(null);
+      setCouponMsg({ ok: false, text: "Não foi possível validar o cupom agora." });
+    } finally {
+      setCouponChecking(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponMsg(null);
+    try { window.localStorage.removeItem(COUPON_KEY); } catch { /* ignore */ }
+  };
+
+  // Cupom vindo do Instagram/Meta (guardado pela rota /comprar) — aplica sozinho.
+  useEffect(() => {
+    let saved = "";
+    try { saved = window.localStorage.getItem(COUPON_KEY) ?? ""; } catch { /* ignore */ }
+    if (saved.trim()) {
+      setCouponInput(saved.trim());
+      void applyCoupon(saved.trim());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function lookupCep(rawCep: string) {
     const cep = rawCep.replace(/\D/g, "");
@@ -318,10 +381,11 @@ function CheckoutPage() {
           : null,
         p_shipping_cents: shippingCents,
         p_destination_cep: form.cep.replace(/\D/g, "") || null,
+        p_coupon_code: appliedCoupon?.code ?? null,
       });
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
-      const orderResult = row as { order_id: string; code: string; subtotal_cents: number; total_cents: number };
+      const orderResult = row as { order_id: string; code: string; subtotal_cents: number; discount_cents?: number; total_cents: number };
 
       const { data: { session: addrSession } } = await supabase.auth.getSession();
       const addrUserId = addrSession?.user?.id;
@@ -364,9 +428,19 @@ function CheckoutPage() {
       if (payErr) throw payErr;
       if ((payData as any)?.error) throw new Error((payData as any).error);
 
+      try { window.localStorage.removeItem(COUPON_KEY); } catch { /* ignore */ }
+
       navigate({ to: "/pagamento/$code", params: { code: orderResult.code } });
     } catch (err) {
-      setSubmitError(friendlyError((err as Error).message));
+      const msg = (err as Error).message || "";
+      if (/cupom/i.test(msg)) {
+        // Cupom ficou inválido/usado entre a validação e o envio: remove e avisa.
+        removeCoupon();
+        setCouponMsg({ ok: false, text: `${couponReason()} Removemos o cupom — tente finalizar de novo.` });
+        setSubmitError("O cupom não pôde ser aplicado. Ele foi removido; revise o total e finalize novamente.");
+      } else {
+        setSubmitError(friendlyError(msg));
+      }
     } finally {
       setSubmitting(null);
     }
@@ -721,6 +795,60 @@ function CheckoutPage() {
                   <div className="flex justify-between mb-1 text-xs text-[var(--text-muted)]">
                     <span>Frete</span>
                     <span className="italic">Calculado pelo CEP</span>
+                  </div>
+                )}
+
+                {/* Cupom de desconto */}
+                <div className="mt-3 pt-3 border-t border-border">
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-primary-dark">
+                        Cupom <strong>{appliedCoupon.code}</strong>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={removeCoupon}
+                        className="text-xs text-red-700 hover:underline"
+                      >
+                        remover
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            void applyCoupon();
+                          }
+                        }}
+                        placeholder="Cupom de desconto"
+                        className="flex-1 rounded-md border border-border px-3 py-2 text-sm uppercase focus:outline-none focus:border-primary"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => void applyCoupon()}
+                        disabled={couponChecking || !couponInput.trim()}
+                        className="px-4 py-2 rounded-md bg-primary text-cream text-sm disabled:opacity-50"
+                      >
+                        {couponChecking ? "…" : "Aplicar"}
+                      </button>
+                    </div>
+                  )}
+                  {couponMsg && (
+                    <p className={`text-xs mt-1.5 ${couponMsg.ok ? "text-green-700" : "text-red-700"}`}>
+                      {couponMsg.text}
+                    </p>
+                  )}
+                </div>
+
+                {discountCents > 0 && (
+                  <div className="flex justify-between mt-3 text-sm">
+                    <span className="text-[var(--text-muted)]">Desconto</span>
+                    <span className="text-green-700">− {formatPriceBRL(discountCents)}</span>
                   </div>
                 )}
 
