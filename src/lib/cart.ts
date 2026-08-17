@@ -27,6 +27,11 @@ function saveCart(items: CartItem[]) {
   window.dispatchEvent(new CustomEvent("elisa-cart-change"));
 }
 
+/** Substitui todo o conteúdo do carrinho (usado no checkout vindo do Instagram/Meta). */
+export function replaceCart(items: CartItem[]) {
+  saveCart(items);
+}
+
 export function useCart() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [loaded, setLoaded] = useState(false);
