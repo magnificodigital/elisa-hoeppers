@@ -115,7 +115,7 @@ const baseStyles = `
 function wrap(body: string): string {
   const header = emailBranding.logo_url
     ? `<div style="text-align:center;padding:8px 0 4px;"><img src="${emailBranding.logo_url}" alt="BODYOGA" style="max-height:56px;max-width:200px;height:auto;" /></div>`
-    : "";
+    : `<div style="text-align:center;padding:8px 0 12px;"><span style="font-family:Georgia,'Times New Roman',serif;font-size:26px;letter-spacing:6px;color:${emailBranding.brand_color || "#3B4F30"};">BODYOGA</span></div>`;
   const signature = emailBranding.signature
     ? `<p class="muted" style="text-align:center;margin-top:20px;color:${emailBranding.brand_color};">${emailBranding.signature}</p>`
     : "";
