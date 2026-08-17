@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Youtube, MessageCircle } from "lucide-react";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
+import { MenuLink } from "@/components/MenuLink";
 
 
 
@@ -28,7 +29,7 @@ const Footer = () => {
           <div className="space-y-3 text-sm">
             <ul className="space-y-2">
               {leftItems.map((i) => (
-                <li key={i.id}><Link to={i.href} className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">{i.label}</Link></li>
+                <li key={i.id}><MenuLink href={i.href} className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">{i.label}</MenuLink></li>
               ))}
             </ul>
           </div>
@@ -36,9 +37,8 @@ const Footer = () => {
           <div className="space-y-3 text-sm">
             <ul className="space-y-2">
               {rightItems.map((i) => (
-                <li key={i.id}><Link to={i.href} className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">{i.label}</Link></li>
+                <li key={i.id}><MenuLink href={i.href} className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">{i.label}</MenuLink></li>
               ))}
-              <li><a href="https://wa.me/5511994061178" className="hover:text-peach transition-colors uppercase tracking-widest text-[11px]">Fale conosco</a></li>
             </ul>
           </div>
 

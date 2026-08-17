@@ -4,6 +4,7 @@ import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { BodyogaLogo } from "./BodyogaLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
+import { MenuLink } from "@/components/MenuLink";
 import { listPages } from "@/lib/pages";
 import { useQuery } from "@tanstack/react-query";
 
@@ -44,14 +45,14 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         {/* Left nav */}
         <nav className="hidden md:flex flex-1 items-center justify-end gap-8 md:pr-12">
           {leftItems.map((item) => (
-            <Link
+            <MenuLink
               key={item.id}
-              to={item.href as any}
+              href={item.href}
               className={linkClass}
               style={linkStyle}
             >
               {item.label}
-            </Link>
+            </MenuLink>
           ))}
         </nav>
 
@@ -71,14 +72,14 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         {/* Right nav */}
         <nav className="hidden md:flex flex-1 items-center justify-start gap-8 md:pl-12">
           {rightItems.map((item) => (
-            <Link
+            <MenuLink
               key={item.id}
-              to={item.href as any}
+              href={item.href}
               className={linkClass}
               style={linkStyle}
             >
               {item.label}
-            </Link>
+            </MenuLink>
           ))}
           <Link
             to={user ? "/painel" : "/login"}
@@ -131,14 +132,14 @@ export function BodyogaHeader({ alwaysGreen = false }: { alwaysGreen?: boolean }
         <div className="fixed inset-0 z-40 md:hidden bg-bodyoga-green backdrop-blur-md flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="flex flex-col items-center gap-6 w-full max-w-[280px] pt-10">
             {navItems.map((item) => (
-              <Link
+              <MenuLink
                 key={item.id}
-                to={item.href as any}
+                href={item.href}
                 onClick={() => setOpen(false)}
                 className="block text-sm font-medium uppercase tracking-[0.25em] text-bodyoga-cream hover:opacity-70 transition-colors py-2"
               >
                 {item.label}
-              </Link>
+              </MenuLink>
             ))}
             
             <div className="w-8 h-[1px] bg-bodyoga-cream/20 my-2" />

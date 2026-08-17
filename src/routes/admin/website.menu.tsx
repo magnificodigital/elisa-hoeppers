@@ -69,6 +69,7 @@ function MenuPage() {
     { label: "Aulas / Cursos", href: "/cursos" },
     { label: "Dicas / Blog", href: "/blog" },
     ...(pages ?? []).map((p) => ({ label: p.title, href: `/${p.slug}` })),
+    { label: "Fale conosco (WhatsApp)", href: "https://wa.me/5511994061178" },
   ];
 
   useEffect(() => {
@@ -165,6 +166,17 @@ function MenuPage() {
                             </option>
                           ))}
                         </select>
+                        <input
+                          type="text"
+                          value={item.href}
+                          onChange={(e) => patch(item.id, { href: e.target.value })}
+                          className="mt-2 w-full rounded-lg border border-[#DBCCBF] px-3 py-2 text-xs text-primary-dark focus:outline-none focus:border-primary"
+                          placeholder="ou cole um link (ex: https://wa.me/55...)"
+                        />
+                        <p className="mt-1 text-[11px] text-primary-dark/50">
+                          Aceita link externo (WhatsApp, Instagram, e-mail). Ex:
+                          {" "}https://wa.me/5511999999999
+                        </p>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

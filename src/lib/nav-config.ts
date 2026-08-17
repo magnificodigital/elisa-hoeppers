@@ -33,6 +33,11 @@ export type NavItem = {
 
 export type NavMenuConfig = { items: NavItem[] };
 
+/** Links externos (WhatsApp, mailto, etc.) devem virar <a href> e não <Link>. */
+export function isExternalHref(href: string): boolean {
+  return /^(https?:\/\/|mailto:|tel:)/i.test(href.trim());
+}
+
 const VALID_HREFS = PAGE_OPTIONS.map((p) => p.href) as readonly string[];
 const POSITIONS: NavPosition[] = ["off", "left", "right"];
 
@@ -45,6 +50,7 @@ export const DEFAULT_NAV_CONFIG: NavMenuConfig = {
     { id: "cursos", label: "AULAS", href: "/cursos", header: "right", footer: "left" },
     { id: "blog", label: "DICAS", href: "/blog", header: "right", footer: "right" },
     { id: "agende", label: "AGENDE SUA AULA", href: "/p/agende-sua-aula", header: "off", footer: "left" },
+    { id: "fale-conosco", label: "FALE CONOSCO", href: "https://wa.me/5511994061178", header: "off", footer: "right" },
   ],
 };
 
