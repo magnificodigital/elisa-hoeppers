@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Trash2 } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
-import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, type ProductImage } from "@/lib/shop";
+import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, normalizeSlug, type ProductImage } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { toast } from "sonner";
@@ -238,7 +238,7 @@ function ProductEditPage() {
               <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls} />
             </Field>
             <Field label="Slug (URL)">
-              <input required value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} className={inputCls} />
+              <input required value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} onBlur={(e) => setForm({ ...form, slug: normalizeSlug(e.target.value) })} className={inputCls} />
             </Field>
 
             <Field label="SKU (código do produto)">

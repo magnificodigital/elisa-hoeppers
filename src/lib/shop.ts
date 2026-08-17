@@ -304,10 +304,25 @@ export async function getProductForAdmin(id: string): Promise<Product | null> {
   return (await attachRituals([withProductMedia(data as Product)]))[0];
 }
 
+/** Slug seguro para URL: sem acento, sem espaço, minúsculo, só a-z 0-9 e hífen. */
+export function normalizeSlug(input: string): string {
+  return (input ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-") // qualquer não-alfanumérico vira hífen
+    .replace(/^-+|-+$/g, "") // tira hífens das pontas
+    .slice(0, 80);
+}
+
 export type ProductUpdate = Partial<Omit<Product, "id">>;
 
 export async function updateProduct(id: string, patch: ProductUpdate): Promise<void> {
   const { ritual_ids, ...rest } = patch;
+  if (typeof rest.slug === "string") {
+    const clean = normalizeSlug(rest.slug);
+    if (clean) rest.slug = clean;
+  }
   const { error } = await supabase.from("products").update(rest).eq("id", id);
   if (error) throw error;
   if (ritual_ids !== undefined) await setProductRituals(id, ritual_ids);
@@ -317,6 +332,10 @@ export type ProductInsert = Omit<Product, "id">;
 
 export async function createProduct(input: ProductInsert): Promise<Product> {
   const { ritual_ids, ...rest } = input;
+  if (typeof rest.slug === "string") {
+    const clean = normalizeSlug(rest.slug);
+    if (clean) rest.slug = clean;
+  }
   const { data, error } = await supabase.from("products").insert(rest).select().single();
   if (error) throw error;
   const product = data as Product;
