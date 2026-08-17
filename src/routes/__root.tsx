@@ -8,8 +8,8 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { initMetaPixel, pixelPageView } from "@/lib/meta-pixel";
+import { useEffect, useRef } from "react";
+import { pixelPageView } from "@/lib/meta-pixel";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeVars } from '@/components/ThemeVars';
 import { FloatingCart } from "@/components/FloatingCart";
@@ -122,6 +122,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children:
           "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-P23P1WM8K3');",
       },
+      {
+        // Meta Pixel — base (loader + init + PageView inicial)
+        children:
+          "!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1242306342290974');fbq('track','PageView');",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -148,10 +153,13 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  // O PageView inicial já dispara pelo pixel no <head>; aqui só as navegações internas.
+  const firstPageView = useRef(true);
   useEffect(() => {
-    initMetaPixel();
-  }, []);
-  useEffect(() => {
+    if (firstPageView.current) {
+      firstPageView.current = false;
+      return;
+    }
     pixelPageView();
   }, [pathname]);
 
