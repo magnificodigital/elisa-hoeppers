@@ -234,6 +234,72 @@ export const EMAIL_PRESETS: Preset[] = [
     cta: { label: "Rastrear pedido", href: "https://bodyogaoficial.com.br/pedido/{{order_code}}" },
   },
   {
+    system_key: "order_cancelled",
+    name: "Pedido cancelado",
+    subject: "Seu pedido #{{order_code}} foi cancelado",
+    title: "Pedido cancelado",
+    paragraphs: [
+      "Olá {{customer_name}}, seu pedido <strong>#{{order_code}}</strong> foi cancelado.",
+      "Se você não solicitou o cancelamento ou tiver dúvidas, fale com a gente pelo WhatsApp.",
+    ],
+    cta: { label: "Falar no WhatsApp", href: "https://bodyogaoficial.com.br" },
+  },
+  {
+    system_key: "order_completed",
+    name: "Pedido entregue",
+    subject: "Seu pedido #{{order_code}} foi entregue 💛",
+    title: "Pedido entregue",
+    paragraphs: [
+      "Olá {{customer_name}}, seu pedido <strong>#{{order_code}}</strong> foi entregue.",
+      "Esperamos que você ame seus produtos. Marque a gente no Instagram @bodyoga.oficial!",
+    ],
+    cta: { label: "Comprar novamente", href: "https://bodyogaoficial.com.br/loja" },
+  },
+  {
+    system_key: "invoice_ready",
+    name: "Nota fiscal disponível",
+    subject: "Nota fiscal do pedido #{{order_code}}",
+    title: "Sua nota fiscal está pronta",
+    paragraphs: [
+      "Olá {{customer_name}}, a nota fiscal do pedido <strong>#{{order_code}}</strong> foi emitida.",
+      "Você pode baixá-la no botão abaixo.",
+    ],
+    cta: { label: "Baixar nota fiscal", href: "{{danfe_url}}" },
+  },
+  {
+    system_key: "course_purchased",
+    name: "Curso comprado",
+    subject: "Acesso liberado: {{course_name}} 🌿",
+    title: "Seu curso está liberado",
+    paragraphs: [
+      "Olá {{customer_name}}, sua compra do curso <strong>{{course_name}}</strong> foi confirmada.",
+      "O acesso já está disponível na sua área de cliente.",
+    ],
+    cta: { label: "Acessar curso", href: "https://bodyogaoficial.com.br/painel" },
+  },
+  {
+    system_key: "course_completed",
+    name: "Curso concluído",
+    subject: "Parabéns! Você concluiu {{course_name}} 🎉",
+    title: "Parabéns pela conclusão!",
+    paragraphs: [
+      "Olá {{customer_name}}, você concluiu o curso <strong>{{course_name}}</strong>. Que jornada linda!",
+    ],
+    cta: { label: "Ver meus cursos", href: "https://bodyogaoficial.com.br/painel" },
+  },
+  {
+    system_key: "waitlist_restock",
+    name: "Produto de volta ao estoque",
+    subject: "{{product_name}} voltou! 💛",
+    title: "Já chegou!",
+    paragraphs: [
+      "Boas notícias! O produto que você esperava voltou ao estoque:",
+      "<strong>{{product_name}}</strong>",
+      "Corre que pode esgotar de novo.",
+    ],
+    cta: { label: "Garantir o meu", href: "https://bodyogaoficial.com.br/loja" },
+  },
+  {
     system_key: "appointment_confirmed",
     name: "Agendamento confirmado",
     subject: "Sua sessão está confirmada",
