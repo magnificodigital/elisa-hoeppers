@@ -14,6 +14,13 @@ import {
   type NavPosition,
   type NavHref,
 } from "@/lib/nav-config";
+import {
+  getSocialLinks,
+  saveSocialLinks,
+  SOCIAL_FIELDS,
+  DEFAULT_SOCIAL_LINKS,
+  type SocialLinks,
+} from "@/lib/social-config";
 
 export const Route = createFileRoute("/admin/website/menu")({
   head: () => ({ meta: [{ title: "Admin — Menu" }] }),
@@ -59,6 +66,7 @@ function PositionSelect({
 
 function MenuPage() {
   const [items, setItems] = useState<NavItem[]>(DEFAULT_NAV_CONFIG.items);
+  const [social, setSocial] = useState<SocialLinks>(DEFAULT_SOCIAL_LINKS);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -77,7 +85,13 @@ function MenuPage() {
       setItems(c.items);
       setLoading(false);
     });
+    getSocialLinks().then(setSocial);
   }, []);
+
+  const patchSocial = (key: keyof SocialLinks, value: string) => {
+    setSaved(false);
+    setSocial((prev) => ({ ...prev, [key]: value }));
+  };
 
   const patch = (id: string, changes: Partial<NavItem>) => {
     setSaved(false);
@@ -99,6 +113,7 @@ function MenuPage() {
     try {
       const cfg: NavMenuConfig = { items };
       await saveNavConfig(cfg);
+      await saveSocialLinks(social);
       setSaved(true);
     } finally {
       setSaving(false);
@@ -219,6 +234,32 @@ function MenuPage() {
               >
                 <Plus size={16} /> Adicionar item
               </button>
+
+              <div className="bg-white rounded-xl border border-border/20 p-5 mt-8">
+                <h2 className="font-display text-lg text-primary-dark mb-1">
+                  Redes sociais (rodapé)
+                </h2>
+                <p className="text-xs text-primary-dark/60 mb-4">
+                  Links dos ícones no rodapé do site. Deixe em branco para
+                  esconder o ícone.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {SOCIAL_FIELDS.map((f) => (
+                    <div key={f.key}>
+                      <label className="block text-xs uppercase tracking-wide text-primary-dark/60 mb-1.5">
+                        {f.label}
+                      </label>
+                      <input
+                        type="text"
+                        value={social[f.key]}
+                        onChange={(e) => patchSocial(f.key, e.target.value)}
+                        className="w-full rounded-lg border border-[#DBCCBF] px-3 py-2 text-sm text-primary-dark focus:outline-none focus:border-primary"
+                        placeholder={f.placeholder}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               <div className="flex items-center gap-3 pt-2">
                 <button

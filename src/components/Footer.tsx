@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Youtube, MessageCircle } from "lucide-react";
+import { Instagram, Youtube, MessageCircle, Facebook } from "lucide-react";
 import { useNavConfig, itemsFor } from "@/lib/nav-config";
 import { MenuLink } from "@/components/MenuLink";
+import { useSocialLinks } from "@/lib/social-config";
 
 
 
@@ -9,6 +10,7 @@ const Footer = () => {
   const navConfig = useNavConfig();
   const leftItems = itemsFor(navConfig, "footer", "left");
   const rightItems = itemsFor(navConfig, "footer", "right");
+  const social = useSocialLinks();
 
   return (
     <footer className="bg-[#3B4F30] text-cream pt-16 pb-8">
@@ -45,9 +47,18 @@ const Footer = () => {
 
           <div className="space-y-3 text-sm">
             <div className="flex space-x-4">
-              <a href="https://www.instagram.com/bodyoga.oficial/" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><Instagram size={20} /></a>
-              <a href="https://www.youtube.com/@ElisaHoeppers" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><Youtube size={20} /></a>
-              <a href="https://wa.me/5511994061178" target="_blank" rel="noreferrer" className="hover:text-peach transition-colors"><MessageCircle size={20} /></a>
+              {social.instagram && (
+                <a href={social.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-peach transition-colors"><Instagram size={20} /></a>
+              )}
+              {social.youtube && (
+                <a href={social.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" className="hover:text-peach transition-colors"><Youtube size={20} /></a>
+              )}
+              {social.facebook && (
+                <a href={social.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-peach transition-colors"><Facebook size={20} /></a>
+              )}
+              {social.whatsapp && (
+                <a href={social.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="hover:text-peach transition-colors"><MessageCircle size={20} /></a>
+              )}
             </div>
           </div>
         </div>
