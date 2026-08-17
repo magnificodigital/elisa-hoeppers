@@ -79,6 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "facebook-domain-verification", content: "hknysn0wzztf4meju3meq7l6jzn4iv" },
       { title: "Movimente seu corpo, cuide da sua mente." },
       { name: "description", content: "Professora de Yoga, fundadora do BODYOGA e perfumista. Movimente seu corpo, cuide da sua mente." },
       { property: "og:title", content: "Movimente seu corpo, cuide da sua mente." },
