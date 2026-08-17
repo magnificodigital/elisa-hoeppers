@@ -14,7 +14,8 @@ import {
   Settings,
   Clock,
   LayoutGrid,
-  Bell
+  Bell,
+  Ticket
 } from "lucide-react";
 
 export const ADMIN_NAV_ITEMS = [
@@ -28,6 +29,7 @@ export const ADMIN_NAV_ITEMS = [
   { group: "CATÁLOGO", items: [
     { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
     { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
+    { to: "/admin/cupons", label: "Cupons", icon: Ticket },
   ]},
   { group: "CONTEÚDO", items: [
     { to: "/admin/website", label: "WebSite", icon: Sparkles },
