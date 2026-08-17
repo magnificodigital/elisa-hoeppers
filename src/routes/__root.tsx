@@ -4,9 +4,12 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { initMetaPixel, pixelPageView } from "@/lib/meta-pixel";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeVars } from '@/components/ThemeVars';
 import { FloatingCart } from "@/components/FloatingCart";
@@ -143,6 +146,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    initMetaPixel();
+  }, []);
+  useEffect(() => {
+    pixelPageView();
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

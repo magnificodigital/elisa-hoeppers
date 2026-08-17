@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, MessageCircle, ShieldCheck, ArrowLeft, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { getProductBySlug, formatPriceBRL, firstImage, createReservation, type Product } from "@/lib/shop";
@@ -8,6 +8,7 @@ import { GaleriaProduto } from "@/components/produto/GaleriaProduto";
 import { useCart } from "@/lib/cart";
 import { WishlistButton } from "@/components/WishlistButton";
 import { supabase } from "@/lib/supabase";
+import { pixelTrack } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/loja/$slug")({
   loader: async ({ params }) => {
@@ -81,6 +82,16 @@ export const Route = createFileRoute("/loja/$slug")({
 
 function ProductDetail() {
   const { product } = Route.useLoaderData();
+
+  useEffect(() => {
+    pixelTrack("ViewContent", {
+      content_ids: [product.slug],
+      content_type: "product",
+      content_name: product.name,
+      value: product.price_cents / 100,
+      currency: "BRL",
+    });
+  }, [product.slug, product.name, product.price_cents]);
 
   const wppMessage = encodeURIComponent(
     `Oi Elisa! Tenho interesse no ${product.name} (${formatPriceBRL(product.price_cents)}). Como faço pra comprar?`
@@ -233,6 +244,13 @@ function AddToCartButton({ product }: { product: Product }) {
       image: firstImage(product),
       unit_price_cents: product.price_cents,
       qty,
+    });
+    pixelTrack("AddToCart", {
+      content_ids: [product.slug],
+      content_type: "product",
+      content_name: product.name,
+      value: (product.price_cents / 100) * qty,
+      currency: "BRL",
     });
     if (goToCart) {
       navigate({ to: "/carrinho" });

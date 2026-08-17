@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import { formatPriceBRL, cancelMyOrder } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
+import { pixelTrack } from "@/lib/meta-pixel";
 
 type OrderItem = {
   product_id: string;
@@ -167,6 +168,27 @@ function OrderPage() {
       window.location.reload();
     },
   });
+
+  // Meta Pixel: dispara Purchase uma única vez quando o pedido está pago.
+  useEffect(() => {
+    if (!order) return;
+    const paid = order.status === "confirmed" || order.status === "shipped" || order.status === "completed";
+    if (!paid) return;
+    const key = `fb_purchase_${order.code}`;
+    try {
+      if (window.localStorage.getItem(key)) return;
+      window.localStorage.setItem(key, "1");
+    } catch {
+      /* ignore */
+    }
+    pixelTrack("Purchase", {
+      content_ids: (order.items ?? []).map((i: OrderItem) => i.slug),
+      content_type: "product",
+      value: order.total_cents / 100,
+      currency: "BRL",
+      num_items: (order.items ?? []).reduce((a: number, i: OrderItem) => a + i.qty, 0),
+    });
+  }, [order]);
 
   // MP diz sucesso mas order ainda pending → webhook pode estar chegando. Re-checa em 30s.
   useEffect(() => {
