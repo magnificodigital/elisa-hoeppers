@@ -1,1 +1,5 @@
 project_id = "rjksutoohsvwqnqlemjv"
+
+# Webhook da Pagar.me é chamado pela Pagar.me (sem JWT do Supabase) → precisa ser público.
+[functions.pagarme-webhook]
+verify_jwt = false

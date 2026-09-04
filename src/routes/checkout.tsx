@@ -133,7 +133,8 @@ function CheckoutPage() {
 
   useEffect(() => {
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
-    getSetting("mp_enabled").then((v) => setMpEnabled(v === "true")).catch(() => setMpEnabled(false));
+    // Pagamento online (Pagar.me) — ligado por padrão; só desliga se o setting for "false".
+    getSetting("pagarme_enabled").then((v) => setMpEnabled(v !== "false")).catch(() => setMpEnabled(true));
   }, []);
 
 
@@ -421,16 +422,19 @@ function CheckoutPage() {
         body: { type: "order", record_id: orderResult.order_id },
       }).catch((e) => console.error("email failed:", e));
 
-      // Cria preference Mercado Pago
-      const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
-        body: { order_id: orderResult.order_id },
+      // Cria o checkout hospedado na Pagar.me (cartão, PIX, Apple Pay, Google Pay)
+      const { data: coData, error: coErr } = await supabase.functions.invoke("pagarme-create-checkout", {
+        body: { order_code: orderResult.code },
       });
-      if (payErr) throw payErr;
-      if ((payData as any)?.error) throw new Error((payData as any).error);
+      if (coErr) throw coErr;
+      if ((coData as any)?.error) throw new Error((coData as any).error);
+      const paymentUrl = (coData as any)?.payment_url as string | undefined;
+      if (!paymentUrl) throw new Error("Não foi possível iniciar o pagamento. Tente novamente.");
 
       try { window.localStorage.removeItem(COUPON_KEY); } catch { /* ignore */ }
 
-      navigate({ to: "/pagamento/$code", params: { code: orderResult.code } });
+      // Redireciona pro checkout da Pagar.me; volta pro site (success_url) após pagar.
+      window.location.href = paymentUrl;
     } catch (err) {
       const msg = (err as Error).message || "";
       if (/cupom/i.test(msg)) {
