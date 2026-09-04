@@ -19,10 +19,8 @@ const corsHeaders = {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-// Sandbox quando a chave é de teste; produção caso contrário.
-const PAGARME_BASE = PAGARME_SECRET_KEY.startsWith("sk_test_")
-  ? "https://sdx-api.pagar.me/core/v5"
-  : "https://api.pagar.me/core/v5";
+// v5 usa sempre api.pagar.me; o modo teste/produção é definido pela própria chave (sk_test_/sk_live_).
+const PAGARME_BASE = "https://api.pagar.me/core/v5";
 
 function authHeader(): string {
   return "Basic " + btoa(`${PAGARME_SECRET_KEY}:`);

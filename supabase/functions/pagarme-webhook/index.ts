@@ -11,9 +11,7 @@ const PAGARME_SECRET_KEY = (Deno.env.get("PAGARME_SECRET_KEY") ?? "").trim();
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-const PAGARME_BASE = PAGARME_SECRET_KEY.startsWith("sk_test_")
-  ? "https://sdx-api.pagar.me/core/v5"
-  : "https://api.pagar.me/core/v5";
+const PAGARME_BASE = "https://api.pagar.me/core/v5";
 
 function authHeader(): string {
   return "Basic " + btoa(`${PAGARME_SECRET_KEY}:`);
