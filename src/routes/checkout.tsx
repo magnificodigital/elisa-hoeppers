@@ -130,11 +130,16 @@ function CheckoutPage() {
   const [password, setPassword] = useState("");
   const [accountError, setAccountError] = useState<string | null>(null);
 
+  // Gateway ativo: "mercadopago" (padrão) ou "pagarme". Controlado no admin.
+  const [gateway, setGateway] = useState<"mercadopago" | "pagarme">("mercadopago");
 
   useEffect(() => {
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
-    // Pagamento online (Pagar.me) — ligado por padrão; só desliga se o setting for "false".
-    getSetting("pagarme_enabled").then((v) => setMpEnabled(v !== "false")).catch(() => setMpEnabled(true));
+    // Pagamento online ligado por padrão; só desliga se o setting for "false".
+    getSetting("payments_enabled").then((v) => setMpEnabled(v !== "false")).catch(() => setMpEnabled(true));
+    getSetting("payment_gateway")
+      .then((v) => setGateway(v === "pagarme" ? "pagarme" : "mercadopago"))
+      .catch(() => setGateway("mercadopago"));
   }, []);
 
 
@@ -422,19 +427,27 @@ function CheckoutPage() {
         body: { type: "order", record_id: orderResult.order_id },
       }).catch((e) => console.error("email failed:", e));
 
-      // Cria o checkout hospedado na Pagar.me (cartão, PIX, Apple Pay, Google Pay)
-      const { data: coData, error: coErr } = await supabase.functions.invoke("pagarme-create-checkout", {
-        body: { order_code: orderResult.code },
-      });
-      if (coErr) throw coErr;
-      if ((coData as any)?.error) throw new Error((coData as any).error);
-      const paymentUrl = (coData as any)?.payment_url as string | undefined;
-      if (!paymentUrl) throw new Error("Não foi possível iniciar o pagamento. Tente novamente.");
-
       try { window.localStorage.removeItem(COUPON_KEY); } catch { /* ignore */ }
 
-      // Redireciona pro checkout da Pagar.me; volta pro site (success_url) após pagar.
-      window.location.href = paymentUrl;
+      if (gateway === "pagarme") {
+        // Checkout hospedado Pagar.me (cartão, PIX, Apple Pay, Google Pay) — redireciona.
+        const { data: coData, error: coErr } = await supabase.functions.invoke("pagarme-create-checkout", {
+          body: { order_code: orderResult.code },
+        });
+        if (coErr) throw coErr;
+        if ((coData as any)?.error) throw new Error((coData as any).error);
+        const paymentUrl = (coData as any)?.payment_url as string | undefined;
+        if (!paymentUrl) throw new Error("Não foi possível iniciar o pagamento. Tente novamente.");
+        window.location.href = paymentUrl;
+      } else {
+        // Mercado Pago (Payment Brick in-site) — cria preference e vai pra /pagamento.
+        const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
+          body: { order_id: orderResult.order_id },
+        });
+        if (payErr) throw payErr;
+        if ((payData as any)?.error) throw new Error((payData as any).error);
+        navigate({ to: "/pagamento/$code", params: { code: orderResult.code } });
+      }
     } catch (err) {
       const msg = (err as Error).message || "";
       if (/cupom/i.test(msg)) {

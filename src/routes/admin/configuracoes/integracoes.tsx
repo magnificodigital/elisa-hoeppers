@@ -11,7 +11,8 @@ export const Route = createFileRoute("/admin/configuracoes/integracoes")({
 });
 
 const integrations = [
-  { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Gateway padrão — PIX, Cartão, Apple Pay, Google Pay." },
+  { to: "/admin/configuracoes/pagarme", icon: CreditCard, title: "Pagar.me", desc: "Checkout hospedado — Cartão, PIX, Apple Pay, Google Pay. Escolha do gateway ativo." },
+  { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Gateway — PIX e Cartão, dentro do site." },
   { to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/site", icon: Instagram, title: "Feed do Instagram", desc: "Feed automático da home via Behold e handle do perfil." },
