@@ -130,16 +130,16 @@ function CheckoutPage() {
   const [password, setPassword] = useState("");
   const [accountError, setAccountError] = useState<string | null>(null);
 
-  // Gateway ativo: "mercadopago" (padrão) ou "pagarme". Controlado no admin.
-  const [gateway, setGateway] = useState<"mercadopago" | "pagarme">("mercadopago");
+  // Gateway ativo: "pagarme" (padrão, com fallback automático pro MP) ou "mercadopago". Controlado no admin.
+  const [gateway, setGateway] = useState<"mercadopago" | "pagarme">("pagarme");
 
   useEffect(() => {
     getSetting("me_enabled").then((v) => setMeEnabled(v === "true")).catch(() => setMeEnabled(false));
     // Pagamento online ligado por padrão; só desliga se o setting for "false".
     getSetting("payments_enabled").then((v) => setMpEnabled(v !== "false")).catch(() => setMpEnabled(true));
     getSetting("payment_gateway")
-      .then((v) => setGateway(v === "pagarme" ? "pagarme" : "mercadopago"))
-      .catch(() => setGateway("mercadopago"));
+      .then((v) => setGateway(v === "mercadopago" ? "mercadopago" : "pagarme"))
+      .catch(() => setGateway("pagarme"));
   }, []);
 
 
@@ -429,25 +429,33 @@ function CheckoutPage() {
 
       try { window.localStorage.removeItem(COUPON_KEY); } catch { /* ignore */ }
 
+      // Se a Pagar.me for o gateway ativo, tenta o checkout hospedado (cartão, PIX,
+      // Apple Pay, Google Pay). Se a conta ainda não estiver autorizada (ou qualquer
+      // falha), cai automaticamente no Mercado Pago pra não deixar o cliente sem pagar.
       if (gateway === "pagarme") {
-        // Checkout hospedado Pagar.me (cartão, PIX, Apple Pay, Google Pay) — redireciona.
-        const { data: coData, error: coErr } = await supabase.functions.invoke("pagarme-create-checkout", {
-          body: { order_code: orderResult.code },
-        });
-        if (coErr) throw coErr;
-        if ((coData as any)?.error) throw new Error((coData as any).error);
-        const paymentUrl = (coData as any)?.payment_url as string | undefined;
-        if (!paymentUrl) throw new Error("Não foi possível iniciar o pagamento. Tente novamente.");
-        window.location.href = paymentUrl;
-      } else {
-        // Mercado Pago (Payment Brick in-site) — cria preference e vai pra /pagamento.
-        const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
-          body: { order_id: orderResult.order_id },
-        });
-        if (payErr) throw payErr;
-        if ((payData as any)?.error) throw new Error((payData as any).error);
-        navigate({ to: "/pagamento/$code", params: { code: orderResult.code } });
+        try {
+          const { data: coData, error: coErr } = await supabase.functions.invoke("pagarme-create-checkout", {
+            body: { order_code: orderResult.code },
+          });
+          if (coErr) throw coErr;
+          if ((coData as any)?.error) throw new Error((coData as any).error);
+          const paymentUrl = (coData as any)?.payment_url as string | undefined;
+          if (!paymentUrl) throw new Error("sem payment_url");
+          window.location.href = paymentUrl;
+          return;
+        } catch (pagarmeErr) {
+          console.warn("Pagar.me indisponível — usando Mercado Pago:", pagarmeErr);
+          // segue pro fluxo do Mercado Pago abaixo
+        }
       }
+
+      // Mercado Pago (Payment Brick in-site) — padrão e fallback.
+      const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
+        body: { order_id: orderResult.order_id },
+      });
+      if (payErr) throw payErr;
+      if ((payData as any)?.error) throw new Error((payData as any).error);
+      navigate({ to: "/pagamento/$code", params: { code: orderResult.code } });
     } catch (err) {
       const msg = (err as Error).message || "";
       if (/cupom/i.test(msg)) {

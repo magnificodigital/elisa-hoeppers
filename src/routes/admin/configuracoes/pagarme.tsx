@@ -15,7 +15,7 @@ const WEBHOOK_URL = "https://rjksutoohsvwqnqlemjv.supabase.co/functions/v1/pagar
 type Gateway = "mercadopago" | "pagarme";
 
 function Page() {
-  const [gateway, setGateway] = useState<Gateway>("mercadopago");
+  const [gateway, setGateway] = useState<Gateway>("pagarme");
   const [enabled, setEnabled] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -23,7 +23,7 @@ function Page() {
   useEffect(() => {
     Promise.all([getSetting("payment_gateway"), getSetting("payments_enabled")])
       .then(([g, e]) => {
-        setGateway(g === "pagarme" ? "pagarme" : "mercadopago");
+        setGateway(g === "mercadopago" ? "mercadopago" : "pagarme");
         setEnabled(e !== "false");
       })
       .finally(() => setLoading(false));
@@ -121,12 +121,13 @@ function Page() {
             </div>
 
             {gateway === "pagarme" && (
-              <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
-                <p className="text-sm font-semibold text-amber-900 mb-1">⚠️ Antes de ativar a Pagar.me</p>
-                <ul className="text-xs text-amber-800 leading-relaxed list-disc list-inside space-y-1">
-                  <li>A chave secreta de produção (<code className="bg-amber-100 px-1 rounded">sk_live_</code>) precisa estar no secret <code className="bg-amber-100 px-1 rounded">PAGARME_SECRET_KEY</code> do Supabase.</li>
-                  <li>O produto <strong>Checkout</strong> precisa estar habilitado na conta Pagar.me (Configurações → Funcionalidades, ambiente Produção).</li>
-                  <li>Se a Pagar.me retornar “checkout não disponível”, o pagamento falha — só ative depois de confirmar que funciona.</li>
+              <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                <p className="text-sm font-semibold text-emerald-900 mb-1">✅ Pagar.me ativa, com rede de segurança</p>
+                <ul className="text-xs text-emerald-800 leading-relaxed list-disc list-inside space-y-1">
+                  <li>A loja tenta o checkout da Pagar.me (cartão, PIX, Apple Pay, Google Pay).</li>
+                  <li>Enquanto a Pagar.me <strong>não autorizar</strong> o Checkout na conta, os pagamentos caem <strong>automaticamente no Mercado Pago</strong> (cartão + PIX) — a loja nunca fica sem vender.</li>
+                  <li>No instante que a Pagar.me autorizar, ela passa a ser usada sozinha, sem você mexer em nada.</li>
+                  <li>Requisitos: secret <code className="bg-emerald-100 px-1 rounded">PAGARME_SECRET_KEY</code> (produção) no Supabase e o produto <strong>Checkout</strong> habilitado em Produção.</li>
                 </ul>
               </div>
             )}
