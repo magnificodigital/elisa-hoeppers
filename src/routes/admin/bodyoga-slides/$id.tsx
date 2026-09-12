@@ -161,14 +161,14 @@ function SlideEditPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Cor do texto">
                   <div className="flex items-center gap-2">
-                    <input type="color" value={form.text_color || "#3B4F30"} onChange={(e) => setForm({ ...form, text_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
+                    <input type="color" value={form.text_color || "#3E573F"} onChange={(e) => setForm({ ...form, text_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
                     <input value={form.text_color} onChange={(e) => setForm({ ...form, text_color: e.target.value })} placeholder="padrão" className={inputCls} />
                     {form.text_color && <button type="button" onClick={() => setForm({ ...form, text_color: "" })} className="text-[10px] text-primary-dark/50 hover:text-red-500 shrink-0">limpar</button>}
                   </div>
                 </Field>
                 <Field label="Fundo do botão">
                   <div className="flex items-center gap-2">
-                    <input type="color" value={form.button_color || "#3B4F30"} onChange={(e) => setForm({ ...form, button_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
+                    <input type="color" value={form.button_color || "#3E573F"} onChange={(e) => setForm({ ...form, button_color: e.target.value })} className="h-9 w-10 rounded border border-border cursor-pointer shrink-0" />
                     <input value={form.button_color} onChange={(e) => setForm({ ...form, button_color: e.target.value })} placeholder="padrão" className={inputCls} />
                     {form.button_color && <button type="button" onClick={() => setForm({ ...form, button_color: "" })} className="text-[10px] text-primary-dark/50 hover:text-red-500 shrink-0">limpar</button>}
                   </div>

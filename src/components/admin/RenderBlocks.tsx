@@ -653,7 +653,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
                       {p.intro && <p className="text-bodyoga-green/70 whitespace-pre-line">{p.intro}</p>}
                     </div>
                   )}
-                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3B4F30]/5" />
+                  <CustomProjectForm className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#3E573F]/5" />
                 </div>
               </section>
             );

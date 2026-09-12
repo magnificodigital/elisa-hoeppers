@@ -2,10 +2,10 @@ import { supabase } from "./supabase";
 
 const LOGO =
   "https://bodyogaoficial.com.br/__l5e/assets-v1/20aa83d7-e4d0-45c3-a8c7-02d231e4c53b/logo-bodyoga.png";
-const GREEN = "#2F4A3A";
+const GREEN = "#3E573F";
 const CREAM = "#F5EFE6";
 const FOOTER =
-  'BODYOGA · Corpo, mente e ambiente em equilíbrio<br/><a href="https://bodyogaoficial.com.br" style="color:#2F4A3A">bodyogaoficial.com.br</a>';
+  'BODYOGA · Corpo, mente e ambiente em equilíbrio<br/><a href="https://bodyogaoficial.com.br" style="color:#3E573F">bodyogaoficial.com.br</a>';
 
 let seq = 0;
 const uid = (p: string) => `${p}_${++seq}`;
@@ -84,7 +84,7 @@ const buttonBlock = (label: string, href: string) => ({
       color: "#FFFFFF",
       backgroundColor: GREEN,
       hoverColor: "#FFFFFF",
-      hoverBackgroundColor: "#243a2e",
+      hoverBackgroundColor: "#3E573F",
     },
     size: { autoWidth: true, width: "100%" },
     fontWeight: 500,
@@ -206,7 +206,7 @@ export const EMAIL_PRESETS: Preset[] = [
     paragraphs: [
       "Bem-vinda ao universo Bodyoga. Como agradecimento, preparamos um cupom especial para você.",
       "Use o código abaixo no checkout:",
-      '<strong style="font-size:22px;letter-spacing:3px;color:#2F4A3A">{{coupon_code}}</strong><br/><span style="color:#666">Válido por 7 dias · {{discount}}% de desconto</span>',
+      '<strong style="font-size:22px;letter-spacing:3px;color:#3E573F">{{coupon_code}}</strong><br/><span style="color:#666">Válido por 7 dias · {{discount}}% de desconto</span>',
     ],
     cta: { label: "Comprar agora", href: "https://bodyogaoficial.com.br/loja" },
   },
@@ -229,7 +229,7 @@ export const EMAIL_PRESETS: Preset[] = [
     title: "Seu pedido está a caminho",
     paragraphs: [
       "Olá {{customer_name}}, o pedido <strong>#{{order_code}}</strong> foi enviado.",
-      'Código de rastreio: <strong style="letter-spacing:2px;color:#2F4A3A">{{tracking_code}}</strong>',
+      'Código de rastreio: <strong style="letter-spacing:2px;color:#3E573F">{{tracking_code}}</strong>',
     ],
     cta: { label: "Rastrear pedido", href: "https://bodyogaoficial.com.br/pedido/{{order_code}}" },
   },

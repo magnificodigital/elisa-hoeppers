@@ -314,7 +314,7 @@ function ProfilePage() {
                     setNotifyOrders(e.target.checked);
                     saveNotifications.mutate({ notify_order_updates: e.target.checked, notify_marketing: notifyMarketing });
                   }}
-                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3B4F30)] shrink-0"
+                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3E573F)] shrink-0"
                 />
               </label>
 
@@ -332,7 +332,7 @@ function ProfilePage() {
                     setNotifyMarketing(e.target.checked);
                     saveNotifications.mutate({ notify_order_updates: notifyOrders, notify_marketing: e.target.checked });
                   }}
-                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3B4F30)] shrink-0"
+                  className="mt-1 w-5 h-5 accent-[var(--color-primary,#3E573F)] shrink-0"
                 />
               </label>
             </div>

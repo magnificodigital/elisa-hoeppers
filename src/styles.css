@@ -63,26 +63,26 @@
 
 :root {
   --radius: 0.625rem;
-  /* Paleta oficial BODYOGA: apenas Verde (#3B4F30) e Areia/Creme (#F7F0E5) */
+  /* Paleta oficial BODYOGA: apenas Verde (#3E573F) e Areia/Creme (#F7F0E5) */
   --background: #e2d4c1;
-  --foreground: #3B4F30;
-  --primary: #3B4F30;
-  --primary-dark: #3B4F30;
+  --foreground: #3E573F;
+  --primary: #3E573F;
+  --primary-dark: #3E573F;
   --cream: #e2d4c1;
   --sand: #e2d4c1;
   --cream-rose: #e2d4c1;
   --peach: #e2d4c1;
   --peach-light: #e2d4c1;
-  --accent-blue: #3B4F30;
-  --accent-teal: #3B4F30;
-  --text: #3B4F30;
-  --text-muted: #3B4F30;
+  --accent-blue: #3E573F;
+  --accent-teal: #3E573F;
+  --text: #3E573F;
+  --text-muted: #3E573F;
   /* shadcn mappings */
   --card: #e2d4c1;
-  --border: #3B4F30;
-  --ring: #3B4F30;
+  --border: #3E573F;
+  --ring: #3E573F;
   --bodyoga-cream: #e2d4c1;
-  --bodyoga-green: #3B4F30;
+  --bodyoga-green: #3E573F;
   --admin-background: #e2d4c1;
 }
 

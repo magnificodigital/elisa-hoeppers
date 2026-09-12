@@ -13,7 +13,7 @@ const Footer = () => {
   const social = useSocialLinks();
 
   return (
-    <footer className="bg-[#3B4F30] text-cream pt-16 pb-8">
+    <footer className="bg-[#3E573F] text-cream pt-16 pb-8">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12">
           <div className="space-y-4">

@@ -4,7 +4,7 @@ import { supabase } from "./supabase";
 export const THEME_VARS: Record<string, { label: string; fallback: string; vars: string[] }> = {
   theme_primary: {
     label: "Verde (marca)",
-    fallback: "#3B4F30",
+    fallback: "#3E573F",
     vars: [
       "--primary",
       "--primary-dark",

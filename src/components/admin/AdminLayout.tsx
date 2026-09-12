@@ -39,7 +39,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-[#3B4F30] text-white overflow-y-auto no-scrollbar">
+    <div className="flex flex-col h-full bg-[#3E573F] text-white overflow-y-auto no-scrollbar">
       <div className="p-6">
         <Link to="/admin" className="block">
           <BodyogaLogo variant="full" tone="cream" size={32} />
@@ -112,7 +112,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="flex h-screen bg-[var(--admin-background)] overflow-hidden bodyoga-scope">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:w-64 md:flex-col shrink-0 border-r border-[#3B4F30]/10">
+      <aside className="hidden md:flex md:w-64 md:flex-col shrink-0 border-r border-[#3E573F]/10">
         <SidebarContent />
       </aside>
 
@@ -123,11 +123,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center gap-4">
             <Drawer open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DrawerTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden text-[#3B4F30]">
+                <Button variant="ghost" size="icon" className="md:hidden text-[#3E573F]">
                   <Menu size={24} />
                 </Button>
               </DrawerTrigger>
-              <DrawerContent className="p-0 h-[85vh] bg-[#3B4F30] border-none">
+              <DrawerContent className="p-0 h-[85vh] bg-[#3E573F] border-none">
                 <div className="h-full overflow-hidden">
                   <SidebarContent />
                 </div>
@@ -141,7 +141,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#3B4F30]/15 text-[13px] font-medium text-[#3B4F30] hover:bg-[#3B4F30]/5 transition"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#3E573F]/15 text-[13px] font-medium text-[#3E573F] hover:bg-[#3E573F]/5 transition"
             >
               <ArrowUpRight size={16} strokeWidth={2} />
               Ver site
@@ -150,18 +150,18 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             {/* Menu da conta */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-[#3B4F30]/5 transition outline-none">
-                  <span className="w-8 h-8 rounded-full bg-[#3B4F30] text-white flex items-center justify-center text-sm font-medium">
+                <button className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-[#3E573F]/5 transition outline-none">
+                  <span className="w-8 h-8 rounded-full bg-[#3E573F] text-white flex items-center justify-center text-sm font-medium">
                     {(profile?.full_name || 'A').charAt(0).toUpperCase()}
                   </span>
-                  <span className="hidden sm:block text-[13px] font-medium text-[#3B4F30] max-w-[120px] truncate">
+                  <span className="hidden sm:block text-[13px] font-medium text-[#3E573F] max-w-[120px] truncate">
                     {profile?.full_name || 'Admin'}
                   </span>
-                  <ChevronDown size={16} className="text-[#3B4F30]/50" />
+                  <ChevronDown size={16} className="text-[#3E573F]/50" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52">
-                <DropdownMenuLabel className="text-xs font-normal text-[#3B4F30]/60">
+                <DropdownMenuLabel className="text-xs font-normal text-[#3E573F]/60">
                   {profile?.full_name || 'Admin'}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

@@ -34,9 +34,9 @@ const Header = ({ transparentOnTop = false }: HeaderProps) => {
     : { label: "LOGIN", href: "/login" as const };
 
 
-  const headerBg = "bg-[#3B4F30] shadow-sm";
+  const headerBg = "bg-[#3E573F] shadow-sm";
   const textColor = "text-[#DBCCBF]";
-  const ctaBorder = "border-[#DBCCBF] text-[#DBCCBF] hover:bg-[#DBCCBF] hover:text-[#3B4F30]";
+  const ctaBorder = "border-[#DBCCBF] text-[#DBCCBF] hover:bg-[#DBCCBF] hover:text-[#3E573F]";
   // Filter to convert black -> #DBCCBF
   const logoFilter = "brightness(0) saturate(100%) invert(89%) sepia(8%) saturate(458%) hue-rotate(345deg) brightness(94%) contrast(88%)";
 

@@ -60,10 +60,10 @@ function AdminProjectRequests() {
       <section className="py-12 md:py-20 bg-background min-h-screen">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center gap-3 mb-2">
-            <MessageSquare className="w-7 h-7 text-[#3B4F30]" />
-            <h1 className="font-display text-3xl md:text-4xl text-[#3B4F30]">Solicitações</h1>
+            <MessageSquare className="w-7 h-7 text-[#3E573F]" />
+            <h1 className="font-display text-3xl md:text-4xl text-[#3E573F]">Solicitações</h1>
           </div>
-          <p className="text-[#3B4F30]/60 mb-8 text-sm">
+          <p className="text-[#3E573F]/60 mb-8 text-sm">
             Gerencie as solicitações de projetos personalizados e brindes corporativos.
           </p>
 
@@ -72,8 +72,8 @@ function AdminProjectRequests() {
               onClick={() => setFilter("all")}
               className={`px-5 py-2 rounded-full text-xs uppercase tracking-widest transition ${
                 filter === "all"
-                  ? "bg-[#3B4F30] text-white"
-                  : "bg-white text-[#3B4F30] border border-[#3B4F30]/10 hover:border-[#3B4F30]"
+                  ? "bg-[#3E573F] text-white"
+                  : "bg-white text-[#3E573F] border border-[#3E573F]/10 hover:border-[#3E573F]"
               }`}
             >
               Todas
@@ -84,8 +84,8 @@ function AdminProjectRequests() {
                 onClick={() => setFilter(s.id)}
                 className={`px-5 py-2 rounded-full text-xs uppercase tracking-widest transition ${
                   filter === s.id
-                    ? "bg-[#3B4F30] text-white"
-                    : "bg-white text-[#3B4F30] border border-[#3B4F30]/10 hover:border-[#3B4F30]"
+                    ? "bg-[#3E573F] text-white"
+                    : "bg-white text-[#3E573F] border border-[#3E573F]/10 hover:border-[#3E573F]"
                 }`}
               >
                 {s.label}
@@ -96,8 +96,8 @@ function AdminProjectRequests() {
           {isLoading ? (
             <div className="text-center py-20 opacity-50">Carregando solicitações...</div>
           ) : !requests?.length ? (
-            <div className="bg-white/50 border border-[#3B4F30]/5 rounded-3xl p-12 text-center shadow-none">
-              <p className="text-[#3B4F30]/60">Nenhuma solicitação encontrada neste filtro.</p>
+            <div className="bg-white/50 border border-[#3E573F]/5 rounded-3xl p-12 text-center shadow-none">
+              <p className="text-[#3E573F]/60">Nenhuma solicitação encontrada neste filtro.</p>
             </div>
           ) : (
             <div className="space-y-6">
@@ -158,7 +158,7 @@ function RequestCard({ request: req }: { request: any }) {
               <span className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider text-white ${statusInfo.color}`}>
                 {statusInfo.label}
               </span>
-              <span className="text-[10px] uppercase tracking-wider text-[#3B4F30]/40 flex items-center gap-1">
+              <span className="text-[10px] uppercase tracking-wider text-[#3E573F]/40 flex items-center gap-1">
                 <Clock className="w-3 h-3" />
                 {new Date(req.created_at).toLocaleDateString("pt-BR", {
                   day: "2-digit",
@@ -169,8 +169,8 @@ function RequestCard({ request: req }: { request: any }) {
                 })}
               </span>
             </div>
-            <h3 className="font-display text-xl text-[#3B4F30]">{req.name}</h3>
-            <p className="text-sm text-[#3B4F30]/60 flex items-center gap-2">
+            <h3 className="font-display text-xl text-[#3E573F]">{req.name}</h3>
+            <p className="text-sm text-[#3E573F]/60 flex items-center gap-2">
               <Building2 className="w-4 h-4" />
               {req.company || "Pessoa Física"}
             </p>
@@ -180,7 +180,7 @@ function RequestCard({ request: req }: { request: any }) {
             <select
               value={req.status}
               onChange={(e) => handleStatusChange(e.target.value)}
-              className="bg-bodyoga-cream text-[#3B4F30] text-xs uppercase tracking-wider px-4 py-2 rounded-full border-none focus:ring-1 focus:ring-[#3B4F30]/20 cursor-pointer"
+              className="bg-bodyoga-cream text-[#3E573F] text-xs uppercase tracking-wider px-4 py-2 rounded-full border-none focus:ring-1 focus:ring-[#3E573F]/20 cursor-pointer"
             >
               {STATUS_OPTIONS.map(s => (
                 <option key={s.id} value={s.id}>{s.label}</option>
@@ -200,17 +200,17 @@ function RequestCard({ request: req }: { request: any }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm">
-          <div className="flex items-center gap-2 text-[#3B4F30]/70">
+          <div className="flex items-center gap-2 text-[#3E573F]/70">
             <Mail className="w-4 h-4 shrink-0" />
             <span className="truncate">{req.email}</span>
           </div>
-          <div className="flex items-center gap-2 text-[#3B4F30]/70">
+          <div className="flex items-center gap-2 text-[#3E573F]/70">
             <Briefcase className="w-4 h-4 shrink-0" />
             <span className="capitalize">{req.project_type === 'fragrancia' ? 'Fragrância' : req.project_type === 'brinde' ? 'Brinde' : 'Outro'}</span>
           </div>
           {req.budget_range && (
-            <div className="flex items-center gap-2 text-[#3B4F30]/70">
-              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#3B4F30]/5 px-2 py-0.5 rounded">R$</span>
+            <div className="flex items-center gap-2 text-[#3E573F]/70">
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-[#3E573F]/5 px-2 py-0.5 rounded">R$</span>
               <span>{req.budget_range}</span>
             </div>
           )}
@@ -218,7 +218,7 @@ function RequestCard({ request: req }: { request: any }) {
 
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full flex items-center justify-center gap-2 py-2 text-[10px] uppercase tracking-[0.2em] font-bold text-[#3B4F30]/40 hover:text-[#3B4F30] transition border-t border-[#3B4F30]/5 mt-2"
+          className="w-full flex items-center justify-center gap-2 py-2 text-[10px] uppercase tracking-[0.2em] font-bold text-[#3E573F]/40 hover:text-[#3E573F] transition border-t border-[#3E573F]/5 mt-2"
         >
           {expanded ? (
             <>Ocultar Detalhes <ChevronUp className="w-4 h-4" /></>
@@ -233,26 +233,26 @@ function RequestCard({ request: req }: { request: any }) {
               {req.cnpj && (
                 <div>
                   <h4 className="text-[10px] uppercase tracking-wider font-bold opacity-40 mb-1">CNPJ</h4>
-                  <p className="text-[#3B4F30]">{req.cnpj}</p>
+                  <p className="text-[#3E573F]">{req.cnpj}</p>
                 </div>
               )}
               {req.quantity_estimate && (
                 <div>
                   <h4 className="text-[10px] uppercase tracking-wider font-bold opacity-40 mb-1">Quantidade</h4>
-                  <p className="text-[#3B4F30]">{req.quantity_estimate}</p>
+                  <p className="text-[#3E573F]">{req.quantity_estimate}</p>
                 </div>
               )}
               {req.deadline && (
                 <div>
                   <h4 className="text-[10px] uppercase tracking-wider font-bold opacity-40 mb-1">Prazo Desejado</h4>
-                  <p className="text-[#3B4F30]">{req.deadline}</p>
+                  <p className="text-[#3E573F]">{req.deadline}</p>
                 </div>
               )}
             </div>
 
             <div>
               <h4 className="text-[10px] uppercase tracking-wider font-bold opacity-40 mb-2">Briefing do Projeto</h4>
-              <div className="bg-bodyoga-cream/50 p-5 rounded-2xl text-[#3B4F30] leading-relaxed whitespace-pre-line border border-[#3B4F30]/5">
+              <div className="bg-bodyoga-cream/50 p-5 rounded-2xl text-[#3E573F] leading-relaxed whitespace-pre-line border border-[#3E573F]/5">
                 {req.brief}
               </div>
             </div>
@@ -263,14 +263,14 @@ function RequestCard({ request: req }: { request: any }) {
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-white border border-[#3B4F30]/10 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#3B4F30]/20 resize-none"
+                  className="w-full bg-white border border-[#3E573F]/10 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#3E573F]/20 resize-none"
                   placeholder="Adicione anotações sobre o contato, orçamento enviado, etc..."
                   rows={2}
                 />
                 <button
                   onClick={handleSaveNotes}
                   disabled={updateMutation.isPending || notes === req.admin_notes}
-                  className="bg-[#3B4F30] text-white px-4 rounded-2xl hover:opacity-90 transition disabled:opacity-50 shrink-0 self-end py-3"
+                  className="bg-[#3E573F] text-white px-4 rounded-2xl hover:opacity-90 transition disabled:opacity-50 shrink-0 self-end py-3"
                   title="Salvar Notas"
                 >
                   <Save className="w-4 h-4" />
