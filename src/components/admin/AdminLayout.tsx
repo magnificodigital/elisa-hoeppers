@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { Menu, X, ArrowUpRight, LogOut, ChevronRight, ChevronDown, Settings } from "lucide-react";
+import { Menu, X, ArrowUpRight, LogOut, ChevronRight, ChevronDown, Settings, Mail } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import { ADMIN_NAV_ITEMS } from "@/lib/admin-nav";
@@ -136,6 +136,17 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Acessar email (Titan, nova aba) */}
+            <a
+              href="https://secureserver.titan.email/mail/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#3E573F]/15 text-[13px] font-medium text-[#3E573F] hover:bg-[#3E573F]/5 transition"
+            >
+              <Mail size={16} strokeWidth={2} />
+              Acessar email
+            </a>
+
             {/* Ver o site (nova aba) */}
             <a
               href="/"
@@ -169,6 +180,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   <Link to="/admin/configuracoes" className="cursor-pointer flex items-center gap-2">
                     <Settings size={15} /> Gerenciar conta
                   </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a href="https://secureserver.titan.email/mail/" target="_blank" rel="noopener noreferrer" className="cursor-pointer flex items-center gap-2">
+                    <Mail size={15} /> Acessar email
+                  </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="sm:hidden">
                   <a href="/" target="_blank" rel="noopener noreferrer" className="cursor-pointer flex items-center gap-2">
