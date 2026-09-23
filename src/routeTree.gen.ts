@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ComprarRouteImport } from './routes/comprar'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as SlugRouteImport } from './routes/$slug'
@@ -44,6 +45,7 @@ import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
+import { Route as AdminCuponsRouteImport } from './routes/admin/cupons'
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminBlogRouteImport } from './routes/admin/blog'
@@ -63,9 +65,11 @@ import { Route as AdminWebsiteSeoRouteImport } from './routes/admin/website.seo'
 import { Route as AdminWebsiteMenuRouteImport } from './routes/admin/website.menu'
 import { Route as AdminWebsiteHomeRouteImport } from './routes/admin/website.home'
 import { Route as AdminWebsiteCoresRouteImport } from './routes/admin/website.cores'
+import { Route as AdminWebsiteCategoriasRouteImport } from './routes/admin/website.categorias'
 import { Route as AdminProdutosIdRouteImport } from './routes/admin/produtos/$id'
 import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/configuracoes/usuarios'
 import { Route as AdminConfiguracoesSiteRouteImport } from './routes/admin/configuracoes/site'
+import { Route as AdminConfiguracoesPagarmeRouteImport } from './routes/admin/configuracoes/pagarme'
 import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin/configuracoes/newsletter'
 import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
 import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
@@ -94,6 +98,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComprarRoute = ComprarRouteImport.update({
+  id: '/comprar',
+  path: '/comprar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -262,6 +271,11 @@ const AdminDiagnosticoEnvioRoute = AdminDiagnosticoEnvioRouteImport.update({
   path: '/diagnostico-envio',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminCuponsRoute = AdminCuponsRouteImport.update({
+  id: '/cupons',
+  path: '/cupons',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminClientesRoute = AdminClientesRouteImport.update({
   id: '/clientes',
   path: '/clientes',
@@ -358,6 +372,11 @@ const AdminWebsiteCoresRoute = AdminWebsiteCoresRouteImport.update({
   path: '/website/cores',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminWebsiteCategoriasRoute = AdminWebsiteCategoriasRouteImport.update({
+  id: '/website/categorias',
+  path: '/website/categorias',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminProdutosIdRoute = AdminProdutosIdRouteImport.update({
   id: '/produtos/$id',
   path: '/produtos/$id',
@@ -374,6 +393,12 @@ const AdminConfiguracoesSiteRoute = AdminConfiguracoesSiteRouteImport.update({
   path: '/configuracoes/site',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminConfiguracoesPagarmeRoute =
+  AdminConfiguracoesPagarmeRouteImport.update({
+    id: '/configuracoes/pagarme',
+    path: '/configuracoes/pagarme',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
 const AdminConfiguracoesNewsletterRoute =
   AdminConfiguracoesNewsletterRouteImport.update({
     id: '/configuracoes/newsletter',
@@ -485,12 +510,14 @@ export interface FileRoutesByFullPath {
   '/$slug': typeof SlugRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
+  '/comprar': typeof ComprarRoute
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
+  '/admin/cupons': typeof AdminCuponsRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -531,9 +558,11 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/pagarme': typeof AdminConfiguracoesPagarmeRoute
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/website/categorias': typeof AdminWebsiteCategoriasRoute
   '/admin/website/cores': typeof AdminWebsiteCoresRoute
   '/admin/website/home': typeof AdminWebsiteHomeRoute
   '/admin/website/menu': typeof AdminWebsiteMenuRoute
@@ -562,11 +591,13 @@ export interface FileRoutesByTo {
   '/$slug': typeof SlugRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
+  '/comprar': typeof ComprarRoute
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
+  '/admin/cupons': typeof AdminCuponsRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -607,9 +638,11 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/pagarme': typeof AdminConfiguracoesPagarmeRoute
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/website/categorias': typeof AdminWebsiteCategoriasRoute
   '/admin/website/cores': typeof AdminWebsiteCoresRoute
   '/admin/website/home': typeof AdminWebsiteHomeRoute
   '/admin/website/menu': typeof AdminWebsiteMenuRoute
@@ -640,12 +673,14 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/carrinho': typeof CarrinhoRoute
   '/checkout': typeof CheckoutRoute
+  '/comprar': typeof ComprarRoute
   '/login': typeof LoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
+  '/admin/cupons': typeof AdminCuponsRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
@@ -686,9 +721,11 @@ export interface FileRoutesById {
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
+  '/admin/configuracoes/pagarme': typeof AdminConfiguracoesPagarmeRoute
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
   '/admin/configuracoes/usuarios': typeof AdminConfiguracoesUsuariosRoute
   '/admin/produtos/$id': typeof AdminProdutosIdRoute
+  '/admin/website/categorias': typeof AdminWebsiteCategoriasRoute
   '/admin/website/cores': typeof AdminWebsiteCoresRoute
   '/admin/website/home': typeof AdminWebsiteHomeRoute
   '/admin/website/menu': typeof AdminWebsiteMenuRoute
@@ -720,12 +757,14 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/carrinho'
     | '/checkout'
+    | '/comprar'
     | '/login'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/blog'
     | '/admin/broadcast'
     | '/admin/clientes'
+    | '/admin/cupons'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -766,9 +805,11 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/pagarme'
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/website/categorias'
     | '/admin/website/cores'
     | '/admin/website/home'
     | '/admin/website/menu'
@@ -797,11 +838,13 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/carrinho'
     | '/checkout'
+    | '/comprar'
     | '/login'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
+    | '/admin/cupons'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -842,9 +885,11 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/pagarme'
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/website/categorias'
     | '/admin/website/cores'
     | '/admin/website/home'
     | '/admin/website/menu'
@@ -874,12 +919,14 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/carrinho'
     | '/checkout'
+    | '/comprar'
     | '/login'
     | '/sitemap.xml'
     | '/admin/agendamentos'
     | '/admin/blog'
     | '/admin/broadcast'
     | '/admin/clientes'
+    | '/admin/cupons'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
@@ -920,9 +967,11 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
     | '/admin/configuracoes/newsletter'
+    | '/admin/configuracoes/pagarme'
     | '/admin/configuracoes/site'
     | '/admin/configuracoes/usuarios'
     | '/admin/produtos/$id'
+    | '/admin/website/categorias'
     | '/admin/website/cores'
     | '/admin/website/home'
     | '/admin/website/menu'
@@ -953,6 +1002,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   CarrinhoRoute: typeof CarrinhoRoute
   CheckoutRoute: typeof CheckoutRoute
+  ComprarRoute: typeof ComprarRoute
   LoginRoute: typeof LoginRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -991,6 +1041,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comprar': {
+      id: '/comprar'
+      path: '/comprar'
+      fullPath: '/comprar'
+      preLoaderRoute: typeof ComprarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -1224,6 +1281,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDiagnosticoEnvioRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/cupons': {
+      id: '/admin/cupons'
+      path: '/cupons'
+      fullPath: '/admin/cupons'
+      preLoaderRoute: typeof AdminCuponsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/clientes': {
       id: '/admin/clientes'
       path: '/clientes'
@@ -1357,6 +1421,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWebsiteCoresRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/website/categorias': {
+      id: '/admin/website/categorias'
+      path: '/website/categorias'
+      fullPath: '/admin/website/categorias'
+      preLoaderRoute: typeof AdminWebsiteCategoriasRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/produtos/$id': {
       id: '/admin/produtos/$id'
       path: '/produtos/$id'
@@ -1376,6 +1447,13 @@ declare module '@tanstack/react-router' {
       path: '/configuracoes/site'
       fullPath: '/admin/configuracoes/site'
       preLoaderRoute: typeof AdminConfiguracoesSiteRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/configuracoes/pagarme': {
+      id: '/admin/configuracoes/pagarme'
+      path: '/configuracoes/pagarme'
+      fullPath: '/admin/configuracoes/pagarme'
+      preLoaderRoute: typeof AdminConfiguracoesPagarmeRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/configuracoes/newsletter': {
@@ -1544,6 +1622,7 @@ interface AdminRouteRouteChildren {
   AdminBlogRoute: typeof AdminBlogRouteWithChildren
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
+  AdminCuponsRoute: typeof AdminCuponsRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
@@ -1566,9 +1645,11 @@ interface AdminRouteRouteChildren {
   AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
   AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
   AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
+  AdminConfiguracoesPagarmeRoute: typeof AdminConfiguracoesPagarmeRoute
   AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
   AdminConfiguracoesUsuariosRoute: typeof AdminConfiguracoesUsuariosRoute
   AdminProdutosIdRoute: typeof AdminProdutosIdRoute
+  AdminWebsiteCategoriasRoute: typeof AdminWebsiteCategoriasRoute
   AdminWebsiteCoresRoute: typeof AdminWebsiteCoresRoute
   AdminWebsiteHomeRoute: typeof AdminWebsiteHomeRoute
   AdminWebsiteMenuRoute: typeof AdminWebsiteMenuRoute
@@ -1593,6 +1674,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminBlogRoute: AdminBlogRouteWithChildren,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
+  AdminCuponsRoute: AdminCuponsRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
@@ -1615,9 +1697,11 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
   AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
   AdminConfiguracoesNewsletterRoute: AdminConfiguracoesNewsletterRoute,
+  AdminConfiguracoesPagarmeRoute: AdminConfiguracoesPagarmeRoute,
   AdminConfiguracoesSiteRoute: AdminConfiguracoesSiteRoute,
   AdminConfiguracoesUsuariosRoute: AdminConfiguracoesUsuariosRoute,
   AdminProdutosIdRoute: AdminProdutosIdRoute,
+  AdminWebsiteCategoriasRoute: AdminWebsiteCategoriasRoute,
   AdminWebsiteCoresRoute: AdminWebsiteCoresRoute,
   AdminWebsiteHomeRoute: AdminWebsiteHomeRoute,
   AdminWebsiteMenuRoute: AdminWebsiteMenuRoute,
@@ -1647,6 +1731,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   CarrinhoRoute: CarrinhoRoute,
   CheckoutRoute: CheckoutRoute,
+  ComprarRoute: ComprarRoute,
   LoginRoute: LoginRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
