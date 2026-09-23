@@ -29,7 +29,8 @@ function timingSafeEqual(a: string, b: string): boolean {
 serve(async (req) => {
   try {
     const expectedToken = await getSetting("base_webhook_token");
-    const providedToken = req.headers.get("access_token") ?? req.headers.get("x-webhook-token") ?? "";
+    // A Base (by Asaas) envia o token configurado no header "asaas-access-token".
+    const providedToken = req.headers.get("asaas-access-token") ?? req.headers.get("access_token") ?? req.headers.get("x-webhook-token") ?? "";
 
     if (expectedToken) {
       if (!providedToken || !timingSafeEqual(providedToken, expectedToken)) {

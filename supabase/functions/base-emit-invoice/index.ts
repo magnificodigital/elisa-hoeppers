@@ -133,15 +133,16 @@ async function ensureBaseProduct(params: {
     throw new Error(`Produto ${name} sem NCM válido. Configure em /admin/produtos ou em Configurações → Base ERP.`);
   }
 
+  // Campos conforme ProductInputDto da Base (obrigatórios: code, name, ncm, unit).
   const productPayload: any = {
     name: name.slice(0, 120),
     code: `PROD-${productId.slice(0, 12)}`,
-    unitPrice: price,
+    salePrice: price,
     ncm: finalNcm,
-    unitOfMeasure: finalUnit,
+    unit: finalUnit,
     externalReference: productId,
   };
-  if (weightKg != null) productPayload.grossWeight = weightKg;
+  void weightKg;
 
   const created = await baseCall("/api/v1/products", "POST", apiKey, env, productPayload);
   const baseProductId = created.id;
@@ -231,6 +232,11 @@ serve(async (req) => {
       customerId: baseCustomerId,
       orderItems,
       externalReference: order.id,
+      observations: `Pedido #${order.code} — bodyogaoficial.com.br`,
+      // Frete e desconto na nota → total da NF-e bate com o valor cobrado do cliente.
+      typeOfShipping: (order.shipping_cents ?? 0) > 0 ? "EMITENTE" : "SEM_FRETE",
+      ...((order.shipping_cents ?? 0) > 0 ? { costOfShipping: order.shipping_cents / 100 } : {}),
+      ...((order.discount_cents ?? 0) > 0 ? { discountValue: order.discount_cents / 100 } : {}),
     };
 
     const salesOrder = await baseCall("/api/v1/salesOrders", "POST", apiKey, env, salesOrderPayload);
