@@ -11,7 +11,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "
 // @ts-ignore
 const ELISA_EMAIL = Deno.env.get("ELISA_EMAIL") ?? "elisa.hoeppers@gmail.com";
 // @ts-ignore
-const SITE_URL = Deno.env.get("SITE_URL") ?? "https://hoepppers.lovable.app";
+const SITE_URL = Deno.env.get("SITE_URL") ?? "https://bodyogaoficial.com.br";
 
 const FROM = "BODYOGA <contato@bodyogaoficial.com.br>";
 const REPLY_TO = ELISA_EMAIL;
@@ -167,6 +167,33 @@ async function handleBooking(recordId: string) {
   ]);
 }
 
+
+// ===== Jornada do pedido: barra de progresso usada em todos os e-mails =====
+const ORDER_STEPS = ["Pedido recebido", "Pagamento aprovado", "Nota fiscal", "Enviado", "Em trânsito", "Entregue"];
+function progressBar(current: number): string {
+  const cells = ORDER_STEPS.map((label, i) => {
+    const done = i <= current;
+    const color = done ? "#3E573F" : "#D9CFC2";
+    const text = done ? "#3E573F" : "#9A8F80";
+    return `<td style="padding:0 2px;text-align:center;vertical-align:top;width:${Math.floor(100 / ORDER_STEPS.length)}%;">
+      <div style="height:6px;border-radius:3px;background:${color};margin-bottom:6px;"></div>
+      <div style="font-size:10px;line-height:1.3;color:${text};font-weight:${i === current ? 700 : 400};">${label}</div>
+    </td>`;
+  }).join("");
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 20px;"><tr>${cells}</tr></table>`;
+}
+function trackingUrl(code: string): string {
+  return `https://www.melhorrastreio.com.br/rastreio/${encodeURIComponent(code)}`;
+}
+function orderLink(order: any): string {
+  return order.user_id ? `${SITE_URL}/painel/pedidos` : `${SITE_URL}/pedido/${order.code}`;
+}
+async function loadOrder(orderId: string) {
+  const { data: order, error } = await supabase.from("orders").select("*").eq("id", orderId).maybeSingle();
+  if (error || !order) throw new Error("order not found");
+  return order;
+}
+
 async function handleOrder(recordId: string) {
   const { data: order, error } = await supabase
     .from("orders")
@@ -201,38 +228,130 @@ async function handleOrder(recordId: string) {
       ? `<div class="total-row" style="font-weight:400;"><span>Frete${order.shipping_service_label ? ` · ${order.shipping_service_label}` : ""}</span><span>${formatBRL(order.shipping_cents)}</span></div>`
       : `<p class="muted">Frete a combinar por WhatsApp</p>`;
 
+  const payLink =
+    order.payment_method === "pagarme" && String(order.payment_preference_id ?? "").startsWith("pl_")
+      ? `https://payment-link-v3.pagar.me/${order.payment_preference_id}`
+      : null;
+
   const customerHtml = wrap(`
     <div class="card">
-      <h1>Pedido recebido!</h1>
-      <p>Olá ${firstName}, seu pedido foi registrado. A Elisa entra em contato em até 24h pra combinar o pagamento${order.shipping_cents > 0 ? "" : " e o frete"}.</p>
+      <h1>Recebemos seu pedido 🌿</h1>
+      ${progressBar(0)}
+      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> foi registrado e está <strong>aguardando a confirmação do pagamento</strong>. Assim que o pagamento for aprovado, você recebe outro e-mail e a gente já começa a preparar tudo.</p>
       <h2>Seu pedido</h2>
       ${itemsHtml}
       <div class="total-row" style="font-weight:400;"><span>Subtotal</span><span>${formatBRL(order.subtotal_cents)}</span></div>
+      ${order.discount_cents > 0 ? `<div class="total-row" style="font-weight:400;"><span>Desconto${order.coupon_code ? ` · ${order.coupon_code}` : ""}</span><span>− ${formatBRL(order.discount_cents)}</span></div>` : ""}
       ${shippingLine}
       <div class="total-row"><span>Total</span><span>${formatBRL(order.total_cents)}</span></div>
-      <p><span class="label">Código</span> <span class="code">#${order.code}</span></p>
+      ${payLink ? `<a class="btn" href="${payLink}">Finalizar pagamento</a>
+      <p class="muted">Se você já pagou, pode ignorar este botão — a confirmação chega em instantes.</p>` : ""}
       ${accountCta}
     </div>
   `);
 
+  // Pedido já pago (ex.: confirmado manualmente antes do e-mail sair) não precisa do "aguardando".
+  if (order.status !== "pending") return;
+  if (!(await wantsOrderUpdates(order.user_id))) return;
+  await sendEmail(order.customer_email, `Recebemos seu pedido #${order.code} 🌿`, customerHtml)
+    .catch((e) => console.error("customer email failed:", e));
+  void addressHtml; // usado no e-mail da Elisa (enviado no pagamento)
+}
 
+async function handleOrderPaid(orderId: string) {
+  const order = await loadOrder(orderId);
+  const firstName = order.customer_name.split(" ")[0];
+  const itemsHtml = (order.items as any[])
+    .map((it) => `<div class="item"><p style="margin:0;font-weight:600;">${it.qty}× ${it.name}</p><p class="muted" style="margin:4px 0 0;">${formatBRL(it.total_cents)}</p></div>`)
+    .join("");
+  const addr = order.customer_address as any;
+  const addressHtml = addr?.street
+    ? `<p><span class="label">Entrega</span><br/>${[addr.street, addr.number, addr.complement, addr.district, addr.city ? `${addr.city}/${addr.state ?? ""}` : null, addr.cep].filter(Boolean).join(", ")}</p>`
+    : "";
+  const method = order.payment_method_type === "pix" ? "PIX" : order.payment_method_type === "credit_card" ? "Cartão de crédito" : "";
+
+  const customerHtml = wrap(`
+    <div class="card">
+      <h1>Pagamento aprovado! 🎉</h1>
+      ${progressBar(1)}
+      <p>Olá ${firstName}, o pagamento do pedido <span class="code">#${order.code}</span> foi confirmado${method ? ` (${method})` : ""}. Agora a gente separa seus produtos com carinho e te avisa a cada etapa até chegar na sua casa.</p>
+      <h2>Resumo</h2>
+      ${itemsHtml}
+      <div class="total-row"><span>Total pago</span><span>${formatBRL(order.total_cents)}</span></div>
+      ${addressHtml}
+      <a class="btn" href="${orderLink(order)}">Acompanhar pedido</a>
+    </div>
+  `);
 
   const elisaHtml = wrap(`
     <div class="card">
-      <h1>Novo pedido: #${order.code}</h1>
+      <h1>💰 Pedido pago: #${order.code}</h1>
       <p><span class="label">Cliente</span><br/>${order.customer_name}<br/>${order.customer_email}<br/>${order.customer_phone}</p>
       ${addressHtml}
+      ${order.shipping_service_label ? `<p><span class="label">Frete escolhido</span><br/>${order.shipping_service_label} · ${formatBRL(order.shipping_cents)}</p>` : ""}
       ${order.notes ? `<p><span class="label">Observações</span><br/>"${order.notes}"</p>` : ""}
       <h2>Itens</h2>
       ${itemsHtml}
       <div class="total-row"><span>Total</span><span>${formatBRL(order.total_cents)}</span></div>
-      <a class="btn" href="${SITE_URL}/admin/pedidos">Abrir admin</a>
+      <p><strong>Próximo passo:</strong> emitir a NF-e e comprar a etiqueta no painel.</p>
+      <a class="btn" href="${SITE_URL}/admin/pedidos">Preparar envio</a>
     </div>
   `);
 
+  const tasks: Promise<unknown>[] = [
+    sendEmail(ELISA_EMAIL, `💰 Pedido pago #${order.code} · ${order.customer_name} · ${formatBRL(order.total_cents)}`, elisaHtml)
+      .catch((e) => console.error("elisa paid email failed:", e)),
+  ];
+  if (await wantsOrderUpdates(order.user_id)) {
+    tasks.push(sendEmail(order.customer_email, `Pagamento aprovado · pedido #${order.code} 🎉`, customerHtml)
+      .catch((e) => console.error("paid customer email failed:", e)));
+  }
+  await Promise.all(tasks);
+}
+
+async function handleOrderInTransit(orderId: string) {
+  const order = await loadOrder(orderId);
+  const firstName = order.customer_name.split(" ")[0];
+  const customerHtml = wrap(`
+    <div class="card">
+      <h1>Seu pedido está a caminho 🚚</h1>
+      ${progressBar(4)}
+      <p>Olá ${firstName}, a transportadora já recebeu o pedido <span class="code">#${order.code}</span> e ele está em trânsito até você.</p>
+      ${order.tracking_code ? `<p><span class="label">Código de rastreio</span><br/><span class="code">${order.tracking_code}</span></p>
+      <a class="btn" href="${trackingUrl(order.tracking_code)}">Rastrear entrega</a>` : ""}
+      <p class="muted">${order.shipping_service_label ? `Envio via ${order.shipping_service_label}. ` : ""}Qualquer dúvida, é só responder este e-mail.</p>
+    </div>
+  `);
+  if (!(await wantsOrderUpdates(order.user_id))) return;
+  await sendEmail(order.customer_email, `Seu pedido #${order.code} está a caminho 🚚`, customerHtml)
+    .catch((e) => console.error("in-transit email failed:", e));
+}
+
+async function handleOrderDeliveryIssue(orderId: string) {
+  const order = await loadOrder(orderId);
+  const firstName = order.customer_name.split(" ")[0];
+  const customerHtml = wrap(`
+    <div class="card">
+      <h1>Houve um problema na entrega</h1>
+      ${progressBar(4)}
+      <p>Olá ${firstName}, a transportadora não conseguiu concluir a entrega do pedido <span class="code">#${order.code}</span>. Não se preocupe — a gente já está acompanhando e vai te chamar pra resolver.</p>
+      ${order.tracking_code ? `<a class="btn" href="${trackingUrl(order.tracking_code)}">Ver rastreio</a>` : ""}
+      <p class="muted">Se preferir, responda este e-mail ou chame no WhatsApp.</p>
+    </div>
+  `);
+  const elisaHtml = wrap(`
+    <div class="card">
+      <h1>⚠️ Falha na entrega: #${order.code}</h1>
+      <p>${order.customer_name} · ${order.customer_email} · ${order.customer_phone}</p>
+      ${order.tracking_code ? `<p>Rastreio: <span class="code">${order.tracking_code}</span></p>` : ""}
+      <a class="btn" href="${SITE_URL}/admin/pedidos">Abrir pedido</a>
+    </div>
+  `);
   await Promise.all([
-    sendEmail(order.customer_email, `Seu pedido #${order.code} foi recebido 📦`, customerHtml).catch((e) => console.error("customer email failed:", e)),
-    sendEmail(ELISA_EMAIL, `Novo pedido: ${order.customer_name} · ${formatBRL(order.total_cents)}`, elisaHtml).catch((e) => console.error("elisa email failed:", e)),
+    sendEmail(ELISA_EMAIL, `⚠️ Falha na entrega · pedido #${order.code}`, elisaHtml).catch((e) => console.error(e)),
+    (await wantsOrderUpdates(order.user_id))
+      ? sendEmail(order.customer_email, `Atualização sobre a entrega do pedido #${order.code}`, customerHtml).catch((e) => console.error(e))
+      : Promise.resolve(),
   ]);
 }
 
@@ -364,13 +483,14 @@ async function handleOrderShipped(orderId: string) {
   const firstName = order.customer_name.split(" ")[0];
   const trackingBlock = order.tracking_code
     ? `<p><span class="label">Código de rastreio</span><br/><span class="code">${order.tracking_code}</span></p>
-       <a class="btn" href="https://rastreamento.correios.com.br/app/index.php?objeto=${order.tracking_code}">Rastrear nos Correios</a>`
-    : `<p class="muted">A Elisa vai te mandar o código de rastreio em breve por WhatsApp.</p>`;
+       <a class="btn" href="${trackingUrl(order.tracking_code)}">Rastrear pedido</a>`
+    : `<p class="muted">O código de rastreio chega assim que a transportadora registrar o envio.</p>`;
 
   const customerHtml = wrap(`
     <div class="card">
-      <h1>Seu pedido foi enviado! 📦</h1>
-      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> acabou de sair pra entrega.</p>
+      <h1>Seu pedido foi despachado! 📦</h1>
+      ${progressBar(3)}
+      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> foi embalado e a etiqueta de envio já foi gerada. Em breve ele é postado e você recebe outro aviso quando estiver em trânsito.</p>
       ${trackingBlock}
       <p class="muted">Qualquer dúvida, é só responder este email ou chamar no WhatsApp.</p>
     </div>
@@ -392,15 +512,16 @@ async function handleOrderCompleted(orderId: string) {
 
   const customerHtml = wrap(`
     <div class="card">
-      <h1>Pedido concluído 🌿</h1>
-      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> foi finalizado. Espero que você ame os produtos!</p>
+      <h1>Pedido entregue 🌿</h1>
+      ${progressBar(5)}
+      <p>Olá ${firstName}, seu pedido <span class="code">#${order.code}</span> foi entregue. Espero que você ame os produtos!</p>
       <p>Se puder, deixa uma avaliação na página do produto — me ajuda muito a continuar selecionando coisas boas pra você.</p>
       <a class="btn" href="${SITE_URL}/loja">Voltar pra loja</a>
       <p class="muted">Com carinho,<br/>Elisa</p>
     </div>
   `);
   if (!(await wantsOrderUpdates(order.user_id))) return;
-  await sendEmail(order.customer_email, `Pedido #${order.code} concluído · obrigada 🌿`, customerHtml)
+  await sendEmail(order.customer_email, `Pedido #${order.code} entregue · obrigada 🌿`, customerHtml)
     .catch((e) => console.error("completed customer email failed:", e));
 }
 
@@ -420,6 +541,7 @@ async function handleInvoiceReady(recordId: string) {
   const html = wrap(`
     <div class="card">
       <h1>Sua nota fiscal chegou 🌿</h1>
+      ${progressBar(2)}
       <p>Olá ${firstName}, aqui está a NFe do seu pedido <span class="code">#${order.code}</span>.</p>
       ${order.base_invoice_number ? `<p><span class="label">Número da NFe</span> ${order.base_invoice_number}</p>` : ""}
       ${order.base_invoice_key ? `<p><span class="label">Chave de acesso</span><br/><span class="code" style="font-size:11px;word-break:break-all;">${order.base_invoice_key}</span></p>` : ""}
@@ -553,6 +675,9 @@ serve(async (req) => {
     else if (type === "order") await handleOrder(record_id);
     else if (type === "course_completed") await handleCourseCompleted(record_id);
     else if (type === "order_cancelled") await handleOrderCancelled(record_id);
+    else if (type === "order_paid") await handleOrderPaid(record_id);
+    else if (type === "order_in_transit") await handleOrderInTransit(record_id);
+    else if (type === "order_delivery_issue") await handleOrderDeliveryIssue(record_id);
     else if (type === "order_shipped") await handleOrderShipped(record_id);
     else if (type === "order_completed") await handleOrderCompleted(record_id);
     else if (type === "course_purchased") await handleCoursePurchased(record_id);

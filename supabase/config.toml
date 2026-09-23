@@ -1,5 +1,67 @@
 project_id = "rjksutoohsvwqnqlemjv"
 
-# Webhook da Pagar.me é chamado pela Pagar.me (sem JWT do Supabase) → precisa ser público.
+# Todas as functions validam acesso internamente (ou são webhooks externos);
+# o gateway do Supabase NÃO deve exigir JWT. Mantém o padrão histórico do projeto.
+
+[functions.admin-users]
+verify_jwt = false
+
+[functions.asaas-create-payment]
+verify_jwt = false
+
+[functions.asaas-webhook]
+verify_jwt = false
+
+[functions.base-emit-invoice]
+verify_jwt = false
+
+[functions.base-webhook]
+verify_jwt = false
+
+[functions.create-course-payment]
+verify_jwt = false
+
+[functions.create-payment]
+verify_jwt = false
+
+[functions.diag-me]
+verify_jwt = false
+
+[functions.diag-mp]
+verify_jwt = false
+
+[functions.me-balance]
+verify_jwt = false
+
+[functions.me-buy-label]
+verify_jwt = false
+
+[functions.me-calculate-shipping]
+verify_jwt = false
+
+[functions.me-sync-tracking]
+verify_jwt = false
+
+[functions.me-tracking-webhook]
+verify_jwt = false
+
+[functions.mp-webhook]
+verify_jwt = false
+
+[functions.pagarme-create-checkout]
+verify_jwt = false
+
 [functions.pagarme-webhook]
+verify_jwt = false
+
+[functions.send-broadcast]
+verify_jwt = false
+
+[functions.send-coupon-email]
+verify_jwt = false
+
+[functions.send-notification]
+verify_jwt = false
+
+[functions.subscribe-newsletter]
 verify_jwt = false

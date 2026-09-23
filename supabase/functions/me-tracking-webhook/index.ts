@@ -44,8 +44,9 @@ serve(async (req) => {
     const payload = await req.json();
     console.log("ME webhook received:", JSON.stringify(payload).slice(0, 500));
 
-    const event = payload.event ?? payload.type;
-    const meOrderId = payload.order_id ?? payload.data?.id;
+    // ME manda eventos como "order.posted" / "order.delivered" com data.id = id do pedido no ME.
+    const event = String(payload.event ?? payload.type ?? "");
+    const meOrderId = payload.data?.id ?? payload.order_id ?? payload.resource?.id;
 
     if (meOrderId) {
       const { data: order } = await supabase
@@ -53,17 +54,13 @@ serve(async (req) => {
         .select("id")
         .eq("me_order_id", meOrderId)
         .maybeSingle();
-
       if (order) {
-        const update: any = { me_status: event };
-        if (event === "delivered") update.status = "completed";
-        await supabase.from("orders").update(update).eq("id", order.id);
-
-        if (event === "delivered") {
-          supabase.functions.invoke("send-notification", {
-            body: { type: "order_completed", record_id: order.id },
-          }).catch((e) => console.error("delivered email failed:", e));
-        }
+        // Consulta o status real no ME e aplica transições + e-mails (fonte única da verdade).
+        await supabase.functions
+          .invoke("me-sync-tracking", { body: { order_id: order.id } })
+          .catch((e) => console.error("sync from webhook failed:", e));
+      } else {
+        console.log("ME webhook: pedido não encontrado", meOrderId, event);
       }
     }
 

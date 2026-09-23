@@ -44,6 +44,8 @@ async function meCall(path: string, env: string, token: string, body?: any) {
   return JSON.parse(txt);
 }
 
+const pos = (v: unknown): number | null => (typeof v === "number" && v > 0 ? v : null);
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -96,11 +98,12 @@ serve(async (req) => {
     let maxL = 0, maxW = 0, maxH = 0;
     for (const it of order.items as any[]) {
       const p = (products ?? []).find((pp: any) => pp.id === it.product_id);
-      const w = ((p?.weight_g ?? defWeight) * it.qty) / 1000;
+      // valores zerados/vazios caem no padrão; itens empilham na altura
+      const w = ((pos(p?.weight_g) ?? defWeight) * it.qty) / 1000;
       totalWeight += w;
-      maxL = Math.max(maxL, p?.length_cm ?? defLength);
-      maxW = Math.max(maxW, p?.width_cm ?? defWidth);
-      maxH = Math.max(maxH, p?.height_cm ?? defHeight);
+      maxL = Math.max(maxL, pos(p?.length_cm) ?? defLength);
+      maxW = Math.max(maxW, pos(p?.width_cm) ?? defWidth);
+      maxH += (pos(p?.height_cm) ?? defHeight) * it.qty;
     }
 
     const meProducts = (order.items as any[]).map((it: any) => ({
@@ -108,6 +111,9 @@ serve(async (req) => {
       quantity: it.qty,
       unit_price: it.unit_price_cents / 100,
     }));
+
+    const invoiceKey: string | null =
+      (order as any).base_invoice_status === "AUTORIZADA" ? ((order as any).base_invoice_key ?? null) : null;
 
     const cartPayload = {
       service: parseInt(order.shipping_service_id),
@@ -129,7 +135,7 @@ serve(async (req) => {
         name: order.customer_name,
         phone: order.customer_phone,
         email: order.customer_email,
-        document: addr.document ?? "",
+        document: String(addr.document ?? addr.cpf_cnpj ?? "").replace(/\D/g, ""),
         address: addr.street ?? "",
         complement: addr.complement ?? "",
         number: addr.number ?? "",
@@ -151,7 +157,10 @@ serve(async (req) => {
         receipt: false,
         own_hand: false,
         reverse: false,
-        non_commercial: true,
+        // Com NF-e autorizada: envio comercial com a chave da nota.
+        // Sem NF-e: declaração de conteúdo (não comercial).
+        non_commercial: !invoiceKey,
+        ...(invoiceKey ? { invoice: { key: invoiceKey } } : {}),
       },
     };
 

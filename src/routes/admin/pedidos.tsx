@@ -77,7 +77,10 @@ function AdminOrders() {
               </span>
             )}
           </div>
-          <p className="text-[var(--text-muted)] mb-6 text-sm">Gerencie os pedidos da loja.</p>
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <p className="text-[var(--text-muted)] text-sm">Gerencie os pedidos da loja. O rastreio atualiza sozinho a cada 2h.</p>
+            <SyncTrackingButton />
+          </div>
 
           <div className="flex flex-wrap gap-2 mb-6">
             {FILTERS.map((f) => (
@@ -253,7 +256,11 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
     onSuccess: (_data, status) => {
       qc.invalidateQueries({ queryKey: ["admin-orders"] });
       qc.invalidateQueries({ queryKey: ["admin-orders-pending-count"] });
-      if (status === "shipped") {
+      if (status === "confirmed") {
+        supabase.functions
+          .invoke("send-notification", { body: { type: "order_paid", record_id: o.id } })
+          .catch((e) => console.error("paid email failed:", e));
+      } else if (status === "shipped") {
         supabase.functions
           .invoke("send-notification", { body: { type: "order_shipped", record_id: o.id } })
           .catch((e) => console.error("shipped email failed:", e));
@@ -414,6 +421,20 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
         </div>
       )}
 
+      {(() => {
+        const step = nextStep(o);
+        if (!step) return null;
+        const tone =
+          step.tone === "action" ? "bg-amber-50 border-amber-200 text-amber-900"
+          : step.tone === "wait" ? "bg-sky-50 border-sky-200 text-sky-900"
+          : "bg-emerald-50 border-emerald-200 text-emerald-900";
+        return (
+          <div className={`mb-3 border rounded-md px-3 py-2 text-xs ${tone}`}>
+            <strong className="uppercase tracking-widest text-[10px] mr-1">Próximo passo:</strong> {step.text}
+          </div>
+        );
+      })()}
+
       <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
         {wppNumber && (
           <a href={`https://wa.me/${wppNumber}?text=${wppMessage}`} target="_blank" rel="noreferrer"
@@ -465,7 +486,11 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
         {o.status === "confirmed" && o.shipping_service_id && (!o.me_order_id || o.me_status?.startsWith("failed_")) && (
           <button
             onClick={() => {
-              if (confirm(`Comprar etiqueta? Vai debitar ${formatPriceBRL(o.shipping_cents)} do saldo Melhor Envio.`)) buyLabel.mutate();
+              const withNfe = o.base_invoice_status === "AUTORIZADA";
+              const msg = withNfe
+                ? `Comprar etiqueta com a NF-e ${o.base_invoice_number ?? ""}? Vai debitar ${formatPriceBRL(o.shipping_cents)} do saldo Melhor Envio.`
+                : `Este pedido ainda NÃO tem NF-e autorizada — a etiqueta sai com declaração de conteúdo.\n\nComprar mesmo assim? Vai debitar ${formatPriceBRL(o.shipping_cents)} do saldo Melhor Envio.`;
+              if (confirm(msg)) buyLabel.mutate();
             }}
             disabled={buyLabel.isPending}
             className="inline-flex items-center gap-1.5 bg-primary-dark text-white px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:opacity-90 transition disabled:opacity-60"
@@ -542,3 +567,60 @@ function NfeStatusPill({ status }: { status: string }) {
   return <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${m.cls}`}>{m.label}</span>;
 }
 
+
+
+type Step = { text: string; tone: "action" | "wait" | "done" };
+
+/** Diz, em linguagem simples, o que fazer com o pedido agora. */
+function nextStep(o: Order): Step | null {
+  const nfe = o.base_invoice_status;
+  const hasLabel = !!o.me_order_id && !o.me_status?.startsWith("failed_");
+  switch (o.status) {
+    case "pending":
+      return { text: "Aguardando o pagamento do cliente. Se ele pagou por fora (ex.: PIX direto), clique em Confirmar.", tone: "wait" };
+    case "confirmed":
+      if (nfe === "PROCESSANDO" || nfe === "CRIADA")
+        return { text: "Pagamento aprovado. NF-e em processamento na SEFAZ — assim que autorizar, compre a etiqueta.", tone: "wait" };
+      if (!nfe || nfe === "ERRO")
+        return { text: `Pagamento aprovado. Emita a NF-e${o.shipping_service_id ? " e depois compre a etiqueta" : ""}.${nfe === "ERRO" ? " (a última emissão deu erro — veja abaixo)" : ""}`, tone: "action" };
+      if (o.shipping_service_id && !hasLabel)
+        return { text: "NF-e autorizada ✔. Agora compre a etiqueta do Melhor Envio (1 clique).", tone: "action" };
+      if (!o.shipping_service_id)
+        return { text: "Frete combinado fora do Melhor Envio. Informe o rastreio e marque como enviado.", tone: "action" };
+      return null;
+    case "shipped":
+      if (o.me_status === "posted")
+        return { text: "Em trânsito. O status e os e-mails pro cliente atualizam sozinhos até a entrega.", tone: "wait" };
+      return { text: "Etiqueta pronta: imprima, embale e poste na agência (ou agende a coleta). O rastreio atualiza sozinho.", tone: "action" };
+    case "completed":
+      return { text: "Entregue ✔", tone: "done" };
+    default:
+      return null;
+  }
+}
+
+function SyncTrackingButton() {
+  const qc = useQueryClient();
+  const sync = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("me-sync-tracking", { body: {} });
+      if (error) throw error;
+      if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+      return data as { checked: number; changes: unknown[] };
+    },
+    onSuccess: (d) => {
+      toast.success(d.changes.length ? `${d.changes.length} pedido(s) atualizado(s).` : `Nenhuma novidade (${d.checked} verificados).`);
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  return (
+    <button
+      onClick={() => sync.mutate()}
+      disabled={sync.isPending}
+      className="inline-flex items-center gap-1.5 border border-primary text-primary px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition disabled:opacity-60"
+    >
+      <Truck className="w-3.5 h-3.5" /> {sync.isPending ? "Atualizando..." : "Atualizar rastreios"}
+    </button>
+  );
+}

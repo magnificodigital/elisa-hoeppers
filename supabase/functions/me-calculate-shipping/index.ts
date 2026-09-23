@@ -26,6 +26,8 @@ function meBase(env: string): string {
     : "https://sandbox.melhorenvio.com.br/api/v2";
 }
 
+const pos = (v: unknown): number | null => (typeof v === "number" && v > 0 ? v : null);
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -67,10 +69,11 @@ serve(async (req) => {
       if (!p) throw new Error(`Produto ${it.product_id} não encontrado`);
       return {
         id: p.id,
-        width: p.width_cm ?? defWidth,
-        height: p.height_cm ?? defHeight,
-        length: p.length_cm ?? defLength,
-        weight: (p.weight_g ?? defWeight) / 1000, // ME usa kg
+        // valores zerados/vazios caem no padrão (Configurações → Melhor Envio)
+        width: pos(p.width_cm) ?? defWidth,
+        height: pos(p.height_cm) ?? defHeight,
+        length: pos(p.length_cm) ?? defLength,
+        weight: (pos(p.weight_g) ?? defWeight) / 1000, // ME usa kg
         insurance_value: (p.price_cents / 100) * it.qty,
         quantity: it.qty,
       };

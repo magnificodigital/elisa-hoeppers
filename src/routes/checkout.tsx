@@ -423,10 +423,6 @@ function CheckoutPage() {
         items: items.length,
       });
 
-      supabase.functions.invoke("send-notification", {
-        body: { type: "order", record_id: orderResult.order_id },
-      }).catch((e) => console.error("email failed:", e));
-
       try { window.localStorage.removeItem(COUPON_KEY); } catch { /* ignore */ }
 
       // Se a Pagar.me for o gateway ativo, tenta o checkout hospedado (cartão, PIX,
@@ -450,6 +446,10 @@ function CheckoutPage() {
       }
 
       // Mercado Pago (Payment Brick in-site) — padrão e fallback.
+      // (no fluxo Pagar.me o e-mail "recebemos seu pedido" sai do servidor, já com o link de pagamento)
+      supabase.functions.invoke("send-notification", {
+        body: { type: "order", record_id: orderResult.order_id },
+      }).catch((e) => console.error("email failed:", e));
       const { data: payData, error: payErr } = await supabase.functions.invoke("create-payment", {
         body: { order_id: orderResult.order_id },
       });

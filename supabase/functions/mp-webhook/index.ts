@@ -164,7 +164,7 @@ serve(async (req) => {
 
       // Dispara notificações e integrações
       supabase.functions.invoke("send-notification", {
-        body: { type: "order", record_id: order.id },
+        body: { type: "order_paid", record_id: order.id },
       }).catch((e) => console.error("email dispatch failed:", e));
 
       const baseEnabled = await getSetting("base_enabled");
