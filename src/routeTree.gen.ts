@@ -42,11 +42,13 @@ import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminNotasFiscaisRouteImport } from './routes/admin/notas-fiscais'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
+import { Route as AdminFinanceiroRouteImport } from './routes/admin/financeiro'
 import { Route as AdminEstoqueRouteImport } from './routes/admin/estoque'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
 import { Route as AdminCuponsRouteImport } from './routes/admin/cupons'
+import { Route as AdminComprasRouteImport } from './routes/admin/compras'
 import { Route as AdminClientesRouteImport } from './routes/admin/clientes'
 import { Route as AdminBroadcastRouteImport } from './routes/admin/broadcast'
 import { Route as AdminBlogRouteImport } from './routes/admin/blog'
@@ -256,6 +258,11 @@ const AdminInscritosRoute = AdminInscritosRouteImport.update({
   path: '/inscritos',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminFinanceiroRoute = AdminFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminEstoqueRoute = AdminEstoqueRouteImport.update({
   id: '/estoque',
   path: '/estoque',
@@ -280,6 +287,11 @@ const AdminDiagnosticoEnvioRoute = AdminDiagnosticoEnvioRouteImport.update({
 const AdminCuponsRoute = AdminCuponsRouteImport.update({
   id: '/cupons',
   path: '/cupons',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminComprasRoute = AdminComprasRouteImport.update({
+  id: '/compras',
+  path: '/compras',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminClientesRoute = AdminClientesRouteImport.update({
@@ -523,11 +535,13 @@ export interface FileRoutesByFullPath {
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
+  '/admin/compras': typeof AdminComprasRoute
   '/admin/cupons': typeof AdminCuponsRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/estoque': typeof AdminEstoqueRoute
+  '/admin/financeiro': typeof AdminFinanceiroRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
@@ -604,11 +618,13 @@ export interface FileRoutesByTo {
   '/admin/agendamentos': typeof AdminAgendamentosRoute
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
+  '/admin/compras': typeof AdminComprasRoute
   '/admin/cupons': typeof AdminCuponsRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/estoque': typeof AdminEstoqueRoute
+  '/admin/financeiro': typeof AdminFinanceiroRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
@@ -688,11 +704,13 @@ export interface FileRoutesById {
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/broadcast': typeof AdminBroadcastRoute
   '/admin/clientes': typeof AdminClientesRoute
+  '/admin/compras': typeof AdminComprasRoute
   '/admin/cupons': typeof AdminCuponsRoute
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
   '/admin/estoque': typeof AdminEstoqueRoute
+  '/admin/financeiro': typeof AdminFinanceiroRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
@@ -773,11 +791,13 @@ export interface FileRouteTypes {
     | '/admin/blog'
     | '/admin/broadcast'
     | '/admin/clientes'
+    | '/admin/compras'
     | '/admin/cupons'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/estoque'
+    | '/admin/financeiro'
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
@@ -854,11 +874,13 @@ export interface FileRouteTypes {
     | '/admin/agendamentos'
     | '/admin/broadcast'
     | '/admin/clientes'
+    | '/admin/compras'
     | '/admin/cupons'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/estoque'
+    | '/admin/financeiro'
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
@@ -937,11 +959,13 @@ export interface FileRouteTypes {
     | '/admin/blog'
     | '/admin/broadcast'
     | '/admin/clientes'
+    | '/admin/compras'
     | '/admin/cupons'
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
     | '/admin/estoque'
+    | '/admin/financeiro'
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
@@ -1272,6 +1296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInscritosRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/financeiro': {
+      id: '/admin/financeiro'
+      path: '/financeiro'
+      fullPath: '/admin/financeiro'
+      preLoaderRoute: typeof AdminFinanceiroRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/estoque': {
       id: '/admin/estoque'
       path: '/estoque'
@@ -1305,6 +1336,13 @@ declare module '@tanstack/react-router' {
       path: '/cupons'
       fullPath: '/admin/cupons'
       preLoaderRoute: typeof AdminCuponsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/compras': {
+      id: '/admin/compras'
+      path: '/compras'
+      fullPath: '/admin/compras'
+      preLoaderRoute: typeof AdminComprasRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/clientes': {
@@ -1641,11 +1679,13 @@ interface AdminRouteRouteChildren {
   AdminBlogRoute: typeof AdminBlogRouteWithChildren
   AdminBroadcastRoute: typeof AdminBroadcastRoute
   AdminClientesRoute: typeof AdminClientesRoute
+  AdminComprasRoute: typeof AdminComprasRoute
   AdminCuponsRoute: typeof AdminCuponsRoute
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
   AdminEstoqueRoute: typeof AdminEstoqueRoute
+  AdminFinanceiroRoute: typeof AdminFinanceiroRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminNotasFiscaisRoute: typeof AdminNotasFiscaisRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
@@ -1694,11 +1734,13 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminBlogRoute: AdminBlogRouteWithChildren,
   AdminBroadcastRoute: AdminBroadcastRoute,
   AdminClientesRoute: AdminClientesRoute,
+  AdminComprasRoute: AdminComprasRoute,
   AdminCuponsRoute: AdminCuponsRoute,
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
   AdminEstoqueRoute: AdminEstoqueRoute,
+  AdminFinanceiroRoute: AdminFinanceiroRoute,
   AdminInscritosRoute: AdminInscritosRoute,
   AdminNotasFiscaisRoute: AdminNotasFiscaisRoute,
   AdminPedidosRoute: AdminPedidosRoute,

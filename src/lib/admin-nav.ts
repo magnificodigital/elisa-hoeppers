@@ -16,13 +16,16 @@ import {
   LayoutGrid,
   Bell,
   Ticket,
-  Boxes
+  Boxes,
+  Landmark,
+  FileInput
 } from "lucide-react";
 
 export const ADMIN_NAV_ITEMS = [
   { group: "OPERAÇÃO", items: [
     { to: "/admin", label: "Painel", icon: LayoutDashboard, exact: true },
     { to: "/admin/pedidos", label: "Pedidos", icon: Package },
+    { to: "/admin/financeiro", label: "Financeiro", icon: Landmark },
     { to: "/admin/clientes", label: "Clientes", icon: Users },
     { to: "/admin/solicitacoes", label: "Solicitações", icon: MessageSquare },
     { to: "/admin/notas-fiscais", label: "Notas Fiscais", icon: FileText },
@@ -30,6 +33,7 @@ export const ADMIN_NAV_ITEMS = [
   { group: "CATÁLOGO", items: [
     { to: "/admin/produtos", label: "Produtos", icon: ShoppingBag },
     { to: "/admin/estoque", label: "Estoque", icon: Boxes },
+    { to: "/admin/compras", label: "Entrada de notas", icon: FileInput },
     { to: "/admin/cursos", label: "Cursos", icon: GraduationCap },
     { to: "/admin/cupons", label: "Cupons", icon: Ticket },
   ]},

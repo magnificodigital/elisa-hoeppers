@@ -92,9 +92,17 @@ function StockPage() {
   return (
     <section className="py-10 md:py-14 bg-background min-h-[70vh]">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="flex items-center gap-2 mb-1">
-          <Boxes className="w-6 h-6 text-primary" />
-          <h1 className="font-display text-3xl text-primary-dark">Estoque</h1>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
+          <div className="flex items-center gap-2">
+            <Boxes className="w-6 h-6 text-primary" />
+            <h1 className="font-display text-3xl text-primary-dark">Estoque</h1>
+          </div>
+          <Link
+            to="/admin/compras"
+            className="bg-primary text-white px-4 py-2 rounded-full text-[10px] uppercase tracking-widest font-semibold hover:bg-primary-dark"
+          >
+            Importar nota do fornecedor (XML)
+          </Link>
         </div>
         <p className="text-sm text-primary-dark/60 mb-8">
           A cada venda paga a loja dá baixa sozinha, e devolve se o pedido for cancelado. Aqui você registra

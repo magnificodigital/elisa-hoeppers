@@ -68,3 +68,6 @@ verify_jwt = false
 
 [functions.pagarme-sync]
 verify_jwt = false
+
+[functions.fin-pagarme-sync]
+verify_jwt = false

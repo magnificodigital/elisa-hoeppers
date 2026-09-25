@@ -175,17 +175,37 @@ serve(async (req) => {
       meOrderId = cartRes.id ?? cartRes.order_id;
       if (!meOrderId) throw new Error("ME não devolveu order_id");
       trackingCode = cartRes.self_tracking ?? cartRes.tracking ?? null;
+      const labelCostCents = Math.round(Number(cartRes.price ?? 0) * 100) || null;
 
       // salva parcial imediatamente (cart existe mesmo se próximos passos falharem)
       await supabase.from("orders").update({
         me_order_id: meOrderId,
         me_status: "in_cart",
+        shipping_cost_cents: labelCostCents,
       }).eq("id", order.id);
 
       // Step 2 — checkout (debita saldo)
       try {
         await meCall("/me/shipment/checkout", env, token, { orders: [meOrderId] });
         await supabase.from("orders").update({ me_status: "checkout_paid" }).eq("id", order.id);
+        // Financeiro: o frete sai do saldo do Melhor Envio no checkout da etiqueta.
+        if (labelCostCents) {
+          const today = new Date().toISOString().slice(0, 10);
+          const { data: cat } = await supabase.from("fin_categories").select("id").eq("slug", "frete").maybeSingle();
+          await supabase.from("fin_entries").upsert({
+            kind: "despesa",
+            description: `Etiqueta ${order.shipping_service_label ?? "Melhor Envio"} — pedido #${order.code}`,
+            category_id: cat?.id ?? null,
+            amount_cents: labelCostCents,
+            due_date: today,
+            competence_date: today,
+            paid_at: today,
+            counterparty: "Melhor Envio",
+            order_id: order.id,
+            source: "frete",
+            external_ref: `label:${meOrderId}`,
+          }, { onConflict: "external_ref" }).then(({ error }) => error && console.error("fin frete:", error.message));
+        }
       } catch (e) {
         failedStep = "checkout";
         throw e;
