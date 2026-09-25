@@ -50,7 +50,7 @@ serve(async (req) => {
     const messageTpl = s.coupon_email_message ||
       "Aqui está seu cupom de {{discount}}% de desconto. Use no checkout — vale por {{validity_days}} dias.";
 
-    const brandColor = s.email_brand_color || "#3B4F30";
+    const brandColor = s.email_brand_color || "#3E573F";
     const logo = s.email_logo_url || "";
     const signature = s.email_signature || "";
     const footer = s.email_footer_note || "bodyogaoficial.com.br";

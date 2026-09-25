@@ -60,7 +60,13 @@ function friendlyError(msg: string): string {
   if (m.includes("phone required")) return "Por favor, informe seu WhatsApp.";
   if (m.includes("cart empty") || m.includes("no valid items"))
     return "Seu carrinho está vazio.";
-  if (m.includes("out of stock")) return "Um dos produtos está sem estoque.";
+  if (m.includes("out of stock")) {
+    const left = (msg || "").match(/out of stock: (.+?) \(restam (\d+)\)/);
+    if (left) return left[2] === "0"
+      ? `${left[1]} acabou de esgotar. Remova do carrinho para continuar.`
+      : `Só temos ${left[2]} unidade(s) de ${left[1]}. Ajuste a quantidade no carrinho.`;
+    return "Um dos produtos está sem estoque.";
+  }
   if (m.includes("not available")) return "Um dos produtos não está mais disponível.";
   return "Não foi possível concluir o pedido. Tente novamente ou fale com a Elisa pelo WhatsApp.";
 }

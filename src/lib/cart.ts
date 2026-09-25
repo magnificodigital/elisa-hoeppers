@@ -7,6 +7,8 @@ export type CartItem = {
   image: string | null;
   unit_price_cents: number;
   qty: number;
+  /** Estoque disponível quando o produto controla quantidade. */
+  max?: number | null;
 };
 
 const STORAGE_KEY = "elisa.cart.v1";
@@ -53,11 +55,13 @@ export function useCart() {
       const current = loadCart();
       const idx = current.findIndex((i) => i.product_id === item.product_id);
       const addQty = item.qty ?? 1;
+      const cap = (n: number, max?: number | null) => (max != null ? Math.min(n, max) : n);
       if (idx >= 0) {
-        current[idx].qty += addQty;
+        if (item.max !== undefined) current[idx].max = item.max;
+        current[idx].qty = cap(current[idx].qty + addQty, current[idx].max);
       } else {
         const { qty: _q, ...rest } = item;
-        current.push({ ...rest, qty: addQty });
+        current.push({ ...rest, qty: cap(addQty, item.max) });
       }
       saveCart(current);
     },
@@ -69,7 +73,10 @@ export function useCart() {
     const idx = current.findIndex((i) => i.product_id === product_id);
     if (idx < 0) return;
     if (qty <= 0) current.splice(idx, 1);
-    else current[idx].qty = qty;
+    else {
+      const max = current[idx].max;
+      current[idx].qty = max != null ? Math.min(qty, max) : qty;
+    }
     saveCart(current);
   }, []);
 

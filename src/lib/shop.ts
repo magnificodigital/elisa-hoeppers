@@ -29,10 +29,14 @@ export type Product = {
   cfop: string | null;
   unit_of_measure: string | null;
   gross_weight_kg: number | null;
+  /** null = não controla quantidade (só o "Em estoque"). */
+  stock_qty?: number | null;
+  low_stock_threshold?: number;
+  cost_cents?: number | null;
 };
 
 const COLS =
-  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg";
+  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg, stock_qty, low_stock_threshold, cost_cents";
 
 function withProductMedia(product: Product): Product {
   return {

@@ -22,7 +22,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 // Branding editável dos emails (Admin → Configurações → Emails)
 const emailBranding = {
   logo_url: "",
-  brand_color: "#3B4F30",
+  brand_color: "#3E573F",
   signature: "",
   footer_note: "bodyogaoficial.com.br",
 };
@@ -48,10 +48,10 @@ const baseStyles = `
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #F5EBE2; color: #334C31; margin: 0; padding: 0; }
   .container { max-width: 560px; margin: 0 auto; padding: 24px; }
   .card { background: white; border-radius: 12px; padding: 32px; margin-top: 16px; }
-  h1, h2, h3 { font-family: Georgia, serif; color: #3B4F30; }
+  h1, h2, h3 { font-family: Georgia, serif; color: #3E573F; }
   p { line-height: 1.6; margin: 8px 0; }
-  a { color: #3B4F30; }
-  .btn { display: inline-block; background: #3B4F30; color: white !important; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px; margin-top: 16px; }
+  a { color: #3E573F; }
+  .btn { display: inline-block; background: #3E573F; color: white !important; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px; margin-top: 16px; }
   .muted { color: #7A7A7A; font-size: 13px; }
 `;
 

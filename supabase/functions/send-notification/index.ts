@@ -27,7 +27,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 // Branding editável dos emails (Admin → Configurações → Emails)
 const emailBranding = {
   logo_url: "",
-  brand_color: "#3B4F30",
+  brand_color: "#3E573F",
   signature: "",
   footer_note: "bodyogaoficial.com.br",
 };
@@ -100,12 +100,12 @@ const baseStyles = `
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #F5EBE2; color: #334C31; margin: 0; padding: 0; }
   .container { max-width: 560px; margin: 0 auto; padding: 24px; }
   .card { background: white; border-radius: 12px; padding: 32px; margin-top: 16px; }
-  h1 { font-family: Georgia, serif; color: #3B4F30; font-size: 28px; margin: 0 0 8px; }
-  h2 { font-family: Georgia, serif; color: #3B4F30; font-size: 20px; margin: 24px 0 12px; }
+  h1 { font-family: Georgia, serif; color: #3E573F; font-size: 28px; margin: 0 0 8px; }
+  h2 { font-family: Georgia, serif; color: #3E573F; font-size: 20px; margin: 24px 0 12px; }
   p { line-height: 1.6; margin: 8px 0; }
   .label { color: #7A7A7A; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
   .code { font-family: Menlo, monospace; background: #F5EBE2; padding: 4px 10px; border-radius: 4px; font-size: 14px; }
-  .btn { display: inline-block; background: #3B4F30; color: white; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px; margin-top: 16px; }
+  .btn { display: inline-block; background: #3E573F; color: white; padding: 14px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px; margin-top: 16px; }
   .item { padding: 12px 0; border-bottom: 1px solid #DBCCBF; }
   .item:last-child { border-bottom: none; }
   .total-row { display: flex; justify-content: space-between; padding-top: 12px; border-top: 2px solid #DBCCBF; margin-top: 12px; font-weight: 600; }
@@ -115,7 +115,7 @@ const baseStyles = `
 function wrap(body: string): string {
   const header = emailBranding.logo_url
     ? `<div style="text-align:center;padding:8px 0 4px;"><img src="${emailBranding.logo_url}" alt="BODYOGA" style="max-height:56px;max-width:200px;height:auto;" /></div>`
-    : `<div style="text-align:center;padding:8px 0 12px;"><span style="font-family:Georgia,'Times New Roman',serif;font-size:26px;letter-spacing:6px;color:${emailBranding.brand_color || "#3B4F30"};">BODYOGA</span></div>`;
+    : `<div style="text-align:center;padding:8px 0 12px;"><span style="font-family:Georgia,'Times New Roman',serif;font-size:26px;letter-spacing:6px;color:${emailBranding.brand_color || "#3E573F"};">BODYOGA</span></div>`;
   const signature = emailBranding.signature
     ? `<p class="muted" style="text-align:center;margin-top:20px;color:${emailBranding.brand_color};">${emailBranding.signature}</p>`
     : "";
@@ -547,7 +547,7 @@ async function handleInvoiceReady(recordId: string) {
       ${order.base_invoice_key ? `<p><span class="label">Chave de acesso</span><br/><span class="code" style="font-size:11px;word-break:break-all;">${order.base_invoice_key}</span></p>` : ""}
       <p style="margin-top:20px;">Você pode baixar o DANFE (PDF) e o XML nos botões abaixo:</p>
       <a class="btn" href="${order.base_invoice_danfe_url}">Baixar DANFE (PDF)</a>
-      ${order.base_invoice_xml_url ? `<p style="margin-top:8px;"><a href="${order.base_invoice_xml_url}" style="color:#3B4F30;font-size:13px;">Baixar XML</a></p>` : ""}
+      ${order.base_invoice_xml_url ? `<p style="margin-top:8px;"><a href="${order.base_invoice_xml_url}" style="color:#3E573F;font-size:13px;">Baixar XML</a></p>` : ""}
       <p class="muted" style="margin-top:24px;">Guarde esses arquivos — servem como comprovante fiscal.</p>
     </div>
   `);
@@ -642,6 +642,34 @@ async function handleWaitlistRestock(productId: string) {
   return { notified: subs.length };
 }
 
+async function handleLowStock(productId: string) {
+  const { data: product } = await supabase
+    .from("products")
+    .select("id, name, slug, stock_qty, low_stock_threshold")
+    .eq("id", productId)
+    .single();
+  if (!product || product.stock_qty === null) return { skipped: true };
+
+  const esgotou = product.stock_qty <= 0;
+  const html = wrap(`
+    <div class="card">
+      <h1>${esgotou ? "⛔ Produto esgotado" : "⚠️ Estoque baixo"}</h1>
+      <h2 style="margin: 16px 0;">${product.name}</h2>
+      <p><span class="label">Quantidade atual</span><br/>${product.stock_qty} unidade(s)</p>
+      <p class="muted">${esgotou
+        ? "O produto já aparece como esgotado na loja e as clientes podem entrar na lista de espera."
+        : `Alerta configurado para ${product.low_stock_threshold} unidade(s) ou menos.`}</p>
+      <a class="btn" href="${SITE_URL}/admin/estoque">Repor estoque</a>
+    </div>
+  `);
+  await sendEmail(
+    ELISA_EMAIL,
+    `${esgotou ? "⛔ Esgotado" : "⚠️ Estoque baixo"} — ${product.name} (${product.stock_qty} un.)`,
+    html,
+  );
+  return { ok: true };
+}
+
 async function handleNoticeLead(payload: any) {
   const elisaHtml = wrap(`
     <div class="card">
@@ -685,6 +713,7 @@ serve(async (req) => {
     else if (type === "project_request") await handleProjectRequest(record_id, payload);
     else if (type === "waitlist_signup") await handleWaitlistSignup(payload);
     else if (type === "waitlist_restock") result = await handleWaitlistRestock(payload?.product_id || record_id);
+    else if (type === "low_stock") result = await handleLowStock(record_id);
     else if (type === "notice_lead") await handleNoticeLead(payload);
     else
       return new Response(JSON.stringify({ error: "unknown type" }), {

@@ -60,6 +60,11 @@ function ProductEditPage() {
   const [delOpen, setDelOpen] = useState(false);
   const [priceDisplay, setPriceDisplay] = useState("");
   const [discountPct, setDiscountPct] = useState<string>("");
+  // Estoque: "" = não controla quantidade
+  const [stockQty, setStockQty] = useState<string>("");
+  const [threshold, setThreshold] = useState<string>("2");
+  const [costDisplay, setCostDisplay] = useState("");
+  const [costCents, setCostCents] = useState<number | null>(null);
 
   useEffect(() => {
     if (product) {
@@ -86,6 +91,10 @@ function ProductEditPage() {
         gross_weight_kg: product.gross_weight_kg ?? "",
       });
       setPriceDisplay(product.price_cents ? centsToBRL(product.price_cents) : "");
+      setStockQty(product.stock_qty != null ? String(product.stock_qty) : "");
+      setThreshold(String(product.low_stock_threshold ?? 2));
+      setCostCents(product.cost_cents ?? null);
+      setCostDisplay(product.cost_cents ? centsToBRL(product.cost_cents) : "");
       const compare = product.compare_at_price_cents ?? 0;
       if (compare > product.price_cents && compare > 0) {
         setDiscountPct(String(Math.round(((compare - product.price_cents) / compare) * 100)));
@@ -99,9 +108,6 @@ function ProductEditPage() {
     mutationFn: async () => {
       const pct = discountPct === "" ? 0 : Math.min(99, Math.max(0, Number(discountPct)));
       const compareAt = pct > 0 ? Math.round(form.price_cents / (1 - pct / 100)) : null;
-      
-      const previousStock = product?.in_stock;
-      const newStock = form.in_stock;
 
       const result = await updateProduct(id, {
         name: form.name,
@@ -127,13 +133,22 @@ function ProductEditPage() {
         cfop: form.cfop.trim() || null,
         unit_of_measure: form.unit_of_measure.trim() || null,
         gross_weight_kg: form.gross_weight_kg === "" ? null : Number(form.gross_weight_kg),
+        low_stock_threshold: Math.max(0, parseInt(threshold) || 0),
+        cost_cents: costCents,
       });
 
-      // Se saiu de esgotado (false) pra disponível (true), avisa a lista
-      if (!previousStock && newStock) {
-        supabase.functions.invoke("send-notification", {
-          body: { type: "waitlist_restock", payload: { product_id: id } },
-        }).catch(err => console.error("restock notification failed:", err));
+      // Quantidade passa pela função de estoque (registra no histórico).
+      // A lista de espera é avisada automaticamente quando o produto volta a ficar disponível.
+      const prevQty = product?.stock_qty ?? null;
+      const nextQty = stockQty.trim() === "" ? null : Math.max(0, parseInt(stockQty) || 0);
+      if (nextQty !== prevQty) {
+        const { error } = await supabase.rpc("admin_stock_adjust", {
+          p_product_id: id,
+          p_mode: nextQty === null ? "desativar" : "inventario",
+          p_qty: nextQty ?? 0,
+          p_note: "Alterado no cadastro do produto",
+        });
+        if (error) throw error;
       }
 
       return result;
@@ -143,6 +158,7 @@ function ProductEditPage() {
       qc.invalidateQueries({ queryKey: ["admin-products"] });
       qc.invalidateQueries({ queryKey: ["admin-product", id] });
       qc.invalidateQueries({ queryKey: ["products"] });
+      qc.invalidateQueries({ queryKey: ["admin-stock"] });
     },
     onError: (err: Error) => toast.error(err.message),
   });
@@ -324,9 +340,16 @@ function ProductEditPage() {
                 <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
                 <span className="text-sm text-primary-dark">Ativo no site</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form.in_stock} onChange={(e) => setForm({ ...form, in_stock: e.target.checked })} />
-                <span className="text-sm text-primary-dark">Em estoque</span>
+              <label className={`flex items-center gap-2 ${stockQty.trim() === "" ? "cursor-pointer" : "opacity-60"}`}>
+                <input
+                  type="checkbox"
+                  disabled={stockQty.trim() !== ""}
+                  checked={stockQty.trim() === "" ? form.in_stock : (parseInt(stockQty) || 0) > 0}
+                  onChange={(e) => setForm({ ...form, in_stock: e.target.checked })}
+                />
+                <span className="text-sm text-primary-dark">
+                  Em estoque{stockQty.trim() !== "" && " (automático pela quantidade)"}
+                </span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.is_featured} onChange={(e) => setForm({ ...form, is_featured: e.target.checked })} />
@@ -382,6 +405,52 @@ function ProductEditPage() {
               </div>
               <p className="text-[10px] text-[var(--text-muted)] mt-2">Até 3 mídias. A primeira imagem da lista será usada como capa nos cards da loja.</p>
 
+            </div>
+
+            <div className="border-t border-border pt-5">
+              <h2 className="font-display text-lg text-primary-dark mb-1">Estoque</h2>
+              <p className="text-xs text-primary-dark/60 mb-4">
+                Com quantidade preenchida, a loja dá baixa sozinha a cada venda paga, devolve se o pedido for
+                cancelado e marca como esgotado ao zerar. Deixe vazio para não controlar quantidade.
+                Entradas e inventário ficam em{" "}
+                <Link to="/admin/estoque" className="text-primary underline">Estoque</Link>.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <Field label="Quantidade em estoque">
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={stockQty}
+                    onChange={(e) => setStockQty(e.target.value)}
+                    placeholder="não controla"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Avisar quando chegar a">
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={threshold}
+                    onChange={(e) => setThreshold(e.target.value)}
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Custo unitário (opcional)">
+                  <input
+                    inputMode="numeric"
+                    value={costDisplay}
+                    onChange={(e) => {
+                      const { display, cents } = formatBRLInput(e.target.value);
+                      setCostDisplay(display);
+                      setCostCents(cents > 0 ? cents : null);
+                    }}
+                    placeholder="R$ 0,00"
+                    className={inputCls}
+                  />
+                </Field>
+              </div>
             </div>
 
             <div className="border-t border-border pt-5">

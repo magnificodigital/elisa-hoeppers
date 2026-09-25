@@ -42,6 +42,7 @@ import { Route as AdminReservasRouteImport } from './routes/admin/reservas'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminNotasFiscaisRouteImport } from './routes/admin/notas-fiscais'
 import { Route as AdminInscritosRouteImport } from './routes/admin/inscritos'
+import { Route as AdminEstoqueRouteImport } from './routes/admin/estoque'
 import { Route as AdminDisponibilidadeRouteImport } from './routes/admin/disponibilidade'
 import { Route as AdminDiagnosticoPagamentosRouteImport } from './routes/admin/diagnostico-pagamentos'
 import { Route as AdminDiagnosticoEnvioRouteImport } from './routes/admin/diagnostico-envio'
@@ -253,6 +254,11 @@ const AdminNotasFiscaisRoute = AdminNotasFiscaisRouteImport.update({
 const AdminInscritosRoute = AdminInscritosRouteImport.update({
   id: '/inscritos',
   path: '/inscritos',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminEstoqueRoute = AdminEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminDisponibilidadeRoute = AdminDisponibilidadeRouteImport.update({
@@ -521,6 +527,7 @@ export interface FileRoutesByFullPath {
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
@@ -601,6 +608,7 @@ export interface FileRoutesByTo {
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
@@ -684,6 +692,7 @@ export interface FileRoutesById {
   '/admin/diagnostico-envio': typeof AdminDiagnosticoEnvioRoute
   '/admin/diagnostico-pagamentos': typeof AdminDiagnosticoPagamentosRoute
   '/admin/disponibilidade': typeof AdminDisponibilidadeRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/inscritos': typeof AdminInscritosRoute
   '/admin/notas-fiscais': typeof AdminNotasFiscaisRoute
   '/admin/pedidos': typeof AdminPedidosRoute
@@ -768,6 +777,7 @@ export interface FileRouteTypes {
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
+    | '/admin/estoque'
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
@@ -848,6 +858,7 @@ export interface FileRouteTypes {
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
+    | '/admin/estoque'
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
@@ -930,6 +941,7 @@ export interface FileRouteTypes {
     | '/admin/diagnostico-envio'
     | '/admin/diagnostico-pagamentos'
     | '/admin/disponibilidade'
+    | '/admin/estoque'
     | '/admin/inscritos'
     | '/admin/notas-fiscais'
     | '/admin/pedidos'
@@ -1258,6 +1270,13 @@ declare module '@tanstack/react-router' {
       path: '/inscritos'
       fullPath: '/admin/inscritos'
       preLoaderRoute: typeof AdminInscritosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/estoque': {
+      id: '/admin/estoque'
+      path: '/estoque'
+      fullPath: '/admin/estoque'
+      preLoaderRoute: typeof AdminEstoqueRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/disponibilidade': {
@@ -1626,6 +1645,7 @@ interface AdminRouteRouteChildren {
   AdminDiagnosticoEnvioRoute: typeof AdminDiagnosticoEnvioRoute
   AdminDiagnosticoPagamentosRoute: typeof AdminDiagnosticoPagamentosRoute
   AdminDisponibilidadeRoute: typeof AdminDisponibilidadeRoute
+  AdminEstoqueRoute: typeof AdminEstoqueRoute
   AdminInscritosRoute: typeof AdminInscritosRoute
   AdminNotasFiscaisRoute: typeof AdminNotasFiscaisRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
@@ -1678,6 +1698,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminDiagnosticoEnvioRoute: AdminDiagnosticoEnvioRoute,
   AdminDiagnosticoPagamentosRoute: AdminDiagnosticoPagamentosRoute,
   AdminDisponibilidadeRoute: AdminDisponibilidadeRoute,
+  AdminEstoqueRoute: AdminEstoqueRoute,
   AdminInscritosRoute: AdminInscritosRoute,
   AdminNotasFiscaisRoute: AdminNotasFiscaisRoute,
   AdminPedidosRoute: AdminPedidosRoute,

@@ -244,6 +244,7 @@ function AddToCartButton({ product }: { product: Product }) {
       image: firstImage(product),
       unit_price_cents: product.price_cents,
       qty,
+      max: product.stock_qty ?? null,
     });
     pixelTrack("AddToCart", {
       content_ids: [product.slug],
@@ -260,8 +261,16 @@ function AddToCartButton({ product }: { product: Product }) {
     }
   }
 
+  const lastUnits =
+    product.stock_qty != null && product.stock_qty > 0 && product.stock_qty <= (product.low_stock_threshold ?? 2);
+
   return (
     <div className="space-y-3">
+      {lastUnits && (
+        <p className="text-xs uppercase tracking-widest text-primary font-semibold">
+          {product.stock_qty === 1 ? "Última unidade!" : `Últimas ${product.stock_qty} unidades`}
+        </p>
+      )}
       <div className="flex items-center justify-between">
         <span className="text-xs uppercase tracking-widest text-primary-dark">
           Quantidade
@@ -277,7 +286,7 @@ function AddToCartButton({ product }: { product: Product }) {
           <span className="w-10 text-center text-sm text-primary-dark">{qty}</span>
           <button
             type="button"
-            onClick={() => setQty(qty + 1)}
+            onClick={() => setQty(product.stock_qty != null ? Math.min(qty + 1, product.stock_qty) : qty + 1)}
             className="w-9 h-9 hover:bg-cream/50 text-primary-dark"
           >
             +

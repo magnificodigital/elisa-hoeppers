@@ -111,8 +111,12 @@ function AdminProductsList() {
                     ) : (
                       <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-cream text-[var(--text-muted)] whitespace-nowrap">Rascunho</span>
                     )}
-                    {p.in_stock ? (
-                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary-dark/10 text-primary-dark whitespace-nowrap">Em estoque</span>
+                    {p.in_stock && p.stock_qty != null && p.stock_qty <= (p.low_stock_threshold ?? 2) ? (
+                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-peach/60 text-primary-dark whitespace-nowrap">Estoque baixo · {p.stock_qty} un.</span>
+                    ) : p.in_stock ? (
+                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary-dark/10 text-primary-dark whitespace-nowrap">
+                        Em estoque{p.stock_qty != null && ` · ${p.stock_qty} un.`}
+                      </span>
                     ) : (
                       <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-red-100 text-red-700 whitespace-nowrap">Sem estoque</span>
                     )}
