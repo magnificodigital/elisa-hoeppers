@@ -268,7 +268,10 @@ async function handleOrderPaid(orderId: string) {
   const addressHtml = addr?.street
     ? `<p><span class="label">Entrega</span><br/>${[addr.street, addr.number, addr.complement, addr.district, addr.city ? `${addr.city}/${addr.state ?? ""}` : null, addr.cep].filter(Boolean).join(", ")}</p>`
     : "";
-  const method = order.payment_method_type === "pix" ? "PIX" : order.payment_method_type === "credit_card" ? "Cartão de crédito" : "";
+  const method =
+    ({ pix: "PIX", credit_card: "Cartão de crédito", apple_pay: "Apple Pay", google_pay: "Google Pay", debit_card: "Cartão de débito" } as Record<string, string>)[
+      order.payment_method_type ?? ""
+    ] ?? "";
 
   const customerHtml = wrap(`
     <div class="card">

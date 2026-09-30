@@ -173,7 +173,8 @@ async function pagarmeCardInfo(paymentId: string | null): Promise<{ brand?: stri
     });
     const d = await r.json();
     const tx = d?.charges?.[0]?.last_transaction ?? {};
-    return { brand: tx?.card?.brand, installments: tx?.installments };
+    // Apple Pay / Google Pay também chegam com o cartão da carteira (bandeira e parcelas).
+    return { brand: tx?.card?.brand ?? tx?.brand ?? tx?.card_brand, installments: tx?.installments };
   } catch {
     return {};
   }
@@ -342,6 +343,27 @@ async function updateShipping(orderId: string) {
   return r.ok ? { ok: true, status } : { error: awiseError(r) };
 }
 
+/** Pedido cancelado no site → remove o pedido na Awise (devolve estoque e tira do financeiro). */
+async function cancelOrder(orderId: string) {
+  const { data: o } = await supabase
+    .from("orders").select("id, code, status, awise_order_id, base_invoice_status").eq("id", orderId).maybeSingle();
+  if (!o?.awise_order_id) return { skipped: "sem pedido na Awise" };
+  if (o.status !== "cancelled") return { skipped: "pedido não está cancelado" };
+  if (o.base_invoice_status === "AUTORIZADA") {
+    const msg = "Pedido cancelado no site, mas já tem NF-e autorizada: cancele a nota e o pedido na Awise.";
+    await supabase.from("orders").update({ awise_error: msg }).eq("id", o.id);
+    return { manual: msg };
+  }
+  const r = await awise("DELETE", `/orders/${o.awise_order_id}`);
+  if (!r.ok && r.status !== 404) {
+    const msg = `Não consegui cancelar na Awise: ${awiseError(r)}`;
+    await supabase.from("orders").update({ awise_error: msg }).eq("id", o.id);
+    return { error: msg };
+  }
+  await supabase.from("orders").update({ awise_error: `Cancelado na Awise (era ${o.awise_order_id})`, awise_order_id: null }).eq("id", o.id);
+  return { ok: true };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
   try {
@@ -417,6 +439,7 @@ serve(async (req) => {
       return json(await issueInvoice(o.id, o.awise_order_id));
     }
     if (action === "update_shipping") return json(await updateShipping(p.order_id));
+    if (action === "cancel_order") return json(await cancelOrder(p.order_id));
     if (action === "push_pending") {
       if (!on(await setting("awise_push_orders"))) return json({ skipped: "envio de pedidos desligado" });
       const since = new Date(Date.now() - 7 * 86400000).toISOString();
