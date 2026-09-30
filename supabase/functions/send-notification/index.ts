@@ -1,6 +1,7 @@
 // @ts-ignore - Deno runtime
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { esc, getCaller, isStaff } from "../_shared/guard.ts";
 
 // @ts-ignore
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
@@ -455,6 +456,7 @@ async function handleOrderCancelled(orderId: string) {
     .eq("id", orderId)
     .maybeSingle();
   if (error || !order) throw new Error("order not found");
+  if (order.status !== "cancelled") return; // só avisa cancelamento de pedido realmente cancelado
 
   const itemsHtml = (order.items as any[])
     .map((it) => `<div class="item"><p style="margin:0;font-weight:600;">${it.qty}× ${it.name}</p></div>`)
@@ -561,7 +563,7 @@ async function handleInvoiceReady(recordId: string) {
 
 async function handleProjectRequest(recordId: string, payload?: any) {
   let request = payload;
-  if (!request && recordId) {
+  if (recordId) {
     const { data } = await supabase
       .from("custom_project_requests")
       .select("*")
@@ -570,6 +572,7 @@ async function handleProjectRequest(recordId: string, payload?: any) {
     request = data;
   }
   if (!request) throw new Error("project request not found");
+  request = Object.fromEntries(Object.entries(request).map(([k, v]) => [k, esc(v)]));
 
   const elisaHtml = wrap(`
     <div class="card">
@@ -588,7 +591,8 @@ async function handleProjectRequest(recordId: string, payload?: any) {
   await sendEmail(ELISA_EMAIL, `🎯 Nova solicitação de projeto personalizado — ${request.name}`, elisaHtml);
 }
 
-async function handleWaitlistSignup(payload: any) {
+async function handleWaitlistSignup(raw: any) {
+  const payload = Object.fromEntries(Object.entries(raw ?? {}).map(([k, v]) => [k, esc(v)])) as any;
   const elisaHtml = wrap(`
     <div class="card">
       <h1>🔔 Novo interessado na lista de espera</h1>
@@ -673,7 +677,8 @@ async function handleLowStock(productId: string) {
   return { ok: true };
 }
 
-async function handleNoticeLead(payload: any) {
+async function handleNoticeLead(raw: any) {
+  const payload = Object.fromEntries(Object.entries(raw ?? {}).map(([k, v]) => [k, esc(v)])) as any;
   const elisaHtml = wrap(`
     <div class="card">
       <h1>🎯 Novo lead pelo aviso</h1>
@@ -698,6 +703,29 @@ serve(async (req) => {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // Tipos que o site público pode disparar; o resto é só do admin ou do próprio sistema.
+    const PUBLIC_TYPES = ["booking", "order", "order_cancelled", "course_completed", "project_request", "waitlist_signup", "notice_lead"];
+    const staff = isStaff(await getCaller(req, supabase));
+    if (!staff) {
+      if (!PUBLIC_TYPES.includes(type)) {
+        return new Response(JSON.stringify({ error: "forbidden" }), {
+          status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      // Anti-abuso: o mesmo aviso no máximo 1 vez a cada 10 minutos.
+      const ref = String(record_id ?? payload?.email ?? payload?.product_id ?? "").slice(0, 200);
+      const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      const { count } = await supabase
+        .from("notification_log").select("id", { count: "exact", head: true })
+        .eq("type", type).eq("ref", ref).gte("created_at", since);
+      if ((count ?? 0) > 0) {
+        return new Response(JSON.stringify({ ok: true, skipped: "duplicado" }), {
+          status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      await supabase.from("notification_log").insert({ type, ref });
     }
 
     let result: any = { ok: true };

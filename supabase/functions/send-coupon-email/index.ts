@@ -1,6 +1,7 @@
 // @ts-ignore - Deno
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { esc, getCaller, isStaff } from "../_shared/guard.ts";
 
 // @ts-ignore
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
@@ -36,13 +37,38 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { code, email, full_name, discount_percent, expires_at, validity_days } = await req.json();
-    if (!code || !email) {
+    const body = await req.json();
+    if (!body?.code || !body?.email) {
       return new Response(JSON.stringify({ error: "code and email required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    let { code, email, full_name, discount_percent, expires_at, validity_days } = body;
+
+    // Visitante (banner de cupom): o e-mail só sai para um cupom que EXISTE, para o e-mail DONO dele,
+    // com os dados do banco e no máximo uma vez a cada 10 minutos. Admin pode mandar teste livre.
+    if (!isStaff(await getCaller(req, supabase))) {
+      const { data: c } = await supabase
+        .from("coupons")
+        .select("id, code, email, full_name, discount_percent, expires_at, emailed_at")
+        .eq("code", String(code).toUpperCase().trim())
+        .maybeSingle();
+      if (!c || String(c.email).toLowerCase() !== String(email).toLowerCase().trim()) {
+        return new Response(JSON.stringify({ error: "cupom não encontrado" }), {
+          status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (c.emailed_at && Date.now() - new Date(c.emailed_at).getTime() < 10 * 60 * 1000) {
+        return new Response(JSON.stringify({ ok: true, skipped: "já enviado" }), {
+          status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      code = c.code; email = c.email; full_name = c.full_name ?? full_name;
+      discount_percent = c.discount_percent; expires_at = c.expires_at;
+      await supabase.from("coupons").update({ emailed_at: new Date().toISOString() }).eq("id", c.id);
+    }
+    code = esc(code); full_name = esc(full_name); discount_percent = Number(discount_percent) || 0;
 
     const s = await loadSettings();
     const subject = s.coupon_email_subject || "Seu cupom BODYOGA";

@@ -27,10 +27,9 @@ export async function enrollInCourse(courseId: string): Promise<void> {
   const { data: sessionData } = await supabase.auth.getSession();
   const sessionUser = sessionData?.session?.user;
   if (!sessionUser) throw new Error("Você precisa estar logado para se matricular.");
-  const { error } = await supabase
-    .from("enrollments")
-    .insert({ user_id: sessionUser.id, course_id: courseId, status: "active" });
-  if (error && error.code !== "23505") throw error;
+  // Só cursos gratuitos; curso pago passa pelo pagamento (create-course-payment).
+  const { error } = await supabase.rpc("enroll_free_course", { p_course_id: courseId });
+  if (error) throw new Error(error.message);
   track("course_enrolled", { course_id: courseId });
 }
 
