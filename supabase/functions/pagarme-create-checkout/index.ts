@@ -89,7 +89,7 @@ serve(async (req) => {
 
     const total = Math.max(100, Math.round(order.total_cents)); // Pagar.me exige >= R$1,00
     // Parcelas sem juros, parcela mínima de R$ 5,00, até 12x.
-    const maxInstallments = Math.min(12, Math.max(1, Math.floor(total / 500)));
+    const maxInstallments = Math.min(10, Math.max(1, Math.floor(total / 500))) // até 10x (igual à operadora na Awise);
     const installments = Array.from({ length: maxInstallments }, (_, i) => ({ number: i + 1, total }));
 
     // Rota liberada nesta conta: Link de Pagamento (cartão, PIX, Apple Pay, Google Pay).

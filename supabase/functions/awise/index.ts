@@ -142,6 +142,61 @@ async function syncProducts(opts: { onlyAwiseIds?: string[] } = {}) {
   return { total_awise: awList.length, report, site_sem_vinculo: unlinked };
 }
 
+// ---------------------------------------------------------------- formas de pagamento
+// Na Awise o cartão vira uma "operadora" com uma forma de pagamento por bandeira × parcelas
+// (todas com o mesmo grouperId). O setting guarda "group:<grouperId>" ou o id direto (PIX).
+async function listPaymentConfigs(): Promise<any[]> {
+  const out: any[] = [];
+  for (let page = 1; page <= 10; page++) {
+    const r = await awise("GET", `/payment-configurations?page%5Bsize%5D=50&page%5Bnumber%5D=${page}`);
+    if (!r.ok) throw new Error(awiseError(r));
+    const rows = r.data?.data ?? [];
+    out.push(...rows);
+    if (rows.length < 50) break;
+  }
+  return out.filter((x) => x.attributes?.sale && !x.attributes?.disabled);
+}
+
+// Bandeira (Pagar.me) → código da bandeira na NF-e / Awise (tBand)
+const FLAG: Record<string, string> = {
+  visa: "01", mastercard: "02", amex: "03", "american express": "03", sorocred: "04",
+  diners: "05", elo: "06", hipercard: "07", hiper: "07", aura: "08", cabal: "09",
+};
+
+async function pagarmeCardInfo(paymentId: string | null): Promise<{ brand?: string; installments?: number }> {
+  // @ts-ignore
+  const key = (Deno.env.get("PAGARME_SECRET_KEY") ?? "").trim();
+  if (!key || !paymentId) return {};
+  try {
+    const r = await fetch(`https://api.pagar.me/core/v5/orders/${paymentId}`, {
+      headers: { Authorization: "Basic " + btoa(`${key}:`) },
+    });
+    const d = await r.json();
+    const tx = d?.charges?.[0]?.last_transaction ?? {};
+    return { brand: tx?.card?.brand, installments: tx?.installments };
+  } catch {
+    return {};
+  }
+}
+
+async function resolvePaymentConfig(order: any): Promise<string | null> {
+  const isPix = String(order.payment_method_type ?? "").includes("pix");
+  const chosen = (await setting(isPix ? "awise_payment_pix_id" : "awise_payment_card_id")) || "";
+  if (!chosen) return null;
+  if (!chosen.startsWith("group:")) return chosen;
+  const group = chosen.slice(6);
+  const configs = (await listPaymentConfigs()).filter((x) => x.attributes?.grouperId === group);
+  const info = await pagarmeCardInfo(order.payment_id);
+  const n = Math.max(1, Number(order.payment_installments ?? info.installments ?? 1));
+  const flag = FLAG[String(info.brand ?? "").toLowerCase()];
+  const pick =
+    configs.find((x) => x.attributes?.creditCardFlag === flag && Number(x.attributes?.installmentsNumber) === n) ??
+    configs.find((x) => x.attributes?.creditCardFlag === "01" && Number(x.attributes?.installmentsNumber) === n) ??
+    configs.find((x) => Number(x.attributes?.installmentsNumber) === Math.min(n, 10)) ??
+    configs[0];
+  return pick?.id ?? null;
+}
+
 // ---------------------------------------------------------------- clientes
 async function ibgeFromCep(cep: string): Promise<{ ibge?: string; district?: string }> {
   try {
@@ -212,9 +267,7 @@ async function pushOrder(orderId: string, force = false) {
   if (missing.length) throw new Error(`Produto sem vínculo com a Awise: ${missing.map((i: any) => i.name).join(", ")}`);
 
   const cust = await ensureCustomer(order);
-  const isPix = String(order.payment_method_type ?? "").includes("pix");
-  const paymentConfigId =
-    (await setting(isPix ? "awise_payment_pix_id" : "awise_payment_card_id")) || (await setting("awise_payment_card_id"));
+  const paymentConfigId = await resolvePaymentConfig(order);
   if (!paymentConfigId) {
     const msg = "Escolha a forma de pagamento da Awise em Configurações → Integrações → Awise.";
     await supabase.from("orders").update({ awise_error: msg }).eq("id", orderId);
@@ -331,14 +384,24 @@ serve(async (req) => {
     }
     if (action === "options") {
       const [pays, prods, hooks] = await Promise.all([
-        awise("GET", "/payment-configurations?page%5Bsize%5D=100"),
+        listPaymentConfigs(),
         listAllAwiseProducts().catch(() => []),
         awise("GET", "/webhooks"),
       ]);
       return json({
-        payment_configurations: (pays.data?.data ?? [])
-          .filter((x: any) => x.attributes?.sale && !x.attributes?.disabled)
-          .map((x: any) => ({ id: x.id, name: x.attributes?.description })),
+        payment_configurations: (() => {
+          const seen = new Set<string>();
+          const out: { id: string; name: string }[] = [];
+          for (const x of pays) {
+            const g = x.attributes?.grouperId;
+            if (g) {
+              if (seen.has(g)) continue;
+              seen.add(g);
+              out.push({ id: `group:${g}`, name: String(x.attributes?.description ?? "").replace(/\s+\d+x$/, "") + " (todas as bandeiras e parcelas)" });
+            } else out.push({ id: x.id, name: x.attributes?.description });
+          }
+          return out;
+        })(),
         products: prods.map((x: any) => ({
           id: x.id, name: x.name || x.metaProductName, code: x.code, stock: Number(x.currentStock ?? 0),
           price: toCents(x.price), cost: toCents(x.cost), ncm: x.ncm ?? null,
