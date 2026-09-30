@@ -33,10 +33,11 @@ export type Product = {
   stock_qty?: number | null;
   low_stock_threshold?: number;
   cost_cents?: number | null;
+  awise_product_id?: string | null;
 };
 
 const COLS =
-  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg, stock_qty, low_stock_threshold, cost_cents";
+  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg, stock_qty, low_stock_threshold, cost_cents, awise_product_id";
 
 function withProductMedia(product: Product): Product {
   return {
@@ -469,10 +470,12 @@ export type Order = {
   base_invoice_xml_url?: string | null;
   base_invoice_key?: string | null;
   base_invoice_error?: string | null;
+  awise_order_id?: string | null;
+  awise_error?: string | null;
 };
 
 const ORDER_COLS =
-  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, shipping_service_id, shipping_service_label, shipping_destination_cep, me_order_id, me_label_url, me_status, payment_method_type, payment_installments, created_at, base_invoice_id, base_invoice_number, base_invoice_status, base_invoice_danfe_url, base_invoice_xml_url, base_invoice_key, base_invoice_error";
+  "id, code, user_id, customer_name, customer_email, customer_phone, customer_address, items, subtotal_cents, shipping_cents, total_cents, status, notes, tracking_code, shipping_service_id, shipping_service_label, shipping_destination_cep, me_order_id, me_label_url, me_status, payment_method_type, payment_installments, created_at, base_invoice_id, base_invoice_number, base_invoice_status, base_invoice_danfe_url, base_invoice_xml_url, base_invoice_key, base_invoice_error, awise_order_id, awise_error";
 
 export async function listAllOrdersForAdmin(filter?: { status?: Order["status"] }): Promise<Order[]> {
   let q = supabase

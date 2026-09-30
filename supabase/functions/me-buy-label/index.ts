@@ -242,6 +242,9 @@ serve(async (req) => {
       supabase.functions.invoke("send-notification", {
         body: { type: "order_shipped", record_id: order.id },
       }).catch((e) => console.error("shipped email failed:", e));
+      supabase.functions.invoke("awise", {
+        body: { action: "update_shipping", order_id: order.id },
+      }).catch((e) => console.error("awise shipping:", e));
 
       return new Response(JSON.stringify({
         ok: true,

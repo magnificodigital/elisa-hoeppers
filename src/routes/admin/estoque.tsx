@@ -98,10 +98,10 @@ function StockPage() {
             <h1 className="font-display text-3xl text-primary-dark">Estoque</h1>
           </div>
           <Link
-            to="/admin/compras"
-            className="bg-primary text-white px-4 py-2 rounded-full text-[10px] uppercase tracking-widest font-semibold hover:bg-primary-dark"
+            to="/admin/configuracoes/awise"
+            className="border border-primary text-primary px-4 py-2 rounded-full text-[10px] uppercase tracking-widest font-semibold hover:bg-primary/5"
           >
-            Importar nota do fornecedor (XML)
+            Integração Awise
           </Link>
         </div>
         <p className="text-sm text-primary-dark/60 mb-8">

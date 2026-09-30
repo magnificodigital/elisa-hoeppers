@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Plug, Wallet, Truck, Instagram, FileText, Mail, MailCheck, Gift, CreditCard } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plug, Wallet, Truck, Instagram, FileText, Mail, MailCheck, Gift, CreditCard, Warehouse } from "lucide-react";
 
 export const Route = createFileRoute("/admin/configuracoes/integracoes")({
   head: () => ({ meta: [{ title: "Admin — Integrações" }] }),
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/admin/configuracoes/integracoes")({
 });
 
 const integrations = [
+  { to: "/admin/configuracoes/awise", icon: Warehouse, title: "Awise (ERP)", desc: "Estoque, financeiro, NF-e e cashback. Vendas do site entram na Awise automaticamente." },
   { to: "/admin/configuracoes/pagarme", icon: CreditCard, title: "Pagar.me", desc: "Checkout hospedado — Cartão, PIX, Apple Pay, Google Pay. Escolha do gateway ativo." },
   { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Gateway — PIX e Cartão, dentro do site." },
   { to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },

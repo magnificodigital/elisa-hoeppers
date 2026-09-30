@@ -292,7 +292,18 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
 
   const emitNfe = useMutation({
     mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("base-emit-invoice", { body: { order_id: o.id } });
+      // NF-e sai pela Awise quando essa opção está ligada; senão, pela Base.
+      const { data: s } = await supabase.from("app_settings").select("value").eq("key", "awise_emit_nfe").maybeSingle();
+      const viaAwise = s?.value === "true";
+      if (viaAwise && !o.awise_order_id) {
+        const r = await supabase.functions.invoke("awise", { body: { action: "push_order", order_id: o.id } });
+        if (r.error) throw r.error;
+        if ((r.data as { error?: string })?.error) throw new Error((r.data as { error: string }).error);
+        return r.data; // o envio já emite a NF-e quando a opção está ligada
+      }
+      const { data, error } = viaAwise
+        ? await supabase.functions.invoke("awise", { body: { action: "issue_invoice", order_id: o.id } })
+        : await supabase.functions.invoke("base-emit-invoice", { body: { order_id: o.id } });
       if (error) throw error;
       if ((data as { error?: string }).error) throw new Error((data as { error: string }).error);
       return data;
@@ -306,6 +317,23 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
 
 
 
+
+  const pushAwise = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("awise", { body: { action: "push_order", order_id: o.id } });
+      if (error) throw error;
+      if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Pedido enviado para a Awise.");
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+    },
+    onError: (e: Error) => {
+      toast.error(e.message);
+      qc.invalidateQueries({ queryKey: ["admin-orders"] });
+    },
+  });
 
   const cleanPhone = o.customer_phone.replace(/\D/g, "");
   const wppNumber = cleanPhone.length >= 10 ? (cleanPhone.startsWith("55") ? cleanPhone : `55${cleanPhone}`) : null;
@@ -330,6 +358,11 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
             <StatusPill status={o.status} />
             <PaymentMethodBadge type={o.payment_method_type} installments={o.payment_installments} />
             {o.base_invoice_status && <NfeStatusPill status={o.base_invoice_status} />}
+            {o.awise_order_id ? (
+              <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/10 text-primary" title={`Pedido ${o.awise_order_id} na Awise`}>Awise ✓</span>
+            ) : o.awise_error ? (
+              <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-red-100 text-red-700">Awise ✗</span>
+            ) : null}
 
 
 
@@ -531,8 +564,21 @@ function OrderCard({ order: o, isSelected, onToggleSelect }: { order: Order; isS
           </button>
         )}
 
+        {(o.status === "confirmed" || o.status === "shipped" || o.status === "completed") && !o.awise_order_id && o.awise_error && (
+          <button
+            onClick={() => pushAwise.mutate()}
+            disabled={pushAwise.isPending}
+            className="inline-flex items-center gap-1.5 border border-primary text-primary px-4 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition disabled:opacity-60"
+          >
+            {pushAwise.isPending ? "Enviando..." : "Reenviar para Awise"}
+          </button>
+        )}
+
         {o.base_invoice_error && (
           <p className="w-full text-red-700 text-xs mt-1">NFe: {o.base_invoice_error}</p>
+        )}
+        {!o.awise_order_id && o.awise_error && (
+          <p className="w-full text-red-700 text-xs mt-1">Awise: {o.awise_error}</p>
         )}
 
         {buyLabel.error && (

@@ -96,6 +96,10 @@ serve(async (req) => {
       if (Object.keys(update).length > 0) {
         await supabase.from("orders").update(update).eq("id", o.id);
         for (const ev of events) await notify(ev, o.id);
+        // Awise: status do envio e rastreio no pedido do ERP
+        await supabase.functions
+          .invoke("awise", { body: { action: "update_shipping", order_id: o.id } })
+          .catch((e) => console.error("awise shipping:", e));
         changes.push({ code: o.code, me_status: meStatus, tracking: code, emails: events });
       }
     }

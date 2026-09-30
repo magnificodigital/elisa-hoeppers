@@ -71,3 +71,9 @@ verify_jwt = false
 
 [functions.fin-pagarme-sync]
 verify_jwt = false
+
+[functions.awise]
+verify_jwt = false
+
+[functions.awise-webhook]
+verify_jwt = false
