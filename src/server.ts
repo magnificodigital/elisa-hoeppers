@@ -95,6 +95,11 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     // 0) Intercepta URLs legadas do WP antes do TanStack handler
     const url = new URL(request.url);
+    // Endereço oficial é sem www: redireciona permanentemente (evita conteúdo duplicado no Google).
+    if (url.hostname === "www.bodyogaoficial.com.br") {
+      url.hostname = "bodyogaoficial.com.br";
+      return withSecurityHeaders(Response.redirect(url.toString(), 301));
+    }
     const legacy = findLegacyRedirect(url);
     if (legacy) {
       if (legacy.status === 410) {

@@ -1,4 +1,4 @@
--- APLICAR SÓ DEPOIS que bodyogaoficial.com.br estiver servindo o site novo (Cloudflare).
+-- Aplicada em 01/10/2026, após a publicação do site novo no Cloudflare.
 -- Tira do banco as últimas referências a arquivos hospedados pelo Lovable (/__l5e/ e r2.dev),
 -- que deixam de existir quando o Lovable for desligado. Arquivos já estão em public/assets/.
 update public.email_templates

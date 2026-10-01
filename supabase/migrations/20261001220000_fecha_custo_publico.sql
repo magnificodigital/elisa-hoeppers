@@ -1,4 +1,4 @@
--- APLICAR SÓ DEPOIS que o site novo (sem cost_cents nas consultas públicas) estiver publicado.
+-- Aplicada em 01/10/2026, após a publicação do site novo no Cloudflare.
 -- Fecha a leitura do custo dos produtos para visitantes e clientes (admin usa admin_product_costs()).
 revoke select on public.products from anon, authenticated;
 grant select (id, slug, name, short_description, description, price_cents, compare_at_price_cents, in_stock,
