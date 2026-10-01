@@ -1,6 +1,7 @@
 // @ts-ignore - Deno
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { forbidden, getCaller, isStaff } from "../_shared/guard.ts";
 
 /**
  * Sincroniza o rastreio dos pedidos com o Melhor Envio e avisa a cliente em cada etapa.
@@ -36,6 +37,8 @@ function notify(type: string, orderId: string) {
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  // Só cron/gatilho (token interno), outras functions ou admin.
+  if (!isStaff(await getCaller(req, supabase))) return forbidden(corsHeaders);
   const json = (b: unknown, s = 200) =>
     new Response(JSON.stringify(b), { status: s, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 

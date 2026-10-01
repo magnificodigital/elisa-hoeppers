@@ -83,7 +83,13 @@ export async function bookAppointment(input: {
     p_customer_phone: input.customer_phone ?? null,
     p_notes: input.notes ?? null,
   });
-  if (error) throw error;
+  if (error) {
+    const m = error.message ?? "";
+    if (m.includes("too many pending")) throw new Error("Você já tem 3 agendamentos aguardando confirmação. Fale com a Elisa pelo WhatsApp.");
+    if (m.includes("too far")) throw new Error("Escolha uma data nos próximos 6 meses.");
+    if (m.includes("slot already taken")) throw new Error("Esse horário acabou de ser reservado. Escolha outro.");
+    throw error;
+  }
   const row = Array.isArray(data) ? data[0] : data;
   if (!row) throw new Error("Falha ao criar reserva.");
   const result = row as BookingResult;

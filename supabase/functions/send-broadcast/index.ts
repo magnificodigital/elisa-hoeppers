@@ -1,7 +1,7 @@
 // @ts-ignore - Deno
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { forbidden, getCaller, isStaff } from "../_shared/guard.ts";
+import { esc, forbidden, getCaller, isStaff } from "../_shared/guard.ts";
 
 // @ts-ignore
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
@@ -191,7 +191,7 @@ async function sendInBatches(
   for (let i = 0; i < recipients.length; i += CHUNK) {
     const slice = recipients.slice(i, i + CHUNK);
     const results = await Promise.all(slice.map((r) => {
-      const personalized = bodyHtml.replace(/\{\{first_name\}\}/g, (r.name ?? "").split(" ")[0] || "");
+      const personalized = bodyHtml.replace(/\{\{first_name\}\}/g, esc((r.name ?? "").split(" ")[0] || ""));
       const isFullDoc = /<(!doctype|html)[\s>]/i.test(personalized.trim().slice(0, 200));
       const html = isFullDoc ? personalized : wrap(personalized);
       return sendOne(r.email, subject, html);

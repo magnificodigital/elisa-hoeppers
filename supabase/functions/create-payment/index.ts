@@ -121,7 +121,8 @@ serve(async (req) => {
       };
 
       const payBody: any = {
-        transaction_amount: Number(formData.transaction_amount ?? order.total_cents / 100),
+        // SEGURANÇA: o valor SEMPRE vem do pedido no banco, nunca do navegador.
+        transaction_amount: order.total_cents / 100,
         description: `Pedido ${order.code} - BODYOGA`,
         payment_method_id: formData.payment_method_id,
         payer: {
@@ -169,7 +170,8 @@ serve(async (req) => {
           mp_payment_status: payment.status,
           mp_payment_status_detail: payment.status_detail,
           mp_payment_method: payment.payment_method_id,
-          status: payment.status === "approved" ? "confirmed" : order.status,
+          status: payment.status === "approved" && Math.round(Number(payment.transaction_amount) * 100) >= order.total_cents
+            ? "confirmed" : order.status,
         })
         .eq("id", order.id);
 

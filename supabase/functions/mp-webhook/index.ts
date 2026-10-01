@@ -124,14 +124,33 @@ serve(async (req) => {
     const payment = await paymentRes.json();
     const ref = payment.external_reference; // ex: "6LXREW" (é o CODE, não o UUID)
 
+    // Pagamento de curso (create-course-payment): external_reference = "enrollment:<id>"
+    if (typeof ref === "string" && ref.startsWith("enrollment:")) {
+      const enrollmentId = ref.slice("enrollment:".length);
+      const { data: enr } = await supabase
+        .from("enrollments").select("id, status, course_id").eq("id", enrollmentId).maybeSingle();
+      if (!enr) return new Response("ok", { status: 200 });
+      const { data: course } = await supabase.from("courses").select("price_cents").eq("id", enr.course_id).maybeSingle();
+      const paid = Math.round(Number(payment.transaction_amount ?? 0) * 100);
+      if (payment.status === "approved" && paid >= (course?.price_cents ?? 0) && enr.status !== "active") {
+        await supabase.from("enrollments").update({ status: "active", paid_cents: paid }).eq("id", enr.id);
+        await supabase.functions
+          .invoke("send-notification", { body: { type: "course_purchased", record_id: enr.id } })
+          .catch((e) => console.error("course email:", e));
+      } else if (["rejected", "cancelled"].includes(payment.status) && enr.status === "pending_payment") {
+        await supabase.from("enrollments").update({ status: "cancelled" }).eq("id", enr.id);
+      }
+      return new Response("ok", { status: 200 });
+    }
+
     // Busca o pedido pelo ID do pagamento ou pelo código (external_reference)
     let { data: order } = await supabase.from("orders")
-      .select("id, code, status")
+      .select("id, code, status, total_cents")
       .eq("mp_payment_id", paymentId).maybeSingle();
     
     if (!order && ref) {
       const { data: orderFromRef } = await supabase.from("orders")
-        .select("id, code, status")
+        .select("id, code, status, total_cents")
         .eq("code", ref)
         .maybeSingle();
       order = orderFromRef;
@@ -145,6 +164,13 @@ serve(async (req) => {
     // Idempotência correta: só pula se JÁ estiver confirmado
     if (order.status === "confirmed") {
       console.log("mp-webhook: pedido já confirmado, ignorando", order.code);
+      return new Response("ok", { status: 200 });
+    }
+
+    // SEGURANÇA: só confirma se o valor pago cobre o total do pedido.
+    if (payment.status === "approved" && Math.round(Number(payment.transaction_amount ?? 0) * 100) < order.total_cents) {
+      console.error("mp-webhook: valor pago menor que o pedido", order.code, payment.transaction_amount, order.total_cents);
+      await supabase.from("orders").update({ mp_payment_id: paymentId, mp_payment_status: "valor_divergente" }).eq("id", order.id);
       return new Response("ok", { status: 200 });
     }
 

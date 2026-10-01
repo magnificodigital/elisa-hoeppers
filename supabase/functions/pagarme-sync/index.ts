@@ -1,6 +1,7 @@
 // @ts-ignore - Deno
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { forbidden, getCaller, isStaff } from "../_shared/guard.ts";
 
 /**
  * Rede de segurança do pagamento: roda a cada 10 min (cron).
@@ -24,7 +25,9 @@ async function pg(path: string) {
   return r.ok ? await r.json() : null;
 }
 
-serve(async () => {
+serve(async (req) => {
+  // Só cron/gatilho (token interno), outras functions ou admin.
+  if (!isStaff(await getCaller(req, supabase))) return forbidden({});
   try {
     if (!KEY) return new Response(JSON.stringify({ error: "sem PAGARME_SECRET_KEY" }), { status: 400 });
     const since = new Date(Date.now() - 72 * 3600 * 1000).toISOString();

@@ -73,16 +73,22 @@ serve(async (req) => {
       return json({ error: "PAGARME_SECRET_KEY não configurada nos secrets do Supabase." }, 400);
     }
 
-    const { order_code } = await req.json();
+    const { order_code, email } = await req.json();
     if (!order_code) return json({ error: "order_code ausente" }, 400);
 
     const { data: order, error: orderErr } = await supabase
       .from("orders")
-      .select("id, code, total_cents, status, customer_name, customer_email, customer_phone, customer_address")
+      .select("id, code, total_cents, status, customer_name, customer_email, customer_phone, customer_address, created_at")
       .eq("code", order_code)
       .maybeSingle();
 
-    if (orderErr || !order) return json({ error: "Pedido não encontrado" }, 404);
+    // Só o código (6 caracteres) não basta para gerar o link com os dados da cliente:
+    // exige o e-mail do pedido, ou (versão antiga do checkout) um pedido criado agora há pouco.
+    const fresh = order && Date.now() - new Date(order.created_at).getTime() < 10 * 60 * 1000;
+    const emailOk = order && email && String(order.customer_email).toLowerCase().trim() === String(email).toLowerCase().trim();
+    if (orderErr || !order || !(emailOk || (!email && fresh))) {
+      return json({ error: "Pedido não encontrado" }, 404);
+    }
     if (order.status !== "pending") {
       return json({ error: "Este pedido não está mais aguardando pagamento." }, 400);
     }

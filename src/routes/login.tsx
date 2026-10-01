@@ -31,7 +31,8 @@ function LoginPage() {
     setLoading(true);
     try {
       await signIn({ email, password });
-      if (next) {
+      // Só caminhos internos (evita redirecionar para outro site após o login).
+      if (next && next.startsWith("/") && !next.startsWith("//") && !next.includes("\\")) {
         navigate({ to: next });
       } else {
         const { data: sess } = await supabase.auth.getUser();

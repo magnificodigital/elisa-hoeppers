@@ -43,10 +43,19 @@ serve(async (req) => {
     const cepOrigem = await getSetting("me_origin_cep");
     if (!token || !cepOrigem) throw new Error("ME não configurado (token ou CEP origem ausente)");
 
-    const { cep_destino, items } = await req.json();
-    if (!cep_destino || !Array.isArray(items) || items.length === 0) {
+    const body = await req.json();
+    const cep_destino = body?.cep_destino;
+    if (!cep_destino || !Array.isArray(body?.items) || body.items.length === 0 || body.items.length > 50) {
       throw new Error("cep_destino e items obrigatórios");
     }
+    // Agrupa por produto e valida quantidades (inteiro de 1 a 100).
+    const qtyById = new Map<string, number>();
+    for (const it of body.items) {
+      const q = Number(it?.qty);
+      if (!it?.product_id || !Number.isInteger(q) || q < 1 || q > 100) throw new Error("item inválido");
+      qtyById.set(String(it.product_id), (qtyById.get(String(it.product_id)) ?? 0) + q);
+    }
+    const items = [...qtyById.entries()].map(([product_id, qty]) => ({ product_id, qty }));
 
     const cleanCepOrigem = cepOrigem.replace(/\D/g, "");
     const cleanCepDestino = String(cep_destino).replace(/\D/g, "");
@@ -125,6 +134,16 @@ serve(async (req) => {
         error: o.error ?? null,
       }))
       .sort((a, b) => a.price_cents - b.price_cents);
+
+    // Guarda as cotações: o pedido só aceita um frete que o servidor calculou (ver place_order).
+    if (options.length) {
+      const cartKey = [...items].sort((a, b) => (a.product_id < b.product_id ? -1 : 1))
+        .map((i) => `${i.product_id}:${i.qty}`).join(",");
+      const { error: qErr } = await supabase.from("shipping_quotes").insert(
+        options.map((o) => ({ cep: cleanCepDestino, cart_key: cartKey, service_id: o.id, price_cents: o.price_cents })),
+      );
+      if (qErr) console.error("shipping_quotes:", qErr.message);
+    }
 
     return new Response(JSON.stringify({ options }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });

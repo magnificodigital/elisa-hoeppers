@@ -27,7 +27,7 @@ type OurOrder = { id: string; code: string; status: string };
  * orders.payment_preference_id → code igual ao nosso.
  */
 async function findOurOrder(pg: any): Promise<OurOrder | null> {
-  const sel = "id, code, status";
+  const sel = "id, code, status, total_cents";
   const metaCode = pg?.metadata?.order_code;
   if (metaCode) {
     const { data } = await supabase.from("orders").select(sel).eq("code", metaCode).maybeSingle();
@@ -79,6 +79,12 @@ serve(async (req) => {
     if (pg.status === "paid") {
       if (["confirmed", "shipped", "completed"].includes(ours.status)) {
         return new Response("ok", { status: 200 }); // já processado
+      }
+      // SEGURANÇA: só confirma se o valor pago cobre o total do pedido.
+      const paid = (pg.charges ?? []).reduce((a: number, c: any) => a + (Number(c.paid_amount ?? c.amount) || 0), 0) || Number(pg.amount) || 0;
+      if (paid < ours.total_cents) {
+        console.error("pagarme-webhook: valor pago menor que o pedido", ours.code, paid, ours.total_cents);
+        return new Response("ok", { status: 200 });
       }
       const { error: upErr } = await supabase
         .from("orders")
