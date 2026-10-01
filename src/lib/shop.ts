@@ -37,7 +37,7 @@ export type Product = {
 };
 
 const COLS =
-  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg, stock_qty, low_stock_threshold, cost_cents, awise_product_id";
+  "id, slug, name, sku, short_description, description, price_cents, compare_at_price_cents, in_stock, is_active, is_featured, gallery, category, display_order, weight_g, length_cm, width_cm, height_cm, brand, ritual_id, ncm, cfop, unit_of_measure, gross_weight_kg, stock_qty, low_stock_threshold, awise_product_id";
 
 function withProductMedia(product: Product): Product {
   return {
@@ -298,6 +298,13 @@ export async function listAllProductsForAdmin(): Promise<Product[]> {
   return attachRituals(((data ?? []) as Product[]).map(withProductMedia));
 }
 
+/** Custo dos produtos (só admin; não vai nas consultas públicas). */
+export async function getProductCosts(): Promise<Map<string, number | null>> {
+  const { data, error } = await supabase.rpc("admin_product_costs");
+  if (error) throw error;
+  return new Map(((data ?? []) as { id: string; cost_cents: number | null }[]).map((r) => [r.id, r.cost_cents]));
+}
+
 export async function getProductForAdmin(id: string): Promise<Product | null> {
   const { data, error } = await supabase
     .from("products")
@@ -341,7 +348,7 @@ export async function createProduct(input: ProductInsert): Promise<Product> {
     const clean = normalizeSlug(rest.slug);
     if (clean) rest.slug = clean;
   }
-  const { data, error } = await supabase.from("products").insert(rest).select().single();
+  const { data, error } = await supabase.from("products").insert(rest).select(COLS).single();
   if (error) throw error;
   const product = data as Product;
   if (ritual_ids && ritual_ids.length > 0) await setProductRituals(product.id, ritual_ids);

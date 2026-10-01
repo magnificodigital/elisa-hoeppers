@@ -55,3 +55,18 @@ export function esc(v: unknown): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
+
+/** Módulo ligado/desligado em Admin → Configurações → Módulos (app_settings, categoria "modulos"). */
+export async function moduleEnabled(supabase: SupabaseClient, key: string, fallback = true): Promise<boolean> {
+  const { data } = await supabase.from("app_settings").select("value").eq("key", key).maybeSingle();
+  if (!data) return fallback;
+  return String(data.value).toLowerCase() === "true";
+}
+
+export function moduleOffResponse(cors: Record<string, string> = {}, webhook = false) {
+  // Webhook: responde 200 pra o provedor não ficar reenviando.
+  return new Response(JSON.stringify(webhook ? { ok: true, ignored: "módulo desativado" } : { error: "Este módulo está desativado. Ative em Admin → Configurações → Módulos." }), {
+    status: webhook ? 200 : 503,
+    headers: { ...cors, "Content-Type": "application/json" },
+  });
+}

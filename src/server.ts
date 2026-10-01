@@ -67,6 +67,30 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+// Cabeçalhos de segurança em todas as respostas (sem CSP rígida para não quebrar
+// Pagar.me / Mercado Pago / YouTube / Pixel da Meta).
+const SECURITY_HEADERS: Record<string, string> = {
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "SAMEORIGIN",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), usb=()",
+  "Strict-Transport-Security": "max-age=31536000",
+};
+
+function withSecurityHeaders(response: Response): Response {
+  try {
+    for (const [k, v] of Object.entries(SECURITY_HEADERS)) {
+      if (!response.headers.has(k)) response.headers.set(k, v);
+    }
+    return response;
+  } catch {
+    // Headers imutáveis (ex.: Response.redirect) → recria a resposta.
+    const headers = new Headers(response.headers);
+    for (const [k, v] of Object.entries(SECURITY_HEADERS)) if (!headers.has(k)) headers.set(k, v);
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+  }
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     // 0) Intercepta URLs legadas do WP antes do TanStack handler
@@ -82,10 +106,10 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withSecurityHeaders(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
-      return brandedErrorResponse();
+      return withSecurityHeaders(brandedErrorResponse());
     }
   },
 };

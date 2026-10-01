@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useModules, isOn } from "@/lib/system-modules";
 import { Users, Stethoscope, CalendarClock, ChevronRight, Plug } from "lucide-react";
 
 export const Route = createFileRoute("/admin/configuracoes/")({
@@ -7,13 +8,15 @@ export const Route = createFileRoute("/admin/configuracoes/")({
 });
 
 const sections = [
+  { to: "/admin/configuracoes/modulos", icon: Plug, title: "Módulos", desc: "Ligar e desligar partes do sistema que não estão em uso (Asaas, Base, Financeiro...)." },
   { to: "/admin/configuracoes/integracoes", icon: Plug, title: "Integrações", desc: "Pagamentos, envio, emails, newsletter, cupom e feed do Instagram." },
   { to: "/admin/configuracoes/usuarios", icon: Users, title: "Usuários", desc: "Lista de alunas e admins, convites e troca de role." },
-  { to: "/admin/configuracoes/diagnosticos", icon: Stethoscope, title: "Diagnósticos", desc: "Auto-check do Asaas e do Melhor Envio." },
+  { to: "/admin/configuracoes/diagnosticos", icon: Stethoscope, title: "Diagnósticos", desc: "Auto-check do Asaas e do Melhor Envio.", module: "modulo_diagnosticos" },
   { to: "/admin/disponibilidade", icon: CalendarClock, title: "Disponibilidade", desc: "Horários da semana e períodos bloqueados." },
 ] as const;
 
 function ConfigIndex() {
+  const { data: mods } = useModules();
   return (
     <div className="bg-background min-h-[70vh]">
       <div className="max-w-3xl mx-auto px-4">
@@ -21,7 +24,7 @@ function ConfigIndex() {
           <p className="text-primary-dark/70 mb-10">Selecione abaixo o que deseja configurar.</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {sections.map((s) => {
+            {sections.filter((s) => isOn(mods, (s as { module?: string }).module)).map((s) => {
               const Icon = s.icon;
               return (
                 <Link

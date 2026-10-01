@@ -29,13 +29,10 @@ export async function issueCertificate(courseId: string): Promise<Certificate | 
 }
 
 export async function getCertificateByCode(code: string): Promise<Certificate | null> {
-  const { data, error } = await supabase
-    .from("certificates")
-    .select("*")
-    .eq("code", code)
-    .maybeSingle();
+  // Verificação pública: só pelo código exato (a lista de certificados não é pública).
+  const { data, error } = await supabase.rpc("verify_certificate", { p_code: code });
   if (error) throw error;
-  return data as Certificate | null;
+  return ((Array.isArray(data) ? data[0] : data) ?? null) as Certificate | null;
 }
 
 export async function listMyCertificates(): Promise<Certificate[]> {

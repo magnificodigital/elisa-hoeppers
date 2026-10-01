@@ -68,6 +68,7 @@ function friendlyError(msg: string): string {
     return "Um dos produtos está sem estoque.";
   }
   if (m.includes("not available")) return "Um dos produtos não está mais disponível.";
+  if (m.includes("muitas solicitações")) return "Muitos pedidos em sequência. Aguarde alguns minutos e tente de novo.";
   if (m.includes("frete")) return "O frete mudou ou expirou. Calcule o frete novamente e tente de novo.";
   if (m.includes("cupom")) return (msg.match(/cupom[^"\n]*/i)?.[0] ?? "Cupom inválido.").replace(/^c/, "C") + ".";
   return "Não foi possível concluir o pedido. Tente novamente ou fale com a Elisa pelo WhatsApp.";

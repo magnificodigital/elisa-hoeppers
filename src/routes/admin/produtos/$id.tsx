@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Trash2 } from "lucide-react";
 import { ImageUploader } from "@/components/ImageUploader";
-import { getProductForAdmin, updateProduct, deleteProduct, listActiveRituals, normalizeSlug, type ProductImage } from "@/lib/shop";
+import { getProductForAdmin, getProductCosts, updateProduct, deleteProduct, listActiveRituals, normalizeSlug, type ProductImage } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
 import { centsToBRL, formatBRLInput } from "@/lib/currency";
 import { toast } from "sonner";
@@ -29,6 +29,8 @@ function ProductEditPage() {
     queryKey: ["admin-product", id],
     queryFn: () => getProductForAdmin(id),
   });
+
+  const { data: costs } = useQuery({ queryKey: ["admin-product-costs"], queryFn: getProductCosts });
 
   const { data: rituals } = useQuery({
     queryKey: ["bodyoga-rituals-active"],
@@ -93,8 +95,7 @@ function ProductEditPage() {
       setPriceDisplay(product.price_cents ? centsToBRL(product.price_cents) : "");
       setStockQty(product.stock_qty != null ? String(product.stock_qty) : "");
       setThreshold(String(product.low_stock_threshold ?? 2));
-      setCostCents(product.cost_cents ?? null);
-      setCostDisplay(product.cost_cents ? centsToBRL(product.cost_cents) : "");
+
       const compare = product.compare_at_price_cents ?? 0;
       if (compare > product.price_cents && compare > 0) {
         setDiscountPct(String(Math.round(((compare - product.price_cents) / compare) * 100)));
@@ -103,6 +104,12 @@ function ProductEditPage() {
       }
     }
   }, [product]);
+
+  useEffect(() => {
+    const c = costs?.get(id) ?? null;
+    setCostCents(c);
+    setCostDisplay(c ? centsToBRL(c) : "");
+  }, [costs, id]);
 
   const save = useMutation({
     mutationFn: async () => {
@@ -159,6 +166,7 @@ function ProductEditPage() {
       qc.invalidateQueries({ queryKey: ["admin-product", id] });
       qc.invalidateQueries({ queryKey: ["products"] });
       qc.invalidateQueries({ queryKey: ["admin-stock"] });
+      qc.invalidateQueries({ queryKey: ["admin-product-costs"] });
     },
     onError: (err: Error) => toast.error(err.message),
   });

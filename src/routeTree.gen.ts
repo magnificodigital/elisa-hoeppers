@@ -74,6 +74,7 @@ import { Route as AdminConfiguracoesUsuariosRouteImport } from './routes/admin/c
 import { Route as AdminConfiguracoesSiteRouteImport } from './routes/admin/configuracoes/site'
 import { Route as AdminConfiguracoesPagarmeRouteImport } from './routes/admin/configuracoes/pagarme'
 import { Route as AdminConfiguracoesNewsletterRouteImport } from './routes/admin/configuracoes/newsletter'
+import { Route as AdminConfiguracoesModulosRouteImport } from './routes/admin/configuracoes/modulos'
 import { Route as AdminConfiguracoesMercadopagoRouteImport } from './routes/admin/configuracoes/mercadopago'
 import { Route as AdminConfiguracoesMelhorEnvioRouteImport } from './routes/admin/configuracoes/melhor-envio'
 import { Route as AdminConfiguracoesIntegracoesRouteImport } from './routes/admin/configuracoes/integracoes'
@@ -424,6 +425,12 @@ const AdminConfiguracoesNewsletterRoute =
     path: '/configuracoes/newsletter',
     getParentRoute: () => AdminRouteRoute,
   } as any)
+const AdminConfiguracoesModulosRoute =
+  AdminConfiguracoesModulosRouteImport.update({
+    id: '/configuracoes/modulos',
+    path: '/configuracoes/modulos',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
 const AdminConfiguracoesMercadopagoRoute =
   AdminConfiguracoesMercadopagoRouteImport.update({
     id: '/configuracoes/mercadopago',
@@ -585,6 +592,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
+  '/admin/configuracoes/modulos': typeof AdminConfiguracoesModulosRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
   '/admin/configuracoes/pagarme': typeof AdminConfiguracoesPagarmeRoute
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
@@ -669,6 +677,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
+  '/admin/configuracoes/modulos': typeof AdminConfiguracoesModulosRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
   '/admin/configuracoes/pagarme': typeof AdminConfiguracoesPagarmeRoute
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
@@ -756,6 +765,7 @@ export interface FileRoutesById {
   '/admin/configuracoes/integracoes': typeof AdminConfiguracoesIntegracoesRoute
   '/admin/configuracoes/melhor-envio': typeof AdminConfiguracoesMelhorEnvioRoute
   '/admin/configuracoes/mercadopago': typeof AdminConfiguracoesMercadopagoRoute
+  '/admin/configuracoes/modulos': typeof AdminConfiguracoesModulosRoute
   '/admin/configuracoes/newsletter': typeof AdminConfiguracoesNewsletterRoute
   '/admin/configuracoes/pagarme': typeof AdminConfiguracoesPagarmeRoute
   '/admin/configuracoes/site': typeof AdminConfiguracoesSiteRoute
@@ -844,6 +854,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/integracoes'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
+    | '/admin/configuracoes/modulos'
     | '/admin/configuracoes/newsletter'
     | '/admin/configuracoes/pagarme'
     | '/admin/configuracoes/site'
@@ -928,6 +939,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/integracoes'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
+    | '/admin/configuracoes/modulos'
     | '/admin/configuracoes/newsletter'
     | '/admin/configuracoes/pagarme'
     | '/admin/configuracoes/site'
@@ -1014,6 +1026,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes/integracoes'
     | '/admin/configuracoes/melhor-envio'
     | '/admin/configuracoes/mercadopago'
+    | '/admin/configuracoes/modulos'
     | '/admin/configuracoes/newsletter'
     | '/admin/configuracoes/pagarme'
     | '/admin/configuracoes/site'
@@ -1532,6 +1545,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminConfiguracoesNewsletterRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/configuracoes/modulos': {
+      id: '/admin/configuracoes/modulos'
+      path: '/configuracoes/modulos'
+      fullPath: '/admin/configuracoes/modulos'
+      preLoaderRoute: typeof AdminConfiguracoesModulosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/configuracoes/mercadopago': {
       id: '/admin/configuracoes/mercadopago'
       path: '/configuracoes/mercadopago'
@@ -1724,6 +1744,7 @@ interface AdminRouteRouteChildren {
   AdminConfiguracoesIntegracoesRoute: typeof AdminConfiguracoesIntegracoesRoute
   AdminConfiguracoesMelhorEnvioRoute: typeof AdminConfiguracoesMelhorEnvioRoute
   AdminConfiguracoesMercadopagoRoute: typeof AdminConfiguracoesMercadopagoRoute
+  AdminConfiguracoesModulosRoute: typeof AdminConfiguracoesModulosRoute
   AdminConfiguracoesNewsletterRoute: typeof AdminConfiguracoesNewsletterRoute
   AdminConfiguracoesPagarmeRoute: typeof AdminConfiguracoesPagarmeRoute
   AdminConfiguracoesSiteRoute: typeof AdminConfiguracoesSiteRoute
@@ -1780,6 +1801,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminConfiguracoesIntegracoesRoute: AdminConfiguracoesIntegracoesRoute,
   AdminConfiguracoesMelhorEnvioRoute: AdminConfiguracoesMelhorEnvioRoute,
   AdminConfiguracoesMercadopagoRoute: AdminConfiguracoesMercadopagoRoute,
+  AdminConfiguracoesModulosRoute: AdminConfiguracoesModulosRoute,
   AdminConfiguracoesNewsletterRoute: AdminConfiguracoesNewsletterRoute,
   AdminConfiguracoesPagarmeRoute: AdminConfiguracoesPagarmeRoute,
   AdminConfiguracoesSiteRoute: AdminConfiguracoesSiteRoute,

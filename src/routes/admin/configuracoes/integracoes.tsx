@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useModules, isOn } from "@/lib/system-modules";
 import { ChevronLeft, ChevronRight, Plug, Wallet, Truck, Instagram, FileText, Mail, MailCheck, Gift, CreditCard, Warehouse } from "lucide-react";
 
 export const Route = createFileRoute("/admin/configuracoes/integracoes")({
@@ -13,18 +14,19 @@ export const Route = createFileRoute("/admin/configuracoes/integracoes")({
 const integrations = [
   { to: "/admin/configuracoes/awise", icon: Warehouse, title: "Awise (ERP)", desc: "Estoque, financeiro, NF-e e cashback. Vendas do site entram na Awise automaticamente." },
   { to: "/admin/configuracoes/pagarme", icon: CreditCard, title: "Pagar.me", desc: "Checkout hospedado — Cartão, PIX, Apple Pay, Google Pay. Escolha do gateway ativo." },
-  { to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Gateway — PIX e Cartão, dentro do site." },
-  { to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },
+  { module: "modulo_mercadopago", to: "/admin/configuracoes/mercadopago", icon: CreditCard, title: "Mercado Pago", desc: "Gateway — PIX e Cartão, dentro do site." },
+  { module: "modulo_base", to: "/admin/configuracoes/base", icon: FileText, title: "Base ERP (NFe)", desc: "Emissão automática de nota fiscal após pagamento confirmado." },
   { to: "/admin/configuracoes/melhor-envio", icon: Truck, title: "Melhor Envio", desc: "Token, CEP origem, remetente, transportadoras." },
   { to: "/admin/configuracoes/site", icon: Instagram, title: "Feed do Instagram", desc: "Feed automático da home via Behold e handle do perfil." },
   { to: "/admin/configuracoes/emails", icon: MailCheck, title: "Integração Resend", desc: "Status da API key e domínio de envio." },
   { to: "/admin/broadcast", icon: Mail, title: "Emails & Newsletter", desc: "Campanhas, templates, layout, automáticos e inscritos." },
   { to: "/admin/configuracoes/cupom", icon: Gift, title: "Cupom de boas-vindas", desc: "Modal de captura no banner, desconto e email automático." },
-  { to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas (dormente)", desc: "Não em uso. Pagamentos passam pelo Mercado Pago." },
+  { module: "modulo_asaas", to: "/admin/configuracoes/asaas", icon: Wallet, title: "Asaas", desc: "Gateway antigo, sem uso." },
 ] as const;
 
 
 function Page() {
+  const { data: mods } = useModules();
   return (
     
       <section className="py-12 md:py-16 bg-background min-h-[70vh]">
@@ -39,7 +41,8 @@ function Page() {
             <h1 className="font-display text-3xl text-primary-dark">Integrações</h1>
           </div>
           <p className="text-sm text-primary-dark/60 mb-8">
-            Serviços externos conectados ao site: pagamentos, envio e feed social.
+            Serviços externos conectados ao site: pagamentos, envio e feed social. Os que não estão em uso podem ser
+            ligados/desligados em <Link to="/admin/configuracoes/modulos" className="text-primary underline">Módulos</Link>.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -55,7 +58,12 @@ function Page() {
                     <Icon size={20} className="text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="font-display text-xl text-primary-dark group-hover:text-primary transition">{s.title}</h2>
+                    <h2 className="font-display text-xl text-primary-dark group-hover:text-primary transition">
+                      {s.title}
+                      {!isOn(mods, (s as { module?: string }).module) && (
+                        <span className="ml-2 align-middle text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-cream text-[var(--text-muted)]">Desativado</span>
+                      )}
+                    </h2>
                     <p className="text-sm text-primary-dark/60 mt-0.5">{s.desc}</p>
                   </div>
                   <ChevronRight size={20} className="text-primary-dark/40 shrink-0" />

@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Boxes, ImageOff, History, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
-import { listAllProductsForAdmin, firstImage, formatPriceBRL, type Product } from "@/lib/shop";
+import { listAllProductsForAdmin, getProductCosts, firstImage, formatPriceBRL, type Product } from "@/lib/shop";
 
 export const Route = createFileRoute("/admin/estoque")({
   head: () => ({ meta: [{ title: "Admin — Estoque" }] }),
@@ -56,6 +56,8 @@ function StockPage() {
     queryKey: ["admin-products"],
     queryFn: listAllProductsForAdmin,
   });
+  const { data: costs } = useQuery({ queryKey: ["admin-product-costs"], queryFn: getProductCosts });
+  const costOf = (p: Product) => costs?.get(p.id) ?? null;
 
   const { data: movements } = useQuery({
     queryKey: ["admin-stock", "movements", historyOf?.id ?? "all"],
@@ -76,9 +78,9 @@ function StockPage() {
   const controlled = all.filter((p) => p.stock_qty != null);
   const low = controlled.filter(isLow);
   const out = all.filter((p) => !p.in_stock);
-  const costValue = controlled.reduce((acc, p) => acc + Math.max(0, p.stock_qty ?? 0) * (p.cost_cents ?? 0), 0);
+  const costValue = controlled.reduce((acc, p) => acc + Math.max(0, p.stock_qty ?? 0) * (costOf(p) ?? 0), 0);
   const saleValue = controlled.reduce((acc, p) => acc + Math.max(0, p.stock_qty ?? 0) * p.price_cents, 0);
-  const missingCost = controlled.some((p) => !p.cost_cents);
+  const missingCost = controlled.some((p) => !costOf(p));
 
   const list = useMemo(() => {
     if (filter === "baixo") return low;

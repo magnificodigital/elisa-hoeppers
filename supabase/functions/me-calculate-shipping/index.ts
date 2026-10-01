@@ -57,6 +57,12 @@ serve(async (req) => {
     }
     const items = [...qtyById.entries()].map(([product_id, qty]) => ({ product_id, qty }));
 
+    // Anti-abuso: no máximo ~300 cotações a cada 10 minutos (uso real é muito menor).
+    const { count: recent } = await supabase
+      .from("shipping_quotes").select("id", { count: "exact", head: true })
+      .gte("created_at", new Date(Date.now() - 10 * 60 * 1000).toISOString());
+    if ((recent ?? 0) > 300) throw new Error("Muitas consultas de frete no momento. Tente em alguns minutos.");
+
     const cleanCepOrigem = cepOrigem.replace(/\D/g, "");
     const cleanCepDestino = String(cep_destino).replace(/\D/g, "");
     if (cleanCepDestino.length !== 8) throw new Error("CEP destino inválido");

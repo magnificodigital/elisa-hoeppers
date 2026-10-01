@@ -4,6 +4,7 @@ import { Menu, X, ArrowUpRight, LogOut, ChevronRight, ChevronDown, Settings, Mai
 import { useAuth } from "@/hooks/useAuth";
 import { BodyogaLogo } from "@/components/bodyoga/BodyogaLogo";
 import { ADMIN_NAV_ITEMS } from "@/lib/admin-nav";
+import { useModules, isOn } from "@/lib/system-modules";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const navigate = useNavigate();
   const { signOut, profile } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data: mods } = useModules();
 
   const handleSignOut = async () => {
     await signOut();
@@ -53,7 +55,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               {group.group}
             </h3>
             <ul className="space-y-1">
-              {group.items.map((item) => {
+              {group.items.filter((item) => isOn(mods, (item as { module?: string }).module)).map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.to, item.exact);
                 return (
