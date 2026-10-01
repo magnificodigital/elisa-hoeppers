@@ -12,7 +12,7 @@ import { LessonQA } from "@/components/LessonQA";
 import { track } from "@/lib/analytics";
 
 export const Route = createFileRoute("/painel/aula/$lessonId")({
-  head: () => ({ meta: [{ title: "Aula — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Aula — BODYOGA" }] }),
   component: LessonPlayerPage,
 });
 

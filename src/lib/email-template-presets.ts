@@ -1,7 +1,7 @@
 import { supabase } from "./supabase";
 
 const LOGO =
-  "https://bodyogaoficial.com.br/__l5e/assets-v1/20aa83d7-e4d0-45c3-a8c7-02d231e4c53b/logo-bodyoga.png";
+  "https://bodyogaoficial.com.br/assets/bodyoga/logo-bodyoga.png";
 const GREEN = "#3E573F";
 const CREAM = "#F5EFE6";
 const FOOTER =

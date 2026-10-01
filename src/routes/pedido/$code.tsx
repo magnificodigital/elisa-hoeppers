@@ -116,7 +116,7 @@ export const Route = createFileRoute("/pedido/$code")({
     return { order: order as Order, needsEmail: false };
   },
   head: ({ loaderData }) => ({
-    meta: [{ title: `Pedido${loaderData?.order ? ` #${loaderData.order.code}` : ""} — Elisa Hoeppers` }],
+    meta: [{ title: `Pedido${loaderData?.order ? ` #${loaderData.order.code}` : ""} — BODYOGA` }],
   }),
   notFoundComponent: () => (
     <Layout>

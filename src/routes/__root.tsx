@@ -91,8 +91,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Movimente seu corpo, cuide da sua mente." },
       { name: "twitter:description", content: "Professora de Yoga, fundadora do BODYOGA e perfumista. Movimente seu corpo, cuide da sua mente." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6474f842-ef2b-4137-8e09-79fe713d4d20/id-preview-8c55f742--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app-1779730472117.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6474f842-ef2b-4137-8e09-79fe713d4d20/id-preview-8c55f742--b7748712-f4ec-441a-90e1-9d53676b9255.lovable.app-1779730472117.png" },
+      { property: "og:image", content: "https://bodyogaoficial.com.br/assets/bodyoga/og-bodyoga.png" },
+      { name: "twitter:image", content: "https://bodyogaoficial.com.br/assets/bodyoga/og-bodyoga.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -107,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { src: "https://www.mercadopago.com/v2/security.js", view: "checkout" as any },
       {
         defer: true,
-        ["data-domain"]: "hoepppers.lovable.app,elisahoeppers.com.br",
+        ["data-domain"]: "bodyogaoficial.com.br",
         src: "https://plausible.io/js/script.tagged-events.js",
       },
       {

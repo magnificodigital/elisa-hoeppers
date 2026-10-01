@@ -31,7 +31,7 @@ export function CertificateView({ cert }: { cert: Certificate }) {
         </p>
 
         <p className="font-display text-2xl md:text-3xl text-primary mb-10 italic">
-          elisa hoeppers
+          bodyoga
         </p>
 
         <p className="text-sm md:text-base text-primary-dark/70 mb-4">Certificamos que</p>
@@ -67,7 +67,7 @@ export function CertificateView({ cert }: { cert: Certificate }) {
               {cert.code}
             </p>
             <p className="text-[9px] text-primary-dark/50 mt-1">
-              verifique em elisahoeppers.com.br/certificado/{cert.code}
+              verifique em bodyogaoficial.com.br/certificado/{cert.code}
             </p>
           </div>
         </div>

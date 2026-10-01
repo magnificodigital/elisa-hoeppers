@@ -8,7 +8,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 // @ts-ignore
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 // @ts-ignore
-const SITE_URL = Deno.env.get("SITE_URL") ?? "https://hoepppers.lovable.app";
+const SITE_URL = Deno.env.get("SITE_URL") ?? "https://bodyogaoficial.com.br";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -109,7 +109,7 @@ serve(async (req) => {
       auto_return: "approved",
       external_reference: `enrollment:${enrollmentId}`,
       notification_url: `${SUPABASE_URL}/functions/v1/mp-webhook`,
-      statement_descriptor: "ELISA HOEPPERS",
+      statement_descriptor: "BODYOGA",
       metadata: { type: "course", enrollment_id: enrollmentId, course_id: course.id },
     };
 

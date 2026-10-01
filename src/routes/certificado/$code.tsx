@@ -15,7 +15,7 @@ export const Route = createFileRoute("/certificado/$code")({
       {
         title: loaderData
           ? `Certificado de ${loaderData.cert.student_name}`
-          : "Certificado — Elisa Hoeppers",
+          : "Certificado — BODYOGA",
       },
       {
         name: "description",
@@ -55,7 +55,7 @@ function CertificatePage() {
           <p className="text-center text-xs text-primary-dark/60 mt-6 print:hidden">
             Este certificado foi verificado em{" "}
             {new Date().toLocaleDateString("pt-BR")}. Para confirmar autenticidade,
-            acesse elisahoeppers.com.br/certificado/{cert.code}.
+            acesse bodyogaoficial.com.br/certificado/{cert.code}.
           </p>
         </div>
       </section>

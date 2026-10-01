@@ -27,7 +27,7 @@ function meBase(env: string): string {
     : "https://sandbox.melhorenvio.com.br/api/v2";
 }
 
-const UA = "Elisa Hoeppers Site (willy@magnificodigital.com)";
+const UA = "BODYOGA (willy@magnificodigital.com)";
 
 async function meCall(path: string, env: string, token: string, body?: any) {
   const res = await fetch(`${meBase(env)}${path}`, {

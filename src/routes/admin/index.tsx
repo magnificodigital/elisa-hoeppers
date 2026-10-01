@@ -28,7 +28,7 @@ import { getSetting } from "@/lib/settings";
 import { useNewOrderNotifications } from "@/hooks/useNewOrderNotifications";
 
 export const Route = createFileRoute("/admin/")({
-  head: () => ({ meta: [{ title: "Admin — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Admin — BODYOGA" }] }),
   component: () => <AdminHome />,
 });
 

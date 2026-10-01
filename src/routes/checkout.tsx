@@ -26,7 +26,7 @@ function couponReason(reason?: string): string {
 }
 
 export const Route = createFileRoute("/checkout")({
-  head: () => ({ meta: [{ title: "Checkout — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Checkout — BODYOGA" }] }),
   component: CheckoutPage,
 });
 

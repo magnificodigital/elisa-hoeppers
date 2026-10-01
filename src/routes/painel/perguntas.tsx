@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { listMyQuestions } from "@/lib/qa";
 
 export const Route = createFileRoute("/painel/perguntas")({
-  head: () => ({ meta: [{ title: "Minhas perguntas — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Minhas perguntas — BODYOGA" }] }),
   component: MyQuestionsPage,
 });
 

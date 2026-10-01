@@ -117,7 +117,7 @@ serve(async (req) => {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
         "Content-Type": "application/json",
-        "User-Agent": "Elisa Hoeppers Site (willy@magnificodigital.com)",
+        "User-Agent": "BODYOGA (willy@magnificodigital.com)",
       },
       body: JSON.stringify(payload),
     });

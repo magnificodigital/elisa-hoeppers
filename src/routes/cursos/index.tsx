@@ -8,7 +8,7 @@ export const Route = createFileRoute("/cursos/")({
     meta: [
       { title: "Aulas Online — Yoga, Meditação e BODYOGA" },
       { name: "description", content: "Aulas online de yoga, meditação e BODYOGA com Elisa Hoeppers para praticar em casa, no seu ritmo." },
-      { property: "og:title", content: "Aulas Online — Yoga e Meditação com Elisa Hoeppers" },
+      { property: "og:title", content: "Aulas Online — BODYOGA" },
       { property: "og:description", content: "Cursos e aulas gravadas de yoga, meditação e BODYOGA para todos os níveis." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://bodyogaoficial.com.br/cursos" },

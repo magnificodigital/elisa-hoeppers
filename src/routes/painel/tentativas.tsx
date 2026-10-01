@@ -38,7 +38,7 @@ async function listMyAttemptsFull(): Promise<AttemptRow[]> {
 }
 
 export const Route = createFileRoute("/painel/tentativas")({
-  head: () => ({ meta: [{ title: "Minhas tentativas — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Minhas tentativas — BODYOGA" }] }),
   component: AttemptsPage,
 });
 

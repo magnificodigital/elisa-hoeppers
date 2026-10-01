@@ -16,7 +16,7 @@ export const Route = createFileRoute("/painel/pedidos")({
   validateSearch: (s: Record<string, unknown>): { highlight?: string } => ({
     highlight: typeof s.highlight === "string" ? s.highlight : undefined,
   }),
-  head: () => ({ meta: [{ title: "Meus pedidos — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Meus pedidos — BODYOGA" }] }),
   component: MyOrdersPage,
 });
 

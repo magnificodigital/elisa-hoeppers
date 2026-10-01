@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { listMyCertificates } from "@/lib/certificates";
 
 export const Route = createFileRoute("/painel/certificados")({
-  head: () => ({ meta: [{ title: "Meus certificados — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Meus certificados — BODYOGA" }] }),
   component: CertificatesPage,
 });
 

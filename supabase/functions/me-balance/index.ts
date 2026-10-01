@@ -45,7 +45,7 @@ serve(async (req) => {
       headers: {
         Authorization: `Bearer ${token.replace(/\s/g, "")}`,
         Accept: "application/json",
-        "User-Agent": "Elisa Hoeppers Site Balance Check (willy@magnificodigital.com)",
+        "User-Agent": "BODYOGA Balance Check (willy@magnificodigital.com)",
       },
     });
     if (!res.ok) throw new Error(`ME ${res.status}: ${(await res.text()).slice(0, 200)}`);

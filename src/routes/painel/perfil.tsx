@@ -9,7 +9,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/painel/perfil")({
-  head: () => ({ meta: [{ title: "Meu perfil — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Meu perfil — BODYOGA" }] }),
   component: ProfilePage,
 });
 

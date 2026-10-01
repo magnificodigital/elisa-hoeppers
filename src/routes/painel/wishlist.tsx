@@ -9,7 +9,7 @@ import { listMyWishlist, removeFromWishlist } from "@/lib/wishlist";
 import { formatPriceBRL } from "@/lib/shop";
 
 export const Route = createFileRoute("/painel/wishlist")({
-  head: () => ({ meta: [{ title: "Lista de desejos — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Lista de desejos — BODYOGA" }] }),
   component: WishlistPage,
 });
 

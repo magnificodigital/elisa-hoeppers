@@ -12,7 +12,7 @@ import { listLessonsWithProgress } from "@/lib/lessons";
 import { listMyOrders, formatPriceBRL, type Order as ShopOrder } from "@/lib/shop";
 
 export const Route = createFileRoute("/painel/")({
-  head: () => ({ meta: [{ title: "Meu Painel — Elisa Hoeppers" }] }),
+  head: () => ({ meta: [{ title: "Meu Painel — BODYOGA" }] }),
   component: PainelPage,
 });
 
